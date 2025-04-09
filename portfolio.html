@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chandan Kumar - Data Scientist Portfolio showcasing expertise in Generative AI, MLOps, and AI Governance.">
+    <meta name="keywords" content="Chandan Kumar, Data Science, Generative AI, MLOps, AI Governance, IIT Dhanbad, Python, Azure, AWS">
+    <meta name="author" content="Chandan Kumar">
+    <title>Chandan Kumar | Data Science & AI Portfolio</title>
+
+    <link rel="shortcut icon" href="assets/img/favicon2.png.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0A66C2;
+            --secondary-color: #2E86C1;
+            --text-color: #1e2a44;
+            --light-gray: #f5f5f5;
+            --border-color: #e0e0e0;
+            --accent-color: #f59e0b;
+            --hover-color: #ffca28;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition-slow: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+            color: var(--text-color);
+            margin: 0;
+            padding-top: 80px;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        #header {
+            background: linear-gradient(135deg, #1e2a44, var(--primary-color));
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: background 0.3s ease, padding 0.3s ease;
+        }
+        #header.scrolled {
+            background: linear-gradient(135deg, #1e2a44, #0a4a9b);
+            padding: 10px 0;
+        }
+        #header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        #header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #fff, #ddd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        #header h1:hover {
+            transform: scale(1.05);
+        }
+        #header h1::after {
+            content: "Data Scientist & AI Researcher";
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            color: var(--accent-color);
+            -webkit-text-fill-color: var(--accent-color);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: var(--transition-fast);
+        }
+        #header h1:hover::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .social-links {
+            display: flex;
+            align-items: center;
+        }
+        .social-links a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-left: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .social-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        .social-links a:hover::after {
+            width: 100%;
+        }
+        .navbar-toggler {
+            border: none;
+            background: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .navbar-toggler:hover {
+            color: var(--accent-color);
+            transform: rotate(90deg);
+        }
+        .hamburger-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: rgba(30, 42, 68, 0.95);
+            backdrop-filter: blur(10px);
+            min-width: 220px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            z-index: 1000;
+            left: 0;
+            top: 100%;
+            margin-top: 10px;
+            padding: 10px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hamburger-menu.active .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .dropdown-menu .nav-link:last-child {
+            border-bottom: none;
+        }
+        .dropdown-menu .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            transition: var(--transition-fast);
+        }
+        .dropdown-menu .nav-link:hover,
+        .dropdown-menu .nav-link.active {
+            background: var(--accent-color);
+            color: #fff;
+            padding-left: 25px;
+        }
+        .dropdown-menu .nav-link:hover i {
+            transform: scale(1.2);
+        }
+        .dropdown-menu .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--hover-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .dropdown-menu .nav-link:hover::before,
+        .dropdown-menu .nav-link.active::before {
+            opacity: 1;
+        }
+        .content-section {
+            padding: 40px;
+            background: #fff;
+            border-radius: 20px;
+            margin: 30px auto;
+            max-width: 1200px;
+            box-shadow: var(--card-shadow);
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+            transition: var(--transition-slow);
+            position: relative;
+            overflow: hidden;
+        }
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            opacity: 0;
+            transition: var(--transition-fast);
+        }
+        .content-section:hover::before {
+            opacity: 1;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .content-section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-title h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        .section-title h2::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            transition: width 0.5s ease;
+            border-radius: 2px;
+        }
+        .section-title h2:hover::after {
+            width: 100%;
+        }
+        .lead {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #4b5563;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        ul li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            transition: var(--transition-fast);
+            position: relative;
+            padding-left: 5px;
+        }
+        ul li:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        ul li::marker {
+            color: var(--accent-color);
+        }
+        .experience-grid, .education-grid, .projects-grid, .skills-grid, .certification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .experience-box, .education-box, .project-box, .skills-grid li, .certification-box {
+            padding: 25px;
+            border-radius: 15px;
+            transition: var(--transition-slow);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .experience-box::before, .education-box::before, .project-box::before, 
+        .skills-grid li::before, .certification-box::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            opacity: 0.1;
+            z-index: -1;
+            transition: var(--transition-slow);
+        }
+        .experience-box:hover::before, .education-box:hover::before, .project-box:hover::before, 
+        .skills-grid li:hover::before, .certification-box:hover::before {
+            transform: scale(25);
+        }
+        .experience-box:hover, .education-box:hover, .project-box:hover, .skills-grid li:hover, .certification-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        .experience-box:nth-child(1), .education-box:nth-child(1), .project-box:nth-child(1), .skills-grid li:nth-child(1), .certification-box:nth-child(1) { background: linear-gradient(to right bottom, #e0f2fe, #ffffff); border-left: 6px solid var(--primary-color); }
+        .experience-box:nth-child(2), .education-box:nth-child(2), .project-box:nth-child(2), .skills-grid li:nth-child(2), .certification-box:nth-child(2) { background: linear-gradient(to right bottom, #dcfce7, #ffffff); border-left: 6px solid #10b981; }
+        .experience-box:nth-child(3), .project-box:nth-child(3), .skills-grid li:nth-child(3), .certification-box:nth-child(3) { background: linear-gradient(to right bottom, #fef3c7, #ffffff); border-left: 6px solid #f59e0b; }
+        .experience-box:nth-child(4), .project-box:nth-child(4), .skills-grid li:nth-child(4), .certification-box:nth-child(4) { background: linear-gradient(to right bottom, #fce7f3, #ffffff); border-left: 6px solid #ec4899; }
+        .project-box:nth-child(5), .skills-grid li:nth-child(5), .certification-box:nth-child(5) { background: linear-gradient(to right bottom, #e5e7eb, #ffffff); border-left: 6px solid #6b7280; }
+        .project-box:nth-child(6), .skills-grid li:nth-child(6), .certification-box:nth-child(6) { background: linear-gradient(to right bottom, #e0f2fe, #ffffff); border-left: 6px solid var(--primary-color); }
+        .skills-grid li:nth-child(7), .certification-box:nth-child(7) { background: linear-gradient(to right bottom, #dcfce7, #ffffff); border-left: 6px solid #10b981; }
+        .skills-grid li:nth-child(8), .certification-box:nth-child(8) { background: linear-gradient(to right bottom, #fef3c7, #ffffff); border-left: 6px solid #f59e0b; }
+        .certification-box:nth-child(9) { background: linear-gradient(to right bottom, #fce7f3, #ffffff); border-left: 6px solid #ec4899; }
+        .certification-box:nth-child(10) { background: linear-gradient(to right bottom, #e5e7eb, #ffffff); border-left: 6px solid #6b7280; }
+        .certification-box:nth-child(11) { background: linear-gradient(to right bottom, #e0f2fe, #ffffff); border-left: 6px solid var(--primary-color); }
+        .certification-box:nth-child(12) { background: linear-gradient(to right bottom, #dcfce7, #ffffff); border-left: 6px solid #10b981; }
+        .certification-box:nth-child(13) { background: linear-gradient(to right bottom, #fef3c7, #ffffff); border-left: 6px solid #f59e0b; }
+
+        .experience-box h5, .education-box h5, .project-box h5 { 
+            font-size: 1.2rem; 
+            font-weight: 600; 
+            margin-bottom: 15px; 
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .experience-box h5::before, .education-box h5::before {
+            content: '';
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+        }
+        .project-box h5 { font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-color); }
+        .project-box .company { 
+            font-style: italic; 
+            color: var(--primary-color); 
+            font-size: 0.95rem; 
+            margin-left: 5px; 
+            background: rgba(10, 102, 194, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            transition: var(--transition-fast);
+        }
+        .project-box:hover .company {
+            background: rgba(10, 102, 194, 0.2);
+        }
+        .project-box ul { margin-top: 10px; padding-left: 15px; }
+        .project-box ul li { font-size: 0.9rem; color: #4b5563; }
+
+        .certification-box {
+            padding: 20px;
+            border-radius: 12px;
+            transition: var(--transition-slow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 120px;
+        }
+        .certification-box .institution { 
+            font-weight: 600; 
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-size: 1.05rem;
+        }
+        .certification-box .course { 
+            font-size: 0.95rem; 
+            color: #4b5563; 
+            position: relative;
+            padding-left: 18px;
+        }
+        .certification-box .course::before {
+            content: '\f5fc';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px auto;
+            flex-wrap: wrap;
+        }
+        #viewResumeButton, #downloadResumeButton {
+            width: 220px;
+            padding: 15px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(10, 102, 194, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        #viewResumeButton i, #downloadResumeButton i {
+            transition: var(--transition-fast);
+        }
+        #viewResumeButton:hover, #downloadResumeButton:hover {
+            background: linear-gradient(90deg, #074e91, #1a73e8);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(10, 102, 194, 0.45);
+        }
+        #viewResumeButton:hover i, #downloadResumeButton:hover i {
+            transform: scale(1.2);
+        }
+        #viewResumeButton::before, #downloadResumeButton::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        #viewResumeButton:hover::before, #downloadResumeButton:hover::before {
+            left: 100%;
+        }
+
+        .skills-grid {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .skills-grid li {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .skills-grid li strong {
+            display: inline-block;
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+        .skills-grid li strong::before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+        .skills-grid li:nth-child(1) strong::before { content: '\f5fc'; }
+        .skills-grid li:nth-child(2) strong::before { content: '\f0c2'; }
+        .skills-grid li:nth-child(3) strong::before { content: '\f121'; }
+        .skills-grid li:nth-child(4) strong::before { content: '\f1c0'; }
+        .skills-grid li:nth-child(5) strong::before { content: '\f1c0'; }
+        .skills-grid li:nth-child(6) strong::before { content: '\f080'; }
+        .skills-grid li:nth-child(7) strong::before { content: '\f135'; }
+        .skills-grid li:nth-child(8) strong::before { content: '\f0b1'; }
+
+        #core-competencies ul {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        #core-competencies ul li {
+            background: linear-gradient(135deg, #f8fafc, #e0f2fe);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            transition: var(--transition-fast);
+            border-left: 4px solid var(--primary-color);
+        }
+        #core-competencies ul li:hover {
+            transform: translateX(5px);
+            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+        }
+        #core-competencies ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1e2a44, var(--primary-color));
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuZGV2L3N2Z2pzIiB2aWV3Qm94PSIwIDAgNzAwIDcwMCIgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIG9wYWNpdHk9IjAuMDUiPjxkZWZzPjxmaWx0ZXIgaWQ9Im5ubm9pc2UtZmlsdGVyIiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIiBmaWx0ZXJVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giIHByaW1pdGl2ZVVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJsaW5lYXJSR0IiPgogICAgPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuMDUiIG51bU9jdGF2ZXM9IjQiIHNlZWQ9IjE1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIiB4PSIwJSIgeT0iMCUiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHJlc3VsdD0idHVyYnVsZW5jZSI+PC9mZVR1cmJ1bGVuY2U+CiAgICA8ZmVTcGVjdWxhckxpZ2h0aW5nIHN1cmZhY2VTY2FsZT0iMTUiIHNwZWN1bGFyQ29uc3RhbnQ9IjAuNzUiIHNwZWN1bGFyRXhwb25lbnQ9IjIwIiBsaWdodGluZy1jb2xvcj0iI2ZmZmZmZiIgeD0iMCUiIHk9IjAlIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBpbj0idHVyYnVsZW5jZSIgcmVzdWx0PSJzcGVjdWxhckxpZ2h0aW5nIj4KICAgICAgICA8ZmVEaXN0YW50TGlnaHQgYXppbXV0aD0iMyIgZWxldmF0aW9uPSI5NCI+PC9mZURpc3RhbnRMaWdodD4KICAgIDwvZmVTcGVjdWxhckxpZ2h0aW5nPgogICAgCjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCIgZmlsbD0idHJhbnNwYXJlbnQiPjwvcmVjdD48cmVjdCB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZmZmZiIgZmlsdGVyPSJ1cmwoI25ubm9pc2UtZmlsdGVyKSI+PC9yZWN0Pjwvc3ZnPg==');
+            opacity: 0.1;
+        }
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        footer a:hover {
+            color: #fff;
+        }
+        footer a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            bottom: -3px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        footer a:hover::after {
+            width: 100%;
+        }
+        
+        /* Profile Picture */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+            transition: var(--transition-slow);
+        }
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(10, 102, 194, 0.3), rgba(245, 158, 11, 0.3));
+            opacity: 0;
+            transition: var(--transition-fast);
+        }
+        .profile-image:hover::before {
+            opacity: 1;
+        }
+        .profile-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .profile-image-fallback {
+            display: none;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: var(--transition-slow);
+        }
+        .profile-image-fallback:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .profile-text h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        .profile-text p {
+            font-size: 1rem;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        /* Optimized Resume Section Styles */
+        #resume .resume-container {
+            max-width: 210mm;
+            margin: 0 auto;
+        }
+        .resume-page {
+            width: 210mm;
+            height: 297mm;
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 2mm 6mm;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 8pt;
+            line-height: 1.1;
+            color: var(--text-color);
+            overflow: hidden;
+        }
+        .resume-page header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.5mm;
+            border-bottom: 1px solid var(--primary-color);
+            margin-bottom: 1mm;
+        }
+        .resume-page .header-left h1 {
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .resume-page .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1mm;
+            font-size: 7pt;
+            font-weight: 500;
+        }
+        .resume-page .contact-item {
+            font-weight: bold;
+        }
+        .resume-page .contact-item i {
+            color: var(--secondary-color);
+            margin-right: 0.5mm;
+            font-size: 8pt;
+        }
+        .resume-page .contact-item a, .resume-page .contact-item span {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+        .resume-page .profile-photo {
+            width: 12mm;
+            height: 12mm;
+            border-radius: 50%;
+            border: 1px solid var(--primary-color);
+            overflow: hidden;
+        }
+        .resume-page .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .resume-page .profile-photo-fallback {
+            display: none;
+            width: 12mm;
+            height: 12mm;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #666;
+            font-size: 4pt;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 1px solid var(--primary-color);
+        }
+        .resume-page .content {
+            display: flex;
+            gap: 3mm;
+            margin-top: 1mm;
+        }
+        .resume-page .left-column {
+            flex: 6;
+        }
+        .resume-page .right-column {
+            flex: 4;
+            border-left: 1px solid var(--border-color);
+            padding-left: 3mm;
+        }
+        .resume-page .section {
+            margin-bottom: 1.5mm;
+        }
+        .resume-page .section-title {
+            font-size: 10pt;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 0.5mm;
+            margin-bottom: 1mm;
+        }
+        .resume-page .section-title i {
+            color: var(--accent-color);
+            margin-right: 1mm;
+            font-size: 9pt;
+        }
+        .resume-page p, .resume-page li {
+            margin: 0 0 0.5mm;
+            text-align: justify;
+        }
+        .resume-page .job-title, .resume-page .school-name, .resume-page .project-title {
+            font-size: 9pt;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 0.3mm;
+        }
+        .resume-page .job-period, .resume-page .education-period {
+            float: right;
+            font-size: 8pt;
+            font-weight: 500;
+            color: #555;
+        }
+        .resume-page ul {
+            padding-left: 4mm;
+            margin: 0;
+        }
+        .resume-page .project {
+            margin-bottom: 1mm;
+        }
+        .resume-page .project ul {
+            padding-left: 4mm;
+            list-style-type: none;
+        }
+        .resume-page .project ul li {
+            position: relative;
+            padding-left: 4mm;
+        }
+        .resume-page .project ul li::before {
+            content: '\f111'; /* Smaller solid circle icon */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #000000; /* Black bullets for Key Projects */
+            font-size: 4pt; /* Even smaller bullet size */
+        }
+        .resume-page .skills-list ul, .resume-page .certifications-list ul, 
+        .resume-page .core-competencies-list ul, .resume-page #resume-achievements {
+            padding-left: 0;
+            list-style: none;
+        }
+        .resume-page .skills-list li, .resume-page .certifications-list li, 
+        .resume-page .core-competencies-list li, .resume-page #resume-achievements li {
+            margin-bottom: 0.5mm;
+            padding-left: 4mm;
+            position: relative;
+        }
+        .resume-page .skills-list li::before, .resume-page .certifications-list li::before, 
+        .resume-page .core-competencies-list li::before, .resume-page #resume-achievements li::before {
+            content: '\f111'; /* Smaller solid circle icon */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #000000; /* Black bullets for Skills, Certifications, Core Competencies, Achievements */
+            font-size: 4pt; /* Even smaller bullet size */
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body { padding-top: 60px; font-size: 14px; }
+            #header { padding: 10px 0; }
+            #header h1 { font-size: 1.5rem; }
+            #header h1::after { font-size: 0.7rem; bottom: -10px; }
+            .social-links a { margin-left: 15px; font-size: 1.2rem; width: 35px; height: 35px; }
+            .content-section { padding: 20px; margin: 20px auto; }
+            .section-title h2 { font-size: 1.6rem; }
+            .section-title h2::after { width: 50px; height: 3px; bottom: -8px; }
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            #viewResumeButton, #downloadResumeButton {
+                width: 100%;
+                max-width: 280px;
+                padding: 12px;
+                font-size: 13px;
+            }
+            .experience-grid, .education-grid, .projects-grid, .skills-grid, .certification-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .lead { font-size: 0.95rem; line-height: 1.6; }
+            .project-box h5 { font-size: 1.1rem; }
+            .project-box ul li, .certification-box .course { font-size: 0.85rem; }
+            .profile-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .profile-image, .profile-image-fallback {
+                width: 150px;
+                height: 150px;
+            }
+            .profile-text h3 { font-size: 1.5rem; }
+            .resume-page .content {
+                flex-direction: column;
+            }
+            .resume-page .right-column {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--border-color);
+                padding-top: 1.5mm;
+            }
+        }
+        @media (max-width: 576px) {
+            #header h1 { font-size: 1.3rem; }
+            #header h1::after { font-size: 0.6rem; bottom: -8px; }
+            .content-section { padding: 15px; }
+            .section-title h2 { font-size: 1.4rem; }
+            .profile-image, .profile-image-fallback {
+                width: 120px;
+                height: 120px;
+            }
+            .profile-text h3 { font-size: 1.3rem; }
+        }
+        @media print {
+            .resume-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 2mm 6mm;
+                width: 210mm;
+                height: 297mm;
+            }
+            #downloadResumeButton {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="hamburger-menu">
+                <button class="navbar-toggler" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="#Professional-Summary" class="nav-link active" data-section="Professional-Summary"><i class="fas fa-home"></i> Professional Summary</a>
+                    <a href="#experience" class="nav-link" data-section="experience"><i class="fas fa-briefcase"></i> Experience</a>
+                    <a href="#projects" class="nav-link" data-section="projects"><i class="fas fa-project-diagram"></i> Projects</a>
+                    <a href="#education" class="nav-link" data-section="education"><i class="fas fa-graduation-cap"></i> Education</a>
+                    <a href="#certification" class="nav-link" data-section="certification"><i class="fas fa-certificate"></i> Certification</a>
+                    <a href="#achievements" class="nav-link" data-section="achievements"><i class="fas fa-trophy"></i> Achievements</a>
+                    <a href="#skills" class="nav-link" data-section="skills"><i class="fas fa-tools"></i> Skills</a>
+                    <a href="#core-competencies" class="nav-link" data-section="core-competencies"><i class="fas fa-star"></i> Core Competencies</a>
+                    <a href="#resume" class="nav-link" data-section="resume"><i class="fas fa-file-alt"></i> Resume</a>
+                </div>
+            </div>
+            <h1>Chandan Kumar</h1>
+            <div class="social-links">
+                <a href="mailto:ckism.iit@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.linkedin.com/in/chandaniit/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="Professional-Summary" class="content-section active">
+            <div class="section-title">
+                <h2>Professional Summary</h2>
+            </div>
+            <div class="profile-section">
+                <div class="profile-image">
+                    <img src="chandan.jpg" alt="Chandan Kumar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="profile-image-fallback">Image Not Available</div>
+                </div>
+                <div class="profile-text">
+                    <h3>Chandan Kumar</h3>
+                    <p><strong>IIT graduate</strong> with around <strong>7 years</strong> of experience in Data Science, Machine Learning, Deep Learning, and AI-driven Product Development, specializing in Generative AI, LLMs, AI governance, and advanced automation. Proven track record in delivering scalable AI/ML solutions across finance, banking, energy, and environmental sectors. Skilled in Python, SQL, Power BI, Data Analysis,Docker, Git, Bitbucket, FastAPI, LangChain, CrewAI, TensorFlow, PyTorch, and Prompt Engineering. Proficient in cloud platforms including Azure (Azure ML, Azure SQL, Data Lake Storage, Data Factory, Databricks, Synapse Analytics), AWS (S3, Glue, Redshift, Athena, SageMaker, Bedrock), Google Cloud (Vertex AI), and IBM Cloud (watsonx.data, watsonx.ai, watsonx.governance). Experienced in AI model deployment, workflow automation, and driving measurable business impact.</p>
+                </div>
+            </div>
+            <div class="button-container">
+                <button id="viewResumeButton" onclick="showResumeSection()"><i class="fas fa-file-alt"></i> View Resume</button>
+                <button id="downloadResumeButton" onclick="downloadPDF()"><i class="fas fa-download"></i> Download Resume</button>
+            </div>
+        </section>
+
+        <section id="experience" class="content-section">
+            <div class="section-title">
+                <h2>Experience</h2>
+            </div>
+            <div class="experience-grid" id="experience-grid">
+                <!-- Experience data will be dynamically populated here -->
+            </div>
+        </section>
+
+        <section id="projects" class="content-section">
+            <div class="section-title">
+                <h2>Projects</h2>
+            </div>
+            <div class="projects-grid" id="projects-grid">
+                <!-- Projects data will be dynamically populated here -->
+            </div>
+        </section>
+
+        <section id="education" class="content-section">
+            <div class="section-title">
+                <h2>Education</h2>
+            </div>
+            <div class="education-grid" id="education-grid">
+                <!-- Education data will be dynamically populated here -->
+            </div>
+        </section>
+
+        <section id="certification" class="content-section">
+            <div class="section-title">
+                <h2>Certification</h2>
+            </div>
+            <div class="certification-grid" id="certification-grid">
+                <!-- Certification data will be dynamically populated here -->
+            </div>
+        </section>
+
+        <section id="achievements" class="content-section">
+            <div class="section-title">
+                <h2>Achievements</h2>
+            </div>
+            <ul id="achievements-list">
+                <!-- Achievements data will be dynamically populated here -->
+            </ul>
+        </section>
+
+        <section id="skills" class="content-section">
+            <div class="section-title">
+                <h2>Skills</h2>
+            </div>
+            <ul class="skills-grid" id="skills-list">
+                <!-- Skills data will be dynamically populated here -->
+            </ul>
+        </section>
+
+        <section id="core-competencies" class="content-section">
+            <div class="section-title">
+                <h2>Core Competencies</h2>
+            </div>
+            <ul id="core-competencies-list">
+                <!-- Core Competencies data will be dynamically populated here -->
+            </ul>
+        </section>
+
+        <section id="resume" class="content-section">
+            <div class="section-title">
+                <h2>Resume</h2>
+            </div>
+            <div class="resume-container" id="resumeContent">
+                <div class="resume-page">
+                    <header>
+                        <div class="header-left">
+                            <h1>CHANDAN KUMAR</h1>
+                            <div class="contact-info">
+                                <div class="contact-item"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/chandaniit"><strong>linkedin.com/in/chandaniit</strong></a></div>
+                                <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:ckism.iit@gmail.com"><strong>ckism.iit@gmail.com</strong></a></div>
+                                <div class="contact-item"><i class="fas fa-phone"></i><span><strong>+91-9199000200</strong></span></div>
+                            </div>
+                        </div>
+                        <div class="profile-photo">
+                            <img src="chandan.jpg" alt="Chandan Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                            <div class="profile-photo-fallback">Image Not Available</div>
+                        </div>
+                    </header>
+                    <div class="content">
+                        <div class="left-column">
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-user"></i>Professional Summary</div>
+                               <p><strong>IIT graduate</strong> with around <strong>7 years</strong> of experience in Data Science, Machine Learning, Deep Learning, and AI-driven Product Development, specializing in Generative AI, LLMs, AI governance, and advanced automation. Proven track record in delivering scalable AI/ML solutions across finance, banking, energy, and environmental sectors. Skilled in Python, SQL, Power BI, Data Analysis,Docker, Git, Bitbucket, FastAPI, LangChain, CrewAI, TensorFlow, PyTorch, and Prompt Engineering. Proficient in cloud platforms including Azure (Azure ML, Azure SQL, Data Lake Storage, Data Factory, Databricks, Synapse Analytics), AWS (S3, Glue, Redshift, Athena, SageMaker, Bedrock), Google Cloud (Vertex AI), and IBM Cloud (watsonx.data, watsonx.ai, watsonx.governance). Experienced in AI model deployment, workflow automation, and driving measurable business impact.</p>
+                            </div>
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-briefcase"></i>Experience</div>
+                                <div id="resume-experience">
+                                    <!-- Experience data will be dynamically populated here -->
+                                </div>
+                            </div>
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-project-diagram"></i>Key Projects</div>
+                                <div id="resume-projects">
+                                    <!-- Projects data will be dynamically populated here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-column">
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-graduation-cap"></i>Education</div>
+                                <div id="resume-education">
+                                    <!-- Education data will be dynamically populated here -->
+                                </div>
+                            </div>
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-certificate"></i>Certifications</div>
+                                <div class="certifications-list">
+                                    <ul id="resume-certifications">
+                                        <!-- Certification data will be dynamically populated here -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-trophy"></i>Achievements</div>
+                                <ul id="resume-achievements">
+                                    <!-- Achievements data will be dynamically populated here -->
+                                </ul>
+                            </div>
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-tools"></i>Skills</div>
+                                <div class="skills-list">
+                                    <ul id="resume-skills">
+                                        <!-- Skills data will be dynamically populated here -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="section">
+                                <div class="section-title"><i class="fas fa-star"></i>Core Competencies</div>
+                                <div class="core-competencies-list">
+                                    <ul id="resume-core-competencies">
+                                        <!-- Core Competencies data will be dynamically populated here -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button id="downloadResumeButton" onclick="downloadPDF()"><i class="fas fa-download"></i> Download Resume as PDF</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Designed by <a href="#">Chandan Kumar</a> | © 2025</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.navbar-toggler').on('click', function() {
+                $('.hamburger-menu').toggleClass('active');
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.hamburger-menu').length) {
+                    $('.hamburger-menu').removeClass('active');
+                }
+            });
+
+            $('.nav-link').on('click', function(e) {
+                e.preventDefault();
+                const sectionId = $(this).attr('data-section');
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+                $('.content-section').removeClass('active');
+                $('#' + sectionId).addClass('active');
+                $('.hamburger-menu').removeClass('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            $('#Professional-Summary').addClass('active');
+            $('.nav-link[data-section="Professional-Summary"]').addClass('active');
+
+            $(window).on('scroll', function() {
+                if ($(window).scrollTop() > 50) {
+                    $('#header').addClass('scrolled');
+                } else {
+                    $('#header').removeClass('scrolled');
+                }
+            });
+        });
+
+        function showResumeSection() {
+            $('.content-section').removeClass('active');
+            $('#resume').addClass('active');
+            $('.nav-link').removeClass('active');
+            $('.nav-link[data-section="resume"]').addClass('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+                compress: true
+            });
+            const resumePage = document.querySelector('#resumeContent .resume-page');
+            const buttons = document.querySelectorAll('#downloadResumeButton');
+
+            try {
+                buttons.forEach(button => {
+                    button.innerHTML = '<i class="fas fa-download"></i> Generating PDF...';
+                    button.disabled = true;
+                });
+
+                const wasHidden = !$('#resume').hasClass('active');
+                if (wasHidden) {
+                    $('#resume').addClass('active').css('display', 'block');
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                const canvas = await html2canvas(resumePage, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    width: resumePage.offsetWidth,
+                    height: resumePage.offsetHeight,
+                    windowWidth: document.documentElement.scrollWidth,
+                    windowHeight: document.documentElement.scrollHeight,
+                    scrollX: 0,
+                    scrollY: 0
+                });
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                const imgWidth = 210;
+                const pageHeight = 297;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+
+                const scaleFactor = pageHeight / imgHeight;
+                const scaledHeight = imgHeight * scaleFactor;
+                const scaledWidth = imgWidth * scaleFactor;
+
+                doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, scaledHeight);
+                doc.save('Chandan_Kumar_Resume.pdf');
+
+                if (wasHidden) {
+                    $('#resume').removeClass('active').css('display', 'none');
+                }
+
+                buttons.forEach(button => {
+                    button.innerHTML = '<i class="fas fa-download"></i> Download Resume';
+                    button.disabled = false;
+                });
+            } catch (error) {
+                console.error('PDF Generation Error:', error.message, error.stack);
+                alert('Failed to generate PDF. Please try again.');
+                buttons.forEach(button => {
+                    button.innerHTML = '<i class="fas fa-download"></i> Download Resume';
+                    button.disabled = false;
+                });
+            }
+        }
+
+        // Data for dynamic population
+        const data = {
+            experience: [
+                { company: "IBM", role: "Data Scientist", period: "Mar 2024 – Present" },
+                { company: "Accenture", role: "Data Scientist", period: "Apr 2021 – Feb 2024" },
+                { company: "Capgemini", role: "Process Lead", period: "Feb 2021 – Mar 2021" },
+                { company: "Clean Harbors", role: "Data Scientist", period: "Jun 2018 – Jan 2021" }
+            ],
+            projects: [
+                { title: "MARC (Multi-Agent Resource Coordinator)", company: "IBM", description: ["Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation.", "Applied AI Governance principles to ensure ethical and compliant operations of automation agents.", "Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection.", "Streamlined enterprise workflows with a scalable multi-agent AI system."] },
+                { title: "Mizuho Bank", company: "Accenture", description: ["Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows.", "Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality.", "Reduced document review time by 30% with AI-driven system."] },
+                { title: "Ulster Bank", company: "Accenture", description: ["Automated machine learning pipelines for customer segmentation algorithms using Python, Glue, and Athena.", "Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders."] },
+                { title: "Facebook", company: "Accenture", description: ["Examined data from multiple disparate sources to discover insights providing competitive advantage for clients.", "Designed and optimized machine learning pipelines, specializing in the creation of forecasting models.", "Leveraged Machine Learning, Python, Glue, Athena, and SageMaker to enhance decision-making processes."] },
+                { title: "Waste Classification Code", company: "Clean Harbors", description: ["Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment.", "Created a unified dataset encompassing vital features for all waste classes.", "Applied logical data checks for input consistency, facilitating classification based on physical properties."] },
+                { title: "Invoice Audit", company: "Clean Harbors", description: ["Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis.", "Streamlined invoice verification, reducing audit time by 20%."] }
+            ],
+            education: [
+                { institution: "IIT Dhanbad", degree: "B.Tech", period: "2013 – 2017" },
+                { institution: "Super30, Patna", degree: "", period: "2012 – 2013" }
+            ],
+            certifications: [
+                { institution: "Northwestern University", course: "Analytics & AI" },
+                { institution: "IBM", course: "IBM watsonx.ai Technical Essentials" },
+                { institution: "IBM", course: "IBM watsonx Essentials" },
+                { institution: "Microsoft & LinkedIn", course: "Generative AI" },
+                { institution: "Microsoft", course: "Azure Machine Learning" },
+                { institution: "Stanford University", course: "Machine Learning" },
+                { institution: "Duke University", course: "DevOps, DataOps, MLOps" },
+                { institution: "Neo4j", course: "Neo4j & LLM Fundamentals" },
+                { institution: "AWS", course: "AWS Cloud" },
+                { institution: "Udemy", course: "Project Management Fundamentals" },
+                { institution: "Udemy", course: "Product Management Fundamentals" },
+                { institution: "Udemy", course: "MCP (Model Context Protocol)" },
+                { institution: "Microsoft", course: "SQL Server" }
+            ],
+            achievements: [
+                "Ranked #1 in HackerRank SQL.",
+                "Consistently recognized by clients for error-free, timely project deliveries.",
+                "Led a team of five analysts, restoring team credibility and stability.",
+                "Cleared IIT JEE-2013, ranking in the top 1% of JEE Advanced qualifiers.",
+                "Served as Student Representative in Mess Committee, IIT Dhanbad (2015-2016)."
+            ],
+            skills: [
+                "Data Science & AI: Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, Azure ML, SageMaker, Bedrock, Vertex AI, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development & Deployment, RAG, Model Fine-tuning, Vector DB, Prompt Engineering",
+                "Cloud Platforms: Azure, AWS, GCP, IBM",
+                "Programming: Python, SQL",
+                "Data Engineering: Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy",
+                "Databases: Azure SQL, SQL Server, MySQL, MongoDB",
+                "Visualization: Power BI, Matplotlib, Seaborn",
+                "DevOps: Docker, Kubernetes, Git, CI/CD",
+                "Domains: Finance, Banking, Environmental, Social Media, Waste Management, Energy"
+            ],
+            coreCompetencies: [
+                "Project Management and Deployment",
+                "Data Strategy and Management",
+                "Business and Data Analytics",
+                "Analytics & AI",
+                "Product Management"
+            ]
+        };
+
+        // Function to dynamically populate sections
+        function populateSections() {
+            // Experience
+            const experienceGrid = $('#experience-grid');
+            data.experience.forEach(item => {
+                experienceGrid.append(`
+                    <div class="experience-box">
+                        <h5><strong>${item.company}</strong> - ${item.role}</h5>
+                        <p><span class="float-end">${item.period}</span></p>
+                    </div>
+                `);
+            });
+
+            // Projects
+            const projectsGrid = $('#projects-grid');
+            data.projects.forEach(item => {
+                projectsGrid.append(`
+                    <div class="project-box">
+                        <h5><strong>${item.title}</strong> <span class="company">${item.company}</span></h5>
+                        <ul>
+                            ${item.description.map(desc => `<li>${desc}</li>`).join('')}
+                        </ul>
+                    </div>
+                `);
+            });
+
+            // Education
+            const educationGrid = $('#education-grid');
+            data.education.forEach(item => {
+                educationGrid.append(`
+                    <div class="education-box">
+                        <h5><strong>${item.institution}</strong> - ${item.degree}</h5>
+                        <p><span class="float-end">${item.period}</span></p>
+                    </div>
+                `);
+            });
+
+            // Certifications
+            const certificationGrid = $('#certification-grid');
+            data.certifications.forEach(item => {
+                certificationGrid.append(`
+                    <div class="certification-box">
+                        <span class="institution">${item.institution}</span><br>
+                        <span class="course">${item.course}</span>
+                    </div>
+                `);
+            });
+
+            // Achievements
+            const achievementsList = $('#achievements-list');
+            data.achievements.forEach(item => {
+                achievementsList.append(`<li>${item}</li>`);
+            });
+
+            // Skills
+            const skillsList = $('#skills-list');
+            data.skills.forEach(item => {
+                skillsList.append(`<li><strong>${item}</strong></li>`);
+            });
+
+            // Core Competencies
+            const coreCompetenciesList = $('#core-competencies-list');
+            data.coreCompetencies.forEach(item => {
+                coreCompetenciesList.append(`<li>${item}</li>`);
+            });
+
+            // Resume Sections
+            const resumeExperience = $('#resume-experience');
+            data.experience.forEach(item => {
+                resumeExperience.append(`
+                    <p class="job-title">${item.company} - ${item.role} <span class="job-period">${item.period}</span></p>
+                `);
+            });
+
+            const resumeProjects = $('#resume-projects');
+            data.projects.forEach(item => {
+                resumeProjects.append(`
+                    <div class="project">
+                        <div class="project-title"><strong>${item.title}</strong> - ${item.company}</div>
+                        <ul>
+                            ${item.description.map(desc => `<li>${desc}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <br>
+                `);
+            });
+
+            const resumeEducation = $('#resume-education');
+            data.education.forEach(item => {
+                resumeEducation.append(`
+                    <p class="school-name">${item.institution} - ${item.degree} <span class="education-period">${item.period}</span></p>
+                `);
+            });
+
+            const resumeCertifications = $('#resume-certifications');
+            data.certifications.forEach(item => {
+                resumeCertifications.append(`<li>${item.institution} - ${item.course}</li>`);
+            });
+
+            const resumeAchievements = $('#resume-achievements');
+            data.achievements.forEach(item => {
+                resumeAchievements.append(`<li>${item}</li>`);
+            });
+
+            const resumeSkills = $('#resume-skills');
+            data.skills.forEach(item => {
+                resumeSkills.append(`<li>${item}</li>`);
+            });
+
+            const resumeCoreCompetencies = $('#resume-core-competencies');
+            data.coreCompetencies.forEach(item => {
+                resumeCoreCompetencies.append(`<li>${item}</li>`);
+            });
+        }
+
+        // Call the function to populate sections
+        populateSections();
+    </script>
+</body>
+</html>
