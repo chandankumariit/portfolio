@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marriage BioData - Chandan Kumar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #800000; /* Maroon */
+      --secondary-color: #600000; /* Darker maroon */
+      --accent-color: #ffd700; /* Gold */
+      --light-accent: #fff1b8; /* Light gold */
+      --text-color: #f5f5f5; /* Soft white */
+      --highlight-color: #ffebaa; /* Warm highlight */
+    }
+
+    body {
+      font-family: 'Roboto', 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+      color: var(--text-color);
+      line-height: 1.4;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 7.5in;
+      height: 10.5in;
+      margin: 0.25in auto;
+      background-color: var(--primary-color);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--accent-color);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      padding: 10px 15px;
+      text-align: center;
+      border-bottom: 2px solid var(--accent-color);
+    }
+
+    .header-text {
+      font-size: 18px;
+      color: var(--accent-color);
+      font-weight: 700;
+      margin: 5px 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-section {
+      padding: 15px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(128, 0, 0, 0.95), rgba(90, 0, 0, 0.95));
+    }
+
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #fff;
+      margin: 0 auto 10px;
+      border: 3px solid var(--accent-color);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .profile-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-initial {
+      font-size: 40px;
+      color: var(--primary-color);
+      font-weight: bold;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    .name-header {
+      font-size: 24px;
+      color: var(--accent-color);
+      margin: 5px 0;
+      font-weight: 700;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #ffffff;
+      font-weight: 700;
+      margin: 0 0 10px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .quick-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .info-pill {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--accent-color);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--accent-color);
+    }
+
+    section {
+      padding: 10px 15px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+      flex-grow: 0;
+      color: var(--text-color);
+    }
+
+    section:nth-child(odd) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    section h2 {
+      color: var(--accent-color);
+      font-size: 16px;
+      margin: 0 0 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--accent-color);
+      display: inline-block;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .detail-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .detail-list li {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      color: var(--text-color);
+    }
+
+    .detail-list li strong {
+      color: var(--light-accent);
+      width: 100px;
+      margin-right: 8px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .detail-list li span { /* Added to bold the values */
+      font-weight: 700;
+    }
+
+    .lifestyle-container, .education-career-container {
+      display: flex;
+      justify-content: flex-start;
+      gap: 15px;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .lifestyle-item, .education-career-item {
+      flex: 1;
+      min-width: 100px;
+      font-size: 12px;
+      color: var(--text-color);
+    }
+
+    .lifestyle-item strong, .education-career-item strong {
+      color: var(--light-accent);
+    }
+
+    .lifestyle-item span, .education-career-item span { /* Added to bold the values */
+      font-weight: 700;
+    }
+
+    .expectations-list {
+      list-style-type: none;
+      padding-left: 5px;
+      color: var(--text-color);
+      margin: 0;
+    }
+
+    .expectations-list li {
+      margin-bottom: 6px;
+      padding-left: 20px;
+      position: relative;
+      font-size: 11px;
+    }
+
+    .expectations-list li:before {
+      content: "✦";
+      color: var(--accent-color);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 14px;
+    }
+
+    .contact-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .contact-button {
+      background: linear-gradient(to right, var(--accent-color), #e6ba00);
+      color: var(--primary-color);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .contact-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .contact-button i {
+      margin-right: 5px;
+    }
+
+    #footer {
+      text-align: center;
+      padding: 10px;
+      color: var(--light-accent);
+      font-size: 10px;
+      border-top: 1px solid rgba(255, 215, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.2);
+      width: 100%;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      position: relative;
+      min-height: 40px;
+    }
+
+    .section-icon {
+      margin-right: 5px;
+      color: var(--accent-color);
+    }
+
+    .ornament {
+      position: absolute;
+      color: #ffffff;
+      opacity: 0.8;
+      font-size: 36px;
+      font-weight: 700;
+      font-family: 'Arial', sans-serif;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .ornament-tl { top: 10px; left: 10px; }
+    .ornament-tr { top: 10px; right: 10px; }
+    .ornament-bl { bottom: 5px; left: 10px; }
+    .ornament-br { bottom: 5px; right: 10px; }
+
+    .download-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .download-button {
+      background: linear-gradient(to right, var(--accent-color), #e6ba00);
+      color: var(--primary-color);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .download-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .download-button i {
+      margin-right: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .detail-list { grid-template-columns: 1fr; }
+      .quick-info { flex-direction: column; gap: 5px; align-items: center; }
+      .name-header { font-size: 20px; }
+      .subtitle { font-size: 12px; }
+      .contact-buttons { flex-direction: column; }
+      .contact-button { width: 100%; justify-content: center; }
+      .header-text { font-size: 16px; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="ornament ornament-tl">ॐ</div>
+    <div class="ornament ornament-tr">ॐ</div>
+    <div class="header-text">श्री गणेशाय नमः</div>
+  </div>
+  <div class="profile-section">
+    <div class="profile-image">
+      <img src="chandan.jpg" alt="Chandan Kumar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <div class="profile-initial">C</div>
+    </div>
+    <h1 class="name-header">Chandan Kumar</h1>
+    <p class="subtitle">B.Tech IIT Dhanbad | Data Scientist at IBM</p>
+    <div class="quick-info">
+      <div class="info-pill"><i class="fas fa-birthday-cake"></i> 28 Years</div>
+      <div class="info-pill"><i class="fas fa-ruler-vertical"></i> 5'8"</div>
+      <div class="info-pill">Hindu, Yadav</div>
+      <div class="info-pill"><i class="fas fa-star"></i> Non-Manglik</div>
+    </div>
+  </div>
+
+  <section>
+    <h2><i class="fas fa-user section-icon"></i>Personal Details</h2>
+    <ul class="detail-list">
+      <li><strong>DOB:</strong> <span>May 15, 1996</span></li>
+      <li><strong>Place:</strong> <span>Gaya, Bihar</span></li>
+      <li><strong>Complexion:</strong> <span>Fair</span></li>
+      <li><strong>Height:</strong> <span>5'8" (173 cm)</span></li>
+      <li><strong>Religion:</strong> <span>Hindu</span></li>
+      <li><strong>Caste:</strong> <span>Yadav</span></li>
+      <li><strong>Manglik:</strong> <span>No</span></li>
+      <li><strong>Occupation:</strong> <span>Data Scientist</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-home section-icon"></i>Family Background</h2>
+    <ul class="detail-list">
+      <li><strong>Father:</strong> <span>Ajay Kumar Singh</span></li>
+      <li><strong>Mother:</strong> <span>Shyama Devi</span></li>
+      <li><strong>Siblings:</strong> <span>2 brothers, 1 sister</span></li>
+      <li><strong>Family Type:</strong> <span>Upper-class</span></li>
+      <li><strong>Location:</strong> <span>Gaya, Bihar</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-graduation-cap section-icon"></i>Education & Career</h2>
+    <ul class="education-career-container">
+      <li class="education-career-item"><strong>Degree:</strong> <span>B.Tech, IIT Dhanbad</span></li>
+      <li class="education-career-item"><strong>Company:</strong> <span>IBM, Data Scientist</span></li>
+      <li class="education-career-item"><strong>Experience:</strong> <span>6.5 Years</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-heart section-icon"></i>Lifestyle</h2>
+    <ul class="lifestyle-container">
+      <li class="lifestyle-item"><strong>Hobbies:</strong> <span>Reading, Traveling, Cooking</span></li>
+      <li class="lifestyle-item"><strong>Languages:</strong> <span>Hindi, English</span></li>
+      <li class="lifestyle-item"><strong>Diet:</strong> <span>Vegetarian</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-search section-icon"></i>Partner Preferences</h2>
+    <ul class="expectations-list">
+      <li>Well-educated, values career & family</li>
+      <li>Respects traditional values</li>
+      <li>Balanced professional & personal life</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><i class="fas fa-address-card section-icon"></i>Contact</h2>
+    <div class="contact-buttons">
+      <a href="tel:+919199000200" class="contact-button"><i class="fas fa-phone"></i> +91-9199000200</a>
+      <a href="mailto:ckism.iit@gmail.com" class="contact-button"><i class="fas fa-envelope"></i> ckism.iit@gmail.com</a>
+    </div>
+  </section>
+
+  <div id="footer">
+    <div class="ornament ornament-bl">ॐ</div>
+    <div class="ornament ornament-br">ॐ</div>
+    <p>Best Wishes</p>
+  </div>
+</div>
+
+<div class="download-container">
+  <a href="#" class="download-button" onclick="downloadPDF()"><i class="fas fa-download"></i> Download as PDF</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+  const img = document.querySelector('.profile-image img');
+  img.addEventListener('error', () => {
+    img.style.display = 'none';
+    img.nextElementSibling.style.display = 'block';
+  });
+
+  function downloadPDF() {
+    const element = document.querySelector('.container');
+    const opt = {
+      margin: 0.25,
+      filename: 'Chandan_Kumar_Biodata.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+</body>
+</html>
