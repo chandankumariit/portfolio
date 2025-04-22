@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Chandan Kumar Resume</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <!-- Font Awesome for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <!-- Google Fonts -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+  </style>
+  <!-- CSS styles -->
+  <style>
     :root {
-      --primary-color: #1E88E5;
-      --secondary-color: #42A5F5;
-      --accent-color: #FFCA28;
+      --primary-color: #1e88e5;
+      --secondary-color: #42a5f5;
+      --accent-color: #ffca28;
       --text-color: #212121;
-      --light-gray: #F5F5F5;
-      --border-color: #E0E0E0;
-      --background-color: #FAFAFA;
+      --light-gray: #f5f5f5;
+      --border-color: #e0e0e0;
+      --background-color: #fafafa;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Roboto', sans-serif;
       color: var(--text-color);
@@ -27,17 +42,19 @@
       font-size: 12px;
       font-weight: 400;
     }
+
     .container {
       width: 210mm;
       height: 297mm;
-      margin: 0 auto;
+      margin: 20px auto 40px auto;
       background-color: white;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
       padding: 0 8mm 8mm 8mm;
       position: relative;
       overflow: hidden;
       border-radius: 8px;
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -45,26 +62,35 @@
       padding: 5px 10px;
       margin-bottom: 6px;
       border-bottom: 2px solid var(--primary-color);
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      background: linear-gradient(
+        90deg,
+        var(--primary-color),
+        var(--secondary-color)
+      );
       color: white;
     }
+
     .profile-section {
       display: flex;
       align-items: center;
       gap: 8px;
     }
+
     .profile-image {
       width: 40px;
       height: 40px;
       border-radius: 50%;
       overflow: hidden;
       border: 1px solid white;
+      flex-shrink: 0;
     }
+
     .profile-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .profile-image-fallback {
       display: none;
       background-color: var(--light-gray);
@@ -76,54 +102,81 @@
       font-size: 8px;
       color: #666;
     }
+
     .profile-details {
       display: flex;
       flex-direction: column;
     }
+
     .profile-name {
       font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.3px;
       line-height: 1.1;
     }
+
     .profile-title {
       font-size: 10px;
       font-weight: 400;
       color: var(--accent-color);
     }
+
     .contact-info {
       display: flex;
       flex-direction: column;
       gap: 4px;
       font-size: 10px;
       text-align: right;
+      min-width: 180px;
     }
+
     .contact-item {
       display: flex;
       align-items: center;
       justify-content: flex-end;
       gap: 4px;
     }
+
     .contact-item .icon {
       color: var(--accent-color);
       font-size: 10px;
+      width: 12px;
+      text-align: center;
     }
-    .contact-item a, .contact-item span {
+
+    .contact-item a,
+    .contact-item span {
       color: white;
       text-decoration: none;
       font-weight: 500;
+      word-break: break-word;
     }
+
     .contact-item a:hover {
       color: var(--accent-color);
     }
+
     .content {
       display: flex;
       gap: 10px;
       margin-top: 5px;
     }
-    .left-column { flex: 6; }
-    .right-column { flex: 4; }
-    .section { margin-bottom: 8px; }
+
+    .left-column {
+      flex: 6;
+      padding-right: 10px;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .right-column {
+      flex: 4;
+      padding-left: 10px;
+    }
+
+    .section {
+      margin-bottom: 12px;
+    }
+
     .section-title {
       font-size: 14px;
       font-weight: 700;
@@ -131,50 +184,70 @@
       text-transform: uppercase;
       border-bottom: 1px solid var(--secondary-color);
       padding-bottom: 2px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       letter-spacing: 0.5px;
     }
-    .job, .education-item, .project { margin-bottom: 4px; }
-    .job-title, .school-name, .project-title {
+
+    .job,
+    .education-item,
+    .project {
+      margin-bottom: 8px;
+    }
+
+    .job-title,
+    .school-name,
+    .project-title {
       font-size: 13px;
       font-weight: 600;
       color: var(--text-color);
       display: inline-block;
     }
+
     .project-title .company-name {
       font-weight: 400;
       font-style: italic;
       color: var(--primary-color);
       margin-left: 3px;
+      font-size: 12px;
     }
-    .job-period, .education-period {
+
+    .job-period,
+    .education-period {
       float: right;
       font-weight: 600;
       font-size: 12px;
       color: #555;
     }
+
     ul {
       padding-left: 15px;
       margin: 2px 0;
     }
+
     li {
-      margin-bottom: 2px;
+      margin-bottom: 4px;
       text-align: justify;
+      font-size: 12px;
+      line-height: 1.3;
     }
+
     p {
-      margin: 2px 0;
+      margin: 4px 0;
       text-align: justify;
       font-size: 13px;
+      line-height: 1.4;
     }
+
     strong {
       font-weight: 700;
       color: var(--text-color);
     }
+
     #downloadButton {
       display: block;
       width: 200px;
-      margin: 10px auto;
-      padding: 8px;
+      margin: 10px auto 30px auto;
+      padding: 10px;
       background-color: var(--primary-color);
       color: white;
       text-align: center;
@@ -183,15 +256,24 @@
       font-weight: 600;
       font-size: 14px;
       border: none;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
+
     #downloadButton:hover {
       background-color: var(--secondary-color);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     }
-    .skills-list ul li { margin-bottom: 3px; }
+
+    .skills-list ul li {
+      margin-bottom: 3px;
+      font-size: 12px;
+    }
+
     @media print {
-      body { background: none; }
+      body {
+        background: none;
+      }
       .container {
         box-shadow: none;
         margin: 0;
@@ -199,32 +281,79 @@
         width: 100%;
         height: 100%;
       }
-      #downloadButton { display: none; }
-      header { background: none; color: var(--text-color); }
-      .contact-item a, .contact-item span { color: var(--text-color); }
-      .profile-title { color: var(--primary-color); }
+      #downloadButton {
+        display: none;
+      }
+      header {
+        background: none;
+        color: var(--text-color);
+      }
+      .contact-item a,
+      .contact-item span {
+        color: var(--text-color);
+      }
+      .profile-title {
+        color: var(--primary-color);
+      }
+      .content {
+        flex-direction: column;
+      }
+      .left-column,
+      .right-column {
+        padding: 0;
+        border: none;
+      }
     }
+
     @media (max-width: 768px) {
-      .content { flex-direction: column; }
-      .container { width: 95%; }
+      .content {
+        flex-direction: column;
+      }
+      .container {
+        width: 95%;
+      }
       header {
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
         padding: 4px 8px;
       }
-      .contact-info { text-align: left; align-items: flex-start; }
-      .profile-image { width: 35px; height: 35px; }
-      .profile-image-fallback { width: 35px; height: 35px; line-height: 35px; }
+      .contact-info {
+        text-align: left;
+        align-items: flex-start;
+        min-width: auto;
+      }
+      .profile-image {
+        width: 35px;
+        height: 35px;
+      }
+      .profile-image-fallback {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+      }
+      .left-column {
+        border-right: none;
+        padding-right: 0;
+      }
+      .right-column {
+        padding-left: 0;
+      }
     }
   </style>
 </head>
 <body>
+  <button id="downloadButton">Download PDF</button>
+
   <div class="container" id="resumeContent">
     <header>
       <div class="profile-section">
         <div class="profile-image">
-          <img src="ck.jpg" alt="Chandan Kumar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <img
+            src="ck.jpg"
+            alt="Chandan Kumar"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
           <div class="profile-image-fallback">Image Not Available</div>
         </div>
         <div class="profile-details">
@@ -243,79 +372,125 @@
         </div>
         <div class="contact-item">
           <span class="icon"><i class="fab fa-linkedin-in"></i></span>
-          <a href="https://www.linkedin.com/in/chandaniit">linkedin.com/in/chandaniit</a>
+          <a href="https://www.linkedin.com/in/chandaniit" target="_blank" rel="noopener noreferrer"
+            >linkedin.com/in/chandaniit</a
+          >
         </div>
       </div>
     </header>
+
     <div class="content">
       <div class="left-column">
         <div class="section">
           <div class="section-title">Professional Summary</div>
-          <p><strong>IIT graduate</strong> and <strong>AI Researcher</strong> with around <strong>7 years</strong> of expertise in Data Science, AI, and Product Development, specializing in Generative AI, AI governance, and advanced automation. Proven ability to design, deploy, and optimize AI/ML solutions across finance, banking, energy, and environmental sectors, driving business transformation and efficiency. Skilled in machine learning, deep learning, NLP, and AI-driven automation, with hands-on experience in Python, SQL, LangChain, CrewAI, TensorFlow, PyTorch, and cloud platforms (Azure, AWS, GCP, IBM). Led AI-driven initiatives, driving efficiency, scalability, and innovation across diverse applications. Experienced in AI model deployment, workflow automation, and strategy implementation, delivering measurable business impact.</p>
+          <p>
+            <strong>IIT graduate</strong> and <strong>AI Researcher</strong> with around
+            <strong>7 years</strong> of expertise in Data Science, AI, and Product Development,
+            specializing in Generative AI, AI governance, and advanced automation. Proven ability
+            to design, deploy, and optimize AI/ML solutions across finance, banking, energy, and
+            environmental sectors, driving business transformation and efficiency. Skilled in
+            machine learning, deep learning, NLP, and AI-driven automation, with hands-on
+            experience in Python, SQL, LangChain, CrewAI, TensorFlow, PyTorch, and cloud platforms
+            (Azure, AWS, GCP, IBM). Led AI-driven initiatives, driving efficiency, scalability,
+            and innovation across diverse applications. Experienced in AI model deployment,
+            workflow automation, and strategy implementation, delivering measurable business
+            impact.
+          </p>
         </div>
+
         <div class="section">
           <div class="section-title">Experience</div>
+
           <div class="job">
             <div class="job-title"><strong>IBM</strong> - Data Scientist</div>
             <div class="job-period">Mar 2024 - Present</div>
           </div>
+
           <div class="job">
             <div class="job-title"><strong>Accenture</strong> - Data Scientist</div>
             <div class="job-period">Apr 2021 - Feb 2024</div>
           </div>
+
           <div class="job">
             <div class="job-title"><strong>Capgemini</strong> - Process Lead</div>
             <div class="job-period">Feb 2021 - Mar 2021</div>
           </div>
+
           <div class="job">
             <div class="job-title"><strong>Clean Harbors</strong> - Data Scientist</div>
             <div class="job-period">Jun 2018 - Jan 2021</div>
           </div>
         </div>
+
         <div class="section">
           <div class="section-title">Key Projects</div>
+
           <div class="project">
-            <div class="project-title"><strong>MARC (Multi-Agent Resource Coordinator)</strong>, <span class="company-name">IBM</span></div>
+            <div class="project-title">
+              <strong>MARC (Multi-Agent Resource Coordinator)</strong>,
+              <span class="company-name">IBM</span>
+            </div>
             <ul>
-              <li>Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation.</li>
+              <li>
+                Developed and deployed multiple agents for IBM's MARC platform, enhancing
+                multi-agent collaboration and workflow automation.
+              </li>
               <li>Applied AI Governance principles to ensure ethical and compliant operations of automation agents.</li>
               <li>Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection.</li>
               <li>Streamlined enterprise workflows with a scalable multi-agent AI system.</li>
             </ul>
           </div>
+
           <div class="project">
-            <div class="project-title"><strong>Mizuho Bank</strong>, <span class="company-name">Accenture</span></div>
+            <div class="project-title">
+              <strong>Mizuho Bank</strong>, <span class="company-name">Accenture</span>
+            </div>
             <ul>
-              <li>Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows.</li>
+              <li>
+                Developed and deployed PdfGPT, an AI-powered text summarization system,
+                enhancing document processing workflows.
+              </li>
               <li>Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality.</li>
               <li>Reduced document review time by 30% with AI-driven system.</li>
             </ul>
           </div>
+
           <div class="project">
-            <div class="project-title"><strong>Ulster Bank</strong>, <span class="company-name">Accenture</span></div>
+            <div class="project-title">
+              <strong>Ulster Bank</strong>, <span class="company-name">Accenture</span>
+            </div>
             <ul>
               <li>Automated machine learning pipelines for customer segmentation algorithms using Python, Glue, and Athena.</li>
               <li>Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders.</li>
             </ul>
           </div>
+
           <div class="project">
-            <div class="project-title"><strong>Facebook</strong>, <span class="company-name">Accenture</span></div>
+            <div class="project-title">
+              <strong>Facebook</strong>, <span class="company-name">Accenture</span>
+            </div>
             <ul>
               <li>Examined data from multiple disparate sources to discover insights providing competitive advantage for clients.</li>
               <li>Designed and optimized machine learning pipelines, specializing in the creation of forecasting models.</li>
               <li>Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes.</li>
             </ul>
           </div>
+
           <div class="project">
-            <div class="project-title"><strong>Waste Classification Code</strong>, <span class="company-name">Clean Harbors</span></div>
+            <div class="project-title">
+              <strong>Waste Classification Code</strong>, <span class="company-name">Clean Harbors</span>
+            </div>
             <ul>
               <li>Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment.</li>
               <li>Created a unified dataset encompassing vital features for all waste classes.</li>
               <li>Applied logical data checks for input consistency, facilitating classification based on physical properties.</li>
             </ul>
           </div>
+
           <div class="project">
-            <div class="project-title"><strong>Invoice Audit</strong>, <span class="company-name">Clean Harbors</span></div>
+            <div class="project-title">
+              <strong>Invoice Audit</strong>, <span class="company-name">Clean Harbors</span>
+            </div>
             <ul>
               <li>Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis.</li>
               <li>Streamlined invoice verification, reducing audit time by 20%.</li>
@@ -323,18 +498,22 @@
           </div>
         </div>
       </div>
+
       <div class="right-column">
         <div class="section">
           <div class="section-title">Education</div>
+
           <div class="education-item">
             <div class="school-name"><strong>IIT Dhanbad</strong> - B.Tech</div>
             <div class="education-period">2013-2017</div>
           </div>
+
           <div class="education-item">
             <div class="school-name"><strong>Super30</strong>, Patna</div>
             <div class="education-period">2012-2013</div>
           </div>
         </div>
+
         <div class="section">
           <div class="section-title">Certifications</div>
           <ul>
@@ -353,6 +532,7 @@
             <li>Microsoft - SQL Server</li>
           </ul>
         </div>
+
         <div class="section">
           <div class="section-title">Key Achievements</div>
           <ul>
@@ -363,14 +543,23 @@
             <li>Served as Student Representative in Mess Committee, IIT Dhanbad (2015-2016)</li>
           </ul>
         </div>
+
         <div class="section">
           <div class="section-title">Skills</div>
           <div class="skills-list">
             <ul>
-              <li><strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development & Deployment, RAG, Vector DB, Prompt Engineering</li>
+              <li>
+                <strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance,
+                Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn,
+                Keras, Hugging Face, LangChain, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML,
+                NLP, Time Series, Model Development & Deployment, RAG, Vector DB, Prompt Engineering
+              </li>
               <li><strong>Cloud Platforms:</strong> Azure, AWS, GCP, IBM</li>
               <li><strong>Programming:</strong> Python, SQL</li>
-              <li><strong>Data Engineering:</strong> Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy</li>
+              <li>
+                <strong>Data Engineering:</strong> Azure Data Factory, Databricks, Azure Synapse
+                Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy
+              </li>
               <li><strong>Databases:</strong> Azure SQL, SQL Server, MySQL, MongoDB, BigQuery</li>
               <li><strong>Visualization:</strong> Power BI, Matplotlib, Seaborn</li>
               <li><strong>DevOps:</strong> Docker, Kubernetes, Git, CI/CD</li>
@@ -378,56 +567,32 @@
             </ul>
           </div>
         </div>
-        <div class="section">
-          <div class="section-title">Core Competencies</div>
-          <ul>
-            <li>Project Management and Deployment</li>
-            <li>Data Strategy and Management</li>
-            <li>Business Strategy and Consulting</li>
-            <li>Service Delivery and Execution</li>
-            <li>Business and Data Analytics</li>
-            <li>Analytics & AI</li>
-            <li>Product Management</li>
-          </ul>
-        </div>
-{rpm}
       </div>
     </div>
   </div>
-  <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
+
+  <!-- JS libraries for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- JavaScript to handle PDF download -->
   <script>
-    async function downloadPDF() {
+    const downloadButton = document.getElementById('downloadButton');
+    downloadButton.addEventListener('click', () => {
+      const resume = document.getElementById('resumeContent');
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
-      const element = document.getElementById('resumeContent');
-      try {
-        const button = document.getElementById('downloadButton');
-        button.innerHTML = "Generating PDF...";
-        button.disabled = true;
-        const canvas = await html2canvas(element, {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          backgroundColor: '#ffffff',
-          windowHeight: element.scrollHeight
-        });
-        const imgWidth = 210;
-        const pageHeight = 297;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        const imgData = canvas.toDataURL('image/jpeg', 0.85);
-        let heightRatio = pageHeight / imgHeight;
-        let adjustedHeight = imgHeight * heightRatio;
-        doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, adjustedHeight);
-        doc.save('Chandan_Kumar_Resume.pdf');
-        button.innerHTML = "Download Resume as PDF";
-        button.disabled = false;
-      } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('Failed to generate PDF. Please try again.');
-        button.innerHTML = "Download Resume as PDF";
-        button.disabled = false;
-      }
-    }
+
+      html2canvas(resume, { scale: 2 }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('Chandan_Kumar_Resume.pdf');
+      });
+    });
   </script>
 </body>
 </html>
