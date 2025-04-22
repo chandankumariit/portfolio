@@ -1,414 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anjali Rani Resume</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <style>
-        :root {
-            --primary-color: #0A66C2;
-            --secondary-color: #2E86C1;
-            --text-color: #1e2a44;
-            --light-gray: #f5f5f5;
-            --border-color: #e0e0e0;
-            --accent-color: #f59e0b;
-        }
-        
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-        
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background: #f8fafc;
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.3;
-            font-size: 9pt;
-        }
-        
-        .resume-container {
-            max-width: 210mm;
-            margin: 0 auto;
-        }
-        
-        .resume-page {
-            width: 210mm;
-            height: 297mm;
-            background: #fff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            padding: 3mm 6mm;
-            font-size: 9pt;
-            line-height: 1.3;
-            color: var(--text-color);
-            overflow: hidden;
-        }
-        
-        .resume-page header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 1mm;
-            border-bottom: 1px solid var(--primary-color);
-            margin-bottom: 2mm;
-        }
-        
-        .resume-page .header-left h1 {
-            font-size: 16pt;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .resume-page .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5mm;
-            font-size: 8pt;
-            font-weight: 500;
-        }
-        
-        .resume-page .contact-item {
-            font-weight: bold;
-        }
-        
-        .resume-page .contact-item i {
-            color: var(--secondary-color);
-            margin-right: 0.5mm;
-            font-size: 9pt;
-        }
-        
-        .resume-page .contact-item a, 
-        .resume-page .contact-item span {
-            color: var(--text-color);
-            text-decoration: none;
-        }
-        
-        .resume-page .content {
-            display: flex;
-            gap: 4mm;
-            margin-top: 2mm;
-        }
-        
-        .resume-page .left-column {
-            flex: 6;
-        }
-        
-        .resume-page .right-column {
-            flex: 4;
-            border-left: 1px solid var(--border-color);
-            padding-left: 4mm;
-        }
-        
-        .resume-page .section {
-            margin-bottom: 2.5mm;
-        }
-        
-        .resume-page .section-title {
-            font-size: 11pt;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--secondary-color);
-            padding-bottom: 0.8mm;
-            margin-bottom: 1.5mm;
-        }
-        
-        .resume-page .section-title i {
-            color: var(--accent-color);
-            margin-right: 1mm;
-            font-size: 10pt;
-        }
-        
-        .resume-page p, 
-        .resume-page li {
-            margin: 0 0 0.8mm;
-            text-align: justify;
-        }
-        
-        .resume-page .job-title, 
-        .resume-page .school-name, 
-        .resume-page .project-title {
-            font-size: 10pt;
-            font-weight: 600;
-            color: #000;
-            margin-bottom: 0.5mm;
-        }
-        
-        .resume-page .job-period, 
-        .resume-page .education-period {
-            float: right;
-            font-size: 9pt;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .resume-page ul {
-            padding-left: 5mm;
-            margin: 0;
-        }
-        
-        .resume-page .project {
-            margin-bottom: 2mm;
-        }
-        
-        .resume-page .project:not(:first-child) {
-            margin-top: 2mm;
-        }
-        
-        .resume-page .project ul {
-            padding-left: 5mm;
-            list-style-type: none;
-        }
-        
-        .resume-page .project ul li,
-        .resume-page .skills-list li, 
-        .resume-page .roles-list li {
-            position: relative;
-            padding-left: 5mm;
-        }
-        
-        .resume-page .project ul li::before,
-        .resume-page .skills-list li::before, 
-        .resume-page .roles-list li::before {
-            content: '\f111';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: #000000;
-            font-size: 5pt;
-        }
-        
-        .resume-page .skills-list ul, 
-        .resume-page .roles-list ul {
-            padding-left: 0;
-            list-style: none;
-        }
-        
-        #downloadButton {
-            display: block;
-            width: 200px;
-            margin: 10px auto;
-            padding: 8px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            text-align: center;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(10, 102, 194, 0.3);
-        }
-        
-        #downloadButton:hover {
-            background: linear-gradient(90deg, #074e91, #1a73e8);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(10, 102, 194, 0.45);
-        }
-        
-        @media print {
-            body { 
-                background: none; 
-            }
-            .resume-page {
-                box-shadow: none;
-                margin: 0;
-                padding: 3mm 6mm;
-                width: 210 Blockquote
-                height: 297mm;
-            }
-            #downloadButton { 
-                display: none; 
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .resume-page .content {
-                flex-direction: column;
-            }
-            .resume-page .right-column {
-                border-left: none;
-                padding-left: 0;
-                border-top: 1px solid var(--border-color);
-                padding-top: 2.5mm;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chandan Kumar Resume</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+    :root{--primary-color:#0A66C2;--secondary-color:#2E86C1;--text-color:#333333;--light-gray:#f5f5f5;--border-color:#e0e0e0;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Open Sans',sans-serif;color:var(--text-color);line-height:1.2;background-color:#f0f0f0;font-size:13px;font-weight:400;}
+    .container{width:210mm;height:297mm;margin:10px auto;background-color:white;box-shadow:0 4px 20px rgba(0,0,0,0.15);padding:5mm 6mm;position:relative;overflow:hidden;}
+    header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--primary-color);padding-bottom:3px;margin-bottom:5px;height:50px;}
+    .profile-section{display:flex;align-items:center;gap:10px;}
+    .profile-image{width:40px;height:40px;border-radius:50%;overflow:hidden;}
+    .profile-image img{width:100%;height:100%;object-fit:cover;}
+    .profile-image-fallback{display:none;background-color:var(--light-gray);width:40px;height:40px;border-radius:50%;text-align:center;line-height:40px;font-size:10px;color:#666;}
+    .profile-details{display:flex;flex-direction:column;}
+    .profile-name{font-size:18px;font-weight:700;color:var(--primary-color);line-height:1.1;}
+    .profile-title{font-size:12px;font-weight:600;color:#000;}
+    .contact-info{display:flex;flex-direction:column;gap:6px;font-size:12px;}
+    .contact-item{display:flex;align-items:center;}
+    .contact-item .icon{color:var(--secondary-color);margin-right:4px;font-size:13px;}
+    .contact-item a,.contact-item span{color:var(--text-color);text-decoration:none;font-weight:600;}
+    .contact-item a:hover{color:var(--secondary-color);}
+    .content{display:flex;gap:10px;margin-top:5px;}
+    .left-column{flex:6;}
+    .right-column{flex:4;}
+    .section{margin-bottom:8px;}
+    .section-title{font-size:14px;font-weight:700;color:var(--primary-color);text-transform:uppercase;border-bottom:1px solid var(--secondary-color);padding-bottom:2px;margin-bottom:4px;letter-spacing:0.5px;}
+    .job,.education-item,.project{margin-bottom:4px;}
+    .job-title,.school-name,.project-title{font-size:13px;font-weight:600;color:#000000;display:inline-block;}
+    .project-title .company-name{font-weight:400;font-style:italic;color:var(--primary-color);margin-left:3px;}
+    .job-period,.education-period{float:right;font-weight:600;font-size:12px;}
+    ul{padding-left:15px;margin:2px 0;}
+    li{margin-bottom:2px;text-align:justify;}
+    p{margin:2px 0;text-align:justify;font-size:13px;}
+    strong{font-weight:700;color:#000000;}
+    #downloadButton{display:block;width:200px;margin:10px auto;padding:8px;background-color:var(--primary-color);color:white;text-align:center;border-radius:4px;cursor:pointer;font-weight:600;font-size:14px;border:none;transition:background-color 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.2);}
+    #downloadButton:hover{background-color:#074e91;}
+    .skills-list ul li{margin-bottom:3px;}
+    @media print{body{background:none;}.container{box-shadow:none;margin:0;padding:5mm 6mm;width:100%;height:100%;}#downloadButton{display:none;}}
+    @media (max-width:768px){.content{flex-direction:column;}.container{width:95%;}.header{flex-direction:column;align-items:flex-start;gap:5px;height:auto;}.contact-info{align-items:flex-start;}}
+  </style>
 </head>
 <body>
-    <div class="resume-container">
-        <div class="resume-page" id="resumeContent">
-            <header>
-                <div class="header-left">
-                    <h1>ANJALI RANI</h1>
-                    <div class="contact-info">
-                        <div class="contact-item"><i class="fas fa-envelope"></i><a href="mailto:itsanjalirani7@gmail.com">itsanjalirani7@gmail.com</a></div>
-                        <div class="contact-item"><i class="fas fa-phone"></i><span>+91-7033441492</span></div>
-                        <div class="contact-item"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/anjaliyaedav/">linkedin.com/in/anjaliyaedav</a></div>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                <div class="left-column">
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-user"></i>Professional Summary</div>
-                        <p><strong>IIIT</strong> Lucknow (M.Tech, Data Science) postgraduate and Software Engineer with around <strong>4 years</strong> of experience in software development, data engineering, and data science. Proficient in Python, JavaScript, C++, and frameworks such as React, Firebase, and HTMX. Contributed to impactful projects at <strong>AMD</strong> and <strong>TCS</strong>, including CI/CD automation, test reporting systems, and big data pipeline development. Skilled in MongoDB, ETL workflows, and machine learning techniques like K-Means clustering. Passionate about building clean, scalable, and data-driven solutions to solve real-world challenges.</p>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-graduation-cap"></i>Education</div>
-                        <p class="school-name"><strong>IIIT Lucknow</strong> - M.Tech, Data Science <span class="education-period">Aug 2023 - July 2025</span></p>
-                        <p class="school-name"><strong>GCE Gaya</strong> - B.Tech, CSE <span class="education-period">Aug 2016 - July 2020</span></p>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-project-diagram"></i>Key Projects</div>
-                        <div class="project">
-                            <div class="project-title"><strong>Advanced Micro Devices (AMD)</strong> - Hyderabad, Telangana, India</div>
-                            <ul>
-                                <li>Reverse-engineered automated test commands by analyzing extensive log data to streamline the test reporting process.</li>
-                                <li>Wrote extensive regex to match the required strings of interest.</li>
-                                <li>Set up LLM server to host local LLM and used it to carefully prompt the output in desired format.</li>
-                                <li>Learnt NoSQL database MongoDB to store huge JSON data.</li>
-                                <li>Learnt asynchronous communication with database to extract JSON data for serving purposes.</li>
-                                <li>Worked on automation of the Jenkins trigger through a Web Server Frontend.</li>
-                                <li>Utilized Python and HTMX to create a web server.</li>
-                                <li>Utilized Jenkins API in the backend.</li>
-                                <li>Used asynchronous MongoDB connections to trigger and store the trigger event.</li>
-                                <li>Created front-end UI design from scratch and developed it using FastHTML elements and Tailwind CSS.</li>
-                            </ul>
-                        </div>
-                        <div class="project">
-                            <div class="project-title"><strong>Tata Consultancy Services</strong> - Bangalore, Karnataka, India</div>
-                            <ul>
-                                <li>Worked on Big Data Management project as ETL developer to maintain the large database of our clients.</li>
-                                <li>Experienced in ETL workflows with Apache Spark, Hadoop, Informatica PowerCenter, Hive.</li>
-                                <li>Performed Data Cleaning and Management of Data from Client to Database Hive.</li>
-                                <li>Worked as PL/SQL developer to write, test, and maintain PL/SQL code to implement business logic within the database.</li>
-                            </ul>
-                        </div>
-                        <div class="project">
-                            <div class="project-title"><strong>Customer Segmentation using K-Means Clustering</strong> - Python | Machine Learning Colab</div>
-                            <ul>
-                                <li>Developed a full-fledged web application using React and Firebase allowing users to manage project records effectively.</li>
-                                <li>Utilized Material UI for frontend development and hosted the project on Firebase.</li>
-                                <li>Implemented user authentication via Firebase for secure access to the application.</li>
-                            </ul>
-                        </div>
-                        <div class="project">
-                            <div class="project-title"><strong>Road Construction Using Highway Planning</strong> - cpp | algorithms Github</div>
-                            <ul>
-                                <li>Graph-based resource allocation and deadlock avoidance policies.</li>
-                                <li>The project aims to optimize road construction in India by utilizing data on maps, traffic, and utility.</li>
-                                <li>It proposes algorithms for generating profitable construction sequences, with a user-friendly interface and considerations for resource allocation, deadlines, and hindrance detection.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="right-column">
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-briefcase"></i>Experience</div>
-                        <p class="job-title"><strong>AMD</strong> - Software Engineer <span class="job-period">July 2024 - Present</span></p>
-                        <p class="job-title"><strong>TCS</strong> - Software Engineer <span class="job-period">April 2021 - July 2023</span></p>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-certificate"></i>Certifications</div>
-                        <p class="job-title"><strong>Duke University</strong> - Programming Fundamentals</p>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-users"></i>Roles and Responsibilities</div>
-                        <div class="roles-list">
-                            <ul>
-                                <li>Participated in Internet of Things workshop organized at VJTI College, Mumbai (June 2018 - July 2018).</li>
-                                <li>Member at Graviton - The Technical Club of GCE, Gaya (June 2017 - July 2020).</li>
-                                <li>Coordinator for Android App Development workshop at AKU, Patna (June 2018 - July 2018).</li>
-                                <li>Organized team-building events for a positive workplace at TCS, Bangalore (June 2022 - July 2023).</li>
-                                <li>Excelled in sports like Badminton, Table Tennis, and Kho Kho at IIIT, Lucknow (August 2023 - Present).</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-tools"></i>Skills</div>
-                        <div class="skills-list">
-                            <ul>
-                                <li><strong>Programming Languages:</strong> Python, C++, JavaScript, HTML, CSS, C</li>
-                                <li><strong>Technologies and Tools:</strong> Web Development, Frontend, Git/Github, Colab, Firebase, VS Code</li>
-                                <li><strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development & Deployment, RAG, Vector DB, Prompt Engineering</li>
-                                <li><strong>Cloud Platforms:</strong> Azure, AWS, GCP, IBM</li>
-                                <li><strong>Data Engineering:</strong> Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy</li>
-                                <li><strong>Databases:</strong> Azure SQL, SQL Server, MySQL, MongoDB, BigQuery</li>
-                                <li><strong>Visualization:</strong> Power BI, Matplotlib, Seaborn</li>
-                                <li><strong>DevOps:</strong> Docker, Kubernetes, Git, CI/CD</li>
-                                <li><strong>Domains:</strong> Finance, Banking, Environmental, Social Media, Waste Management, Energy</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><i class="fas fa-star"></i>Core Competencies</div>
-                        <div class="skills-list">
-                            <ul>
-                                <li>Full-Stack Web Development</li>
-                                <li>Data Engineering and ETL Processes</li>
-                                <li>Automation and Workflow Optimization</li>
-                                <li>Database Management (SQL/NoSQL)</li>
-                                <li>Machine Learning and Algorithm Design</li>
-                                <li>Team Coordination and Event Organization</li>
-                                <li>Problem-Solving and Innovation</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="container" id="resumeContent">
+    <header>
+      <div class="profile-section">
+        <div class="profile-image">
+          <img src="ck.jpg" alt="Chandan Kumar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="profile-image-fallback">Image Not Available</div>
         </div>
+        <div class="profile-details">
+          <div class="profile-name">CHANDAN KUMAR</div>
+          <div class="profile-title">Data Scientist | IIT Dhanbad Graduate</div>
+        </div>
+      </div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="icon"><i class="fas fa-envelope"></i></span>
+          <a href="mailto:ckism.iit@gmail.com">ckism.iit@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fas fa-phone"></i></span>
+          <span>+91-9199000200</span>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fab fa-linkedin-in"></i></span>
+          <a href="https://www.linkedin.com/in/chandaniit">linkedin.com/in/chandaniit</a>
+        </div>
+      </div>
+    </header>
+    <div class="content">
+      <div class="left-column">
+        <div class="section">
+          <div class="section-title">Professional Summary</div>
+          <p><strong>IIT graduate</strong> and <strong>AI Researcher</strong> with around <strong>7 years</strong> of expertise in Data Science, AI, and Product Development, specializing in Generative AI, AI governance, and advanced automation. Proven ability to design, deploy, and optimize AI/ML solutions across finance, banking, energy, and environmental sectors, driving business transformation and efficiency. Skilled in machine learning, deep learning, NLP, and AI-driven automation, with hands-on experience in Python, SQL, LangChain, CrewAI, TensorFlow, PyTorch, and cloud platforms (Azure, AWS, GCP, IBM). Led AI-driven initiatives, driving efficiency, scalability, and innovation across diverse applications. Experienced in AI model deployment, workflow automation, and strategy implementation, delivering measurable business impact.</p>
+        </div>
+        <div class="section">
+          <div class="section-title">Experience</div>
+          <div class="job">
+            <div class="job-title"><strong>IBM</strong> - Data Scientist</div>
+            <div class="job-period">Mar 2024 - Present</div>
+          </div>
+          <div class="job">
+            <div class="job-title"><strong>Accenture</strong> - Data Scientist</div>
+            <div class="job-period">Apr 2021 - Feb 2024</div>
+          </div>
+          <div class="job">
+            <div class="job-title"><strong>Capgemini</strong> - Process Lead</div>
+            <div class="job-period">Feb 2021 - Mar 2021</div>
+          </div>
+          <div class="job">
+            <div class="job-title"><strong>Clean Harbors</strong> - Data Scientist</div>
+            <div class="job-period">Jun 2018 - Jan 2021</div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">Key Projects</div>
+          <div class="project">
+            <div class="project-title"><strong>MARC (Multi-Agent Resource Coordinator)</strong>, <span class="company-name">IBM</span></div>
+            <ul>
+              <li>Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation</li>
+              <li>Applied AI Governance principles to ensure ethical and compliant operations of automation agents</li>
+              <li>Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection</li>
+              <li>Streamlined enterprise workflows with a scalable multi-agent AI system.</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Mizuho Bank</strong>, <span class="company-name">Accenture</span></div>
+            <ul>
+              <li>Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows</li>
+              <li>Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality</li>
+              <li>Reduced document review time by 30% with AI-driven system</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Ulster Bank</strong>, <span class="company-name">Accenture</span></div>
+            <ul>
+              <li>Automated machine learning pipelines for customer segmentation algorithms using Python, Glue and Athena</li>
+              <li>Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Facebook</strong>, <span class="company-name">Accenture</span></div>
+            <ul>
+              <li>Examined data from multiple disparate sources to discover insights providing competitive advantage for clients</li>
+              <li>Designed and optimized machine learning pipelines, specializing in the creation of forecasting models</li>
+              <li>Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Waste Classification Code</strong>, <span class="company-name">Clean Harbors</span></div>
+            <ul>
+              <li>Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment</li>
+              <li>Created a unified dataset encompassing vital features for all waste classes</li>
+              <li>Applied logical data checks for input consistency, facilitating classification based on physical properties</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Invoice Audit</strong>, <span class="company-name">Clean Harbors</span></div>
+            <ul>
+              <li>Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis</li>
+              <li>Streamlined invoice verification, reducing audit time by 20%</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="right-column">
+        <div class="section">
+          <div class="section-title">Education</div>
+          <div class="education-item">
+            <div class="school-name"><strong>IIT Dhanbad</strong> - B.Tech</div>
+            <div class="education-period">(2013-2017)</div>
+          </div>
+          <div class="education-item">
+            <div class="school-name"><strong>Super30</strong>, Patna</div>
+            <div class="education-period">(2012-2013)</div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">Certifications</div>
+          <ul>
+            <li>Northwestern University - Analytics & AI</li>
+            <li>IBM - IBM watsonx.ai Technical Essentials</li>
+            <li>IBM - IBM watsonx Essentials</li>
+            <li>Microsoft & LinkedIn - Generative AI</li>
+            <li>Microsoft - Azure Machine Learning</li>
+            <li>Stanford University - Machine Learning</li>
+            <li>Duke University - DevOps, DataOps, MLOps</li>
+            <li>Neo4j - Neo4j & LLM Fundamentals</li>
+            <li>AWS - AWS Cloud</li>
+            <li>Udemy - Project Management Fundamentals</li>
+            <li>Udemy - Product Management Fundamentals</li>
+            <li>Udemy - MCP (Model Context Protocol)</li>
+            <li>Microsoft - SQL Server</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Key Achievements</div>
+          <ul>
+            <li>Ranked #1 in HackerRank SQL</li>
+            <li>Consistently recognized by clients for error-free, timely project deliveries</li>
+            <li>Led a team of five analysts, restoring team credibility and stability</li>
+            <li>Cleared IIT JEE-2013, ranking in the top 1% of JEE Advanced qualifiers</li>
+            <li>Served as Student Representative in Mess Committee, IIT Dhanbad (2015-2016)</li>
+          </ul>
+        </div>
+        <div class="section">
+          <div class="section-title">Skills</div>
+          <div class="skills-list">
+            <ul>
+              <li><strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development & Deployment, RAG, Vector DB, Prompt Engineering</li>
+              <li><strong>Cloud Platforms:</strong> Azure, AWS, GCP, IBM</li>
+              <li><strong>Programming:</strong> Python, SQL</li>
+              <li><strong>Data Engineering:</strong> Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy</li>
+              <li><strong>Databases:</strong> Azure SQL, SQL Server, MySQL, MongoDB, BigQuery</li>
+              <li><strong>Visualization:</strong> Power BI, Matplotlib, Seaborn</li>
+              <li><strong>DevOps:</strong> Docker, Kubernetes, Git, CI/CD</li>
+              <li><strong>Domains:</strong> Finance, Banking, Environmental, Social Media, Waste Management, Energy</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">Core Competencies</div>
+          <ul>
+            <li>Project Management and Deployment</li>
+            <li>Data Strategy and Management</li>
+            <li>Business Strategy and Consulting</li>
+            <li>Service Delivery and Execution</li>
+            <li>Business and Data Analytics</li>
+            <li>Analytics & AI</li>
+            <li>Product Management</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <button id="downloadButton">Download Resume as PDF</button>
-
-    <script>
-        document.getElementById('downloadButton').addEventListener('click', downloadPDF);
-        
-        async function downloadPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4',
-                compress: true
-            });
-            
-            const element = document.getElementById('resumeContent');
-            const button = document.getElementById('downloadButton');
-            
-            try {
-                button.textContent = "Generating PDF...";
-                button.disabled = true;
-
-                const canvas = await html2canvas(element, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: false
-                });
-
-                const imgWidth = 210;
-                const pageHeight = 297;
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                const imgData = canvas.toDataURL('image/jpeg', 0.95);
-                
-                doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-                doc.save('Anjali_Rani_Resume.pdf');
-            } catch (error) {
-                console.error('Error generating PDF:', error);
-                alert('Failed to generate PDF. Please try again.');
-            } finally {
-                button.textContent = "Download Resume as PDF";
-                button.disabled = false;
-            }
-        }
-    </script>
+  </div>
+  <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
+  <script>
+    async function downloadPDF(){
+      const{jsPDF}=window.jspdf;
+      const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+      const element=document.getElementById('resumeContent');
+      try{
+        const button=document.getElementById('downloadButton');
+        button.innerHTML="Generating PDF...";
+        button.disabled=true;
+        const canvas=await html2canvas(element,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff',windowHeight:element.scrollHeight});
+        const imgWidth=210;
+        const pageHeight=297;
+        const imgHeight=canvas.height*imgWidth/canvas.width;
+        const imgData=canvas.toDataURL('image/jpeg',0.85);
+        let heightRatio=pageHeight/imgHeight;
+        let adjustedHeight=imgHeight*heightRatio;
+        doc.addImage(imgData,'JPEG',0,0,imgWidth,adjustedHeight);
+        doc.save('Chandan_Kumar_Resume.pdf');
+        button.innerHTML="Download Resume as PDF";
+        button.disabled=false;
+      }catch(error){
+        console.error('Error generating PDF:',error);
+        alert('Failed to generate PDF. Please try again.');
+        button.innerHTML="Download Resume as PDF";
+        button.disabled=false;
+      }
+    }
+  </script>
 </body>
 </html>
