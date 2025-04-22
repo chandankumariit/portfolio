@@ -8,42 +8,215 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-    :root{--primary-color:#0A66C2;--secondary-color:#2E86C1;--text-color:#333333;--light-gray:#f5f5f5;--border-color:#e0e0e0;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'Open Sans',sans-serif;color:var(--text-color);line-height:1.2;background-color:#f0f0f0;font-size:13px;font-weight:400;}
-    .container{width:210mm;height:297mm;margin:10px auto;background-color:white;box-shadow:0 4px 20px rgba(0,0,0,0.15);padding:5mm 6mm;position:relative;overflow:hidden;}
-    header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--primary-color);padding-bottom:3px;margin-bottom:5px;height:50px;}
-    .profile-section{display:flex;align-items:center;gap:10px;}
-    .profile-image{width:40px;height:40px;border-radius:50%;overflow:hidden;}
-    .profile-image img{width:100%;height:100%;object-fit:cover;}
-    .profile-image-fallback{display:none;background-color:var(--light-gray);width:40px;height:40px;border-radius:50%;text-align:center;line-height:40px;font-size:10px;color:#666;}
-    .profile-details{display:flex;flex-direction:column;}
-    .profile-name{font-size:18px;font-weight:700;color:var(--primary-color);line-height:1.1;}
-    .profile-title{font-size:12px;font-weight:600;color:#000;}
-    .contact-info{display:flex;flex-direction:column;gap:6px;font-size:12px;}
-    .contact-item{display:flex;align-items:center;}
-    .contact-item .icon{color:var(--secondary-color);margin-right:4px;font-size:13px;}
-    .contact-item a,.contact-item span{color:var(--text-color);text-decoration:none;font-weight:600;}
-    .contact-item a:hover{color:var(--secondary-color);}
-    .content{display:flex;gap:10px;margin-top:5px;}
-    .left-column{flex:6;}
-    .right-column{flex:4;}
-    .section{margin-bottom:8px;}
-    .section-title{font-size:14px;font-weight:700;color:var(--primary-color);text-transform:uppercase;border-bottom:1px solid var(--secondary-color);padding-bottom:2px;margin-bottom:4px;letter-spacing:0.5px;}
-    .job,.education-item,.project{margin-bottom:4px;}
-    .job-title,.school-name,.project-title{font-size:13px;font-weight:600;color:#000000;display:inline-block;}
-    .project-title .company-name{font-weight:400;font-style:italic;color:var(--primary-color);margin-left:3px;}
-    .job-period,.education-period{float:right;font-weight:600;font-size:12px;}
-    ul{padding-left:15px;margin:2px 0;}
-    li{margin-bottom:2px;text-align:justify;}
-    p{margin:2px 0;text-align:justify;font-size:13px;}
-    strong{font-weight:700;color:#000000;}
-    #downloadButton{display:block;width:200px;margin:10px auto;padding:8px;background-color:var(--primary-color);color:white;text-align:center;border-radius:4px;cursor:pointer;font-weight:600;font-size:14px;border:none;transition:background-color 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.2);}
-    #downloadButton:hover{background-color:#074e91;}
-    .skills-list ul li{margin-bottom:3px;}
-    @media print{body{background:none;}.container{box-shadow:none;margin:0;padding:5mm 6mm;width:100%;height:100%;}#downloadButton{display:none;}}
-    @media (max-width:768px){.content{flex-direction:column;}.container{width:95%;}.header{flex-direction:column;align-items:flex-start;gap:5px;height:auto;}.contact-info{align-items:flex-start;}}
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+    :root {
+      --primary-color: #1E88E5;
+      --secondary-color: #42A5F5;
+      --accent-color: #FFCA28;
+      --text-color: #212121;
+      --light-gray: #F5F5F5;
+      --border-color: #E0E0E0;
+      --background-color: #FAFAFA;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-color);
+      line-height: 1.4;
+      background-color: var(--background-color);
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .container {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      background-color: white;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      padding: 0 8mm 8mm 8mm;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
+      margin-bottom: 6px;
+      border-bottom: 2px solid var(--primary-color);
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      color: white;
+    }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .profile-image {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid white;
+    }
+    .profile-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-image-fallback {
+      display: none;
+      background-color: var(--light-gray);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      font-size: 8px;
+      color: #666;
+    }
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+    }
+    .profile-name {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      line-height: 1.1;
+    }
+    .profile-title {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--accent-color);
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 10px;
+      text-align: right;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+    .contact-item .icon {
+      color: var(--accent-color);
+      font-size: 10px;
+    }
+    .contact-item a, .contact-item span {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .contact-item a:hover {
+      color: var(--accent-color);
+    }
+    .content {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .left-column { flex: 6; }
+    .right-column { flex: 4; }
+    .section { margin-bottom: 8px; }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--secondary-color);
+      padding-bottom: 2px;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    .job, .education-item, .project { margin-bottom: 4px; }
+    .job-title, .school-name, .project-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-color);
+      display: inline-block;
+    }
+    .project-title .company-name {
+      font-weight: 400;
+      font-style: italic;
+      color: var(--primary-color);
+      margin-left: 3px;
+    }
+    .job-period, .education-period {
+      float: right;
+      font-weight: 600;
+      font-size: 12px;
+      color: #555;
+    }
+    ul {
+      padding-left: 15px;
+      margin: 2px 0;
+    }
+    li {
+      margin-bottom: 2px;
+      text-align: justify;
+    }
+    p {
+      margin: 2px 0;
+      text-align: justify;
+      font-size: 13px;
+    }
+    strong {
+      font-weight: 700;
+      color: var(--text-color);
+    }
+    #downloadButton {
+      display: block;
+      width: 200px;
+      margin: 10px auto;
+      padding: 8px;
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #downloadButton:hover {
+      background-color: var(--secondary-color);
+    }
+    .skills-list ul li { margin-bottom: 3px; }
+    @media print {
+      body { background: none; }
+      .container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0 8mm 8mm 8mm;
+        width: 100%;
+        height: 100%;
+      }
+      #downloadButton { display: none; }
+      header { background: none; color: var(--text-color); }
+      .contact-item a, .contact-item span { color: var(--text-color); }
+      .profile-title { color: var(--primary-color); }
+    }
+    @media (max-width: 768px) {
+      .content { flex-direction: column; }
+      .container { width: 95%; }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 4px 8px;
+      }
+      .contact-info { text-align: left; align-items: flex-start; }
+      .profile-image { width: 35px; height: 35px; }
+      .profile-image-fallback { width: 35px; height: 35px; line-height: 35px; }
+    }
   </style>
 </head>
 <body>
@@ -104,48 +277,48 @@
           <div class="project">
             <div class="project-title"><strong>MARC (Multi-Agent Resource Coordinator)</strong>, <span class="company-name">IBM</span></div>
             <ul>
-              <li>Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation</li>
-              <li>Applied AI Governance principles to ensure ethical and compliant operations of automation agents</li>
-              <li>Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection</li>
+              <li>Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation.</li>
+              <li>Applied AI Governance principles to ensure ethical and compliant operations of automation agents.</li>
+              <li>Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection.</li>
               <li>Streamlined enterprise workflows with a scalable multi-agent AI system.</li>
             </ul>
           </div>
           <div class="project">
             <div class="project-title"><strong>Mizuho Bank</strong>, <span class="company-name">Accenture</span></div>
             <ul>
-              <li>Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows</li>
-              <li>Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality</li>
-              <li>Reduced document review time by 30% with AI-driven system</li>
+              <li>Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows.</li>
+              <li>Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality.</li>
+              <li>Reduced document review time by 30% with AI-driven system.</li>
             </ul>
           </div>
           <div class="project">
             <div class="project-title"><strong>Ulster Bank</strong>, <span class="company-name">Accenture</span></div>
             <ul>
-              <li>Automated machine learning pipelines for customer segmentation algorithms using Python, Glue and Athena</li>
-              <li>Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders</li>
+              <li>Automated machine learning pipelines for customer segmentation algorithms using Python, Glue, and Athena.</li>
+              <li>Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders.</li>
             </ul>
           </div>
           <div class="project">
             <div class="project-title"><strong>Facebook</strong>, <span class="company-name">Accenture</span></div>
             <ul>
-              <li>Examined data from multiple disparate sources to discover insights providing competitive advantage for clients</li>
-              <li>Designed and optimized machine learning pipelines, specializing in the creation of forecasting models</li>
-              <li>Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes</li>
+              <li>Examined data from multiple disparate sources to discover insights providing competitive advantage for clients.</li>
+              <li>Designed and optimized machine learning pipelines, specializing in the creation of forecasting models.</li>
+              <li>Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes.</li>
             </ul>
           </div>
           <div class="project">
             <div class="project-title"><strong>Waste Classification Code</strong>, <span class="company-name">Clean Harbors</span></div>
             <ul>
-              <li>Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment</li>
-              <li>Created a unified dataset encompassing vital features for all waste classes</li>
-              <li>Applied logical data checks for input consistency, facilitating classification based on physical properties</li>
+              <li>Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment.</li>
+              <li>Created a unified dataset encompassing vital features for all waste classes.</li>
+              <li>Applied logical data checks for input consistency, facilitating classification based on physical properties.</li>
             </ul>
           </div>
           <div class="project">
             <div class="project-title"><strong>Invoice Audit</strong>, <span class="company-name">Clean Harbors</span></div>
             <ul>
-              <li>Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis</li>
-              <li>Streamlined invoice verification, reducing audit time by 20%</li>
+              <li>Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis.</li>
+              <li>Streamlined invoice verification, reducing audit time by 20%.</li>
             </ul>
           </div>
         </div>
@@ -155,19 +328,19 @@
           <div class="section-title">Education</div>
           <div class="education-item">
             <div class="school-name"><strong>IIT Dhanbad</strong> - B.Tech</div>
-            <div class="education-period">(2013-2017)</div>
+            <div class="education-period">2013-2017</div>
           </div>
           <div class="education-item">
             <div class="school-name"><strong>Super30</strong>, Patna</div>
-            <div class="education-period">(2012-2013)</div>
+            <div class="education-period">2012-2013</div>
           </div>
         </div>
         <div class="section">
           <div class="section-title">Certifications</div>
           <ul>
             <li>Northwestern University - Analytics & AI</li>
-            <li>IBM - IBM watsonx.ai Technical Essentials</li>
-            <li>IBM - IBM watsonx Essentials</li>
+            <li>IBM - Watsonx.ai Technical Essentials</li>
+            <li>IBM - Watsonx Essentials</li>
             <li>Microsoft & LinkedIn - Generative AI</li>
             <li>Microsoft - Azure Machine Learning</li>
             <li>Stanford University - Machine Learning</li>
@@ -217,35 +390,42 @@
             <li>Product Management</li>
           </ul>
         </div>
+{rpm}
       </div>
     </div>
   </div>
   <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
   <script>
-    async function downloadPDF(){
-      const{jsPDF}=window.jspdf;
-      const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-      const element=document.getElementById('resumeContent');
-      try{
-        const button=document.getElementById('downloadButton');
-        button.innerHTML="Generating PDF...";
-        button.disabled=true;
-        const canvas=await html2canvas(element,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff',windowHeight:element.scrollHeight});
-        const imgWidth=210;
-        const pageHeight=297;
-        const imgHeight=canvas.height*imgWidth/canvas.width;
-        const imgData=canvas.toDataURL('image/jpeg',0.85);
-        let heightRatio=pageHeight/imgHeight;
-        let adjustedHeight=imgHeight*heightRatio;
-        doc.addImage(imgData,'JPEG',0,0,imgWidth,adjustedHeight);
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+      const element = document.getElementById('resumeContent');
+      try {
+        const button = document.getElementById('downloadButton');
+        button.innerHTML = "Generating PDF...";
+        button.disabled = true;
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff',
+          windowHeight: element.scrollHeight
+        });
+        const imgWidth = 210;
+        const pageHeight = 297;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgData = canvas.toDataURL('image/jpeg', 0.85);
+        let heightRatio = pageHeight / imgHeight;
+        let adjustedHeight = imgHeight * heightRatio;
+        doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, adjustedHeight);
         doc.save('Chandan_Kumar_Resume.pdf');
-        button.innerHTML="Download Resume as PDF";
-        button.disabled=false;
-      }catch(error){
-        console.error('Error generating PDF:',error);
+        button.innerHTML = "Download Resume as PDF";
+        button.disabled = false;
+      } catch (error) {
+        console.error('Error generating PDF:', error);
         alert('Failed to generate PDF. Please try again.');
-        button.innerHTML="Download Resume as PDF";
-        button.disabled=false;
+        button.innerHTML = "Download Resume as PDF";
+        button.disabled = false;
       }
     }
   </script>
