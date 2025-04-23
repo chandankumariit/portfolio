@@ -103,13 +103,13 @@
       gap: 3px;
     }
     .contact-item .icon {
-      color: var(--accent-color);
+      color: var(--primary-color);
       font-size: 9px;
     }
     .contact-item a, .contact-item span {
       color: var(--text-color);
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 700;
     }
     .content {
       display: flex;
@@ -128,11 +128,16 @@
       padding-bottom: 2px;
       margin-bottom: 4px;
       letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
     }
     .section-title i {
-      color: var(--accent-color);
+      color: var(--primary-color);
       margin-right: 1.5mm;
       font-size: 12px;
+    }
+    .section-title span {
+      color: var(--primary-color);
     }
     .job, .education-item, .project { margin-bottom: 4px; }
     .job-title {
@@ -259,12 +264,12 @@
       </div>
       <div class="contact-info">
         <div class="contact-item">
-          <span class="icon"><i class="fas fa-envelope"></i></span>
-          <a href="mailto:ckism.iit@gmail.com">ckism.iit@gmail.com</a>
-        </div>
-        <div class="contact-item">
           <span class="icon"><i class="fas fa-phone"></i></span>
           <span>+91-9199000200</span>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fas fa-envelope"></i></span>
+          <a href="mailto:ckism.iit@gmail.com">ckism.iit@gmail.com</a>
         </div>
         <div class="contact-item">
           <span class="icon"><i class="fab fa-linkedin-in"></i></span>
@@ -275,11 +280,11 @@
     <div class="content">
       <div class="left-column">
         <div class="section">
-          <div class="section-title"><i class="fas fa-user"></i>Professional Summary</div>
+          <div class="section-title"><i class="fas fa-user"></i><span>Professional Summary</span></div>
           <p><strong>IIT graduate</strong> and <strong>AI Researcher</strong> with around <strong>7 years</strong> of expertise in Data Science, AI, and Product Development, specializing in Generative AI, AI governance, and advanced automation. Proven ability to design, deploy, and optimize AI/ML solutions across finance, banking, energy, and environmental sectors, driving business transformation and efficiency. Skilled in machine learning, deep learning, NLP, and AI-driven automation, with hands-on experience in Python, SQL, LangChain, CrewAI, TensorFlow, PyTorch, and cloud platforms (Azure, AWS, GCP, IBM). Led AI-driven initiatives, driving efficiency, scalability, and innovation across diverse applications. Experienced in AI model deployment, workflow automation, and strategy implementation, delivering measurable business impact.</p>
         </div>
         <div class="section">
-          <div class="section-title"><i class="fas fa-briefcase"></i>Experience</div>
+          <div class="section-title"><i class="fas fa-briefcase"></i><span>Experience</span></div>
           <div class="job">
             <div class="job-title"><strong>IBM</strong> - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
           </div>
@@ -294,7 +299,7 @@
           </div>
         </div>
         <div class="section">
-          <div class="section-title"><i class="fas fa-project-diagram"></i>Key Projects</div>
+          <div class="section-title"><i class="fas fa-project-diagram"></i><span>Key Projects</span></div>
           <div class="project">
             <div class="project-title"><strong>MARC (Multi-Agent Resource Coordinator)</strong>, <span class="company-name">IBM</span></div>
             <ul>
@@ -346,7 +351,7 @@
       </div>
       <div class="right-column">
         <div class="section">
-          <div class="section-title"><i class="fas fa-graduation-cap"></i>Education</div>
+          <div class="section-title"><i class="fas fa-graduation-cap"></i><span>Education</span></div>
           <div class="education-item">
             <div class="education-details"><strong>IIT Dhanbad</strong> - B.Tech</div>
             <div class="education-period">2013-2017</div>
@@ -357,7 +362,7 @@
           </div>
         </div>
         <div class="section">
-          <div class="section-title"><i class="fas fa-certificate"></i>Certifications</div>
+          <div class="section-title"><i class="fas fa-certificate"></i><span>Certifications</span></div>
           <ul>
             <li>Northwestern University - Analytics & AI</li>
             <li>Hugging Face - AI Agents Fundamentals</li>
@@ -376,7 +381,7 @@
           </ul>
         </div>
         <div class="section">
-          <div class="section-title"><i class="fas fa-trophy"></i>Key Achievements</div>
+          <div class="section-title"><i class="fas fa-trophy"></i><span>Key Achievements</span></div>
           <ul>
             <li>Ranked #1 in HackerRank SQL</li>
             <li>Consistently recognized by clients for error-free, timely project deliveries</li>
@@ -386,7 +391,7 @@
           </ul>
         </div>
         <div class="section">
-          <div class="section-title"><i class="fas fa-tools"></i>Skills</div>
+          <div class="section-title"><i class="fas fa-tools"></i><span>Skills</span></div>
           <div class="skills-list">
             <ul>
               <li><strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development & Deployment, RAG, Vector DB, Prompt Engineering</li>
@@ -401,7 +406,7 @@
           </div>
         </div>
         <div class="section">
-          <div class="section-title"><i class="fas fa-star"></i>Core Competencies</div>
+          <div class="section-title"><i class="fas fa-star"></i><span>Core Competencies</span></div>
           <ul>
             <li>Project Management and Deployment</li>
             <li>Data Strategy and Management</li>
