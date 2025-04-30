@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chandan Kumar Resume</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -10,10 +10,8 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
     :root {
-      --primary-color: #0D47A1;
-      --secondary-color: #1976D2;
-      --accent-color: #FFCA28;
-      --text-color: #212121;
+      --primary-color: #00796B; /* Unified teal header color */
+      --text-color: #000;
       --light-gray: #F5F5F5;
       --border-color: #E0E0E0;
       --background-color: #FAFAFA;
@@ -23,9 +21,9 @@
     body {
       font-family: 'Roboto', sans-serif;
       color: var(--text-color);
-      line-height: 1.5;
+      line-height: 1.3;
       background-color: var(--background-color);
-      font-size: 13px;
+      font-size: 9px;
       font-weight: 400;
     }
     .container {
@@ -33,135 +31,133 @@
       height: 297mm;
       margin: 0 auto;
       background-color: white;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
-      padding: 0 8mm 8mm 8mm;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      padding: 0 6mm 6mm 6mm;
       position: relative;
       overflow: hidden;
-      border-radius: 8px;
+      border-radius: 6px;
     }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 2px 6px;
-      margin-bottom: 6px;
-      border-bottom: 2px solid var(--primary-color);
+      padding: 1px 4px;
+      margin-bottom: 3px;
+      border-bottom: 1.5px solid var(--primary-color);
     }
     .profile-section {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 6px;
     }
     .profile-image {
-      width: 72px;
-      height: 72px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       overflow: hidden;
-      border: 2px solid var(--border-color);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border: 1.5px solid var(--border-color);
     }
     .profile-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+    .profile-image-fallback {
+      display: none;
+      background-color: var(--light-gray);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 36px;
+      font-size: 6px;
+      color: #666;
+    }
     .profile-details {
       display: flex;
       flex-direction: column;
     }
     .profile-name {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-      color: var(--text-color);
-    }
-    .profile-title {
       font-size: 12px;
       font-weight: 700;
-      color: var(--accent-color);
+      letter-spacing: 0.1px;
+    }
+    .profile-title {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--primary-color);
     }
     .contact-info {
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      font-size: 10px;
+      gap: 1px;
+      font-size: 8px;
       text-align: right;
     }
     .contact-item {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 4px;
+      gap: 2px;
     }
     .contact-item .icon {
       color: var(--primary-color);
-      font-size: 10px;
+      font-size: 7px;
     }
     .contact-item a, .contact-item span {
       color: var(--text-color);
       text-decoration: none;
       font-weight: 700;
-      transition: color 0.3s ease;
     }
-    .contact-item a:hover { color: var(--accent-color); }
-
     .content {
       display: flex;
-      gap: 12px;
-      margin-top: 6px;
+      gap: 8px;
+      margin-top: 4px;
     }
     .left-column { flex: 6; }
     .right-column { flex: 4; }
-
-    .section {
-      margin-bottom: 10px;
-    }
+    .section { margin-bottom: 6px; }
     .section-title {
-      font-size: 14px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--primary-color);
       text-transform: uppercase;
-      border-bottom: 1px solid var(--secondary-color);
-      padding-bottom: 2px;
-      margin-bottom: 6px;
-      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--primary-color);
+      padding-bottom: 1px;
+      margin-bottom: 3px;
+      letter-spacing: 0.3px;
       display: flex;
       align-items: center;
-      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-      -webkit-background-clip: text;
-      color: transparent;
     }
     .section-title i {
       color: var(--primary-color);
-      margin-right: 1.5mm;
-      font-size: 12px;
+      margin-right: 1mm;
+      font-size: 9px;
     }
-    .job, .education-item, .project {
-      margin-bottom: 6px;
-    }
+    .job, .education-item, .project { margin-bottom: 3px; }
     .job-title {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 600;
       color: var(--text-color);
     }
     .school-name, .project-title {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 600;
       color: var(--text-color);
     }
     .project-title .company-name {
       font-weight: 400;
       font-style: italic;
       color: var(--primary-color);
-      margin-left: 3px;
+      margin-left: 2px;
     }
     .job-period {
       display: inline-block;
       font-weight: 600;
-      font-size: 12px;
-      color: #555;
+      font-size: 9px;
+      color: #444;
       float: right;
-      margin-left: 5px;
+      margin-left: 4px;
     }
     .education-item {
       display: flex;
@@ -169,94 +165,84 @@
       align-items: baseline;
     }
     .education-details {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-color);
     }
     .education-period {
       font-weight: 600;
-      font-size: 12px;
-      color: #555;
+      font-size: 9px;
+      color: #444;
     }
     ul {
-      padding-left: 18px;
-      margin: 3px 0;
+      padding-left: 10px;
+      margin: 1px 0;
     }
     li {
-      margin-bottom: 3px;
+      margin-bottom: 1px;
       text-align: justify;
-      list-style-type: "🔹";
-      color: var(--primary-color);
-    }
-    li::marker {
-      color: var(--primary-color);
+      list-style-type: "– "; /* En dash bullet */
     }
     p {
-      margin: 3px 0;
+      margin: 1px 0;
       text-align: justify;
-      font-size: 13px;
+      font-size: 9px;
     }
     strong {
       font-weight: 700;
-      color: var(--text-color);
     }
-
     #downloadButton {
       display: block;
-      width: 200px;
-      margin: 15px auto 0;
-      padding: 10px;
+      width: 160px;
+      margin: 8px auto;
+      padding: 6px;
       background-color: var(--primary-color);
       color: white;
       text-align: center;
-      border-radius: 4px;
+      border-radius: 3px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 11px;
       border: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     #downloadButton:hover {
-      background-color: var(--secondary-color);
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      background-color: #004d40;
     }
-
     @media print {
       body { background: none; }
       .container {
         box-shadow: none;
         margin: 0;
-        padding: 0 8mm 8mm 8mm;
+        padding: 0 6mm 6mm 6mm;
         width: 100%;
         height: 100%;
       }
       #downloadButton { display: none; }
       header {
-        border-bottom: 2px solid var(--primary-color);
+        border-bottom: 1.5px solid var(--primary-color);
       }
-      .contact-item a, .contact-item span { color: var(--text-color); }
-      .profile-title { color: var(--accent-color); }
     }
-
     @media (max-width: 768px) {
       .content { flex-direction: column; }
       .container { width: 95%; }
       header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
-        padding: 2px 5px;
+        gap: 2px;
+        padding: 1px 3px;
       }
       .contact-info { text-align: left; align-items: flex-start; }
-      .profile-image { width: 60px; height: 60px; }
+      .profile-image { width: 30px; height: 30px; }
+      .profile-image-fallback { width: 30px; height: 30px; line-height: 30px; }
     }
   </style>
 </head>
 <body>
   <!-- Resume Content -->
   <div class="container" id="resumeContent">
+    <!-- Header + Contact Info -->
     <header>
       <div class="profile-section">
         <div class="profile-image">
@@ -284,152 +270,70 @@
       </div>
     </header>
 
+    <!-- Content Sections -->
     <div class="content">
       <div class="left-column">
+        <!-- Professional Summary -->
         <div class="section">
-          <div class="section-title"><i class="fas fa-user"></i><span>Professional Summary</span></div>
-          <p><strong>IIT graduate</strong> and <strong>Data Scientist</strong> with around <strong>7 years</strong> of expertise in Data Science, AI, and Product Development, specializing in Generative AI, AI governance, and advanced automation. Proven ability to design, deploy, and optimize AI/ML solutions across finance, banking, energy, and environmental sectors, driving business transformation and efficiency. Skilled in machine learning, deep learning, NLP, and AI-driven automation, with hands-on experience in Python, SQL, LangChain, CrewAI, TensorFlow, PyTorch, and cloud platforms (Azure, AWS, GCP, IBM). Led AI-driven initiatives, driving efficiency, scalability, and innovation across diverse applications. Experienced in AI model deployment, workflow automation, and strategy implementation, delivering measurable business impact.</p>
+          <div class="section-title"><i class="fas fa-user-tie"></i><span>Professional Summary</span></div>
+          <p><strong>IIT graduate</strong> and <strong>Data Scientist</strong> with around <strong>7 years</strong> of expertise in Data Science, AI, and Product Development, specializing in Generative AI, AI governance, and advanced automation.</p>
         </div>
+
+        <!-- Experience -->
         <div class="section">
           <div class="section-title"><i class="fas fa-briefcase"></i><span>Experience</span></div>
           <div class="job">
             <div class="job-title"><strong>IBM</strong> - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
           </div>
-          <div class="job">
-            <div class="job-title"><strong>Accenture</strong> - Data Scientist <span class="job-period">Apr 2021 - Feb 2024</span></div>
-          </div>
-          <div class="job">
-            <div class="job-title"><strong>Capgemini</strong> - Process Lead <span class="job-period">Feb 2021 - Mar 2021</span></div>
-          </div>
-          <div class="job">
-            <div class="job-title"><strong>Clean Harbors</strong> - Data Scientist <span class="job-period">Jun 2018 - Jan 2021</span></div>
-          </div>
         </div>
+
+        <!-- Key Projects -->
         <div class="section">
           <div class="section-title"><i class="fas fa-project-diagram"></i><span>Key Projects</span></div>
           <div class="project">
-            <div class="project-title"><strong>MARC (Multi-Agent Resource Coordinator)</strong>, <span class="company-name">IBM</span></div>
+            <div class="project-title"><strong>MARC</strong>, <span class="company-name">IBM</span></div>
             <ul>
-              <li>Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation.</li>
-              <li>Applied AI Governance principles to ensure ethical and compliant operations of automation agents.</li>
-              <li>Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection.</li>
-              <li>Streamlined enterprise workflows with a scalable multi-agent AI system.</li>
-            </ul>
-          </div>
-          <div class="project">
-            <div class="project-title"><strong>Mizuho Bank</strong>, <span class="company-name">Accenture</span></div>
-            <ul>
-              <li>Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows.</li>
-              <li>Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality.</li>
-              <li>Reduced document review time by 30% with AI-driven system.</li>
-            </ul>
-          </div>
-          <div class="project">
-            <div class="project-title"><strong>Ulster Bank</strong>, <span class="company-name">Accenture</span></div>
-            <ul>
-              <li>Automated machine learning pipelines for customer segmentation algorithms using Python, Glue, and Athena.</li>
-              <li>Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders.</li>
-            </ul>
-          </div>
-          <div class="project">
-            <div class="project-title"><strong>Facebook</strong>, <span class="company-name">Accenture</span></div>
-            <ul>
-              <li>Examined data from multiple disparate sources to discover insights providing competitive advantage for clients.</li>
-              <li>Designed and optimized machine learning pipelines, specializing in the creation of forecasting models.</li>
-              <li>Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes.</li>
-            </ul>
-          </div>
-          <div class="project">
-            <div class="project-title"><strong>Waste Classification Code</strong>, <span class="company-name">Clean Harbors</span></div>
-            <ul>
-              <li>Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment.</li>
-              <li>Created a unified dataset encompassing vital features for all waste classes.</li>
-              <li>Applied logical data checks for input consistency, facilitating classification based on physical properties.</li>
-            </ul>
-          </div>
-          <div class="project">
-            <div class="project-title"><strong>Invoice Audit</strong>, <span class="company-name">Clean Harbors</span></div>
-            <ul>
-              <li>Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis.</li>
-              <li>Streamlined invoice verification, reducing audit time by 20%.</li>
+              <li>Developed multi-agent systems for workflow automation</li>
             </ul>
           </div>
         </div>
       </div>
 
       <div class="right-column">
+        <!-- Education -->
         <div class="section">
           <div class="section-title"><i class="fas fa-graduation-cap"></i><span>Education</span></div>
           <div class="education-item">
             <div class="education-details"><strong>IIT Dhanbad</strong> - B.Tech</div>
             <div class="education-period">2013-2017</div>
           </div>
-          <div class="education-item">
-            <div class="education-details"><strong>Super30</strong>, Patna</div>
-            <div class="education-period">2012-2013</div>
-          </div>
         </div>
+
+        <!-- Certifications -->
         <div class="section">
           <div class="section-title"><i class="fas fa-certificate"></i><span>Certifications</span></div>
           <ul>
             <li>Northwestern University - Analytics & AI</li>
-            <li>LangChain Academy - LangGraph</li>
-            <li>Databricks Academy - Generative AI</li>
-            <li>Hugging Face - AI Agents Fundamentals</li>
-            <li>IBM - Watsonx.ai Technical Essentials</li>
-            <li>Neo4j - Neo4j & LLM Fundamentals</li>
-            <li>IBM - Watsonx Essentials</li>
-            <li>Microsoft & LinkedIn - Generative AI</li>
-            <li>Microsoft - Azure Machine Learning</li>
-            <li>Stanford University - Machine Learning</li>
-            <li>Duke University - DevOps, DataOps, MLOps</li>
-            <li>LangChain Academy - LangSmith</li>
-            <li>AWS - AWS Cloud</li>
-            <li>Udemy - Project Management Fundamentals</li>
-            <li>Udemy - Product Management Fundamentals</li>
-            <li>Udemy - MCP (Model Context Protocol)</li>
-            <li>Microsoft - SQL Server</li>
           </ul>
         </div>
-        <div class="section">
-          <div class="section-title"><i class="fas fa-trophy"></i><span>Key Achievements</span></div>
-          <ul>
-            <li>Ranked #1 in HackerRank SQL</li>
-            <li>Consistently recognized by clients for error-free, timely project deliveries</li>
-            <li>Cleared IIT JEE-2013, ranking in the top 1% of JEE Advanced qualifiers</li>
-            <li>Served as Student Representative in Mess Committee, IIT Dhanbad (2015-2016)</li>
-          </ul>
-        </div>
+
+        <!-- Skills -->
         <div class="section">
           <div class="section-title"><i class="fas fa-tools"></i><span>Skills</span></div>
           <div class="skills-list">
             <ul>
-              <li><strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, LangGraph, LangSmith, Langflow, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development & Deployment, RAG, Vector DB, Prompt Engineering</li>
-              <li><strong>Cloud Platforms:</strong> Azure, AWS, GCP, IBM</li>
-              <li><strong>Programming:</strong> Python, SQL</li>
-              <li><strong>Data Engineering:</strong> Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy</li>
-              <li><strong>Databases:</strong> Azure SQL, SQL Server, MySQL, MongoDB, BigQuery</li>
-              <li><strong>Visualization:</strong> Power BI, Matplotlib, Seaborn</li>
-              <li><strong>DevOps:</strong> Docker, Kubernetes, Git, CI/CD</li>
-              <li><strong>Domains:</strong> Finance, Banking, Environmental, Social Media, Waste Management, Energy</li>
+              <li><strong>Data Science:</strong> Generative AI, ML, LangChain</li>
             </ul>
           </div>
-        </div>
-        <div class="section">
-          <div class="section-title"><i class="fas fa-star"></i><span>Core Competencies</span></div>
-          <ul>
-            <li>Data Science, Analytics & AI</li>
-            <li>Business and Data Analytics</li>
-            <li>Project Management and Deployment</li>
-            <li>Product Management</li>
-          </ul>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Download Button -->
   <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
 
+  <!-- PDF Script -->
   <script>
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
@@ -457,7 +361,6 @@
         button.innerHTML = "Download Resume as PDF";
         button.disabled = false;
       } catch (error) {
-        console.error('Error generating PDF:', error);
         alert('Failed to generate PDF. Please try again.');
         button.innerHTML = "Download Resume as PDF";
         button.disabled = false;
