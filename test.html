@@ -4,221 +4,248 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chandan Kumar Resume</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-7BPIpGdJp3m7M934K2K8/7kTe9/0Jr5l6iQGdLFRafUiyRz9GgT279HpECGgzBQJhM3qg4f9C6uSTBw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-L3R+Zx+yWl928oB9vF5DGy8jy0g04hDQzOz7DJFl3RFpMZcz1gkp42i3fLJ70pYVuiTKOhBCFQdM3Hg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
     :root {
-      --primary-color: #1A237E;
-      --secondary-color: #3949AB;
-      --accent-color: #FFD54F;
-      --text-color: #333333;
+      --primary-color: #0D47A1;
+      --secondary-color: #1976D2;
+      --accent-color: #FFCA28;
+      --text-color: #212121;
       --light-gray: #F5F5F5;
       --border-color: #E0E0E0;
       --background-color: #FAFAFA;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Roboto sans',-serif;
+      font-family: 'Roboto', sans-serif;
       color: var(--text-color);
-      line-height: 1.6;
+      line-height: 1.4;
       background-color: var(--background-color);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 400;
     }
-
     .container {
       width: 210mm;
       height: 297mm;
-      margin: 20px auto;
+      margin: 0 auto;
       background-color: white;
       box-shadow: 0 6px 24px rgba(0,0,0,0.1);
-      padding: 20px;
+      padding: 0 8mm 8mm 8mm;
       position: relative;
-      border-radius: 10px;
-      max-width: 90%;
+      overflow: hidden;
+      border-radius: 8px;
     }
-
     header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      padding: 10px 0;
-      margin-bottom: 15px;
-      border-bottom: 3px double var(--primary-color);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      align-items: center;
+      padding: 2px 6px;
+      margin-bottom: 4px;
+      border-bottom: 2px solid var(--primary-color);
     }
-
     .profile-section {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 8px;
     }
-
     .profile-image {
-      width: 80px;
-      height: 80px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       overflow: hidden;
-      border: 3px solid var(--secondary-color);
+      border: 2px solid var(--border-color);
     }
-
     .profile-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
     .profile-image-fallback {
+      display: none;
       background-color: var(--light-gray);
-      width: 80px;
-      height: 80px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       text-align: center;
-      line-height: 80px;
-      font-size: 12px;
+      line-height: 48px;
+      font-size: 8px;
       color: #666;
     }
-
     .profile-details {
       display: flex;
       flex-direction: column;
     }
-
     .profile-name {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 700;
-      letter-spacing: 0.5px;
-      color: var(--primary-color);
-      margin-bottom: 5px;
+      letter-spacing: 0.2px;
+      color: var(--text-color);
     }
-
     .profile-title {
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 10px;
+      font-weight: 700;
       color: var(--accent-color);
     }
-
     .contact-info {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      font-size: 12px;
+      gap: 2px;
+      font-size: 9px;
       text-align: right;
     }
-
     .contact-item {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 8px;
+      gap: 3px;
     }
-
     .contact-item .icon {
-      color: var(--secondary-color);
-      font-size: 14px;
+      color: var(--primary-color);
+      font-size: 9px;
     }
-
+    .contact-item a, .contact-item span {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 700;
+    }
     .content {
       display: flex;
-      gap: 20px;
+      gap: 10px;
+      margin-top: 5px;
     }
-
     .left-column { flex: 6; }
     .right-column { flex: 4; }
-
-    .section { margin-bottom: 15px; }
+    .section { margin-bottom: 8px; }
     .section-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--primary-color);
       text-transform: uppercase;
-      border-bottom: 2px solid var(--accent-color);
-      padding-bottom: 5px;
-      margin-bottom: 10px;
-      letter-spacing: 0.8px;
+      border-bottom: 1px solid var(--secondary-color);
+      padding-bottom: 2px;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
       display: flex;
       align-items: center;
     }
-
     .section-title i {
-      color: var(--accent-color);
-      margin-right: 8px;
-      font-size: 16px;
+      color: var(--primary-color);
+      margin-right: 1.5mm;
+      font-size: 12px;
     }
-
-    .job, .education-item, .project { margin-bottom: 12px; }
+    .section-title span {
+      color: var(--primary-color);
+    }
+    .job, .education-item, .project { margin-bottom: 4px; }
     .job-title {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-color);
-      display: block;
+      display: inline-block;
       width: 100%;
-      margin-bottom: 5px;
     }
-
+    .school-name, .project-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    .project-title .company-name {
+      font-weight: 400;
+      font-style: italic;
+      color: var(--primary-color);
+      margin-left: 3px;
+    }
     .job-period {
-      display: block;
-      font-weight: 500;
+      display: inline-block;
+      font-weight: 600;
       font-size: 12px;
-      color: #666;
-      margin-bottom: 8px;
+      color: #555;
+      float: right;
+      margin-left: 5px;
     }
-
+    .education-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .education-details {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    .education-period {
+      font-weight: 600;
+      font-size: 12px;
+      color: #555;
+    }
     ul {
-      padding-left: 20px;
-      margin: 5px 0;
+      padding-left: 15px;
+      margin: 2px 0;
     }
-
     li {
-      margin-bottom: 6px;
-      text-align: left;
+      margin-bottom: 2px;
+      text-align: justify;
     }
-
     p {
-      margin: 5px 0;
-      text-align: left;
-      font-size: 14px;
+      margin: 2px 0;
+      text-align: justify;
+      font-size: 13px;
     }
-
+    strong {
+      font-weight: 700;
+      color: var(--text-color);
+    }
     #downloadButton {
       display: block;
       width: 200px;
-      margin: 20px auto;
-      padding: 12px;
+      margin: 10px auto;
+      padding: 8px;
       background-color: var(--primary-color);
       color: white;
       text-align: center;
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
-      font-weight: 500;
-      font-size: 16px;
+      font-weight: 600;
+      font-size: 14px;
       border: none;
       transition: background-color 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-
     #downloadButton:hover {
       background-color: var(--secondary-color);
     }
-
+    .skills-list ul li { margin-bottom: 3px; }
     @media print {
-      .container { box-shadow: none; margin: 0; padding: 20px; width: 100%; height: 100%; }
+      body { background: none; }
+      .container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0 8mm 8mm 8mm;
+        width: 100%;
+        height: 100%;
+      }
       #downloadButton { display: none; }
-      header { border-bottom: 3px double var(--primary-color); }
+      header {
+        border-bottom: 2px solid var(--primary-color);
+      }
+      .contact-item a, .contact-item span { color: var(--text-color); }
+      .profile-title { color: var(--accent-color); }
     }
-
     @media (max-width: 768px) {
       .content { flex-direction: column; }
-      header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .container { width: 95%; }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 2px 5px;
+      }
       .contact-info { text-align: left; align-items: flex-start; }
+      .profile-image { width: 40px; height: 40px; }
+      .profile-image-fallback { width: 40px; height: 40px; line-height: 40px; }
     }
   </style>
 </head>
@@ -259,16 +286,16 @@
         <div class="section">
           <div class="section-title"><i class="fas fa-briefcase"></i><span>Experience</span></div>
           <div class="job">
-            <div class="job-title">IBM - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
+            <div class="job-title"><strong>IBM</strong> - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
           </div>
           <div class="job">
-            <div class="job-title">Accenture - Data Scientist <span class="job-period">Apr 2021 - Feb 2024</span></div>
+            <div class="job-title"><strong>Accenture</strong> - Data Scientist <span class="job-period">Apr 2021 - Feb 2024</span></div>
           </div>
           <div class="job">
-            <div class="job-title">Capgemini - Process Lead <span class="job-period">Feb 2021 - Mar 2021</span></div>
+            <div class="job-title"><strong>Capgemini</strong> - Process Lead <span class="job-period">Feb 2021 - Mar 2021</span></div>
           </div>
           <div class="job">
-            <div class="job-title">Clean Harbors - Data Scientist <span class="job-period">Jun 2018 - Jan 2021</span></div>
+            <div class="job-title"><strong>Clean Harbors</strong> - Data Scientist <span class="job-period">Jun 2018 - Jan 2021</span></div>
           </div>
         </div>
         <div class="section">
@@ -288,6 +315,36 @@
               <li>Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows.</li>
               <li>Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality.</li>
               <li>Reduced document review time by 30% with AI-driven system.</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Ulster Bank</strong>, <span class="company-name">Accenture</span></div>
+            <ul>
+              <li>Automated machine learning pipelines for customer segmentation algorithms using Python, Glue, and Athena.</li>
+              <li>Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders.</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Facebook</strong>, <span class="company-name">Accenture</span></div>
+            <ul>
+              <li>Examined data from multiple disparate sources to discover insights providing competitive advantage for clients.</li>
+              <li>Designed and optimized machine learning pipelines, specializing in the creation of forecasting models.</li>
+              <li>Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes.</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Waste Classification Code</strong>, <span class="company-name">Clean Harbors</span></div>
+            <ul>
+              <li>Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment.</li>
+              <li>Created a unified dataset encompassing vital features for all waste classes.</li>
+              <li>Applied logical data checks for input consistency, facilitating classification based on physical properties.</li>
+            </ul>
+          </div>
+          <div class="project">
+            <div class="project-title"><strong>Invoice Audit</strong>, <span class="company-name">Clean Harbors</span></div>
+            <ul>
+              <li>Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis.</li>
+              <li>Streamlined invoice verification, reducing audit time by 20%.</li>
             </ul>
           </div>
         </div>
@@ -315,12 +372,21 @@
             <li>Neo4j - Neo4j & LLM Fundamentals</li>
             <li>IBM - Watsonx Essentials</li>
             <li>Microsoft & LinkedIn - Generative AI</li>
+            <li>Microsoft - Azure Machine Learning</li>
+            <li>Stanford University - Machine Learning</li>
+            <li>Duke University - DevOps, DataOps, MLOps</li>
+            <li>LangChain Academy - LangSmith</li>
+            <li>AWS - AWS Cloud</li>
+            <li>Udemy - Project Management Fundamentals</li>
+            <li>Udemy - Product Management Fundamentals</li>
+            <li>Udemy - MCP (Model Context Protocol)</li>
+            <li>Microsoft - SQL Server</li>
           </ul>
         </div>
         <div class="section">
           <div class="section-title"><i class="fas fa-trophy"></i><span>Key Achievements</span></div>
           <ul>
-            <li>#1 ranking in HackerRank SQL</li>
+            <li>Ranked #1 in HackerRank SQL</li>
             <li>Consistently recognized by clients for error-free, timely project deliveries</li>
             <li>Cleared IIT JEE-2013, ranking in the top 1% of JEE Advanced qualifiers</li>
             <li>Served as Student Representative in Mess Committee, IIT Dhanbad (2015-2016)</li>
@@ -330,12 +396,25 @@
           <div class="section-title"><i class="fas fa-tools"></i><span>Skills</span></div>
           <div class="skills-list">
             <ul>
-              <li><strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, LangGraph, LangSmith, Langflow, CrewAI, AutoGen, Bee</li>
+              <li><strong>Data Science & AI:</strong> Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, LangGraph, LangSmith, Langflow, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development & Deployment, RAG, Vector DB, Prompt Engineering</li>
               <li><strong>Cloud Platforms:</strong> Azure, AWS, GCP, IBM</li>
               <li><strong>Programming:</strong> Python, SQL</li>
               <li><strong>Data Engineering:</strong> Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy</li>
+              <li><strong>Databases:</strong> Azure SQL, SQL Server, MySQL, MongoDB, BigQuery</li>
+              <li><strong>Visualization:</strong> Power BI, Matplotlib, Seaborn</li>
+              <li><strong>DevOps:</strong> Docker, Kubernetes, Git, CI/CD</li>
+              <li><strong>Domains:</strong> Finance, Banking, Environmental, Social Media, Waste Management, Energy</li>
             </ul>
           </div>
+        </div>
+        <div class="section">
+          <div class="section-title"><i class="fas fa-star"></i><span>Core Competencies</span></div>
+          <ul>
+            <li>Data Science, Analytics & AI</li>
+            <li>Business and Data Analytics</li>
+            <li>Project Management and Deployment</li>
+            <li>Product Management</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -360,8 +439,10 @@
         const imgWidth = 210;
         const pageHeight = 297;
         const imgHeight = canvas.height * imgWidth / canvas.width;
-        const imgData = canvas.toDataURL('image/png', 1.0);
-        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'SLOW');
+        const imgData = canvas.toDataURL('image/jpeg', 0.9);
+        let heightRatio = pageHeight / imgHeight;
+        let adjustedHeight = imgHeight * heightRatio;
+        doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, adjustedHeight, undefined, 'FAST');
         doc.save('Chandan_Kumar_Resume.pdf');
         button.innerHTML = "Download Resume as PDF";
         button.disabled = false;
