@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chandan Kumar - Data Scientist</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --primary: #0A3D62;
+      --accent: #FF9F43;
+      --text: #1A1A1A;
+      --light: #F8F9FA;
+      --border: #E0E0E0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 12px;
+    }
+
+    .container {
+      width: 210mm;
+      max-width: 100%;
+      margin: 10px auto;
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-image {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      overflow: hidden;
+    }
+
+    .profile-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .profile-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .profile-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .contact-info {
+      font-size: 10px;
+      text-align: right;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      margin: 2px 0;
+    }
+
+    .contact-item .icon {
+      color: var(--primary);
+      font-size: 10px;
+    }
+
+    .contact-item a, .contact-item span {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .content {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .left-column, .right-column {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .section {
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 3px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 6px;
+      font-size: 12px;
+    }
+
+    .job, .project, .education-item {
+      margin-bottom: 6px;
+    }
+
+    .job-title, .school-name, .project-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .company-name {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--primary);
+      margin-left: 4px;
+    }
+
+    .job-period, .education-period {
+      font-size: 11px;
+      color: #555;
+      float: right;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-top: 2px;
+    }
+
+    li {
+      margin-bottom: 3px;
+      font-size: 11px;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    #downloadButton {
+      display: block;
+      margin: 15px auto 0;
+      padding: 10px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    #downloadButton:hover {
+      background: #073052;
+    }
+
+    @media print {
+      body { background: none; }
+      .container {
+        box-shadow: none;
+        padding: 0;
+        width: 100%;
+      }
+      #downloadButton { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .content { flex-direction: column; }
+      .container { width: 95%; padding: 8px; }
+      .profile-name { font-size: 14px; }
+      .profile-title { font-size: 10px; }
+      .contact-info { text-align: left; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="resumeContent">
+    <!-- Header (Same as original) -->
+    <!-- ... [Keep your header HTML] ... -->
+
+    <!-- Left Column -->
+    <div class="left-column">
+      <!-- Professional Summary -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-user-tie"></i>Professional Summary</div>
+        <p>IIT Dhanbad graduate with 7+ years of experience driving data science and AI innovation across finance, energy, and environmental sectors. Expertise in Generative AI, MLOps, NLP, and cloud platforms (Azure, AWS, GCP, IBM Watsonx.ai). Proven track record in deploying scalable solutions that reduce costs, automate workflows, and deliver actionable insights.</p>
+      </div>
+
+      <!-- Experience -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-briefcase"></i>Experience</div>
+        <div class="job">
+          <div class="job-title">IBM - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
+        </div>
+        <div class="job">
+          <div class="job-title">Accenture - Data Scientist <span class="job-period">Apr 2021 - Feb 2024</span></div>
+        </div>
+        <div class="job">
+          <div class="job-title">Capgemini - Process Lead <span class="job-period">Feb 2021 - Mar 2021</span></div>
+        </div>
+        <div class="job">
+          <div class="job-title">Clean Harbors - Data Scientist <span class="job-period">Jun 2018 - Jan 2021</span></div>
+        </div>
+      </div>
+
+      <!-- Key Projects -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-project-diagram"></i>Key Projects</div>
+        <div class="project">
+          <div class="project-title">MARC (Multi-Agent Resource Coordinator) <span class="company-name">IBM</span></div>
+          <ul>
+            <li>Led development of multi-agent workflows for enterprise automation using LLMs.</li>
+            <li>Integrated AI governance frameworks to ensure compliance and ethical behavior.</li>
+            <li>Improved workflow efficiency by 35% through intelligent agent orchestration.</li>
+          </ul>
+        </div>
+        <div class="project">
+          <div class="project-title">PdfGPT for Mizuho Bank <span class="company-name">Accenture</span></div>
+          <ul>
+            <li>Created AI-powered summarization tool reducing document review time by 30%.</li>
+            <li>Enabled chat-based PDF interaction for client stakeholders.</li>
+          </ul>
+        </div>
+        <!-- Add other projects similarly -->
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+      <!-- Education -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-graduation-cap"></i>Education</div>
+        <div class="education-item">
+          <div class="school-name">IIT Dhanbad - B.Tech</div>
+          <div class="education-period">2013-2017</div>
+        </div>
+        <div class="education-item">
+          <div class="school-name">Super30, Patna</div>
+          <div class="education-period">2012-2013</div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-certificate"></i>Certifications</div>
+        <ul>
+          <li>Northwestern University - Analytics & AI</li>
+          <li>Stanford - Machine Learning (Coursera)</li>
+          <li>LangChain Academy - LangGraph, LangSmith</li>
+          <li>Hugging Face - AI Agents Fundamentals</li>
+          <li>AWS Certified Cloud Practitioner</li>
+          <!-- Add others... -->
+        </ul>
+      </div>
+
+      <!-- Skills -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-tools"></i>Skills</div>
+        <ul>
+          <li><strong>AI/ML:</strong> Generative AI, RAG, LangChain, TensorFlow, PyTorch</li>
+          <li><strong>Cloud:</strong> Azure, AWS, GCP, IBM Watsonx.ai</li>
+          <li><strong>Tools:</strong> Docker, Kubernetes, Git, Power BI</li>
+          <li><strong>Domains:</strong> Finance, Banking, Environmental Tech</li>
+        </ul>
+      </div>
+
+      <!-- Achievements -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-trophy"></i>Achievements</div>
+        <ul>
+          <li>Top 1% JEE Advanced Qualifier</li>
+          <li>#1 Rank - HackerRank SQL Challenges</li>
+          <li>Recognized for error-free deliveries at Accenture & IBM</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
+  <script>
+    // Same download script as before
+  </script>
+</body>
+</html>
