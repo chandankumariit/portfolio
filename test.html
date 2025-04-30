@@ -22,7 +22,7 @@
     body {
       font-family: 'Roboto', sans-serif;
       color: var(--text-color);
-      line-height: 1.25; /* Reduced from 1.3 */
+      line-height: 1.4;
       background-color: var(--background-color);
       font-size: 12px;
       font-weight: 400;
@@ -33,7 +33,7 @@
       margin: 0 auto;
       background-color: white;
       box-shadow: 0 6px 24px rgba(0,0,0,0.1);
-      padding: 0 2mm 2mm 2mm;
+      padding: 0 2mm 2mm 2mm; /* Further reduced from 4mm to 2mm */
       position: relative;
       overflow: hidden;
       border-radius: 8px;
@@ -42,22 +42,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1px; /* Reduced from 2px */
-      margin-bottom: 1px; /* Reduced from 2px */
+      padding: 2px 3px; /* Reduced from 4px to 3px */
+      margin-bottom: 2px; /* Reduced from 3px to 2px */
       border-bottom: 2px solid var(--primary-color);
     }
     .profile-section {
       display: flex;
       align-items: center;
-      gap: 5px; /* Reduced from 6px */
+      gap: 8px;
     }
     .profile-image {
-      width: 64px;
-      height: 64px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       overflow: hidden;
       border: 2px solid var(--border-color);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Added for visual enhancement */
     }
     .profile-image img {
       width: 100%;
@@ -67,12 +66,12 @@
     .profile-image-fallback {
       display: none;
       background-color: var(--light-gray);
-      width: 64px;
-      height: 64px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       text-align: center;
-      line-height: 64px;
-      font-size: 10px;
+      line-height: 48px;
+      font-size: 8px;
       color: #666;
     }
     .profile-details {
@@ -80,23 +79,22 @@
       flex-direction: column;
     }
     .profile-name {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: 0.2px;
       color: var(--text-color);
     }
     .profile-title {
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--accent-color);
     }
     .contact-info {
       display: flex;
       flex-direction: column;
-      gap: 3px; /* Increased from 2px */
-      font-size: 11px; /* Increased from 9px */
+      gap: 2px;
+      font-size: 9px;
       text-align: right;
-      min-width: 120px; /* Added to prevent wrapping */
     }
     .contact-item {
       display: flex;
@@ -106,7 +104,7 @@
     }
     .contact-item .icon {
       color: var(--primary-color);
-      font-size: 11px; /* Increased from 9px */
+      font-size: 9px;
     }
     .contact-item a, .contact-item span {
       color: var(--text-color);
@@ -115,12 +113,12 @@
     }
     .content {
       display: flex;
-      gap: 7px;
-      margin-top: 2px;
+      gap: 8px; /* Increased from 6px to 8px for clear column separation */
+      margin-top: 2px; /* Reduced from 3px to 2px */
     }
-    .left-column { flex: 8; }
-    .right-column { flex: 6; }
-    .section { margin-bottom: 4px; }
+    .left-column { flex: 8; } /* Increased from 7 to 8 */
+    .right-column { flex: 6; } /* Increased from 5 to 6 */
+    .section { margin-bottom: 5px; } /* Reduced from 6px to 5px */
     .section-title {
       font-size: 14px;
       font-weight: 700;
@@ -128,7 +126,7 @@
       text-transform: uppercase;
       border-bottom: 1px solid var(--secondary-color);
       padding-bottom: 2px;
-      margin-bottom: 3px;
+      margin-bottom: 3px; /* Reduced from 4px to 3px */
       letter-spacing: 0.5px;
       display: flex;
       align-items: center;
@@ -141,16 +139,16 @@
     .section-title span {
       color: var(--primary-color);
     }
-    .job, .education-item, .project { margin-bottom: 3px; }
+    .job, .education-item, .project { margin-bottom: 3px; } /* Reduced from 4px to 3px */
     .job-title {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-color);
       display: inline-block;
       width: 100%;
     }
     .school-name, .project-title {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-color);
     }
@@ -163,7 +161,7 @@
     .job-period {
       display: inline-block;
       font-weight: 600;
-      font-size: 11px;
+      font-size: 12px;
       color: #555;
       float: right;
       margin-left: 5px;
@@ -174,28 +172,27 @@
       align-items: baseline;
     }
     .education-details {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-color);
     }
     .education-period {
       font-weight: 600;
-      font-size: 11px;
+      font-size: 12px;
       color: #555;
     }
     ul {
-      padding-left: 13px; /* Reduced from 14px */
+      padding-left: 15px;
       margin: 2px 0;
     }
     li {
       margin-bottom: 2px;
       text-align: justify;
-      font-size: 12px;
     }
     p {
       margin: 2px 0;
       text-align: justify;
-      font-size: 12px;
+      font-size: 13px;
     }
     strong {
       font-weight: 700;
@@ -240,40 +237,18 @@
     @media (max-width: 768px) {
       .content { flex-direction: column; }
       .container {
-        width: 99%;
-        padding: 0 2mm 2mm 2mm;
+        width: 99%; /* Increased from 98% to 99% */
+        padding: 0 2mm 2mm 2mm; /* Reduced to 2mm for mobile */
       }
       header {
         flex-direction: column;
         align-items: flex-start;
-        gap:wi3px;
-        padding: 2px;
+        gap: 3px;
+        padding: 2px 2px;
       }
-      .contact-info {
-        text-align: left;
-        align-items: flex-start;
-        font-size: 10px; /* Adjusted for mobile */
-        min-width: auto; /* Remove min-width for mobile */
-      }
-      .contact-item .icon {
-        font-size: 10px; /* Adjusted for mobile */
-      }
-      .profile-image {
-        width: 48px;
-        height: 48px;
-      }
-      .profile-image-fallback {
-        width: 48px;
-        height: 48px;
-        line-height: 48px;
-        font-size: 8px;
-      }
-      .profile-name {
-        font-size: 16px;
-      }
-      .profile-title {
-        font-size: 11px;
-      }
+      .contact-info { text-align: left; align-items: flex-start; }
+      .profile-image { width: 40px; height: 40px; }
+      .profile-image-fallback { width: 40px; height: 40px; line-height: 40px; }
     }
   </style>
 </head>
