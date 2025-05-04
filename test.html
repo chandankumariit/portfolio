@@ -8,26 +8,41 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
+
     :root {
-      --primary-color: #0D47A1;
+      /* Colors */
+      --primary-color: #1565C0;
       --secondary-color: #1976D2;
-      --accent-color: #FFCA28;
+      --accent-color: #FFB300;
       --highlight-color: #1B263B;
       --text-color: #212121;
+      --light-text-color: #333;
       --light-gray: #F5F5F5;
       --border-color: #E0E0E0;
       --background-color: #FAFAFA;
+
+      /* Spacing */
+      --section-margin: 5px;
+      --list-item-margin: 3px;
+      --content-gap: 10px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Poppins', sans-serif;
       color: var(--text-color);
-      line-height: 1.35;
+      line-height: 1.5;
       background-color: var(--background-color);
-      font-size: 12.5px;
+      font-size: 11px;
       font-weight: 400;
     }
+
     .container {
       width: 210mm;
       height: 297mm;
@@ -40,19 +55,23 @@
       border-radius: 8px;
       border: 0.5px solid var(--accent-color);
     }
+
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 2px 3px;
-      margin-bottom: 2px;
+      padding: 4px 6px;
+      margin-bottom: 4px;
       border-bottom: 2px solid var(--primary-color);
+      background: white;
     }
+
     .profile-section {
       display: flex;
       align-items: center;
       gap: 8px;
     }
+
     .profile-image {
       width: 48px;
       height: 48px;
@@ -60,11 +79,13 @@
       overflow: hidden;
       border: 2px solid var(--border-color);
     }
+
     .profile-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .profile-image-fallback {
       display: none;
       background-color: var(--light-gray);
@@ -73,156 +94,201 @@
       border-radius: 50%;
       text-align: center;
       line-height: 48px;
-      font-size: 10px;
-      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--light-text-color);
     }
+
     .profile-details {
       display: flex;
       flex-direction: column;
     }
+
     .profile-name {
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 700;
       letter-spacing: 0.2px;
       color: var(--text-color);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
+
     .profile-title {
       font-size: 11px;
       font-weight: 600;
       color: var(--highlight-color);
     }
+
     .contact-info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
       font-size: 10px;
       text-align: right;
     }
+
     .contact-item {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 3px;
+      gap: 4px;
     }
+
     .contact-item .icon {
-      color: var(--primary-color);
-      font-size: 10px;
+      color: white;
+      font-size: 11px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
     .contact-item a, .contact-item span {
       color: var(--text-color);
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 600;
+      transition: color 0.3s ease;
     }
+
+    .contact-item a:hover {
+      color: var(--accent-color);
+    }
+
     .content {
       display: flex;
-      gap: 8px;
-      margin-top: 2px;
+      gap: var(--content-gap);
+      margin-top: 4px;
     }
+
     .left-column { flex: 8; }
     .right-column { flex: 6; }
-    .section { margin-bottom: 5px; }
+
+    .section {
+      margin-bottom: var(--section-margin);
+      page-break-inside: avoid;
+    }
+
     .section-title {
-      font-size: 14.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--primary-color);
       text-transform: uppercase;
       border-bottom: 1px solid var(--secondary-color);
       padding-bottom: 2px;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       letter-spacing: 0.5px;
       display: flex;
       align-items: center;
     }
+
     .section-title i {
       color: var(--primary-color);
       margin-right: 0.8mm;
-      font-size: 12px;
+      font-size: 9.5px;
+      background-color: var(--accent-color);
+      padding: 2px;
+      border-radius: 2px;
     }
+
     .section-title span {
       color: var(--primary-color);
     }
+
     .job, .education-item, .project {
-      margin-bottom: 3px;
+      margin-bottom: var(--list-item-margin);
       border-bottom: 0.5px solid var(--border-color);
       padding-bottom: 3px;
+      padding-left: 12px;
+      page-break-inside: avoid;
     }
+
     .job:last-child, .project:last-child {
       border-bottom: none;
     }
-    .job {
-      padding-left: 15px;
-    }
+
     .job-title {
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--text-color);
       display: inline-block;
       width: 100%;
       letter-spacing: 0.2px;
     }
+
     .school-name, .project-title {
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--text-color);
-      padding-left: 15px;
     }
+
     .project-title .company-name {
       font-weight: 400;
       font-style: italic;
       color: var(--primary-color);
       margin-left: 3px;
     }
-    .job-period {
+
+    .job-period, .education-period {
       display: inline-block;
       font-weight: 600;
-      font-size: 12px;
-      color: #555;
+      font-size: 10.5px;
+      color: var(--light-text-color);
+      background-color: rgba(21, 101, 192, 0.1);
+      padding: 2px 4px;
+      border-radius: 3px;
       float: right;
       margin-left: 5px;
     }
+
     .education-item {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      padding-left: 15px;
     }
+
     .education-details {
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--text-color);
     }
-    .education-period {
-      font-weight: 600;
-      font-size: 12px;
-      color: #555;
-    }
+
     ul {
-      padding-left: 15px;
+      padding-left: 12px;
       margin: 2px 0;
+      list-style: none;
     }
+
     ul li {
-      margin-bottom: 3px;
+      margin-bottom: var(--list-item-margin);
       text-align: justify;
-      font-size: 12px;
+      font-size: 10.5px;
+      position: relative;
     }
-    ul li::marker {
+
+    ul li::before {
+      content: '•';
       color: var(--primary-color);
+      position: absolute;
+      left: -10px;
     }
+
     p {
       margin: 2px 0;
       text-align: justify;
-      font-size: 13px;
+      font-size: 11.5px;
+      padding-left: 12px;
     }
-    .section p {
-      padding-left: 15px;
-    }
+
     strong {
       font-weight: 700;
       color: var(--text-color);
     }
+
     #downloadButton {
       display: block;
-      width: 200px;
+      width: min(200px, 80%);
       margin: 10px auto;
       padding: 8px;
       background-color: var(--primary-color);
@@ -231,15 +297,27 @@
       border-radius: 4px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 12.5px;
       border: none;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      position: relative;
     }
+
     #downloadButton:hover {
       background-color: var(--secondary-color);
+      transform: scale(1.05);
     }
-    .skills-list ul li { margin-bottom: 2px; }
+
+    #downloadButton:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .skills-list ul li {
+      line-height: 1.6;
+    }
+
     @media print {
       body { background: none; }
       .container {
@@ -253,36 +331,40 @@
       #downloadButton { display: none; }
       header {
         border-bottom: 2px solid var(--primary-color);
+        background: white;
       }
       .contact-item a, .contact-item span { color: var(--text-color); }
       .profile-title { color: var(--highlight-color); }
     }
+
     @media (max-width: 768px) {
       .content { flex-direction: column; }
       .container {
-        width: 99%;
+        width: 100%;
         padding: 0 1.5mm 1.5mm 1.5mm;
         border: none;
       }
       header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 3px;
-        padding: 2px 2px;
+        gap: 4px;
+        padding: 4px;
       }
       .contact-info { text-align: left; align-items: flex-start; }
       .profile-image { width: 40px; height: 40px; }
       .profile-image-fallback { width: 40px; height: 40px; line-height: 40px; }
+      .profile-name { font-size: 16px; }
+      .profile-title { font-size: 10px; }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="resumeContent">
+  <div class="container" id="resumeContent" role="main">
     <header>
       <div class="profile-section">
         <div class="profile-image">
           <img src="ck.jpg" alt="Chandan Kumar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-          <div class="profile-image-fallback">Image Not Available</div>
+          <div class="profile-image-fallback" role="img" aria-label="Initials CK">CK</div>
         </div>
         <div class="profile-details">
           <div class="profile-name">CHANDAN KUMAR</div>
@@ -291,15 +373,15 @@
       </div>
       <div class="contact-info">
         <div class="contact-item">
-          <span class="icon"><i class="fas fa-phone"></i></span>
+          <span class="icon"><i class="fas fa-phone" aria-hidden="true"></i></span>
           <span>+91-9199000200</span>
         </div>
         <div class="contact-item">
-          <span class="icon"><i class="fas fa-envelope"></i></span>
+          <span class="icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
           <a href="mailto:ckism.iit@gmail.com">ckism.iit@gmail.com</a>
         </div>
         <div class="contact-item">
-          <span class="icon"><i class="fab fa-linkedin-in"></i></span>
+          <span class="icon"><i class="fab fa-linkedin-in" aria-hidden="true"></i></span>
           <a href="https://www.linkedin.com/in/chandaniit">linkedin.com/in/chandaniit</a>
         </div>
       </div>
@@ -446,19 +528,19 @@
       </div>
     </div>
   </div>
-  <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
+  <button id="downloadButton" aria-label="Download resume as PDF" onclick="downloadPDF()">Download Resume as PDF</button>
   <script>
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
       const element = document.getElementById('resumeContent');
+      const button = document.getElementById('downloadButton');
       try {
-        const button = document.getElementById('downloadButton');
         button.innerHTML = "Generating PDF...";
         button.disabled = true;
         const canvas = await html2canvas(element, {
-          scale: 3,
-          useCORS: true,
+          scale: 2,
+          useCORS: true;
           logging: false,
           backgroundColor: '#ffffff',
           windowHeight: element.scrollHeight
@@ -471,11 +553,10 @@
         let adjustedHeight = imgHeight * heightRatio;
         doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, adjustedHeight, undefined, 'FAST');
         doc.save('Chandan_Kumar_Resume.pdf');
-        button.innerHTML = "Download Resume as PDF";
-        button.disabled = false;
       } catch (error) {
         console.error('Error generating PDF:', error);
         alert('Failed to generate PDF. Please try again.');
+      } finally {
         button.innerHTML = "Download Resume as PDF";
         button.disabled = false;
       }
