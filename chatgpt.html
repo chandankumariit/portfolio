@@ -3,217 +3,227 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chandan Kumar Resume</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Chandan Kumar - Resume</title>
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
       background: #f4f4f4;
+      color: #333;
     }
 
     .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 30px;
+      max-width: 1000px;
+      margin: 20px auto;
       background: white;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #000;
-      padding-bottom: 20px;
+      flex-wrap: wrap;
     }
 
-    .header img {
-      width: 120px;
-      height: 120px;
-      border-radius: 60px;
-      object-fit: cover;
+    .name {
+      font-size: 32px;
+      font-weight: bold;
+      color: #2c3e50;
     }
 
-    .header .info {
-      flex: 1;
-      margin-left: 20px;
-    }
-
-    .info h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .info p {
-      margin: 5px 0;
-      font-size: 14px;
+    .title {
+      font-size: 18px;
       color: #555;
     }
 
-    h2 {
-      margin-top: 40px;
-      font-size: 20px;
-      color: #2c3e50;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 5px;
+    .download-button {
+      padding: 10px 16px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
     }
 
     .section {
-      margin-top: 20px;
+      margin-top: 30px;
     }
 
-    .section ul {
-      list-style: none;
-      padding-left: 0;
+    .section h2 {
+      border-bottom: 2px solid #0077cc;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+      color: #0077cc;
     }
 
-    .section li {
-      margin-bottom: 10px;
+    .two-column {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
     }
 
-    .bold {
-      font-weight: 700;
+    .left-column,
+    .right-column {
+      flex: 1;
     }
 
-    .button-wrapper {
-      text-align: center;
-      margin: 30px 0 10px;
+    .item {
+      margin-bottom: 20px;
     }
 
-    #downloadButton {
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
+    .item-title {
+      font-weight: bold;
     }
 
-    #downloadButton:hover {
-      background: #0056b3;
+    .item-subtitle {
+      font-style: italic;
+      font-size: 14px;
+      color: #666;
+    }
+
+    ul {
+      margin-top: 5px;
+      padding-left: 20px;
+    }
+
+    .quote {
+      font-style: italic;
+      color: #444;
+      background: #e9f3fc;
+      padding: 10px;
+      border-left: 4px solid #0077cc;
     }
 
     @media print {
-      #downloadButton {
+      .download-button {
         display: none;
+      }
+
+      body {
+        background: white;
+      }
+
+      .container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="resumeContent">
+
+  <div class="container">
     <div class="header">
-      <img src="https://avatars.githubusercontent.com/u/102573302?v=4" alt="Chandan Kumar" />
-      <div class="info">
-        <h1>Chandan Kumar</h1>
-        <p>Email: chandank1996@gmail.com</p>
-        <p>Phone: 9199999999</p>
-        <p>LinkedIn: linkedin.com/in/chandank1996</p>
-        <p>GitHub: github.com/ckcodesdev</p>
+      <div>
+        <div class="name">Chandan Kumar</div>
+        <div class="title">AI Researcher | IIT Alumnus | Former Super30 Student</div>
+      </div>
+      <button class="download-button" onclick="window.print()">Download as PDF</button>
+    </div>
+
+    <div class="quote">"What others left, we continue."</div>
+
+    <div class="section two-column">
+      <div class="left-column">
+        <div class="item">
+          <div class="item-title">📧 Email</div>
+          <div>chandan@example.com</div>
+        </div>
+        <div class="item">
+          <div class="item-title">📍 Location</div>
+          <div>Bangalore, India</div>
+        </div>
+        <div class="item">
+          <div class="item-title">🔗 LinkedIn</div>
+          <div><a href="https://www.linkedin.com/in/chandankumar" target="_blank">linkedin.com/in/chandankumar</a></div>
+        </div>
+        <div class="item">
+          <div class="item-title">💼 GitHub</div>
+          <div><a href="https://github.com/chandankumar" target="_blank">github.com/chandankumar</a></div>
+        </div>
+      </div>
+
+      <div class="right-column">
+        <div class="item">
+          <div class="item-title">🏢 Current Role</div>
+          <div>Product Engineer at MNC</div>
+        </div>
+        <div class="item">
+          <div class="item-title">🧠 Interests</div>
+          <ul>
+            <li>AI Research</li>
+            <li>Multi-agent Systems</li>
+            <li>Web Automation</li>
+            <li>Data Engineering (Learning)</li>
+          </ul>
+        </div>
       </div>
     </div>
 
     <div class="section">
-      <h2>Summary</h2>
-      <p>Innovative and results-oriented software engineer with a strong foundation in computer science and a passion for developing scalable web applications. Proven track record of delivering high-quality solutions in fast-paced environments.</p>
+      <h2>🧑‍💼 Experience</h2>
+      <div class="item">
+        <div class="item-title">Product Engineer, MNC</div>
+        <div class="item-subtitle">2021 – Present</div>
+        <ul>
+          <li>Working on automated systems for ServiceNow and Jira integration.</li>
+          <li>Built MARC, a multi-agent reasoning coordination framework.</li>
+          <li>Designed a web check-in automation agent using LangChain and IBM models.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="section">
-      <h2>Skills</h2>
-      <ul>
-        <li><span class="bold">Languages:</span> Python, JavaScript, HTML, CSS</li>
-        <li><span class="bold">Frameworks/Libraries:</span> React, Node.js, Express</li>
-        <li><span class="bold">Tools:</span> Git, Docker, Jenkins</li>
-        <li><span class="bold">Databases:</span> MySQL, MongoDB</li>
-      </ul>
+      <h2>🎓 Education</h2>
+      <div class="item">
+        <div class="item-title">Indian Institute of Technology (IIT)</div>
+        <div class="item-subtitle">B.Tech - Computer Science</div>
+      </div>
+      <div class="item">
+        <div class="item-title">Super30</div>
+        <div class="item-subtitle">Selected Student</div>
+      </div>
     </div>
 
     <div class="section">
-      <h2>Experience</h2>
-      <ul>
-        <li>
-          <span class="bold">Software Developer</span>, ABC Corp – 2022–Present<br/>
-          Developed and maintained full-stack applications that increased user engagement by 30%. Collaborated with cross-functional teams using Agile methodologies.
-        </li>
-        <li>
-          <span class="bold">Intern</span>, XYZ Ltd – Summer 2021<br/>
-          Created internal dashboards using React and integrated REST APIs to improve internal productivity.
-        </li>
-      </ul>
+      <h2>🛠️ Projects</h2>
+      <div class="item">
+        <div class="item-title">MARC (Multi-Agent Reasoning and Coordination)</div>
+        <ul>
+          <li>Developed coordination logic for agents to collaborate on tasks under constraints.</li>
+          <li>Integrated with IBM Watson for NLP-based task interpretation.</li>
+        </ul>
+      </div>
+      <div class="item">
+        <div class="item-title">Policy-Guided Web Check-in Agent</div>
+        <ul>
+          <li>Created LangChain-driven policy automation using airline check-in policies.</li>
+          <li>Used IBM models for secure integration and policy adherence.</li>
+        </ul>
+      </div>
+      <div class="item">
+        <div class="item-title">Resume Matching System</div>
+        <ul>
+          <li>Built a resume-job description matcher using LLMs and similarity scoring.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="section">
-      <h2>Education</h2>
+      <h2>📜 Skills</h2>
       <ul>
-        <li>
-          <span class="bold">B.Tech in Computer Science</span>, IIT – Graduated 2020<br/>
-          CGPA: 8.5/10
-        </li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Projects</h2>
-      <ul>
-        <li>
-          <span class="bold">MARC – Multi-Agent Recommendation Chatbot</span><br/>
-          Developed an intelligent agent-based system for handling customer queries using LangChain and IBM Watson APIs.
-        </li>
-        <li>
-          <span class="bold">Resume Matcher System</span><br/>
-          Built a semantic resume-matching engine using NLP and cosine similarity to filter resumes based on job descriptions.
-        </li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Certifications</h2>
-      <ul>
-        <li>Google Data Analytics Professional Certificate</li>
-        <li>IBM AI Engineering</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Achievements</h2>
-      <ul>
-        <li>Super 30 Alum – Selected among top 30 students for advanced IIT training.</li>
-        <li>First place in National Hackathon 2022 for building a real-time fraud detection system.</li>
+        <li>Languages: Python, JavaScript</li>
+        <li>Frameworks: LangChain, Flask, FastAPI</li>
+        <li>Tools: IBM Watson, Neo4j, ServiceNow API, Jira API</li>
+        <li>Others: HTML/CSS, Git, REST APIs, PyMuPDF</li>
       </ul>
     </div>
   </div>
 
-  <div class="button-wrapper">
-    <button id="downloadButton">Download as PDF</button>
-  </div>
-
-  <!-- PDF Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaLj8uvBkhcB+mF3HVEcWBY6eD8BeHYMz6yQ0FyGfXK/NK9WTYN3sAtWiZzGp5ykpvWTmN4iMPUeYczhK0F+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-Y3H7mlD/WHxZ7V8l+fVv9hV4v9/X4gqeS+IhKffKxAvTmnDZjB7Fl4nh7tHtAvJS+R7evlgV2B7y3sWv7xclWg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    document.getElementById("downloadButton").addEventListener("click", function () {
-      const { jsPDF } = window.jspdf;
-      const resume = document.getElementById("resumeContent");
-
-      html2canvas(resume, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        windowWidth: resume.scrollWidth,
-      }).then(canvas => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const imgProps = pdf.getImageProperties(imgData);
-        const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
-
-        pdf.addImage(imgData, "PNG", 0, 0, pageWidth, imgHeight);
-        pdf.save("Chandan_Kumar_Resume.pdf");
-      });
-    });
-  </script>
 </body>
 </html>
