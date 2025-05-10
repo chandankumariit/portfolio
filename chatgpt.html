@@ -3,103 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chandan Kumar - Resume</title>
+  <title>Chandan & Anjali - Wedding Invitation</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Great Vibes', cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f4f4f4;
-      color: #333;
+      background: #fff7f5;
+      color: #4a2c2a;
+      overflow-x: hidden;
     }
 
     .container {
-      max-width: 1000px;
-      margin: 20px auto;
+      max-width: 900px;
+      margin: 40px auto;
       background: white;
-      padding: 30px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      position: relative;
+      background: linear-gradient(135deg, #fff 0%, #fdedec 100%);
     }
 
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+      text-align: center;
+      margin-bottom: 30px;
     }
 
-    .name {
-      font-size: 32px;
-      font-weight: bold;
-      color: #2c3e50;
+    .couple-image {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .title {
-      font-size: 18px;
-      color: #555;
+    .names {
+      font-size: 60px;
+      font-weight: 400;
+      color: #b76e79;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      margin: 0;
     }
 
-    .download-button {
-      padding: 10px 16px;
-      background-color: #0077cc;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
+    .and {
+      font-size: 36px;
+      color: #d4a5a5;
+      margin: 10px 0;
+    }
+
+    .subtitle {
+      font-size: 24px;
+      color: #6b4e4d;
+      font-style: italic;
     }
 
     .section {
       margin-top: 30px;
+      text-align: center;
     }
 
     .section h2 {
-      border-bottom: 2px solid #0077cc;
+      font-size: 28px;
+      color: #b76e79;
+      border-bottom: 2px solid #d4a5a5;
+      display: inline-block;
       padding-bottom: 5px;
-      margin-bottom: 15px;
-      color: #0077cc;
-    }
-
-    .two-column {
-      display: flex;
-      justify-content: space-between;
-      gap: 30px;
-    }
-
-    .left-column,
-    .right-column {
-      flex: 1;
-    }
-
-    .item {
       margin-bottom: 20px;
     }
 
-    .item-title {
+    .details {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #4a2c2a;
+    }
+
+    .details b {
+      color: #b76e79;
+    }
+
+    .map-link {
+      color: #b76e79;
+      text-decoration: none;
       font-weight: bold;
     }
 
-    .item-subtitle {
-      font-style: italic;
-      font-size: 14px;
-      color: #666;
+    .map-link:hover {
+      text-decoration: underline;
     }
 
-    ul {
-      margin-top: 5px;
-      padding-left: 20px;
+    .rsvp-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #b76e79;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 20px;
+      text-decoration: none;
     }
 
     .quote {
       font-style: italic;
-      color: #444;
-      background: #e9f3fc;
-      padding: 10px;
-      border-left: 4px solid #0077cc;
+      font-size: 20px;
+      color: #6b4e4d;
+      background: #fdedec;
+      padding: 15px;
+      border-left: 4px solid #b76e79;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    .decor {
+      position: absolute;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .decor-top-left {
+      top: 10px;
+      left: 10px;
+      width: 100px;
+      transform: rotate(45deg);
+    }
+
+    .decor-bottom-right {
+      bottom: 10px;
+      right: 10px;
+      width: 100px;
+      transform: rotate(-45deg);
     }
 
     @media print {
-      .download-button {
+      .rsvp-button {
         display: none;
       }
 
@@ -110,120 +150,81 @@
       .container {
         box-shadow: none;
         margin: 0;
-        padding: 0;
+        padding: 20px;
+      }
+
+      .decor {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 20px;
+      }
+
+      .names {
+        font-size: 40px;
+      }
+
+      .and {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 18px;
+      }
+
+      .section h2 {
+        font-size: 22px;
+      }
+
+      .details {
+        font-size: 16px;
+      }
+
+      .couple-image {
+        max-width: 300px;
       }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 <body>
-
   <div class="container">
+    <img src="https://img.icons8.com/fluency/48/000000/floral-heart.png" class="decor decor-top-left" alt="decor">
+    <img src="https://img.icons8.com/fluency/48/000000/floral-heart.png" class="decor decor-bottom-right" alt="decor">
+
     <div class="header">
-      <div>
-        <div class="name">Chandan Kumar</div>
-        <div class="title">AI Researcher | IIT Alumnus | Former Super30 Student</div>
-      </div>
-      <button class="download-button" onclick="window.print()">Download as PDF</button>
+      <h1 class="names">Chandan</h1>
+      <div class="and">&</div>
+      <h1 class="names">Anjali</h1>
+      <div class="subtitle">request the honor of your presence at their wedding</div>
+      <!-- Placeholder Ghibli-style couple image -->
+      <img src="https://i.imgur.com/5z5qX4v.jpg" class="couple-image" alt="Chandan and Anjali">
     </div>
 
-    <div class="quote">"What others left, we continue."</div>
+    <div class="quote">"Two souls, one heart, united forever in love."</div>
 
-    <div class="section two-column">
-      <div class="left-column">
-        <div class="item">
-          <div class="item-title">📧 Email</div>
-          <div>chandan@example.com</div>
-        </div>
-        <div class="item">
-          <div class="item-title">📍 Location</div>
-          <div>Bangalore, India</div>
-        </div>
-        <div class="item">
-          <div class="item-title">🔗 LinkedIn</div>
-          <div><a href="https://www.linkedin.com/in/chandankumar" target="_blank">linkedin.com/in/chandankumar</a></div>
-        </div>
-        <div class="item">
-          <div class="item-title">💼 GitHub</div>
-          <div><a href="https://github.com/chandankumar" target="_blank">github.com/chandankumar</a></div>
-        </div>
-      </div>
-
-      <div class="right-column">
-        <div class="item">
-          <div class="item-title">🏢 Current Role</div>
-          <div>Product Engineer at MNC</div>
-        </div>
-        <div class="item">
-          <div class="item-title">🧠 Interests</div>
-          <ul>
-            <li>AI Research</li>
-            <li>Multi-agent Systems</li>
-            <li>Web Automation</li>
-            <li>Data Engineering (Learning)</li>
-          </ul>
-        </div>
+    <div class="section">
+      <h2>Ceremony Details</h2>
+      <div class="details">
+        <p><b>Date:</b> June 5, 2025</p>
+        <p><b>Time:</b> 6:00 PM</p>
+        <p><b>Venue:</b> Mahavir House, Mahavir Nagar</p>
+        <p><b>Address:</b> Mahavir Nagar, Gaya, India</p>
+        <p><a href="https://maps.google.com" target="_blank" class="map-link">View Map</a></p>
       </div>
     </div>
 
     <div class="section">
-      <h2>🧑‍💼 Experience</h2>
-      <div class="item">
-        <div class="item-title">Product Engineer, MNC</div>
-        <div class="item-subtitle">2021 – Present</div>
-        <ul>
-          <li>Working on automated systems for ServiceNow and Jira integration.</li>
-          <li>Built MARC, a multi-agent reasoning coordination framework.</li>
-          <li>Designed a web check-in automation agent using LangChain and IBM models.</li>
-        </ul>
+      <h2>RSVP</h2>
+      <div class="details">
+        <p>Kindly respond by May 20, 2025</p>
+        <a href="mailto:chandan.anjali.wedding@example.com" class="rsvp-button">RSVP Here</a>
       </div>
-    </div>
-
-    <div class="section">
-      <h2>🎓 Education</h2>
-      <div class="item">
-        <div class="item-title">Indian Institute of Technology (IIT)</div>
-        <div class="item-subtitle">B.Tech - Computer Science</div>
-      </div>
-      <div class="item">
-        <div class="item-title">Super30</div>
-        <div class="item-subtitle">Selected Student</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>🛠️ Projects</h2>
-      <div class="item">
-        <div class="item-title">MARC (Multi-Agent Reasoning and Coordination)</div>
-        <ul>
-          <li>Developed coordination logic for agents to collaborate on tasks under constraints.</li>
-          <li>Integrated with IBM Watson for NLP-based task interpretation.</li>
-        </ul>
-      </div>
-      <div class="item">
-        <div class="item-title">Policy-Guided Web Check-in Agent</div>
-        <ul>
-          <li>Created LangChain-driven policy automation using airline check-in policies.</li>
-          <li>Used IBM models for secure integration and policy adherence.</li>
-        </ul>
-      </div>
-      <div class="item">
-        <div class="item-title">Resume Matching System</div>
-        <ul>
-          <li>Built a resume-job description matcher using LLMs and similarity scoring.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>📜 Skills</h2>
-      <ul>
-        <li>Languages: Python, JavaScript</li>
-        <li>Frameworks: LangChain, Flask, FastAPI</li>
-        <li>Tools: IBM Watson, Neo4j, ServiceNow API, Jira API</li>
-        <li>Others: HTML/CSS, Git, REST APIs, PyMuPDF</li>
-      </ul>
     </div>
   </div>
-
 </body>
 </html>
