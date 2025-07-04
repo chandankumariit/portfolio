@@ -8,7 +8,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{noto}
 
-% Define Colors
+% Defining colors
 \definecolor{primary}{RGB}{13,71,161}
 \definecolor{secondary}{RGB}{25,118,210}
 \definecolor{accent}{RGB}{255,202,40}
@@ -17,13 +17,13 @@
 \definecolor{bordercolor}{RGB}{224,224,224}
 \definecolor{projectcolor}{RGB}{220,20,60}
 
-% Font and Section Styling
+% Setting font and spacing
 \renewcommand{\familydefault}{\sfdefault}
 \setlength{\parskip}{0pt}
 \setlength{\lineskip}{0pt}
 \setlength{\lineskiplimit}{0pt}
 
-% Custom Section Command
+% Defining custom section command
 \newcommand{\cvsection}[2]{%
   \vspace{4pt}
   {\color{primary}\faIcon{#1}\hspace{6pt}\textbf{\fontsize{10pt}{12pt}\selectfont\uppercase{#2}}}\\[-2pt]
@@ -31,30 +31,30 @@
   \color{textcolor}
 }
 
-% Job Entry Command
+% Defining job entry command
 \newcommand{\jobentry}[3]{%
   \vspace{2pt}
   \parbox[t]{\linewidth}{\textbf{\textcolor{primary}{#1}} --- \textit{#2} \hfill \textcolor{primary}{\textbf{#3}}}\\[-1pt]
 }
 
-% Project Entry Command
+% Defining project entry command with blue company names
 \newcommand{\projectentry}[2]{%
   \vspace{2pt}
-  \parbox[t]{\linewidth}{\textbf{\textcolor{projectcolor}{#1}}, \textit{\textcolor{primary}{#2}}}
+  \parbox[t]{\linewidth}{\textbf{\textcolor{primary}{#1}}, \textit{\textcolor{primary}{\textbf{#2}}}}
 }
 
-% Education Entry Command
+% Defining education entry command
 \newcommand{\educationentry}[3]{%
   \vspace{2pt}
   \parbox[t]{\linewidth}{\textbf{#1} --- #2 \hfill \textbf{\textcolor{primary}{#3}}}\\[-1pt]
 }
 
-% Uniform List Styling
+% Setting uniform list styling
 \setlist[itemize]{leftmargin=10pt, itemsep=1pt, parsep=0pt, topsep=2pt, partopsep=0pt, label=$\bullet$}
 
 \begin{document}
 
-% Header Section
+% Creating header section
 \begin{minipage}[t]{0.6\textwidth}
   {\fontsize{16pt}{18pt}\selectfont\textbf{CHANDAN KUMAR}} \\[2pt]
   \textcolor{primary}{\textbf{Senior Data Scientist --- IIT Graduate}}
@@ -71,62 +71,64 @@
 \textcolor{primary}{\hrule height 1.5pt}
 \vspace{4pt}
 
-% Two-Column Layout
+% Setting up two-column layout
 \begin{paracol}{2}
   \setlength{\columnsep}{10pt}
   \setlength{\columnseprule}{0pt}
   \columnratio{0.7}
 
-  % LEFT COLUMN
+  % Left Column: Professional Summary
   \cvsection{user}{Professional Summary}
   \small
-  IIT graduate and Data Scientist with 7+ years of expertise in Data Science, AI, and Product Development, specializing in Generative AI, AI governance, and advanced automation. Proven ability to design, deploy, and optimize AI/ML solutions across finance, banking, energy, and environmental sectors, driving business transformation and efficiency. Skilled in machine learning, deep learning, NLP, and AI-driven automation, with hands-on experience in Python, SQL, LangChain, CrewAI, TensorFlow, PyTorch, and cloud platforms (Azure, AWS, GCP, IBM). Led AI-driven initiatives, driving efficiency, scalability, and innovation across diverse applications. Experienced in AI model deployment, workflow automation, and strategy implementation, delivering measurable business impact.
+  \textbf{IIT graduate} and \textbf{Data Scientist} with \textbf{7+ years} of expertise in Data Science, AI, and Product Development, specializing in Generative AI, AI governance, and advanced automation. Proven ability to design, deploy, and optimize AI/ML solutions across finance, banking, energy, and environmental sectors, driving business transformation and efficiency. Skilled in machine learning, deep learning, NLP, and AI-driven automation, with hands-on experience in Python, SQL, LangChain, CrewAI, TensorFlow, PyTorch, and cloud platforms (Azure, AWS, GCP, IBM). Led AI-driven initiatives, driving efficiency, scalability, and innovation across diverse applications. Experienced in AI model deployment, workflow automation, and strategy implementation, delivering measurable business impact.
 
+  % Left Column: Experience
   \cvsection{briefcase}{Experience}
   \small
-  \jobentry{IBM}{Senior Data Scientist}{Mar 2024 -- Present}
-  \jobentry{Accenture}{Data Scientist}{Apr 2021 -- Feb 2024}
+  \jobentry{\textbf{IBM}}{Senior Data Scientist}{Mar 2024 -- Present}
+  \jobentry{\textbf{Accenture}}{Data Scientist}{Apr 2021 -- Feb 2024}
   \jobentry{Capgemini}{Senior Process Lead}{Feb 2021 -- Mar 2021}
-  \jobentry{Clean Harbors}{Data Scientist}{Jun 2018 -- Jan 2021}
+  \jobentry{\textbf{Clean Harbors}}{Data Scientist}{Jun 2018 -- Jan 2021}
 
+  % Left Column: Key Projects
   \cvsection{project-diagram}{Key Projects}
   \small
-  \projectentry{MARC (Multi-Agent Resource Coordinator)}{IBM}
+  \projectentry{MARC (Multi-Agent Resource Coordinator)}{\textbf{IBM}}
   \begin{itemize}
-    \item Developed and deployed multiple agents for IBM’s MARC platform, enhancing multi-agent collaboration and workflow automation.
+    \item Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation.
     \item Applied AI Governance principles to ensure ethical and compliant operations of automation agents.
     \item Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection.
     \item Streamlined enterprise workflows with a scalable multi-agent AI system.
   \end{itemize}
 
-  \projectentry{Mizuho Bank}{Accenture}
+  \projectentry{Mizuho Bank}{\textbf{Accenture}}
   \begin{itemize}
     \item Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows.
     \item Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality.
     \item Reduced document review time by 30\% with AI-driven system.
   \end{itemize}
 
-  \projectentry{Ulster Bank}{Accenture}
+  \projectentry{Ulster Bank}{\textbf{Accenture}}
   \begin{itemize}
     \item Automated machine learning pipelines for customer segmentation algorithms using Python, Glue, and Athena.
     \item Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders.
   \end{itemize}
 
-  \projectentry{Facebook}{Accenture}
+  \projectentry{Facebook}{\textbf{Accenture}}
   \begin{itemize}
     \item Examined data from multiple disparate sources to discover insights providing competitive advantage for clients.
     \item Designed and optimized machine learning pipelines, specializing in the creation of forecasting models.
     \item Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes.
   \end{itemize}
 
-  \projectentry{Waste Classification Code}{Clean Harbors}
+  \projectentry{Waste Classification Code}{\textbf{Clean Harbors}}
   \begin{itemize}
     \item Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment.
     \item Created a unified dataset encompassing vital features for all waste classes.
     \item Applied logical data checks for input consistency, facilitating classification based on physical properties.
   \end{itemize}
 
-  \projectentry{Invoice Audit}{Clean Harbors}
+  \projectentry{Invoice Audit}{\textbf{Clean Harbors}}
   \begin{itemize}
     \item Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis.
     \item Streamlined invoice verification, reducing audit time by 20\%.
@@ -134,62 +136,66 @@
 
   \switchcolumn
 
-  % RIGHT COLUMN
+  % Right Column: Education
   \cvsection{graduation-cap}{Education}
   \small
   \educationentry{IIT Dhanbad}{B.Tech}{2013 -- 2017}
   \educationentry{Super30}{Patna}{2012 -- 2013}
 
+  % Right Column: Key Certifications
   \cvsection{certificate}{Key Certifications}
   \small
   \begin{itemize}
-    \item Northwestern University --- Analytics \& AI
-    \item LangChain Academy --- LangGraph
-    \item Databricks Academy --- Generative AI
-    \item Hugging Face --- AI Agents Fundamentals
-    \item IBM --- Watsonx.ai Technical Essentials
-    \item Neo4j --- Neo4j \& LLM Fundamentals
-    \item IBM --- Watsonx Essentials
-    \item Microsoft \& LinkedIn --- Generative AI
-    \item Microsoft --- Azure Machine Learning
-    \item Stanford University --- Machine Learning
-    \item Duke University --- DevOps, DataOps, MLOps
-    \item LangChain Academy --- LangSmith
-    \item AWS --- AWS Cloud
-    \item Udemy --- Project Management Fundamentals
-    \item Udemy --- Product Management Fundamentals
-    \item Udemy --- MCP (Model Context Protocol)
-    \item Microsoft --- SQL Server
+    \item \textbf{Northwestern University} --- Analytics \& AI
+    \item \textbf{LangChain Academy} --- LangGraph
+    \item \textbf{Databricks Academy} --- Generative AI
+    \item \textbf{Hugging Face} --- AI Agents Fundamentals
+    \item \textbf{IBM} --- Watsonx.ai Technical Essentials
+    \item \textbf{Neo4j} --- Neo4j \& LLM Fundamentals
+    \item \textbf{IBM} --- Watsonx Essentials
+    \item \textbf{Microsoft \& LinkedIn} --- Generative AI
+    \item \textbf{Microsoft} --- Azure Machine Learning
+    \item \textbf{Stanford University} --- Machine Learning
+    \item \textbf{Duke University} --- DevOps, DataOps, MLOps
+    \item \textbf{LangChain Academy} --- LangSmith
+    \item \textbf{AWS} --- AWS Cloud
+    \item \textbf{Udemy} --- Project Management Fundamentals
+    \item \textbf{Udemy} --- Product Management Fundamentals
+    \item \textbf{Udemy} --- MCP (Model Context Protocol)
+    \item \textbf{Microsoft} --- SQL Server
   \end{itemize}
 
+  % Right Column: Leadership & Recognition
   \cvsection{trophy}{Leadership \& Recognition}
   \small
   \begin{itemize}
-    \item Technical Excellence: \#1 Ranked in HackerRank SQL among 100K+ participants
-    \item Client Impact: 100\% on-time project delivery with zero critical defects across 15+ projects
-    \item Academic Excellence: IIT JEE-2013 Top 1\% (Advanced), Student Representative IIT Dhanbad
-    \item Team Leadership: Mentored 12+ junior data scientists, with 90\% promotion rate
+    \item \textbf{Technical Excellence:} \#1 Ranked in HackerRank SQL among 100K+ participants
+    \item \textbf{Client Impact:} 100\% on-time project delivery with zero critical defects across 15+ projects
+    \item \textbf{Academic Excellence:} IIT JEE-2013 Top 1\% (Advanced), Student Representative IIT Dhanbad
+    \item \textbf{Team Leadership:} Mentored 12+ junior data scientists, with 90\% promotion rate
   \end{itemize}
 
+  % Right Column: Technical Expertise
   \cvsection{tools}{Technical Expertise}
   \small
   \begin{itemize}
-    \item Data Science \& AI: Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, LangGraph, LangSmith, Langflow, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development \& Deployment, RAG, Vector DB, Prompt Engineering
-    \item Cloud Platforms: Azure, AWS, GCP, IBM
-    \item Programming: Python, SQL
-    \item Data Engineering: Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy
-    \item Databases: Azure SQL, SQL Server, MySQL, MongoDB, BigQuery
-    \item Visualization: Power BI, Matplotlib, Seaborn
-    \item DevOps: Docker, Kubernetes, Git, CI/CD
-    \item Domains: Finance, Banking, Environmental, Social Media, Waste Management, Energy
+    \item \textbf{Data Science \& AI:} Generative AI, Deep Learning, AI Governance, Responsible AI, MLOps, Statistical Analysis, TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, LangGraph, LangSmith, Langflow, CrewAI, AutoGen, Bee, Supervised ML, Unsupervised ML, NLP, Time Series, Model Development \& Deployment, RAG, Vector DB, Prompt Engineering
+    \item \textbf{Cloud Platforms:} Azure, AWS, GCP, IBM
+    \item \textbf{Programming:} Python, SQL
+    \item \textbf{Data Engineering:} Azure Data Factory, Databricks, Azure Synapse Analytics, AWS S3, Glue, SageMaker, BigQuery, Pandas, NumPy
+    \item \textbf{Databases:} Azure SQL, SQL Server, MySQL, MongoDB, BigQuery
+    \item \textbf{Visualization:} Power BI, Matplotlib, Seaborn
+    \item \textbf{DevOps:} Docker, Kubernetes, Git, CI/CD
+    \item \textbf{Domains:} Finance, Banking, Environmental, Social Media, Waste Management, Energy
   \end{itemize}
 
+  % Right Column: Core Leadership Competencies
   \cvsection{star}{Core Leadership Competencies}
   \small
   \begin{itemize}
-    \item Strategic AI Leadership: End-to-end AI solution architecture and implementation
-    \item Cross-functional Collaboration: Stakeholder management, technical-business translation
-    \item Team Development: Mentoring, technical guidance, performance optimization
+    \item \textbf{Strategic AI Leadership:} End-to-end AI solution architecture and implementation
+    \item \textbf{Cross-functional Collaboration:} Stakeholder management, technical-business translation
+    \item \textbf{Team Development:} Mentoring, technical guidance, performance optimization
   \end{itemize}
 
 \end{paracol}
