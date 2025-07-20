@@ -151,6 +151,32 @@
       border-left: 4px solid var(--primary-color);
     }
     
+    /* Education - Enhanced */
+    .education-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 8px;
+      width: 100%;
+      background-color: var(--light-bg);
+      border-radius: 6px;
+      border-left: 4px solid #28a745;
+    }
+    
+    .education-details {
+      font-weight: 600;
+      color: var(--text-color);
+      font-size: 12px;
+      flex: 1;
+    }
+    
+    .education-period {
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    
     /* Experience - Enhanced */
     .job {
       margin-bottom: 8px;
@@ -191,6 +217,47 @@
       padding: 4px 10px;
       border-radius: 12px;
       white-space: nowrap;
+    }
+    
+    /* Certifications - Enhanced Multi-Line Layout (2-3 per line) */
+    .certifications-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      padding-left: 0;
+      margin: 6px 0;
+      width: 100%;
+    }
+    
+    .certifications-list li {
+      position: relative;
+      flex: 1 1 calc(33.333% - 10px);
+      min-width: 200px;
+      max-width: calc(50% - 10px);
+      padding-left: 18px;
+      padding: 8px 8px 8px 18px;
+      margin-bottom: 6px;
+      line-height: 1.4;
+      font-size: 11px;
+      list-style: none;
+      background-color: var(--light-bg);
+      border-radius: 4px;
+      border-left: 3px solid #28a745;
+      transition: all 0.2s ease;
+    }
+    
+    .certifications-list li:hover {
+      background-color: #e8f4f8;
+      transform: translateY(-1px);
+    }
+    
+    .certifications-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 6px;
+      color: #28a745;
+      font-weight: bold;
+      font-size: 12px;
     }
     
     /* Projects - Enhanced */
@@ -251,32 +318,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 30px;
       margin-top: 15px;
-    }
-    
-    /* Education - Enhanced */
-    .education-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      margin-bottom: 8px;
-      width: 100%;
-      background-color: var(--light-bg);
-      border-radius: 6px;
-      border-left: 4px solid #28a745;
-    }
-    
-    .education-details {
-      font-weight: 600;
-      color: var(--text-color);
-      font-size: 12px;
-      flex: 1;
-    }
-    
-    .education-period {
-      font-size: 10px;
-      color: var(--text-secondary);
-      font-weight: 500;
     }
     
     /* Lists - Enhanced */
@@ -344,47 +385,6 @@
       position: absolute;
       left: 6px;
       color: var(--secondary-color);
-      font-weight: bold;
-      font-size: 12px;
-    }
-    
-    /* Certifications - Enhanced Multi-Line Layout (2-3 per line) */
-    .certifications-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 10px;
-      padding-left: 0;
-      margin: 6px 0;
-      width: 100%;
-    }
-    
-    .certifications-list li {
-      position: relative;
-      flex: 1 1 calc(33.333% - 10px);
-      min-width: 200px;
-      max-width: calc(50% - 10px);
-      padding-left: 18px;
-      padding: 8px 8px 8px 18px;
-      margin-bottom: 6px;
-      line-height: 1.4;
-      font-size: 11px;
-      list-style: none;
-      background-color: var(--light-bg);
-      border-radius: 4px;
-      border-left: 3px solid #28a745;
-      transition: all 0.2s ease;
-    }
-    
-    .certifications-list li:hover {
-      background-color: #e8f4f8;
-      transform: translateY(-1px);
-    }
-    
-    .certifications-list li::before {
-      content: '✓';
-      position: absolute;
-      left: 6px;
-      color: #28a745;
       font-weight: bold;
       font-size: 12px;
     }
@@ -546,6 +546,19 @@
         </div>
       </div>
 
+      <!-- Education - Now positioned above Experience -->
+      <div class="section">
+        <div class="section-title">EDUCATION</div>
+        <div class="education-item">
+          <div class="education-details"><strong>IIT Dhanbad</strong> - B.Tech</div>
+          <div class="education-period">2013-2017</div>
+        </div>
+        <div class="education-item">
+          <div class="education-details"><strong>Super30</strong>, Patna</div>
+          <div class="education-period">2012-2013</div>
+        </div>
+      </div>
+
       <!-- Experience -->
       <div class="section">
         <div class="section-title">EXPERIENCE</div>
@@ -573,6 +586,30 @@
             <div class="job-period">Jun 2018 - Jan 2021</div>
           </div>
         </div>
+      </div>
+
+      <!-- Certifications - Now positioned below Experience -->
+      <div class="section">
+        <div class="section-title">CERTIFICATIONS</div>
+        <ul class="certifications-list">
+          <li>Northwestern University - Analytics & AI</li>
+          <li>LangChain Academy - LangGraph</li>
+          <li>Databricks Academy - Generative AI</li>
+          <li>Hugging Face - AI Agents Fundamentals</li>
+          <li>IBM - Watsonx.ai Technical Essentials</li>
+          <li>Neo4j - Neo4j & LLM Fundamentals</li>
+          <li>IBM - Watsonx Essentials</li>
+          <li>Microsoft & LinkedIn - Generative AI</li>
+          <li>Microsoft - Azure Machine Learning</li>
+          <li>Stanford University - Machine Learning</li>
+          <li>Duke University - DevOps, DataOps, MLOps</li>
+          <li>LangChain Academy - LangSmith</li>
+          <li>AWS - AWS Cloud</li>
+          <li>Udemy - Project Management Fundamentals</li>
+          <li>Udemy - Product Management Fundamentals</li>
+          <li>Udemy - MCP (Model Context Protocol)</li>
+          <li>Microsoft - SQL Server</li>
+        </ul>
       </div>
 
       <!-- Key Projects -->
@@ -651,23 +688,10 @@
         </div>
       </div>
 
-      <!-- Two Column Layout -->
+      <!-- Two Column Layout for Bottom Sections -->
       <div class="two-column">
         <!-- Left Column -->
         <div>
-          <!-- Education -->
-          <div class="section">
-            <div class="section-title">EDUCATION</div>
-            <div class="education-item">
-              <div class="education-details"><strong>IIT Dhanbad</strong> - B.Tech</div>
-              <div class="education-period">2013-2017</div>
-            </div>
-            <div class="education-item">
-              <div class="education-details"><strong>Super30</strong>, Patna</div>
-              <div class="education-period">2012-2013</div>
-            </div>
-          </div>
-
           <!-- Key Achievements -->
           <div class="section">
             <div class="section-title">KEY ACHIEVEMENTS</div>
@@ -691,31 +715,9 @@
           </div>
         </div>
 
-        <!-- Right Column -->
+        <!-- Right Column - Empty since Certifications moved -->
         <div>
-          <!-- Certifications - Enhanced Multi-Line Layout -->
-          <div class="section">
-            <div class="section-title">CERTIFICATIONS</div>
-            <ul class="certifications-list">
-              <li>Northwestern University - Analytics & AI</li>
-              <li>LangChain Academy - LangGraph</li>
-              <li>Databricks Academy - Generative AI</li>
-              <li>Hugging Face - AI Agents Fundamentals</li>
-              <li>IBM - Watsonx.ai Technical Essentials</li>
-              <li>Neo4j - Neo4j & LLM Fundamentals</li>
-              <li>IBM - Watsonx Essentials</li>
-              <li>Microsoft & LinkedIn - Generative AI</li>
-              <li>Microsoft - Azure Machine Learning</li>
-              <li>Stanford University - Machine Learning</li>
-              <li>Duke University - DevOps, DataOps, MLOps</li>
-              <li>LangChain Academy - LangSmith</li>
-              <li>AWS - AWS Cloud</li>
-              <li>Udemy - Project Management Fundamentals</li>
-              <li>Udemy - Product Management Fundamentals</li>
-              <li>Udemy - MCP (Model Context Protocol)</li>
-              <li>Microsoft - SQL Server</li>
-            </ul>
-          </div>
+          <!-- This column can be used for future sections if needed -->
         </div>
       </div>
 
@@ -744,7 +746,7 @@
     </div>
   </div>
 
-  <button id="downloadButton" onclick="downloadPDF()">Download Enhanced Multi-Line Resume</button>
+  <button id="downloadButton" onclick="downloadPDF()">Download Reorganized Resume</button>
 
   <script>
     async function downloadPDF() {
@@ -759,7 +761,7 @@
       
       try {
         const button = document.getElementById('downloadButton');
-        button.innerHTML = "Generating Enhanced PDF...";
+        button.innerHTML = "Generating Reorganized PDF...";
         button.disabled = true;
         
         const canvas = await html2canvas(element, {
@@ -786,13 +788,13 @@
           doc.addImage(imgData, 'PNG', 0, 0, scaledWidth, scaledHeight, undefined, 'FAST');
         }
         
-        doc.save('Chandan_Kumar_Enhanced_MultiLine_Resume.pdf');
-        button.innerHTML = "Download Enhanced Multi-Line Resume";
+        doc.save('Chandan_Kumar_Reorganized_Resume.pdf');
+        button.innerHTML = "Download Reorganized Resume";
         button.disabled = false;
       } catch (error) {
         console.error('Error generating PDF:', error);
         alert('Failed to generate PDF. Please try again.');
-        button.innerHTML = "Download Enhanced Multi-Line Resume";
+        button.innerHTML = "Download Reorganized Resume";
         button.disabled = false;
       }
     }
