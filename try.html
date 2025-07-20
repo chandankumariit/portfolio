@@ -3,705 +3,667 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anjali Rani - Elite Resume</title>
+  <title>Chandan Kumar Resume</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
     :root {
-      --primary-color: #1B365D;
-      --secondary-color: #2563EB;
-      --accent-color: #F59E0B;
-      --highlight-color: #0F172A;
-      --text-color: #1F2937;
-      --light-gray: #F8FAFC;
-      --border-color: #E5E7EB;
-      --background-color: #FFFFFF;
-      --success-color: #10B981;
-      --gradient-primary: linear-gradient(135deg, #1B365D 0%, #2563EB 100%);
+      --primary-color: #1e40af;
+      --secondary-color: #3b82f6;
+      --accent-color: #f59e0b;
+      --text-color: #1f2937;
+      --text-secondary: #6b7280;
+      --light-gray: #f9fafb;
+      --border-color: #e5e7eb;
+      --success-color: #10b981;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', sans-serif;
       color: var(--text-color);
-      line-height: 1.4;
+      line-height: 1.6;
       background-color: var(--light-gray);
-      font-size: 11.5px;
+      font-size: 14px;
       font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
+    
     .container {
-      width: 210mm;
-      height: 297mm;
-      margin: 15px auto;
-      background-color: var(--background-color);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05);
-      padding: 0 1mm 1mm 1mm;
-      position: relative;
-      overflow: hidden;
+      max-width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      background-color: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 30px 35px;
       border-radius: 12px;
       border: 1px solid var(--border-color);
     }
-    header {
-      background: var(--gradient-primary);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
-      margin: -1mm -1mm 4mm -1mm;
-      min-height: 70px;
+    
+    /* Header Section */
+    .header {
+      text-align: center;
+      padding: 25px 0 30px 0;
+      border-bottom: 3px solid var(--primary-color);
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+      border-radius: 8px;
       position: relative;
-      overflow: hidden;
     }
-    header::before {
+    
+    .header::before {
       content: '';
       position: absolute;
       top: 0;
-      right: 0;
-      width: 100px;
-      height: 100px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 50%;
-      transform: translate(30px, -30px);
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
       left: 0;
-      width: 80px;
-      height: 80px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-      transform: translate(-20px, 20px);
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+      border-radius: 8px 8px 0 0;
     }
-    .profile-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 2;
-      position: relative;
-    }
-    .profile-image {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid rgba(255,255,255,0.3);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      background: var(--light-gray);
-    }
-    .profile-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .profile-image-fallback {
-      display: none;
-      background: linear-gradient(135deg, var(--accent-color), #FCD34D);
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 60px;
-      font-size: 14px;
-      color: white;
-      font-weight: 600;
-    }
-    .profile-details {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
+    
     .profile-name {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
     }
+    
     .profile-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.9);
-      letter-spacing: 0.2px;
-    }
-    .profile-subtitle {
-      font-size: 10px;
+      font-size: 16px;
       font-weight: 500;
-      color: rgba(255,255,255,0.8);
-      font-style: italic;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
+    
     .contact-info {
       display: flex;
-      flex-direction: column;
-      gap: 3px;
-      font-size: 10px;
-      text-align: right;
-      z-index: 2;
-      position: relative;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      font-size: 14px;
     }
+    
     .contact-item {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 4px;
-      background: rgba(255,255,255,0.1);
-      padding: 2px 6px;
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
+      gap: 8px;
+      color: var(--text-secondary);
     }
-    .contact-item .icon {
-      color: var(--accent-color);
-      font-size: 10px;
-    }
-    .contact-item a, .contact-item span {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .contact-item:hover {
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-1px);
-      transition: all 0.2s ease;
-    }
-    .section { 
-      margin-bottom: 4mm; 
-      padding: 0 2mm;
-    }
-    .section-title {
+    
+    .contact-item i {
+      color: var(--primary-color);
       font-size: 14px;
-      font-weight: 700;
+      width: 16px;
+    }
+    
+    .contact-item a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .contact-item a:hover {
+      color: var(--primary-color);
+    }
+    
+    /* Main Content */
+    .content {
+      display: block;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
       color: var(--primary-color);
       text-transform: uppercase;
-      border-bottom: 2px solid var(--secondary-color);
-      padding-bottom: 2px;
-      margin-bottom: 3mm;
-      letter-spacing: 0.5px;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent-color);
       display: flex;
       align-items: center;
-      position: relative;
+      letter-spacing: 0.5px;
     }
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 30px;
-      height: 2px;
-      background: var(--accent-color);
-    }
+    
     .section-title i {
-      color: var(--secondary-color);
-      margin-right: 6px;
-      font-size: 12px;
-      width: 16px;
-      text-align: center;
+      margin-right: 10px;
+      font-size: 16px;
+      color: var(--accent-color);
     }
-    .section-title span {
-      color: var(--primary-color);
-    }
-    .job, .education-item, .project, .achievement-item {
-      margin-bottom: 3mm;
-      padding: 3mm;
+    
+    /* Professional Summary */
+    .summary-text {
+      font-size: 14px;
+      line-height: 1.7;
+      text-align: justify;
+      color: var(--text-color);
+      background-color: #f8faff;
+      padding: 20px;
       border-radius: 8px;
-      background: var(--light-gray);
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    /* Experience */
+    .job {
+      margin-bottom: 15px;
+      padding: 20px;
+      background-color: #fafbfc;
+      border-radius: 8px;
       border-left: 4px solid var(--secondary-color);
-      position: relative;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
     }
-    .job:hover, .project:hover, .achievement-item:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: all 0.2s ease;
+    
+    .job:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
     }
-    .job-header, .project-header {
+    
+    .job-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 2mm;
+      align-items: baseline;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    .job-title, .project-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--highlight-color);
-      line-height: 1.3;
+    
+    .job-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-color);
     }
+    
     .company-name {
-      color: var(--secondary-color);
-      font-weight: 600;
+      color: var(--primary-color);
+      font-weight: 700;
     }
+    
     .job-period {
-      font-weight: 600;
-      font-size: 10px;
-      color: var(--accent-color);
-      background: rgba(245, 158, 11, 0.1);
-      padding: 2px 6px;
-      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background-color: var(--light-gray);
+      padding: 4px 12px;
+      border-radius: 20px;
       white-space: nowrap;
     }
+    
+    /* Projects */
+    .project {
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: #f8faff;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .project-header {
+      margin-bottom: 12px;
+    }
+    
+    .project-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 4px;
+    }
+    
+    .project-company {
+      font-size: 14px;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+    
+    .project ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .project ul li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    
+    .project ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent-color);
+      font-weight: bold;
+      font-size: 16px;
+    }
+    
+    /* Two Column Layout for Bottom Sections */
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    
+    /* Education */
     .education-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(135deg, var(--light-gray), #F1F5F9);
+      align-items: baseline;
+      padding: 15px;
+      background-color: #f8faff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--success-color);
     }
+    
     .education-details {
-      font-size: 12px;
       font-weight: 600;
-      color: var(--highlight-color);
+      color: var(--text-color);
     }
+    
     .education-period {
-      font-weight: 600;
-      font-size: 10px;
-      color: var(--accent-color);
-      background: rgba(245, 158, 11, 0.1);
-      padding: 2px 6px;
-      border-radius: 12px;
-    }
-    .education-subtitle {
-      font-size: 10px;
-      color: var(--secondary-color);
+      font-size: 13px;
+      color: var(--text-secondary);
       font-weight: 500;
     }
-    ul {
-      padding-left: 4mm;
-      margin: 2mm 0;
+    
+    /* Lists */
+    .section ul {
+      list-style: none;
+      padding-left: 0;
     }
-    ul li {
-      margin-bottom: 2mm;
-      text-align: justify;
-      font-size: 11px;
-      line-height: 1.4;
+    
+    .section ul li {
       position: relative;
-    }
-    ul li::marker {
-      color: var(--secondary-color);
-    }
-    ul li::before {
-      content: '▶';
-      color: var(--secondary-color);
-      font-weight: bold;
-      position: absolute;
-      left: -12px;
-      font-size: 8px;
-    }
-    p {
-      margin: 2mm 0;
-      text-align: justify;
-      font-size: 11px;
+      padding-left: 20px;
+      margin-bottom: 6px;
       line-height: 1.5;
     }
-    .section p {
-      padding-left: 2mm;
+    
+    .section ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+      font-weight: bold;
     }
-    strong {
-      font-weight: 700;
-      color: var(--highlight-color);
+    
+    /* Skills special formatting */
+    .skills-category {
+      margin-bottom: 12px;
     }
-    .highlight {
-      color: var(--secondary-color);
-      font-weight: 600;
+    
+    .skills-category strong {
+      color: var(--primary-color);
+      display: block;
+      margin-bottom: 4px;
     }
-    .metric {
-      color: var(--success-color);
-      font-weight: 700;
-    }
-    .tech-stack {
-      background: var(--secondary-color);
-      color: white;
-      padding: 1px 4px;
-      border-radius: 4px;
-      font-size: 9px;
-      font-weight: 500;
-      margin: 0 1px;
-    }
+    
+    /* Download Button */
     #downloadButton {
       display: block;
       width: 220px;
-      margin: 12px auto;
-      padding: 10px;
-      background: var(--gradient-primary);
+      margin: 30px auto;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
       color: white;
       text-align: center;
       border-radius: 8px;
       cursor: pointer;
-      font-weight: 700;
-      font-size: 14px;
+      font-weight: 600;
+      font-size: 16px;
       border: none;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-      position: relative;
-      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
     }
-    #downloadButton::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-    #downloadButton:hover::before {
-      left: 100%;
-    }
+    
     #downloadButton:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
     }
-    .skills-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2mm;
+    
+    #downloadButton:active {
+      transform: translateY(0);
     }
-    .skill-category {
-      background: var(--light-gray);
-      padding: 2mm;
-      border-radius: 8px;
-      border-left: 4px solid var(--accent-color);
-    }
-    .skill-category-title {
-      font-weight: 700;
-      color: var(--primary-color);
-      margin-bottom: 1mm;
-      font-size: 11px;
-    }
-    .certifications-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3mm;
-    }
-    .certification-item {
-      background: var(--light-gray);
-      padding: 2mm;
-      border-radius: 8px;
-      border-left: 4px solid var(--success-color);
-    }
-    .certification-title {
-      font-weight: 600;
-      color: var(--highlight-color);
-      font-size: 11px;
-      margin-bottom: 1mm;
-    }
-    .certification-provider {
-      font-size: 10px;
-      color: var(--secondary-color);
-      font-weight: 500;
-    }
-    .achievement-item {
-      border-left-color: var(--success-color);
-    }
-    .achievement-title {
-      font-weight: 700;
-      color: var(--success-color);
-      font-size: 12px;
-      margin-bottom: 1mm;
-    }
-    .summary-highlight {
-      background: linear-gradient(135deg, var(--light-gray), #F1F5F9);
-      padding: 3mm;
-      border-radius: 8px;
-      border-left: 4px solid var(--primary-color);
-      font-weight: 500;
-      line-height: 1.5;
-    }
+    
+    /* Print Styles */
     @media print {
-      body { background: none; margin: 0; }
+      body { 
+        background: white; 
+        font-size: 12px;
+      }
       .container {
         box-shadow: none;
         margin: 0;
-        padding: 0 1mm 1mm 1mm;
-        width: 100%;
-        height: 100%;
+        padding: 15mm;
         border: none;
         border-radius: 0;
       }
-      #downloadButton { display: none; }
-      .job:hover, .project:hover, .achievement-item:hover {
-        transform: none;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      #downloadButton { 
+        display: none; 
       }
-      .contact-item:hover {
-        background: rgba(255,255,255,0.1);
+      .job:hover {
         transform: none;
+        box-shadow: none;
       }
-      #downloadButton:hover {
-        transform: none;
+      .header::before {
+        background: var(--primary-color);
       }
     }
+    
+    /* Mobile Responsive */
     @media (max-width: 768px) {
       .container {
-        width: 99%;
-        margin: 8px auto;
+        margin: 10px;
+        padding: 20px;
         border-radius: 8px;
       }
-      header {
+      .profile-name {
+        font-size: 24px;
+      }
+      .contact-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      .two-column {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .job-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
-        padding: 6px;
-        min-height: 80px;
       }
-      .contact-info { 
-        text-align: left; 
-        align-items: flex-start;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 2px;
-      }
-      .profile-image, .profile-image-fallback { 
-        width: 50px; 
-        height: 50px; 
-        line-height: 50px; 
-      }
-      .certifications-grid { 
-        grid-template-columns: 1fr; 
-      }
-      .profile-name { font-size: 18px; }
     }
   </style>
 </head>
 <body>
   <div class="container" id="resumeContent">
-    <header>
-      <div class="profile-section">
-        <div class="profile-image">
-          <img src="ARY.jpg" alt="Anjali Rani" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-          <div class="profile-image-fallback">AR</div>
-        </div>
-        <div class="profile-details">
-          <div class="profile-name">ANJALI RANI</div>
-          <div class="profile-title"><strong>Senior Data Scientist & AI Engineer</strong></div>
-          <div class="profile-subtitle">M.Tech IIIT Lucknow | 3+ Years AI/ML Excellence | Ex-TCS | Ex-AMD</div>
-        </div>
-      </div>
+    <!-- Header Section -->
+    <div class="header">
+      <div class="profile-name">CHANDAN KUMAR</div>
+      <div class="profile-title">IIT | Super30 | Data Scientist | IBM</div>
       <div class="contact-info">
         <div class="contact-item">
-          <span class="icon"><i class="fas fa-phone"></i></span>
-          <span>+91-8688841302</span>
+          <i class="fas fa-phone"></i>
+          <span>+91-9199000200</span>
         </div>
         <div class="contact-item">
-          <span class="icon"><i class="fas fa-envelope"></i></span>
-          <a href="mailto:anjalirani.iiit@gmail.com">anjalirani.iiit@gmail.com</a>
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:ckism.iit@gmail.com">ckism.iit@gmail.com</a>
         </div>
         <div class="contact-item">
-          <span class="icon"><i class="fab fa-linkedin-in"></i></span>
-          <a href="https://www.linkedin.com/in/anjaliyaedav">linkedin.com/in/anjaliyaedav</a>
-        </div>
-        <div class="contact-item">
-          <span class="icon"><i class="fab fa-github"></i></span>
-          <a href="https://github.com/anjalirani">github.com/anjalirani</a>
+          <i class="fab fa-linkedin-in"></i>
+          <a href="https://www.linkedin.com/in/chandaniit">linkedin.com/in/chandaniit</a>
         </div>
       </div>
-    </header>
+    </div>
 
+    <!-- Main Content -->
     <div class="content">
+      <!-- Professional Summary -->
       <div class="section">
-        <div class="section-title"><i class="fa-solid fa-star"></i><span>Executive Summary</span></div>
-        <div class="summary-highlight">
-          <p><strong>Distinguished M.Tech Data Scientist</strong> from <span class="highlight">IIIT Lucknow</span> with <span class="metric">3+ years</span> of transformative experience architecting enterprise-grade AI solutions across <span class="highlight">finance, banking, and semiconductor industries</span>. Proven expertise in <span class="tech-stack">Generative AI</span> <span class="tech-stack">LLMs</span> <span class="tech-stack">MLOps</span> <span class="tech-stack">Deep Learning</span> with a track record of delivering solutions that generate <span class="metric">$2M+ annual cost savings</span> and <span class="metric">70% process automation</span>. Specialized in scaling ML models from prototype to production, serving <span class="metric">10M+ daily predictions</span> with <span class="metric">99.9% uptime</span>. Expert in cloud-native architectures (AWS, Azure, GCP) and modern AI frameworks driving digital transformation initiatives.</p>
+        <div class="section-title">
+          <i class="fa-regular fa-address-card"></i>
+          <span>Professional Summary</span>
+        </div>
+        <div class="summary-text">
+          <strong>IIT graduate</strong> and <strong>Data Scientist</strong> with around <strong>7 years</strong> of expertise in delivering AI-driven solutions across finance, banking, energy, and environmental sectors. Skilled in Machine Learning, Deep Learning, Generative AI, LLMs, NLP, RAG, vector databases, and MLOps, with hands-on expertise in Python, TensorFlow, FastAPI, and cloud platforms (AWS, Azure, GCP). Proven ability to design and deploy scalable ML pipelines, working with tools like Databricks, ML Studio, SageMaker, Bedrock, Vertex AI, LangChain, LangGraph, CrewAI, Hugging Face, Docker, and Kubernetes. Experienced in building robust ETL workflows and delivering analytics through Tableau and Power BI. Passionate about leveraging AI to drive automation, innovation, and business value.
         </div>
       </div>
 
+      <!-- Experience -->
       <div class="section">
-        <div class="section-title"><i class="fas fa-graduation-cap"></i><span>Education & Academic Excellence</span></div>
-        <div class="education-item">
-          <div>
-            <div class="education-details"><strong>Indian Institute of Information Technology, Lucknow</strong></div>
-            <div class="education-subtitle">Master of Technology in Data Science | <span class="highlight">CGPA: 8.7/10</span></div>
-          </div>
-          <div class="education-period">Aug 2023 - Jul 2025</div>
+        <div class="section-title">
+          <i class="fas fa-briefcase"></i>
+          <span>Experience</span>
         </div>
-        <div class="education-item">
-          <div>
-            <div class="education-details"><strong>Government College of Engineering, Gaya</strong></div>
-            <div class="education-subtitle">Bachelor of Technology in Computer Science Engineering</div>
-          </div>
-          <div class="education-period">Aug 2016 - Jul 2020</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-title"><i class="fas fa-certificate"></i><span>Professional Certifications</span></div>
-        <div class="certifications-grid">
-          <div class="certification-item">
-            <div class="certification-title">LangGraph Multi-Agent Systems Certification</div>
-            <div class="certification-provider"><strong>LangChain Academy</strong> | 2024</div>
-          </div>
-          <div class="certification-item">
-            <div class="certification-title">Generative AI Fundamentals</div>
-            <div class="certification-provider"><strong>Databricks Academy</strong> | 2024</div>
-          </div>
-          <div class="certification-item">
-            <div class="certification-title">Programming Fundamentals Specialization</div>
-            <div class="certification-provider"><strong>Duke University</strong> | 2023</div>
-          </div>
-          <div class="certification-item">
-            <div class="certification-title">AI Agents Fundamentals</div>
-            <div class="certification-provider"><strong>Hugging Face</strong> | 2024</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-title"><i class="fas fa-briefcase"></i><span>Professional Experience</span></div>
-        
         <div class="job">
           <div class="job-header">
-            <div>
-              <div class="job-title"><span class="company-name">Advanced Micro Devices (AMD)</span> - AI/ML CoOp Engineer</div>
-            </div>
-            <div class="job-period">Jul 2024 - Jun 2025</div>
+            <div class="job-title"><span class="company-name">IBM</span> - Data Scientist</div>
+            <div class="job-period">Mar 2024 - Present</div>
           </div>
-          <ul>
-            <li><strong>MLOps Infrastructure Excellence:</strong> Architected enterprise-grade MLOps platform using <span class="tech-stack">Docker</span> <span class="tech-stack">Kubernetes</span> <span class="tech-stack">Jenkins</span>, enabling seamless CI/CD pipelines for ML models with <span class="metric">95% deployment success rate</span> and <span class="metric">40% faster time-to-production</span>.</li>
-            <li><strong>Real-time ML Monitoring:</strong> Developed sophisticated model monitoring ecosystem with automated drift detection, performance analytics, and intelligent alerting, reducing model degradation incidents by <span class="metric">80%</span> and ensuring <span class="metric">99.9% system reliability</span>.</li>
-            <li><strong>Cross-functional AI Integration:</strong> Collaborated with hardware engineering teams to integrate production-ready ML solutions into semiconductor design workflows, optimizing chip performance validation processes and achieving <span class="metric">30% reduction in design cycle time</span>.</li>
-            <li><strong>Advanced Model Optimization:</strong> Implemented model compression techniques and edge deployment strategies, reducing inference latency by <span class="metric">60%</span> while maintaining <span class="metric">98%+ accuracy</span> for real-time applications.</li>
-          </ul>
         </div>
-
         <div class="job">
           <div class="job-header">
-            <div>
-              <div class="job-title"><span class="company-name">Tata Consultancy Services (TCS)</span> - Senior Systems Engineer</div>
-            </div>
-            <div class="job-period">Apr 2021 - Nov 2023</div>
+            <div class="job-title"><span class="company-name">Accenture</span> - Data Scientist</div>
+            <div class="job-period">Apr 2021 - Feb 2024</div>
           </div>
-          <ul>
-            <li><strong>Enterprise ML Solutions Leadership:</strong> Led development and deployment of <span class="metric">8+ sophisticated ML models</span> for Fortune 500 banking clients, achieving <span class="metric">92%+ average accuracy</span> and generating <span class="metric">$2M+ annual cost savings</span> through advanced ensemble methods and feature engineering.</li>
-            <li><strong>Big Data Architecture:</strong> Designed high-performance data processing pipelines using <span class="tech-stack">Apache Spark</span> <span class="tech-stack">Databricks</span> <span class="tech-stack">AWS EMR</span>, processing <span class="metric">15TB+ daily data volumes</span> with <span class="metric">99.5% processing success rate</span> and <span class="metric">50% cost optimization</span>.</li>
-            <li><strong>NLP Innovation Excellence:</strong> Pioneered transformer-based NLP solutions with custom tokenization and attention mechanisms, achieving <span class="metric">60% processing time reduction</span> for document classification tasks and <span class="metric">85%+ F1-scores</span> across multiple languages.</li>
-            <li><strong>Production System Scaling:</strong> Architected auto-scaling ML inference services handling <span class="metric">500K+ daily predictions</span>, implementing load balancing and caching strategies that reduced response times by <span class="metric">45%</span> and infrastructure costs by <span class="metric">35%</span>.</li>
-            <li><strong>Client Success & Innovation:</strong> Delivered AI transformation consulting for 3 major clients, establishing ML governance frameworks and training 50+ professionals, resulting in <span class="metric">40% faster AI adoption</span> and <span class="metric">98% client satisfaction scores</span>.</li>
-          </ul>
+        </div>
+        <div class="job">
+          <div class="job-header">
+            <div class="job-title"><span class="company-name">Capgemini</span> - Process Lead</div>
+            <div class="job-period">Feb 2021 - Mar 2021</div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-header">
+            <div class="job-title"><span class="company-name">Clean Harbors</span> - Data Scientist</div>
+            <div class="job-period">Jun 2018 - Jan 2021</div>
+          </div>
         </div>
       </div>
 
+      <!-- Key Projects -->
       <div class="section">
-        <div class="section-title"><i class="fas fa-code-branch"></i><span>Flagship AI Projects</span></div>
+        <div class="section-title">
+          <i class="fas fa-code-branch"></i>
+          <span>Key Projects</span>
+        </div>
         
         <div class="project">
           <div class="project-header">
-            <div class="project-title"><strong>AVIVA: Advanced Virtual Intelligence & Voice Assistant</strong> | <span class="company-name">AMD</span></div>
+            <div class="project-title">MARC (Multi-Agent Resource Coordinator)</div>
+            <div class="project-company">IBM</div>
           </div>
           <ul>
-            <li><strong>Multi-Agent AI Architecture:</strong> Engineered sophisticated LLM-powered multi-agent system using <span class="tech-stack">LangGraph</span> <span class="tech-stack">CrewAI</span> <span class="tech-stack">GPT-4</span>, implementing reinforcement learning for decision optimization, resulting in <span class="metric">70% workflow automation</span> and <span class="metric">$800K annual productivity gains</span>.</li>
-            <li><strong>AI Governance & Ethics:</strong> Established comprehensive AI governance framework including bias detection algorithms, fairness metrics, and ethical deployment protocols, ensuring GDPR compliance and responsible AI implementation across enterprise systems.</li>
-            <li><strong>Advanced RAG Implementation:</strong> Built cutting-edge Retrieval-Augmented Generation system with <span class="tech-stack">Pinecone</span> vector database, semantic chunking, and hybrid search, achieving <span class="metric">95% context relevance</span> and <span class="metric">88% answer accuracy</span>.</li>
-            <li><strong>Key Technologies:</strong> <span class="tech-stack">Python</span> <span class="tech-stack">LangChain</span> <span class="tech-stack">OpenAI GPT-4</span> <span class="tech-stack">AWS Bedrock</span> <span class="tech-stack">Pinecone</span> <span class="tech-stack">FastAPI</span> <span class="tech-stack">Docker</span></li>
+            <li>Developed and deployed multiple agents for IBM's MARC platform, enhancing multi-agent collaboration and workflow automation.</li>
+            <li>Applied AI Governance principles to ensure ethical and compliant operations of automation agents.</li>
+            <li>Utilized advanced Large Language Models (LLMs) for intelligent task orchestration and agent selection.</li>
+            <li>Streamlined enterprise workflows with a scalable multi-agent AI system.</li>
           </ul>
         </div>
 
         <div class="project">
           <div class="project-header">
-            <div class="project-title"><strong>PdfGPT: Intelligent Document Analysis Platform</strong> | <span class="company-name">TCS</span></div>
+            <div class="project-title">Mizuho Bank</div>
+            <div class="project-company">Accenture</div>
           </div>
           <ul>
-            <li><strong>Advanced NLP Pipeline:</strong> Developed state-of-the-art document processing system using <span class="tech-stack">Transformers</span> <span class="tech-stack">BERT</span> <span class="tech-stack">T5</span> with custom attention mechanisms, achieving <span class="metric">92% summarization accuracy</span> and processing <span class="metric">10K+ documents daily</span> with <span class="metric">80% time reduction</span>.</li>
-            <li><strong>Conversational AI Interface:</strong> Built intelligent document querying system with <span class="tech-stack">Chroma</span> vector database, implementing semantic search and contextual understanding, resulting in <span class="metric">90% user query satisfaction</span> and <span class="metric">65% support ticket reduction</span>.</li>
-            <li><strong>Enterprise Integration:</strong> Designed RESTful APIs with <span class="tech-stack">FastAPI</span> and deployed on <span class="tech-stack">Azure Container Instances</span>, serving <span class="metric">1M+ API calls monthly</span> with <span class="metric">99.8% uptime</span> and <span class="metric">200ms average response time</span>.</li>
-            <li><strong>Key Technologies:</strong> <span class="tech-stack">Python</span> <span class="tech-stack">LangChain</span> <span class="tech-stack">Transformers</span> <span class="tech-stack">ChromaDB</span> <span class="tech-stack">Azure</span> <span class="tech-stack">FastAPI</span> <span class="tech-stack">Streamlit</span></li>
+            <li>Developed and deployed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows.</li>
+            <li>Implemented key feature extraction capabilities and PDF text summarization through interactive chat functionality.</li>
+            <li>Reduced document review time by 30% with AI-driven system.</li>
           </ul>
         </div>
 
         <div class="project">
           <div class="project-header">
-            <div class="project-title"><strong>AI-Powered Waste Classification System</strong> | <span class="company-name">TCS</span></div>
+            <div class="project-title">Ulster Bank</div>
+            <div class="project-company">Accenture</div>
           </div>
           <ul>
-            <li><strong>Computer Vision Excellence:</strong> Architected production-grade CNN system using <span class="tech-stack">EfficientNet</span> <span class="tech-stack">ResNet50</span> with transfer learning, achieving <span class="metric">96.5% classification accuracy</span> across <span class="metric">12 waste categories</span> and processing <span class="metric">50K+ images daily</span>.</li>
-            <li><strong>Edge AI Deployment:</strong> Optimized models for edge computing using <span class="tech-stack">TensorFlow Lite</span> and <span class="tech-stack">ONNX</span>, reducing inference time by <span class="metric">75%</span> and enabling real-time sorting with <span class="metric">5ms latency</span> on IoT devices.</li>
-            <li><strong>Environmental Impact:</strong> Deployed across 15+ waste management facilities, improving sorting efficiency by <span class="metric">85%</span>, reducing contamination by <span class="metric">70%</span>, and contributing to <span class="metric">500 tons monthly</span> waste diversion from landfills.</li>
-            <li><strong>Key Technologies:</strong> <span class="tech-stack">Python</span> <span class="tech-stack">TensorFlow</span> <span class="tech-stack">OpenCV</span> <span class="tech-stack">Azure ML</span> <span class="tech-stack">Power BI</span> <span class="tech-stack">IoT Core</span></li>
+            <li>Automated machine learning pipelines for customer segmentation algorithms using Python, Glue, and Athena.</li>
+            <li>Created and validated Data Models, deriving meaningful insights and explaining them to client stakeholders.</li>
           </ul>
         </div>
 
         <div class="project">
           <div class="project-header">
-            <div class="project-title"><strong>Intelligent Invoice Audit & Fraud Detection</strong> | <span class="company-name">TCS</span></div>
+            <div class="project-title">Facebook</div>
+            <div class="project-company">Accenture</div>
           </div>
           <ul>
-            <li><strong>Advanced Fraud Detection:</strong> Engineered ensemble ML system combining <span class="tech-stack">XGBoost</span> <span class="tech-stack">Random Forest</span> <span class="tech-stack">Isolation Forest</span> with custom anomaly detection algorithms, achieving <span class="metric">97.2% fraud detection accuracy</span> with <span class="metric">0.3% false positive rate</span>.</li>
-            <li><strong>OCR & Document Processing:</strong> Integrated advanced OCR with <span class="tech-stack">Tesseract</span> <span class="tech-stack">Amazon Textract</span>, implementing intelligent data extraction and validation rules, reducing manual processing by <span class="metric">65%</span> and saving <span class="metric">2000+ hours monthly</span>.</li>
-            <li><strong>Real-time Analytics Dashboard:</strong> Built comprehensive monitoring system with <span class="tech-stack">Power BI</span> and real-time alerting, processing <span class="metric">100K+ invoices monthly</span> and preventing <span class="metric">$1.2M potential fraud losses</span> annually.</li>
-            <li><strong>Key Technologies:</strong> <span class="tech-stack">Python</span> <span class="tech-stack">Scikit-learn</span> <span class="tech-stack">XGBoost</span> <span class="tech-stack">Azure</span> <span class="tech-stack">SQL Server</span> <span class="tech-stack">Power BI</span></li>
+            <li>Examined data from multiple disparate sources to discover insights providing competitive advantage for clients.</li>
+            <li>Designed and optimized machine learning pipelines, specializing in the creation of forecasting models.</li>
+            <li>Leveraged Machine Learning, Python, Glue, Athena, and Sagemaker to enhance decision-making processes.</li>
+          </ul>
+        </div>
+
+        <div class="project">
+          <div class="project-header">
+            <div class="project-title">Waste Classification Code</div>
+            <div class="project-company">Clean Harbors</div>
+          </div>
+          <ul>
+            <li>Designed and fine-tuned Waste Classification Code Prediction models, enabling autonomous WCC assignment.</li>
+            <li>Created a unified dataset encompassing vital features for all waste classes.</li>
+            <li>Applied logical data checks for input consistency, facilitating classification based on physical properties.</li>
+          </ul>
+        </div>
+
+        <div class="project">
+          <div class="project-header">
+            <div class="project-title">Invoice Audit</div>
+            <div class="project-company">Clean Harbors</div>
+          </div>
+          <ul>
+            <li>Developed an invoice auditing and revenue prediction algorithm using machine learning and statistical analysis.</li>
+            <li>Streamlined invoice verification, reducing audit time by 20%.</li>
           </ul>
         </div>
       </div>
 
+      <!-- Two Column Layout for Remaining Sections -->
+      <div class="two-column">
+        <!-- Left Column -->
+        <div>
+          <!-- Education -->
+          <div class="section">
+            <div class="section-title">
+              <i class="fas fa-graduation-cap"></i>
+              <span>Education</span>
+            </div>
+            <div class="education-item">
+              <div class="education-details"><strong>IIT Dhanbad</strong> - B.Tech</div>
+              <div class="education-period">2013-2017</div>
+            </div>
+            <div class="education-item">
+              <div class="education-details"><strong>Super30</strong>, Patna</div>
+              <div class="education-period">2012-2013</div>
+            </div>
+          </div>
+
+          <!-- Key Achievements -->
+          <div class="section">
+            <div class="section-title">
+              <i class="fas fa-trophy"></i>
+              <span>Key Achievements</span>
+            </div>
+            <ul>
+              <li>Ranked #1 in HackerRank SQL</li>
+              <li>Consistently recognized by clients for error-free, timely project deliveries</li>
+              <li>Cleared IIT JEE-2013, ranking in the top 1% of JEE Advanced qualifiers</li>
+              <li>Served as Student Representative in Mess Committee, IIT Dhanbad (2015-2016)</li>
+            </ul>
+          </div>
+
+          <!-- Core Competencies -->
+          <div class="section">
+            <div class="section-title">
+              <i class="fas fa-cogs"></i>
+              <span>Core Competencies</span>
+            </div>
+            <ul>
+              <li>Data Science, Analytics & AI</li>
+              <li>Business and Data Analytics</li>
+              <li>Project Management and Deployment</li>
+              <li>Product Management</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div>
+          <!-- Certifications -->
+          <div class="section">
+            <div class="section-title">
+              <i class="fas fa-certificate"></i>
+              <span>Certifications</span>
+            </div>
+            <ul>
+              <li>Northwestern University - Analytics & AI</li>
+              <li>LangChain Academy - LangGraph</li>
+              <li>Databricks Academy - Generative AI</li>
+              <li>Hugging Face - AI Agents Fundamentals</li>
+              <li>IBM - Watsonx.ai Technical Essentials</li>
+              <li>Neo4j - Neo4j & LLM Fundamentals</li>
+              <li>IBM - Watsonx Essentials</li>
+              <li>Microsoft & LinkedIn - Generative AI</li>
+              <li>Microsoft - Azure Machine Learning</li>
+              <li>Stanford University - Machine Learning</li>
+              <li>Duke University - DevOps, DataOps, MLOps</li>
+              <li>LangChain Academy - LangSmith</li>
+              <li>AWS - AWS Cloud</li>
+              <li>Udemy - Project Management Fundamentals</li>
+              <li>Udemy - Product Management Fundamentals</li>
+              <li>Udemy - MCP (Model Context Protocol)</li>
+              <li>Microsoft - SQL Server</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills - Full Width -->
       <div class="section">
-        <div class="section-title"><i class="fas fa-laptop-code"></i><span>Technical Expertise</span></div>
-        <div class="skills-grid">
-          <div class="skill-category">
-            <div class="skill-category-title">🤖 AI/ML Specializations</div>
-            <p><strong>Generative AI & LLMs:</strong> GPT-4, Claude, Gemini, LLaMA, Fine-tuning, PEFT, LoRA, Prompt Engineering, Chain-of-Thought, RAG Architecture</p>
-            <p><strong>Machine Learning:</strong> Ensemble Methods, XGBoost, Random Forest, SVM, Neural Networks, AutoML, Hyperparameter Optimization, Cross-validation</p>
-            <p><strong>Deep Learning:</strong> CNN, RNN, LSTM, GRU, Transformers, BERT, T5, GPT, Attention Mechanisms, Transfer Learning, Model Compression</p>
-            <p><strong>NLP & Text Analytics:</strong> Named Entity Recognition, Sentiment Analysis, Text Classification, Topic Modeling, Semantic Search, Word Embeddings</p>
-          </div>
-          <div class="skill-category">
-            <div class="skill-category-title">🛠️ Technology Stack</div>
-            <p><strong>Programming:</strong> Python, R, SQL, JavaScript, Bash, Shell Scripting, Git, GitHub Actions</p>
-            <p><strong>ML Frameworks:</strong> TensorFlow, PyTorch, Scikit-learn, Keras, Hugging Face, LangChain, LangGraph, CrewAI, Ollama</p>
-            <p><strong>Data Processing:</strong> Pandas, NumPy, Apache Spark, Dask, Polars, Feature-engine, Optuna</p>
-            <p><strong>APIs & Web:</strong> FastAPI, Flask, Django, Streamlit, Gradio, RESTful APIs, GraphQL</p>
-          </div>
-          <div class="skill-category">
-            <div class="skill-category-title">☁️ Cloud & Infrastructure</div>
-            <p><strong>AWS:</strong> SageMaker, Bedrock, Lambda, EC2, S3, Redshift, Athena, EMR, Glue, Step Functions</p>
-            <p><strong>Azure:</strong> ML Studio, Synapse Analytics, Databricks, Container Instances, Cognitive Services</p>
-            <p><strong>GCP:</strong> Vertex AI, BigQuery, Dataflow, AI Platform, Cloud Functions</p>
-            <p><strong>MLOps:</strong> Docker, Kubernetes, Jenkins, MLflow, Weights & Biases, DVC, Airflow, Kubeflow</p>
-          </div>
-          <div class="skill-category">
-            <div class="skill-category-title">📊 Data & Analytics</div>
-            <p><strong>Databases:</strong> PostgreSQL, MySQL, MongoDB, Snowflake, BigQuery, Redshift, Clickhouse</p>
-            <p><strong>Vector Databases:</strong> Pinecone, Chroma, Weaviate, Milvus, FAISS, Qdrant</p>
-            <p><strong>Visualization:</strong> Tableau, Power BI, Plotly, Matplotlib, Seaborn, D3.js</p>
-            <p><strong>Analytics:</strong> Statistical Modeling, A/B Testing, Cohort Analysis, Time Series Forecasting, Causal Inference</p>
-          </div>
+        <div class="section-title">
+          <i class="fas fa-laptop-code"></i>
+          <span>Technical Skills</span>
+        </div>
+        <div class="skills-category">
+          <strong>Data Science:</strong> Generative AI, LLMs, RAG, Prompt Engineering, NLP, Transformers, Text Analytics, Sentiment Analysis, NER, Machine Learning, Deep Learning, Time Series Analysis, Reinforcement Learning, Computer Vision, CNNs, OpenCV, Statistical Modeling, Hypothesis Testing.
+        </div>
+        <div class="skills-category">
+          <strong>Programming & Frameworks:</strong> Python, R, SQL, TensorFlow, PyTorch, Scikit-learn, Keras, LangChain, LangGraph, CrewAI, Hugging Face, LlamaIndex, FastAPI, Flask, GraphQL, Pandas, NumPy, SciPy, StatsModels
+        </div>
+        <div class="skills-category">
+          <strong>Cloud Platforms & Databases:</strong> AWS (Bedrock, SageMaker, Redshift, Athena, S3, EC2, Lambda, EMR, Glue), Azure (Synapse, Databricks, ML Studio), GCP (BigQuery, Vertex AI, Dataflow), Snowflake, PostgreSQL, MySQL, MongoDB, Pinecone, Chroma, Milvus, ETL Pipelines.
+        </div>
+        <div class="skills-category">
+          <strong>Data Visualization:</strong> Tableau, Power BI, Matplotlib, Seaborn
+        </div>
+        <div class="skills-category">
+          <strong>Tools, DevOps & Version Control:</strong> Git, GitHub, GitLab, Bitbucket, Docker, Kubernetes, CI/CD for ML Pipelines.
+        </div>
+        <div class="skills-category">
+          <strong>Analytics & Business Skills:</strong> Data Wrangling, Feature Engineering, EDA, User Segmentation, Business Intelligence, Product Analytics, Forecasting.
         </div>
       </div>
     </div>
   </div>
 
-  <button id="downloadButton" onclick="downloadPDF()">
-    <i class="fas fa-download"></i> Download Premium Resume as PDF
-  </button>
+  <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
 
   <script>
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ 
-        orientation: 'portrait', 
-        unit: 'mm', 
-        format: 'a4', 
-        compress: true 
-      });
-      
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
       const element = document.getElementById('resumeContent');
       
       try {
         const button = document.getElementById('downloadButton');
-        const originalText = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Premium PDF...';
+        button.innerHTML = "Generating PDF...";
         button.disabled = true;
         
-        // Create canvas with high quality
         const canvas = await html2canvas(element, {
-          scale: 3,
+          scale: 2,
           useCORS: true,
           logging: false,
           backgroundColor: '#ffffff',
-          windowHeight: element.scrollHeight,
-          onrendered: function(canvas) {
-            console.log('Canvas rendered successfully');
-          }
+          windowHeight: element.scrollHeight
         });
         
         const imgWidth = 210;
@@ -709,104 +671,33 @@
         const imgHeight = canvas.height * imgWidth / canvas.width;
         const imgData = canvas.toDataURL('image/jpeg', 0.95);
         
-        // Add image to PDF
-        let heightRatio = pageHeight / imgHeight;
-        let adjustedHeight = imgHeight * heightRatio;
+        if (imgHeight <= pageHeight) {
+          doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+        } else {
+          let heightLeft = imgHeight;
+          let position = 0;
+          
+          doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+          heightLeft -= pageHeight;
+          
+          while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            doc.addPage();
+            doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+            heightLeft -= pageHeight;
+          }
+        }
         
-        doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, adjustedHeight, undefined, 'FAST');
-        
-        // Add metadata
-        doc.setProperties({
-          title: 'Anjali Rani - Senior Data Scientist Resume',
-          subject: 'Professional Resume',
-          author: 'Anjali Rani',
-          keywords: 'Data Science, AI, Machine Learning, MLOps',
-          creator: 'Premium Resume Generator'
-        });
-        
-        // Save PDF
-        doc.save('Anjali_Rani_Premium_Resume.pdf');
-        
-        // Reset button
-        button.innerHTML = originalText;
+        doc.save('Chandan_Kumar_Resume.pdf');
+        button.innerHTML = "Download Resume as PDF";
         button.disabled = false;
-        
-        // Success notification
-        setTimeout(() => {
-          button.innerHTML = '<i class="fas fa-check"></i> PDF Downloaded Successfully!';
-          setTimeout(() => {
-            button.innerHTML = originalText;
-          }, 2000);
-        }, 500);
-        
       } catch (error) {
         console.error('Error generating PDF:', error);
-        alert('Failed to generate PDF. Please try using Chrome browser or refresh the page.');
-        
-        const button = document.getElementById('downloadButton');
-        button.innerHTML = '<i class="fas fa-download"></i> Download Premium Resume as PDF';
+        alert('Failed to generate PDF. Please try again.');
+        button.innerHTML = "Download Resume as PDF";
         button.disabled = false;
       }
     }
-
-    // Add smooth scrolling and animations
-    document.addEventListener('DOMContentLoaded', function() {
-      // Animate sections on load
-      const sections = document.querySelectorAll('.section');
-      sections.forEach((section, index) => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-          section.style.transition = 'all 0.6s ease';
-          section.style.opacity = '1';
-          section.style.transform = 'translateY(0)';
-        }, index * 100);
-      });
-
-      // Add intersection observer for animations
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-          }
-        });
-      }, observerOptions);
-
-      // Observe all animated elements
-      document.querySelectorAll('.job, .project, .achievement-item').forEach(el => {
-        observer.observe(el);
-      });
-    });
-
-    // Add typing effect to profile title
-    function typeWriter(element, text, speed = 100) {
-      let i = 0;
-      element.innerHTML = '';
-      function typing() {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-          setTimeout(typing, speed);
-        }
-      }
-      typing();
-    }
-
-    // Initialize typing effect on load
-    window.addEventListener('load', function() {
-      const profileTitle = document.querySelector('.profile-title');
-      if (profileTitle) {
-        const originalText = profileTitle.textContent;
-        setTimeout(() => {
-          typeWriter(profileTitle, originalText, 50);
-        }, 1000);
-      }
-    });
   </script>
 </body>
 </html>
