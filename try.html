@@ -263,6 +263,18 @@
       margin-right: 0;
     }
     
+    /* Special positioning for second column offset */
+    .certifications-list li:nth-child(2),
+    .certifications-list li:nth-child(4),
+    .certifications-list li:nth-child(6),
+    .certifications-list li:nth-child(8),
+    .certifications-list li:nth-child(10),
+    .certifications-list li:nth-child(12),
+    .certifications-list li:nth-child(14),
+    .certifications-list li:nth-child(16) {
+      margin-top: 6px;
+    }
+    
     @media (min-width: 768px) {
       .certifications-list li {
         width: 32%;
@@ -275,6 +287,27 @@
       
       .certifications-list li:nth-child(2n) {
         margin-right: 2%;
+      }
+      
+      /* Remove special positioning on desktop for 3-column layout */
+      .certifications-list li:nth-child(2),
+      .certifications-list li:nth-child(4),
+      .certifications-list li:nth-child(6),
+      .certifications-list li:nth-child(8),
+      .certifications-list li:nth-child(10),
+      .certifications-list li:nth-child(12),
+      .certifications-list li:nth-child(14),
+      .certifications-list li:nth-child(16) {
+        margin-top: 3px;
+      }
+      
+      /* Add offset for third column on desktop */
+      .certifications-list li:nth-child(3),
+      .certifications-list li:nth-child(6),
+      .certifications-list li:nth-child(9),
+      .certifications-list li:nth-child(12),
+      .certifications-list li:nth-child(15) {
+        margin-top: 6px;
       }
     }
     
