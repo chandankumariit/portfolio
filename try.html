@@ -44,45 +44,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 4px 4px;
+      padding: 3px 4px;
       margin-bottom: 3px;
       border-bottom: 1.5px solid var(--primary-color);
-      min-height: 60px;
+      min-height: 35px;
     }
     .profile-section {
       display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .profile-image {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid var(--primary-color);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .profile-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .profile-image-fallback {
-      display: none;
-      background-color: var(--light-gray);
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 55px;
-      font-size: 16px;
-      color: var(--primary-color);
-      font-weight: 700;
-    }
-    .profile-details {
-      display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 1px;
     }
     .profile-name {
       font-size: 16px;
@@ -98,7 +68,7 @@
     .contact-info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 1px;
       font-size: 10px;
       text-align: right;
     }
@@ -238,6 +208,19 @@
     }
     .skills-list ul li { margin-bottom: 1px; }
     
+    /* Job description with exactly 2 lines */
+    .job-description {
+      padding-left: 12px;
+      margin: 1px 0;
+    }
+    
+    .job-line {
+      font-size: 11px;
+      text-align: justify;
+      margin-bottom: 1px;
+      line-height: 1.3;
+    }
+    
     /* Updated Certifications Styling */
     .certifications-list {
       padding-left: 12px;
@@ -248,66 +231,43 @@
       list-style: none;
       padding-left: 0;
       margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1%;
     }
     
     .certifications-list li {
-      display: inline-block;
-      width: 49%;
+      display: flex;
+      align-items: flex-start;
+      width: 32.33%;
       margin-bottom: 3px;
-      margin-right: 2%;
       font-size: 11px;
       vertical-align: top;
     }
     
-    .certifications-list li:nth-child(2n) {
+    .certifications-list li::before {
+      content: "•";
+      color: var(--primary-color);
+      margin-right: 5px;
+      font-size: 11px;
+    }
+    
+    .certifications-list li:nth-child(3n) {
       margin-right: 0;
     }
     
-    /* Special positioning for second column offset */
-    .certifications-list li:nth-child(2),
-    .certifications-list li:nth-child(4),
-    .certifications-list li:nth-child(6),
-    .certifications-list li:nth-child(8),
-    .certifications-list li:nth-child(10),
-    .certifications-list li:nth-child(12),
-    .certifications-list li:nth-child(14),
-    .certifications-list li:nth-child(16) {
-      margin-top: 6px;
-    }
-    
-    @media (min-width: 768px) {
+    @media (max-width: 768px) {
       .certifications-list li {
-        width: 32%;
+        width: 49%;
         margin-right: 2%;
-      }
-      
-      .certifications-list li:nth-child(3n) {
-        margin-right: 0;
       }
       
       .certifications-list li:nth-child(2n) {
+        margin-right: 0;
+      }
+      
+      .certifications-list li:nth-child(3n) {
         margin-right: 2%;
-      }
-      
-      /* Remove special positioning on desktop for 3-column layout */
-      .certifications-list li:nth-child(2),
-      .certifications-list li:nth-child(4),
-      .certifications-list li:nth-child(6),
-      .certifications-list li:nth-child(8),
-      .certifications-list li:nth-child(10),
-      .certifications-list li:nth-child(12),
-      .certifications-list li:nth-child(14),
-      .certifications-list li:nth-child(16) {
-        margin-top: 3px;
-      }
-      
-      /* Add offset for third column on desktop */
-      .certifications-list li:nth-child(3),
-      .certifications-list li:nth-child(6),
-      .certifications-list li:nth-child(9),
-      .certifications-list li:nth-child(12),
-      .certifications-list li:nth-child(15) {
-        margin-top: 6px;
       }
     }
     
@@ -346,9 +306,9 @@
       header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
-        padding: 4px 4px;
-        min-height: 70px;
+        gap: 2px;
+        padding: 3px 4px;
+        min-height: 40px;
       }
       .contact-info {
         text-align: left;
@@ -356,8 +316,6 @@
         font-size: 10.5px;
       }
       .contact-item .icon { font-size: 10.5px; }
-      .profile-image { width: 45px; height: 45px; }
-      .profile-image-fallback { width: 45px; height: 45px; line-height: 45px; font-size: 14px; }
       body { font-size: 12.5px; }
     }
   </style>
@@ -366,14 +324,8 @@
   <div class="container" id="resumeContent">
     <header>
       <div class="profile-section">
-        <div class="profile-image">
-          <img src="ck.jpg" alt="Chandan Kumar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-          <div class="profile-image-fallback">CK</div>
-        </div>
-        <div class="profile-details">
-          <div class="profile-name">CHANDAN KUMAR</div>
-          <div class="profile-title"><strong>IIT | Super30 | Data Scientist | IBM</strong></div>
-        </div>
+        <div class="profile-name">CHANDAN KUMAR</div>
+        <div class="profile-title"><strong>IIT | Super30 | Data Scientist | IBM</strong></div>
       </div>
       <div class="contact-info">
         <div class="contact-item">
@@ -410,34 +362,31 @@
         <div class="section-title"><i class="fas fa-briefcase"></i><span>Professional Experience</span></div>
         <div class="job">
           <div class="job-title"><strong>IBM</strong> - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
-          <ul>
-            <li>Led development of enterprise-scale AI solutions, focusing on multi-agent systems and ML model deployment.</li>
-            <li>Implemented MLOps practices and governance frameworks for scalable, ethical AI in production.</li>
-            <li>Collaborated with teams to deliver automation solutions, resulting in 25% improved operational efficiency.</li>
-          </ul>
+          <div class="job-description">
+            <div class="job-line">• Led enterprise-scale AI solutions development with multi-agent systems and MLOps governance frameworks, achieving 25% operational efficiency improvement.</div>
+            <div class="job-line">• Architected scalable ML model deployments and automation solutions for Fortune 500 clients, ensuring ethical AI practices in production environments.</div>
+          </div>
         </div>
         <div class="job">
           <div class="job-title"><strong>Accenture</strong> - Data Scientist <span class="job-period">Apr 2021 - Feb 2024</span></div>
-          <ul>
-            <li>Architected ML solutions for Fortune 500 clients in banking and finance, achieving high-impact outcomes.</li>
-            <li>Built scalable data pipelines handling large datasets using cloud and distributed computing frameworks.</li>
-            <li>Developed AI-powered document processing and customer segmentation, improving workflows by 30%.</li>
-          </ul>
+          <div class="job-description">
+            <div class="job-line">• Architected ML solutions for Fortune 500 banking and finance clients, building scalable data pipelines with cloud and distributed computing frameworks.</div>
+            <div class="job-line">• Developed AI-powered document processing and customer segmentation systems, improving operational workflows by 30% through advanced analytics.</div>
+          </div>
         </div>
         <div class="job">
           <div class="job-title"><strong>Capgemini</strong> - Process Lead <span class="job-period">Feb 2021 - Mar 2021</span></div>
-          <ul>
-            <li>Led process optimization initiatives, enhancing efficiency with data-driven methodologies.</li>
-            <li>Coordinated teams to deliver high-quality project deliverables within tight timelines.</li>
-          </ul>
+          <div class="job-description">
+            <div class="job-line">• Led cross-functional teams to deliver process optimization initiatives using data-driven methodologies and statistical analysis.</div>
+            <div class="job-line">• Coordinated high-quality project deliverables within tight timelines, enhancing operational efficiency through strategic process improvements.</div>
+          </div>
         </div>
         <div class="job">
           <div class="job-title"><strong>Clean Harbors</strong> - Data Scientist <span class="job-period">Jun 2018 - Jan 2021</span></div>
-          <ul>
-            <li>Developed AI-driven waste classification and invoice auditing systems, improving compliance and operations.</li>
-            <li>Created ML models for predictive analytics, reducing costs by 15% through operational efficiency.</li>
-            <li>Applied statistical analysis and data mining to address environmental and financial challenges.</li>
-          </ul>
+          <div class="job-description">
+            <div class="job-line">• Developed AI-driven waste classification and invoice auditing systems, improving compliance operations and reducing costs by 15% through predictive analytics.</div>
+            <div class="job-line">• Applied advanced statistical analysis and data mining techniques to solve complex environmental and financial challenges across enterprise operations.</div>
+          </div>
         </div>
       </div>
       <div class="section">
@@ -556,23 +505,20 @@ Super30, Patna (2012-2013)
 
 Professional Experience
 IBM - Data Scientist (Mar 2024 - Present)
-- Led development of enterprise-scale AI solutions, focusing on multi-agent systems and ML model deployment.
-- Implemented MLOps practices and governance frameworks for scalable, ethical AI in production.
-- Collaborated with teams to deliver automation solutions, resulting in 25% improved operational efficiency.
+• Led enterprise-scale AI solutions development with multi-agent systems and MLOps governance frameworks, achieving 25% operational efficiency improvement.
+• Architected scalable ML model deployments and automation solutions for Fortune 500 clients, ensuring ethical AI practices in production environments.
 
 Accenture - Data Scientist (Apr 2021 - Feb 2024)
-- Architected ML solutions for Fortune 500 clients in banking and finance, achieving high-impact outcomes.
-- Built scalable data pipelines handling large datasets using cloud and distributed computing frameworks.
-- Developed AI-powered document processing and customer segmentation, improving workflows by 30%.
+• Architected ML solutions for Fortune 500 banking and finance clients, building scalable data pipelines with cloud and distributed computing frameworks.
+• Developed AI-powered document processing and customer segmentation systems, improving operational workflows by 30% through advanced analytics.
 
 Capgemini - Process Lead (Feb 2021 - Mar 2021)
-- Led process optimization initiatives, enhancing efficiency with data-driven methodologies.
-- Coordinated teams to deliver high-quality project deliverables within tight timelines.
+• Led cross-functional teams to deliver process optimization initiatives using data-driven methodologies and statistical analysis.
+• Coordinated high-quality project deliverables within tight timelines, enhancing operational efficiency through strategic process improvements.
 
 Clean Harbors - Data Scientist (Jun 2018 - Jan 2021)
-- Developed AI-driven waste classification and invoice auditing systems, improving compliance and operations.
-- Created ML models for predictive analytics, reducing costs by 15% through operational efficiency.
-- Applied statistical analysis and data mining to address environmental and financial challenges.
+• Developed AI-driven waste classification and invoice auditing systems, improving compliance operations and reducing costs by 15% through predictive analytics.
+• Applied advanced statistical analysis and data mining techniques to solve complex environmental and financial challenges across enterprise operations.
 
 Certifications
 - Northwestern University - Analytics & AI
