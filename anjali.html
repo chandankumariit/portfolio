@@ -79,17 +79,9 @@
       font-weight: 600;
       color: var(--highlight-color);
     }
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      font-size: 9px;
-      text-align: right;
-    }
     .contact-item {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
       gap: 3px;
     }
     .contact-item .icon {
@@ -277,7 +269,7 @@
 <body>
   <div class="container" id="resumeContent">
     <header>
-      <div class="profile-section">
+      <div class="profile-section" style="flex-direction: column; align-items: flex-start; flex: 1;">
         <div class="profile-image">
           <img src="ARY.jpg" alt="Anjali Rani" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
           <div class="profile-image-fallback">Image Not Available</div>
@@ -285,20 +277,20 @@
         <div class="profile-details">
           <div class="profile-name">ANJALI RANI</div>
           <div class="profile-title"><strong>IIIT Lucknow | M.Tech | Data Scientist | Ex-TCS | Ex-AMD </strong></div>
-        </div>
-      </div>
-      <div class="contact-info">
-        <div class="contact-item">
-          <span class="icon"><i class="fas fa-phone"></i></span>
-          <span>+91-7033441492</span>
-        </div>
-        <div class="contact-item">
-          <span class="icon"><i class="fas fa-envelope"></i></span>
-          <a href="mailto:anjalirani.iiit@gmail.com">anjalirani.iiit@gmail.com</a>
-        </div>
-        <div class="contact-item">
-          <span class="icon"><i class="fab fa-linkedin-in"></i></span>
-          <a href="https://www.linkedin.com/in/anjaliyaedav">linkedin.com/in/anjaliyaedav</a>
+          <div class="contact-info" style="display: flex; gap: 15px; font-size: 10px; margin-top: 4px;">
+            <div class="contact-item" style="flex: none; display: flex; align-items: center; gap: 4px;">
+              <span class="icon"><i class="fas fa-phone"></i></span>
+              <span>+91-7033441492</span>
+            </div>
+            <div class="contact-item" style="flex: none; display: flex; align-items: center; gap: 4px;">
+              <span class="icon"><i class="fas fa-envelope"></i></span>
+              <a href="mailto:anjalirani.iiit@gmail.com">anjalirani.iiit@gmail.com</a>
+            </div>
+            <div class="contact-item" style="flex: none; display: flex; align-items: center; gap: 4px;">
+              <span class="icon"><i class="fab fa-linkedin-in"></i></span>
+              <a href="https://www.linkedin.com/in/anjaliyaedav">linkedin.com/in/anjaliyaedav</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>
