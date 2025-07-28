@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anjali Rani Resume</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+    :root {
+      --primary-color: #2C5AA0;
+      --secondary-color: #1976D2;
+      --accent-color: #FFCA28;
+      --highlight-color: #1B263B;
+      --text-color: #212121;
+      --light-gray: #F5F5F5;
+      --border-color: #E0E0E0;
+      --background-color: #FAFAFA;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-color);
+      line-height: 1.3;
+      background-color: var(--background-color);
+      font-size: 11.5px;
+      font-weight: 400;
+    }
+    .container {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      background-color: white;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      padding: 0 1mm 1mm 1mm;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 0.5px solid var(--accent-color);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 4px;
+      margin-bottom: 3px;
+      border-bottom: 1.5px solid var(--primary-color);
+      min-height: 60px;
+    }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    /* Hide the profile image */
+    .profile-image {
+      display: none;
+    }
+    .profile-image-fallback {
+      display: none;
+    }
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+    .profile-name {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: var(--text-color);
+    }
+    .profile-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--highlight-color);
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 9px;
+      text-align: right;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 3px;
+    }
+    .contact-item .icon {
+      color: var(--primary-color);
+      font-size: 10px;
+    }
+    .contact-item a, .contact-item span {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .section { margin-bottom: 3px; }
+    .section-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--secondary-color);
+      padding-bottom: 1px;
+      margin-bottom: 2px;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+    }
+    .section-title i {
+      color: var(--primary-color);
+      margin-right: 0.6mm;
+      font-size: 11px;
+    }
+    .section-title span {
+      color: var(--primary-color);
+    }
+    .job, .education-item, .project {
+      margin-bottom: 2px;
+      border-bottom: 0.5px solid var(--border-color);
+      padding-bottom: 2px;
+    }
+    .job:last-child, .project:last-child {
+      border-bottom: none;
+    }
+    .job {
+      padding-left: 12px;
+    }
+    .job-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-color);
+      display: inline-block;
+      width: 100%;
+      letter-spacing: 0.2px;
+    }
+    .school-name, .project-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-color);
+      padding-left: 12px;
+    }
+    .project-title .company-name {
+      font-weight: 400;
+      font-style: italic;
+      color: var(--primary-color);
+      margin-left: 2px;
+    }
+    .job-period {
+      display: inline-block;
+      font-weight: 600;
+      font-size: 11px;
+      color: #555;
+      float: right;
+      margin-left: 4px;
+    }
+    .education-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-left: 12px;
+    }
+    .education-details {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    .education-period {
+      font-weight: 600;
+      font-size: 11px;
+      color: #555;
+    }
+    ul {
+      padding-left: 12px;
+      margin: 1px 0;
+    }
+    ul li {
+      margin-bottom: 2px;
+      text-align: justify;
+      font-size: 11px;
+    }
+    ul li::marker {
+      color: var(--primary-color);
+    }
+    p {
+      margin: 1px 0;
+      text-align: justify;
+      font-size: 11px;
+    }
+    .section p {
+      padding-left: 12px;
+    }
+    strong {
+      font-weight: 700;
+      color: var(--text-color);
+    }
+    #downloadButton {
+      display: block;
+      width: 180px;
+      margin: 8px auto;
+      padding: 6px;
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      border: none;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #downloadButton:hover {
+      background-color: var(--secondary-color);
+    }
+    .skills-list ul li { margin-bottom: 1px; }
+    .certifications-columns {
+      display: flex;
+      gap: 8px;
+    }
+    .certifications-left, .certifications-right {
+      flex: 1;
+    }
+    .certifications-left ul, .certifications-right ul {
+      padding-left: 12px;
+      margin: 1px 0;
+    }
+    .certifications-left ul li, .certifications-right ul li {
+      margin-bottom: 2px;
+      font-size: 11px;
+    }
+    .certification-institution {
+      font-weight: 700;
+    }
+    @media print {
+      body { background: none; }
+      .container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0 1mm 1mm 1mm;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      #downloadButton { display: none; }
+      header {
+        border-bottom: 1.5px solid var(--primary-color);
+      }
+      .contact-item a, .contact-item span { color: var(--text-color); }
+      .profile-title { color: var(--highlight-color); }
+    }
+    @media (max-width: 768px) {
+      .container {
+        width: 99%;
+        padding: 0 1mm 1mm 1mm;
+        border: none;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 4px 4px;
+        min-height: 70px;
+      }
+      .contact-info { text-align: left; align-items: flex-start; }
+      .certifications-columns { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="resumeContent">
+    <header>
+      <div class="profile-section">
+        <div class="profile-image">
+          <img src="ARY.jpg" alt="Anjali Rani" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="profile-image-fallback">Image Not Available</div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-name">ANJALI RANI</div>
+          <div class="profile-title"><strong>IIIT Lucknow | M.Tech | Data Scientist | Ex-TCS | Ex-AMD </strong></div>
+        </div>
+      </div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="icon"><i class="fas fa-phone"></i></span>
+          <span>+91-8688841302</span>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fas fa-envelope"></i></span>
+          <a href="mailto:anjalirani.iiit@gmail.com">anjalirani.iiit@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fab fa-linkedin-in"></i></span>
+          <a href="https://www.linkedin.com/in/anjaliyaedav">linkedin.com/in/anjaliyaedav</a>
+        </div>
+      </div>
+    </header>
+    <div class="content">
+      <div class="section">
+        <div class="section-title"><i class="fa-regular fa-address-card"></i><span>Professional Summary</span></div>
+        <p><strong>M.Tech in Data Science</strong> from <strong>IIIT Lucknow</strong>, with around <strong>3 years</strong> of expertise in delivering AI-driven solutions across finance, banking and environmental sectors. Skilled in Machine Learning, Deep Learning, Generative AI, LLMs, NLP, RAG, vector databases, and MLOps, with hands-on expertise in Python, TensorFlow, FastAPI, R, SQL and cloud platforms (AWS, Azure, GCP). Proven ability to design and deploy scalable ML pipelines, working with tools like Databricks, ML Studio, SageMaker, Bedrock, Vertex AI, LangChain, LangGraph, CrewAI, Hugging Face, Docker, and Kubernetes. Experienced in building robust ETL workflows and delivering analytics through Tableau and Power BI. Passionate about leveraging AI to drive automation, innovation, and business value.</p>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="fas fa-graduation-cap"></i><span>Education</span></div>
+        <div class="education-item">
+          <div class="education-details"><strong>IIIT Lucknow</strong> - M.Tech, Data Science</div>
+          <div class="education-period">Aug 2023 - Jul 2025</div>
+        </div>
+        <div class="education-item">
+          <div class="education-details"><strong>GCE Gaya</strong> - B.Tech, Computer Science Engineering</div>
+          <div class="education-period">Aug 2016 - Jul 2020</div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="fas fa-certificate"></i><span>Certifications</span></div>
+        <div class="certifications-columns">
+          <div class="certifications-left">
+            <ul>
+              <li><span class="certification-institution">LangChain Academy</span> - LangGraph Multi-Agent Systems</li>
+              <li><span class="certification-institution">Databricks Academy</span> - Generative AI Fundamentals</li>
+            </ul>
+          </div>
+          <div class="certifications-right">
+            <ul>
+              <li><span class="certification-institution">Duke University</span> - Programming Fundamentals</li>
+              <li><span class="certification-institution">Hugging Face</span> - AI Agents Fundamentals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="fas fa-briefcase"></i><span>Professional Experience</span></div>
+        <div class="job">
+          <div class="job-title"><strong>AMD</strong> - CoOp/Intern <span class="job-period">Jul 2024 - Jun 2025</span></div>
+          <ul>
+            <li>Implemented robust MLOps infrastructure using Docker containerization and Kubernetes orchestration, enabling seamless automated model training, validation, and deployment workflows across distributed systems.</li>
+            <li>Developed sophisticated real-time model monitoring systems with automated retraining workflows, incorporating drift detection, performance metrics tracking, and intelligent alerting mechanisms for production environments.</li>
+            <li>Collaborated extensively with cross-functional hardware engineering teams to integrate production-ready ML solutions into semiconductor design workflows, ensuring optimal performance and scalability requirements.</li>
+          </ul>
+        </div>
+        <div class="job">
+          <div class="job-title"><strong>TCS</strong> - Systems Engineer <span class="job-period">Apr 2021 - Nov 2023</span></div>
+          <ul>
+            <li>Architected and deployed 5+ sophisticated ML models for enterprise clients across banking and finance sectors, achieving consistently 90%+ accuracy through advanced ensemble methods and feature engineering techniques.</li>
+            <li>Built high-performance data processing pipelines capable of handling 10TB+ daily data volumes using Apache Spark, Databricks, and optimized ETL workflows for real-time analytics and batch processing requirements.</li>
+            <li>Developed cutting-edge NLP solutions implementing transformer-based architectures and custom tokenization strategies, resulting in 60% processing time reduction for document classification and sentiment analysis tasks.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="fas fa-code-branch"></i><span>Key Projects</span></div>
+        <div class="project">
+          <div class="project-title"><strong>AVIVA</strong>, <span class="company-name">AMD</span></div>
+          <ul>
+            <li>Built sophisticated multi-agent system leveraging large language models and reinforcement learning techniques, reducing manual workflow processes by 70% through intelligent task automation and decision-making capabilities.</li>
+            <li>Applied comprehensive AI Governance frameworks, including bias detection, fairness metrics, and ethical deployment guidelines, ensuring responsible AI implementation across enterprise-level production systems.</li>
+            <li><strong>Key Skills:</strong> Python, RAG, Generative AI, FineTuning, Machine Learning, NLP, LangChain, LangGraph, AWS</li>
+          </ul>
+        </div>
+        <div class="project">
+          <div class="project-title"><strong>PdfGPT</strong>, <span class="company-name">TCS</span></div>
+          <ul>
+            <li>Deployed advanced text summarization system using transformer-based models and custom attention mechanisms, improving document processing workflows by 80% through intelligent content extraction and contextual understanding.</li>
+            <li>Built interactive conversational AI interface for intelligent document querying, implementing vector databases, semantic search capabilities, and natural language understanding for enhanced user experience.</li>
+            <li><strong>Key Skills:</strong> Python, Data Mining, NLP, LangChain, LangGraph, Vector Databases, Semantic Search, Azure</li>
+          </ul>
+        </div>
+        <div class="project">
+          <div class="project-title"><strong>Waste Classification Code</strong>, <span class="company-name">TCS</span></div>
+          <ul>
+            <li>Designed comprehensive deep learning-based waste classification system using convolutional neural networks and transfer learning, achieving 95%+ accuracy across multiple waste categories for environmental sustainability applications.</li>
+            <li>Created scalable ML pipeline architecture for real-time waste sorting, incorporating edge computing deployment, IoT sensor integration, and automated feedback mechanisms for continuous model improvement.</li>
+            <li><strong>Key Skills:</strong> Python, Data Analysis, Data Mining, Data Modeling, Deep Learning, SQL, Excel, Power BI, Azure</li>
+          </ul>
+        </div>
+        <div class="project">
+          <div class="project-title"><strong>Invoice Audit</strong>, <span class="company-name">TCS</span></div>
+          <ul>
+            <li>Developed sophisticated fraud detection system using ensemble machine learning methods and anomaly detection algorithms, achieving 95%+ accuracy in identifying fraudulent transactions across large-scale financial datasets.</li>
+            <li>Reduced manual audit processing time by 65% through intelligent automation workflows incorporating OCR technology, pattern recognition, and rule-based validation systems for enhanced operational efficiency.</li>
+            <li><strong>Key Skills:</strong> Python, Data Analysis, Data Mining, Data Modeling, Deep Learning, SQL, Excel, Power BI, Azure</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="fas fa-laptop-code"></i><span>Technical Skills</span></div>
+        <div class="skills-list">
+          <ul>
+            <li><strong>Data Science & AI:</strong> Generative AI, LLMs, RAG, Prompt Engineering, NLP, Transformers, Text Analytics, Sentiment Analysis, Named Entity Recognition (NER), Machine Learning, Deep Learning, Time Series Analysis, Reinforcement Learning, Computer Vision, CNNs, OpenCV, Statistical Modeling, Hypothesis Testing</li>
+            <li><strong>Programming & Frameworks:</strong> Python, R, SQL, TensorFlow, PyTorch, Scikit-learn, Keras, LangChain, LangGraph, CrewAI, Hugging Face, LlamaIndex, FastAPI, Flask, Django, RESTful API Development, GraphQL, Pandas, NumPy, SciPy, StatsModels, Streamlit, Bash, Shell Scripting</li>
+            <li><strong>Cloud & Databases:</strong> AWS (Bedrock, SageMaker, Redshift, Athena, S3, EC2, Lambda, EMR, Glue), Azure (Synapse, Databricks, ML Studio), GCP (BigQuery, Vertex AI, Dataflow), Snowflake, PostgreSQL, MySQL, MongoDB, Pinecone, Chroma, Milvus, ETL Pipelines</li>
+            <li><strong>Visualization & BI Tools:</strong> Tableau, Power BI, Matplotlib, Seaborn, Plotly</li>
+            <li><strong>Tools, DevOps & Version Control:</strong> Git, GitHub, GitLab, Bitbucket, Docker, Kubernetes, CI/CD for ML Pipelines</li>
+            <li><strong>Analytics & Business Skills:</strong> Data Wrangling, Feature Engineering, Exploratory Data Analysis (EDA), Cohort Analysis, Retention Analysis, User Segmentation, Business Intelligence, Product Analytics, Forecasting, Data Governance, Problem-Solving, Critical Thinking, System Integration, Workflow Automation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="downloadButton" onclick="downloadPDF()">Download Resume as PDF</button>
+  <script>
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+      const element = document.getElementById('resumeContent');
+      try {
+        const button = document.getElementById('downloadButton');
+        button.innerHTML = "Generating PDF...";
+        button.disabled = true;
+        const canvas = await html2canvas(element, {
+          scale: 3,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff',
+          windowHeight: element.scrollHeight
+        });
+        const imgWidth = 210;
+        const pageHeight = 297;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgData = canvas.toDataURL('image/jpeg', 0.9);
+        let heightRatio = pageHeight / imgHeight;
+        let adjustedHeight = imgHeight * heightRatio;
+        doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, adjustedHeight, undefined, 'FAST');
+        doc.save('Anjali_Rani_Resume.pdf');
+        button.innerHTML = "Download Resume as PDF";
+        button.disabled = false;
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert('Failed to generate PDF. Please try again.');
+        button.innerHTML = "Download Resume as PDF";
+        button.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
