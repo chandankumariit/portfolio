@@ -210,7 +210,7 @@
       line-height: 1.3;
     }
 
-    /* Fixed Certification Layout */
+    /* Optimized Certification Layout */
     .certifications-grid {
       padding-left: 12px;
       margin: 1px 0;
@@ -219,16 +219,33 @@
     .cert-row {
       display: flex;
       margin-bottom: 2px;
-      gap: 10px;
       align-items: flex-start;
+      gap: 8px;
     }
 
     .cert-item {
-      flex: 1;
       font-size: 10.5px;
       display: flex;
       align-items: flex-start;
       min-height: 16px;
+    }
+
+    /* Flexible column widths - more space for columns 1 & 3 */
+    .cert-item:nth-child(1) {
+      flex: 1.3; /* More space for longer certifications */
+    }
+
+    .cert-item:nth-child(2) {
+      flex: 1;
+    }
+
+    .cert-item:nth-child(3) {
+      flex: 1.2; /* More space for longer certifications */
+    }
+
+    .cert-item:nth-child(4) {
+      flex: 0.8; /* Less space for shorter certifications */
+      margin-left: 8px; /* Shift 4th column slightly right */
     }
 
     .cert-item::before {
@@ -254,6 +271,13 @@
       }
       .cert-item {
         width: 100%;
+        margin-left: 0 !important;
+      }
+      .cert-item:nth-child(1),
+      .cert-item:nth-child(2),
+      .cert-item:nth-child(3),
+      .cert-item:nth-child(4) {
+        flex: none;
       }
     }
 
@@ -384,7 +408,7 @@
             <div class="cert-item"><span class="certification-institution">Duke University</span> - DevOps, DataOps, MLOps</div>
             <div class="cert-item"><span class="certification-institution">LangChain Academy</span> - LangSmith</div>
             <div class="cert-item"><span class="certification-institution">Udemy</span> - Project Management Fundamentals</div>
-            <div class="cert-item"><span class="certification-institution">Udemy</span> - MCP (Model Context Protocol)</div>
+            <div class="cert-item"><span class="certification-institution">Udemy</span> - MCP</div>
           </div>
           <div class="cert-row">
             <div class="cert-item"><span class="certification-institution">Udemy</span> - Product Management Fundamentals</div>
