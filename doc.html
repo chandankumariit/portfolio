@@ -632,4 +632,35 @@
               .profile-name { font-size: 18pt; font-weight: bold; color: #0D47A1; margin-bottom: 2pt; }
               .profile-title { font-size: 11pt; font-weight: bold; color: #1B263B; margin-bottom: 8pt; }
               .contact-info { font-size: 10pt; margin-bottom: 8pt; }
-              .section-title { font-size: 12pt; font-weight: bold; color: #0D47A1; text-transform: uppercase; border-bottom
+              .section-title { font-size: 12pt; font-weight: bold; color: #0D47A1; text-transform: uppercase; border-bottom: 1pt solid #1976D2; padding-bottom: 2pt; margin: 8pt 0 4pt 0; }
+              .job-title, .project-title, .education-details { font-size: 11pt; font-weight: bold; margin: 4pt 0 2pt 0; }
+              .job-period, .education-period { font-size: 10pt; color: #555; float: right; }
+              .job-line, .project-line, p, li { font-size: 10.5pt; margin: 2pt 0; text-align: justify; }
+              .certification-item { font-size: 10.5pt; margin: 2pt 0; }
+              .certification-institution { font-weight: bold; }
+              strong { font-weight: bold; color: #212121; }
+              ul { margin: 2pt 0; padding-left: 20pt; }
+              .certifications-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+            </style>
+          </head>
+          <body>
+            ${clone.innerHTML}
+          </body>
+          </html>
+        `;
+
+        // Convert HTML to DOCX-compatible format
+        const converted = htmlDocx.asBlob(htmlContent);
+        saveAs(converted, 'Chandan_Kumar_Resume.docx');
+        
+      } catch (error) {
+        console.error('Error generating DOCX:', error);
+        alert('Failed to generate DOCX. Please try again.');
+      } finally {
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }
+    }
+  </script>
+</body>
+                </html>
