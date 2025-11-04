@@ -241,7 +241,9 @@
     }
     .certification-content {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 4px;
     }
     .certification-institution {
       font-weight: 700;
@@ -249,6 +251,10 @@
     }
     .certification-course {
       font-weight: 400;
+      color: #555;
+    }
+    .certification-course::before {
+      content: "- ";
       color: #555;
     }
     @media (max-width: 768px) {
@@ -663,4 +669,4 @@
     }
   </script>
 </body>
-                </html>
+  </html>
