@@ -175,13 +175,9 @@
       font-size: 10.5px;
     }
     .section p { padding-left: 12px; }
-    strong {
-      font-weight: 700;
-      color: var(--text-color);
-    }
+    .bold { font-weight: 700; }
     .button-container {
       display: flex;
-      gap: 10px;
       justify-content: center;
       margin: 20px auto;
     }
@@ -270,16 +266,6 @@
       content: "- ";
       color: #555;
     }
-    @media (max-width: 768px) {
-      .certifications-grid {
-        flex-direction: column;
-      }
-      .certification-item.col-1,
-      .certification-item.col-2,
-      .certification-item.col-3 {
-        width: 100%;
-      }
-    }
     @media print {
       body { background: none; }
       .container {
@@ -318,6 +304,14 @@
       .download-button {
         width: 90%;
       }
+      .certifications-grid {
+        flex-direction: column;
+      }
+      .certification-item.col-1,
+      .certification-item.col-2,
+      .certification-item.col-3 {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -326,7 +320,7 @@
     <header>
       <div class="profile-section">
         <div class="profile-name">CHANDAN KUMAR</div>
-        <div class="profile-title"><strong>IIT | Super30 | Data Scientist | IBM</strong></div>
+        <div class="profile-title"><span class="bold">IIT | Super30 | Data Scientist | IBM</span></div>
       </div>
       <div class="contact-info">
         <div class="contact-item">
@@ -346,44 +340,44 @@
     <div class="content">
       <div class="section">
         <div class="section-title"><i class="fa-regular fa-address-card"></i><span>Professional Summary</span></div>
-        <p><strong>IIT graduate</strong> and <strong>Data Scientist</strong> with around <strong>8 years</strong> of expertise in delivering AI-driven solutions across finance, banking, energy, and environmental sectors. Skilled in Machine Learning, Deep Learning, Generative AI, LLMs, NLP, RAG, vector databases, and MLOps, with hands-on expertise in Python, TensorFlow, FastAPI, and cloud platforms (AWS, Azure, GCP). Proven ability to design and deploy scalable ML pipelines, working with tools like Databricks, ML Studio, SageMaker, Bedrock, Vertex AI, LangChain, LangGraph, CrewAI, Hugging Face, Docker, and Kubernetes. Experienced in building robust ETL workflows and delivering analytics through Tableau and Power BI. Passionate about leveraging AI to drive automation, innovation, and business value.</p>
+        <p><span class="bold">IIT graduate</span> and <span class="bold">Data Scientist</span> with around <span class="bold">8 years</span> of expertise in delivering AI-driven solutions across finance, banking, energy, and environmental sectors. Skilled in Machine Learning, Deep Learning, Generative AI, LLMs, NLP, RAG, vector databases, and MLOps, with hands-on expertise in Python, TensorFlow, FastAPI, and cloud platforms (AWS, Azure, GCP). Proven ability to design and deploy scalable ML pipelines, working with tools like Databricks, ML Studio, SageMaker, Bedrock, Vertex AI, LangChain, LangGraph, CrewAI, Hugging Face, Docker, and Kubernetes. Experienced in building robust ETL workflows and delivering analytics through Tableau and Power BI. Passionate about leveraging AI to drive automation, innovation, and business value.</p>
       </div>
       <div class="section">
         <div class="section-title"><i class="fas fa-graduation-cap"></i><span>Education</span></div>
         <div class="education-item">
-          <div class="education-details"><strong>IIT Dhanbad</strong> - B.Tech</div>
+          <div class="education-details"><span class="bold">IIT Dhanbad</span> - B.Tech</div>
           <div class="education-period">2013-2017</div>
         </div>
         <div class="education-item">
-          <div class="education-details"><strong>Super30</strong>, Patna</div>
+          <div class="education-details"><span class="bold">Super30</span>, Patna</div>
           <div class="education-period">2012-2013</div>
         </div>
       </div>
       <div class="section">
         <div class="section-title"><i class="fas fa-briefcase"></i><span>Professional Experience</span></div>
         <div class="job">
-          <div class="job-title"><strong>IBM</strong> - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
+          <div class="job-title"><span class="bold">IBM</span> - Data Scientist <span class="job-period">Mar 2024 - Present</span></div>
           <div class="job-description">
             <div class="job-line">• Led AI solutions development with multi-agent systems and MLOps governance frameworks, achieving 25% operational efficiency improvement.</div>
             <div class="job-line">• Architected scalable ML model deployments and automation solutions for Fortune 500 clients, ensuring ethical AI practices in production environments.</div>
           </div>
         </div>
         <div class="job">
-          <div class="job-title"><strong>Accenture</strong> - Data Scientist <span class="job-period">Apr 2021 - Feb 2024</span></div>
+          <div class="job-title"><span class="bold">Accenture</span> - Data Scientist <span class="job-period">Apr 2021 - Feb 2024</span></div>
           <div class="job-description">
             <div class="job-line">• Architected ML solutions for Fortune 500 clients, building scalable data pipelines with cloud and distributed computing frameworks.</div>
             <div class="job-line">• Developed AI-powered document processing and customer segmentation systems, improving operational workflows by 30% through advanced analytics.</div>
           </div>
         </div>
         <div class="job">
-          <div class="job-title"><strong>Capgemini</strong> - Process Lead <span class="job-period">Feb 2021 - Mar 2021</span></div>
+          <div class="job-title"><span class="bold">Capgemini</span> - Process Lead <span class="job-period">Feb 2021 - Mar 2021</span></div>
           <div class="job-description">
             <div class="job-line">• Led cross-functional teams to deliver process optimization initiatives using data-driven methodologies and statistical analysis.</div>
             <div class="job-line">• Coordinated high-quality project deliverables within tight timelines, enhancing operational efficiency through strategic process improvements.</div>
           </div>
         </div>
         <div class="job">
-          <div class="job-title"><strong>Clean Harbors</strong> - Data Scientist <span class="job-period">Jun 2018 - Jan 2021</span></div>
+          <div class="job-title"><span class="bold">Clean Harbors</span> - Data Scientist <span class="job-period">Jun 2018 - Jan 2021</span></div>
           <div class="job-description">
             <div class="job-line">• Developed AI-driven WCC and invoice auditing systems, improving compliance operations and reducing costs by 15% through predictive analytics.</div>
             <div class="job-line">• Applied advanced statistical analysis and data mining techniques to solve complex environmental and financial challenges across enterprise operations.</div>
@@ -508,42 +502,42 @@
       <div class="section">
         <div class="section-title"><i class="fas fa-code-branch"></i><span>Key Projects</span></div>
         <div class="project">
-          <div class="project-title"><strong>Watsonx Orchestrate</strong>, <span class="company-name">IBM</span></div>
+          <div class="project-title"><span class="bold">Watsonx Orchestrate</span>, <span class="company-name">IBM</span></div>
           <div class="project-description">
             <div class="project-line">• Developed multiple agents for IBM's wxo platform, enhancing multi-agent collaboration and workflow automation using AI Governance principles.</div>
             <div class="project-line">• Utilized advanced LLMs for intelligent task orchestration and agent selection, streamlining enterprise workflows with scalable multi-agent AI systems.</div>
           </div>
         </div>
         <div class="project">
-          <div class="project-title"><strong>Mizuho Bank</strong>, <span class="company-name">Accenture</span></div>
+          <div class="project-title"><span class="bold">Mizuho Bank</span>, <span class="company-name">Accenture</span></div>
           <div class="project-description">
             <div class="project-line">• Developed PdfGPT, an AI-powered text summarization system, enhancing document processing workflows with key feature extraction capabilities.</div>
             <div class="project-line">• Implemented PDF text summarization through interactive chat functionality, reducing document review time by 30% with AI-driven automation systems.</div>
           </div>
         </div>
         <div class="project">
-          <div class="project-title"><strong>Ulster Bank</strong>, <span class="company-name">Accenture</span></div>
+          <div class="project-title"><span class="bold">Ulster Bank</span>, <span class="company-name">Accenture</span></div>
           <div class="project-description">
             <div class="project-line">• Automated machine learning pipelines for customer segmentation algorithms using Python, AWS Glue, and Athena for scalable data processing.</div>
             <div class="project-line">• Created and validated comprehensive Data Models, deriving meaningful business insights and effectively communicating findings to client stakeholders.</div>
           </div>
         </div>
         <div class="project">
-          <div class="project-title"><strong>Facebook</strong>, <span class="company-name">Accenture</span></div>
+          <div class="project-title"><span class="bold">Facebook</span>, <span class="company-name">Accenture</span></div>
           <div class="project-description">
             <div class="project-line">• Examined data from multiple disparate sources to discover actionable insights providing competitive advantage for social media clients.</div>
             <div class="project-line">• Designed machine learning pipelines specializing in forecasting models, leveraging Python, Glue, and SageMaker to enhance decision-making processes.</div>
           </div>
         </div>
         <div class="project">
-          <div class="project-title"><strong>Waste Classification Code</strong>, <span class="company-name">Clean Harbors</span></div>
+          <div class="project-title"><span class="bold">Waste Classification Code</span>, <span class="company-name">Clean Harbors</span></div>
           <div class="project-description">
             <div class="project-line">• Designed and fine-tuned WCC Prediction models enabling autonomous WCC assignment, creating unified datasets with vital features for all waste classes.</div>
             <div class="project-line">• Applied logical data checks for input consistency and validation, facilitating accurate classification based on physical properties and environmental compliance requirements.</div>
           </div>
         </div>
         <div class="project">
-          <div class="project-title"><strong>Invoice Audit</strong>, <span class="company-name">Clean Harbors</span></div>
+          <div class="project-title"><span class="bold">Invoice Audit</span>, <span class="company-name">Clean Harbors</span></div>
           <div class="project-description">
             <div class="project-line">• Developed comprehensive invoice auditing and revenue prediction algorithms using advanced machine learning and statistical analysis techniques.</div>
             <div class="project-line">• Streamlined invoice verification processes through automation, reducing audit time by 20% and improving financial compliance and operational efficiency.</div>
@@ -563,13 +557,13 @@
         <div class="section-title"><i class="fas fa-laptop-code"></i><span>Technical Skills</span></div>
         <div class="skills-list">
           <ul>
-            <li><strong>Data Science & AI:</strong> Generative AI, Large Language Models (LLMs), Small Language Models (SLMs), Foundation Models, Fine-tuning, Retrieval-Augmented Generation (RAG), Prompt Engineering, Natural Language Processing (NLP), Transformers, Text Analytics, Sentiment Analysis, Named Entity Recognition (NER), Multi-modal AI, Machine Learning, Deep Learning, Time Series Analysis & Forecasting, Marketing Mix Modeling (MMM), Reinforcement Learning, Computer Vision, Convolutional Neural Networks (CNNs), OpenCV, Statistical Modeling, Hypothesis Testing, Synthetic Data Generation, AutoML, Model Monitoring, Responsible AI, AI Governance</li>
-            <li><strong>Programming & Frameworks:</strong> Python, R, SQL, TensorFlow, PyTorch, Scikit-learn, Keras, LangChain, LangGraph, CrewAI, AutoGen, Hugging Face, FastAPI, Flask</li>
-            <li><strong>Cloud & Databases:</strong> AWS (Bedrock, SageMaker, Redshift, Athena, S3, EC2, Lambda, Glue), Azure (Synapse, Databricks, ML Studio), GCP (BigQuery, Vertex AI), Snowflake, PostgreSQL, MongoDB, Pinecone, Chroma, Milvus</li>
-            <li><strong>Data Visualization:</strong> Tableau, Power BI, Matplotlib, Seaborn, Plotly</li>
-            <li><strong>Tools & DevOps:</strong> Git, GitHub, GitLab, Bitbucket, Docker, Kubernetes, CI/CD for ML Pipelines</li>
-            <li><strong>Analytics & Business:</strong> Data Wrangling, Feature Engineering, EDA, Cohort Analysis, Business Intelligence, Product Analytics, Forecasting, Data Governance</li>
-            <li><strong>Core Competencies:</strong> Data Science, Analytics & AI, Project Management, Product Management</li>
+            <li><span class="bold">Data Science & AI:</span> Generative AI, Large Language Models (LLMs), Small Language Models (SLMs), Foundation Models, Fine-tuning, Retrieval-Augmented Generation (RAG), Prompt Engineering, Natural Language Processing (NLP), Transformers, Text Analytics, Sentiment Analysis, Named Entity Recognition (NER), Multi-modal AI, Machine Learning, Deep Learning, Time Series Analysis & Forecasting, Marketing Mix Modeling (MMM), Reinforcement Learning, Computer Vision, Convolutional Neural Networks (CNNs), OpenCV, Statistical Modeling, Hypothesis Testing, Synthetic Data Generation, AutoML, Model Monitoring, Responsible AI, AI Governance</li>
+            <li><span class="bold">Programming & Frameworks:</span> Python, R, SQL, TensorFlow, PyTorch, Scikit-learn, Keras, LangChain, LangGraph, CrewAI, AutoGen, Hugging Face, FastAPI, Flask</li>
+            <li><span class="bold">Cloud & Databases:</span> AWS (Bedrock, SageMaker, Redshift, Athena, S3, EC2, Lambda, Glue), Azure (Synapse, Databricks, ML Studio), GCP (BigQuery, Vertex AI), Snowflake, PostgreSQL, MongoDB, Pinecone, Chroma, Milvus</li>
+            <li><span class="bold">Data Visualization:</span> Tableau, Power BI, Matplotlib, Seaborn, Plotly</li>
+            <li><span class="bold">Tools & DevOps:</span> Git, GitHub, GitLab, Bitbucket, Docker, Kubernetes, CI/CD for ML Pipelines</li>
+            <li><span class="bold">Analytics & Business:</span> Data Wrangling, Feature Engineering, EDA, Cohort Analysis, Business Intelligence, Product Analytics, Forecasting, Data Governance</li>
+            <li><span class="bold">Core Competencies:</span> Data Science, Analytics & AI, Project Management, Product Management</li>
           </ul>
         </div>
       </div>
@@ -578,9 +572,6 @@
   <div class="button-container">
     <button class="download-button" id="downloadPdfButton" onclick="downloadPDF()">
       <i class="fas fa-file-pdf"></i> Download as PDF
-    </button>
-    <button class="download-button" id="downloadDocxButton" onclick="downloadDOCX()">
-      <i class="fas fa-file-word"></i> Download as DOCX
     </button>
   </div>
   <script>
@@ -596,13 +587,14 @@
         button.disabled = true;
         
         const canvas = await html2canvas(element, {
-          scale: 3,
+          scale: 2,
           useCORS: true,
           backgroundColor: '#ffffff',
-          windowHeight: element.scrollHeight
+          windowHeight: element.scrollHeight,
+          logging: false
         });
         
-        const imgData = canvas.toDataURL('image/jpeg', 0.9);
+        const imgData = canvas.toDataURL('image/jpeg', 0.75);
         const imgWidth = 210;
         const pageHeight = 297;
         const imgHeight = canvas.height * imgWidth / canvas.width;
@@ -612,72 +604,6 @@
       } catch (error) {
         console.error('Error generating PDF:', error);
         alert('Failed to generate PDF. Please try again.');
-      } finally {
-        button.innerHTML = originalText;
-        button.disabled = false;
-      }
-    }
-
-    function downloadDOCX() {
-      const button = document.getElementById('downloadDocxButton');
-      const originalText = button.innerHTML;
-      
-      try {
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating DOCX...';
-        button.disabled = true;
-
-        // 1. Get the styles from the <style> tag in the <head>
-        const styles = document.querySelector('style').innerHTML;
-        
-        // 2. Get the live HTML content from the resume container
-        const content = document.getElementById('resumeContent').innerHTML;
-
-        // 3. Create the Word-compatible HTML template
-        // This includes the Word XML namespaces and embeds the CSS
-        const sourceHTML = `
-          <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-          <head>
-            <meta charset="utf-8">
-            <title>Chandan Kumar Resume</title>
-            <style>
-              ${styles}
-              /* Add Word-specific overrides */
-              body {
-                font-family: 'Roboto', sans-serif;
-              }
-              .container { 
-                box-shadow: none; 
-                border: none;
-                margin: 0;
-                padding: 0;
-              }
-            </style>
-          </head>
-          <body lang="EN-US">
-            <div class="container" id="resumeContent">
-              ${content}
-            </div>
-          </body>
-          </html>
-        `;
-
-        // 4. Create blob and trigger download
-        const blob = new Blob(['\ufeff', sourceHTML], {
-          type: 'application/msword'
-        });
-        
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Chandan_Kumar_Resume.doc';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        
-      } catch (error) {
-        console.error('Error generating DOCX:', error);
-        alert('Failed to generate DOCX. Please try again.');
       } finally {
         button.innerHTML = originalText;
         button.disabled = false;
