@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chandan Kumar Resume</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+    :root {
+      --primary-color: #0D47A1;
+      --secondary-color: #1976D2;
+      --accent-color: #FFCA28;
+      --highlight-color: #1B263B;
+      --text-color: #212121;
+      --light-gray: #F5F5F5;
+      --border-color: #E0E0E0;
+      --background-color: #FAFAFA;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-color);
+      line-height: 1.3;
+      background-color: var(--background-color);
+      font-size: 11.5px;
+      font-weight: 400;
+    }
+    .container {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      background-color: white;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      padding: 0 1mm 1mm 1mm;
+      border-radius: 8px;
+      border: 0.5px solid var(--accent-color);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3px 4px;
+      margin-bottom: 3px;
+      border-bottom: 1.5px solid var(--primary-color);
+      min-height: 35px;
+    }
+    .profile-section { display: flex; flex-direction: column; gap: 1px; }
+    .profile-name { font-size: 15.5px; font-weight: 700; letter-spacing: 0.3px; color: var(--text-color); }
+    .profile-title { font-size: 10.5px; font-weight: 600; color: var(--highlight-color); }
+    .contact-info { display: flex; flex-direction: column; gap: 1px; font-size: 9.5px; text-align: right; }
+    .contact-item { display: flex; align-items: center; justify-content: flex-end; gap: 3px; }
+    .contact-item .icon { color: var(--primary-color); font-size: 9.5px; }
+    .contact-item a, .contact-item span { color: var(--text-color); text-decoration: none; font-weight: 700; }
+    .section { margin-bottom: 3px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; color: var(--primary-color);
+      text-transform: uppercase; border-bottom: 1px solid var(--secondary-color);
+      padding-bottom: 1px; margin-bottom: 2px; letter-spacing: 0.4px;
+      display: flex; align-items: center;
+    }
+    .section-title i { color: var(--primary-color); margin-right: 0.6mm; font-size: 10.5px; }
+    .section-title span { color: var(--primary-color); }
+    .job, .education-item, .project {
+      margin-bottom: 2px; border-bottom: 0.5px solid var(--border-color); padding-bottom: 2px;
+    }
+    .job:last-child, .project:last-child { border-bottom: none; }
+    .job { padding-left: 12px; }
+    .job-title {
+      font-size: 11.5px; font-weight: 600; color: var(--text-color);
+      display: inline-block; width: 100%; letter-spacing: 0.2px;
+    }
+    .school-name, .project-title { font-size: 11.5px; font-weight: 600; color: var(--text-color); padding-left: 12px; }
+    .project-title .company-name { font-weight: 400; font-style: italic; color: var(--primary-color); margin-left: 2px; }
+    .job-period { font-weight: 600; font-size: 10.5px; color: #555; float: right; }
+    .education-item {
+      display: flex; justify-content: space-between; align-items: baseline; padding-left: 12px;
+    }
+    .education-details { font-size: 11.5px; font-weight: 600; color: var(--text-color); }
+    .education-period { font-weight: 600; font-size: 10.5px; color: #555; }
+    ul { padding-left: 12px; margin: 1px 0; }
+    ul li { margin-bottom: 2px; text-align: justify; font-size: 10.5px; }
+    ul li::marker { color: var(--primary-color); }
+    p { margin: 1px 0; text-align: justify; font-size: 10.5px; }
+    .section p { padding-left: 12px; }
+    .bold { font-weight: 700; }
+    .button-container { display: flex; justify-content: center; gap: 12px; margin: 20px auto; }
+    .download-button {
+      width: 180px; padding: 6px; background-color: var(--primary-color); color: white;
+      text-align: center; border-radius: 4px; cursor: pointer; font-weight: 600;
+      font-size: 12.5px; border: none; transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .download-button:hover { background-color: var(--secondary-color); }
+    .download-button:disabled { background-color: #999; cursor: not-allowed; }
+    .skills-list ul li { margin-bottom: 1px; }
+    .job-description, .project-description { padding-left: 12px; margin: 1px 0; }
+    .job-line, .project-line { font-size: 10.5px; text-align: justify; margin-bottom: 1px; line-height: 1.3; }
+    .certifications-grid {
+      display: flex; flex-wrap: wrap; gap: 4px 8px;
+      padding-left: 12px; margin: 2px 0; align-items: flex-start;
+    }
+    .certification-item { display: flex; align-items: flex-start; gap: 5px; font-size: 10.5px; line-height: 1.3; flex: 0 1 auto; }
+    .certification-item.col-1 { width: calc(40% - 6px); }
+    .certification-item.col-2 { width: calc(32% - 6px); }
+    .certification-item.col-3 { width: calc(28% - 6px); }
+    .certification-bullet { color: var(--primary-color); font-weight: 700; font-size: 10px; flex-shrink: 0; margin-top: 0px; }
+    .certification-content { display: flex; flex-direction: row; align-items: baseline; gap: 3px; flex: 1; }
+    .certification-institution { font-weight: 700; color: var(--text-color); white-space: nowrap; }
+    .certification-course { font-weight: 400; color: #555; line-height: 1.3; }
+    .certification-course::before { content: "- "; color: #555; }
+    @media print {
+      body { background: none; }
+      .container { box-shadow: none; margin: 0; padding: 0 1mm 1mm 1mm; width: 100%; height: 100%; border: none; }
+      .button-container { display: none; }
+      header { border-bottom: 1.5px solid var(--primary-color); }
+      .contact-item a, .contact-item span { color: var(--text-color); }
+      .profile-title { color: var(--highlight-color); }
+    }
+    @media (max-width: 768px) {
+      .container { width: 99%; padding: 0 1mm 1mm 1mm; border: none; margin: 5px auto; }
+      header { flex-direction: column; align-items: flex-start; gap: 2px; padding: 3px 4px; min-height: 40px; }
+      .contact-info, .contact-item .icon { font-size: 10px; }
+      body { font-size: 12px; }
+      .button-container { flex-direction: column; align-items: center; }
+      .download-button { width: 90%; }
+      .certifications-grid { flex-direction: column; }
+      .certification-item.col-1, .certification-item.col-2, .certification-item.col-3 { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="resumeContent">
+    <header>
+      <div class="profile-section">
+        <div class="profile-name">CHANDAN KUMAR</div>
+        <div class="profile-title"><span class="bold">IIT | Super30 | Senior Data Scientist | GenAI Engineer | IBM</span></div>
+      </div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="icon"><i class="fas fa-phone"></i></span>
+          <span>+91-9199000200</span>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fas fa-envelope"></i></span>
+          <a href="mailto:chandaniitismg@gmail.com">chandaniitismg@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="icon"><i class="fab fa-linkedin-in"></i></span>
+          <a href="https://www.linkedin.com/in/chandaniit">linkedin.com/in/chandaniit</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- PROFESSIONAL SUMMARY -->
+      <div class="section">
+        <div class="section-title"><i class="fa-regular fa-address-card"></i><span>Professional Summary</span></div>
+        <p>
+          <span class="bold">IIT graduate</span> and <span class="bold">Senior Data Scientist</span> with <span class="bold">8+ years</span> of experience architecting and deploying AI-driven solutions across finance, banking, energy, and environmental sectors. Deep expertise in <span class="bold">Generative AI, LLMs, Agentic AI, RAG, MLOps</span>, and end-to-end ML pipeline engineering. Proven track record delivering scalable multi-agent AI frameworks and ML systems for <span class="bold">Fortune 500 clients at IBM and Accenture</span>. Hands-on proficiency across the full AI stack — from model fine-tuning and vector database design to cloud-native deployment on <span class="bold">AWS, Azure, and GCP</span>. Passionate about driving automation, cost optimization, and measurable business impact through responsible, production-grade AI.
+        </p>
+      </div>
+
+      <!-- CERTIFICATIONS & BADGES -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-certificate"></i><span>Certifications &amp; Badges</span></div>
+        <div class="certifications-grid">
+          <div class="certification-item col-1">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Northwestern University</span>
+              <span class="certification-course">Analytics &amp; AI</span>
+            </div>
+          </div>
+          <div class="certification-item col-2">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Stanford University</span>
+              <span class="certification-course">Machine Learning</span>
+            </div>
+          </div>
+          <div class="certification-item col-3">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Databricks Academy</span>
+              <span class="certification-course">Generative AI</span>
+            </div>
+          </div>
+
+          <div class="certification-item col-1">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">IBM</span>
+              <span class="certification-course">Generative &amp; Agentic AI Foundation</span>
+            </div>
+          </div>
+          <div class="certification-item col-2">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">IBM</span>
+              <span class="certification-course">AI Associate Data Scientist</span>
+            </div>
+          </div>
+          <div class="certification-item col-3">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">IBM</span>
+              <span class="certification-course">Solution Architect — Kubernetes &amp; IBM Cloud Paks</span>
+            </div>
+          </div>
+
+          <div class="certification-item col-1">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">LangChain Academy</span>
+              <span class="certification-course">LangGraph</span>
+            </div>
+          </div>
+          <div class="certification-item col-2">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">LangChain Academy</span>
+              <span class="certification-course">LangSmith</span>
+            </div>
+          </div>
+          <div class="certification-item col-3">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Hugging Face</span>
+              <span class="certification-course">AI Agents Fundamentals</span>
+            </div>
+          </div>
+
+          <div class="certification-item col-1">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Neo4j</span>
+              <span class="certification-course">Neo4j &amp; LLM Fundamentals</span>
+            </div>
+          </div>
+          <div class="certification-item col-2">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Duke University</span>
+              <span class="certification-course">DevOps, DataOps, MLOps</span>
+            </div>
+          </div>
+          <div class="certification-item col-3">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Microsoft</span>
+              <span class="certification-course">Azure Machine Learning</span>
+            </div>
+          </div>
+
+          <div class="certification-item col-1">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Udemy</span>
+              <span class="certification-course">Product Management Fundamentals</span>
+            </div>
+          </div>
+          <div class="certification-item col-2">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Udemy</span>
+              <span class="certification-course">MCP (Model Context Protocol)</span>
+            </div>
+          </div>
+          <div class="certification-item col-3">
+            <span class="certification-bullet">•</span>
+            <div class="certification-content">
+              <span class="certification-institution">Microsoft</span>
+              <span class="certification-course">SQL Server</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFESSIONAL EXPERIENCE -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-briefcase"></i><span>Professional Experience</span></div>
+        <div class="job">
+          <div class="job-title"><span class="bold">IBM</span> — Senior Data Scientist <span class="job-period">Mar 2024 – Present</span></div>
+          <div class="job-description">
+            <div class="job-line">• Architected and deployed multi-agent AI systems using LangGraph, CrewAI, and Watsonx Orchestrate, improving enterprise operational efficiency by 25% for Fortune 500 clients.</div>
+            <div class="job-line">• Designed scalable MLOps governance frameworks with CI/CD pipelines, model monitoring, and responsible AI practices, reducing model deployment cycles by 40%.</div>
+            <div class="job-line">• Led Agentic AI solution development leveraging foundation models and LLM orchestration, enabling intelligent task automation across complex enterprise workflows.</div>
+            <div class="job-line">• Delivered production-grade ML deployments on IBM Cloud and AWS, ensuring ethical AI compliance, scalability, and high availability for mission-critical business applications.</div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-title"><span class="bold">Accenture</span> — Data Scientist <span class="job-period">Apr 2021 – Feb 2024</span></div>
+          <div class="job-description">
+            <div class="job-line">• Engineered ML solutions and scalable data pipelines for Fortune 500 clients across banking, finance, and social media sectors using Python, AWS Glue, Athena, and SageMaker.</div>
+            <div class="job-line">• Developed PdfGPT, an AI-powered RAG-based document summarization and interactive Q&A system for Mizuho Bank, reducing document review time by 30%.</div>
+            <div class="job-line">• Built automated customer segmentation ML pipelines for Ulster Bank using Python and AWS, improving targeting accuracy and enabling real-time data-driven business decisions.</div>
+            <div class="job-line">• Designed demand forecasting ML pipelines for Facebook leveraging SageMaker and Spark, delivering actionable competitive insights that enhanced client decision-making.</div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-title"><span class="bold">Capgemini</span> — Process Lead <span class="job-period">Feb 2021 – Mar 2021</span></div>
+          <div class="job-description">
+            <div class="job-line">• Led cross-functional teams in delivering process optimization initiatives using data-driven methodologies and statistical analysis, improving operational efficiency within tight timelines.</div>
+            <div class="job-line">• Coordinated high-quality project deliverables using structured process improvement frameworks, driving measurable gains in team productivity and client satisfaction.</div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-title"><span class="bold">Clean Harbors</span> — Data Scientist <span class="job-period">Jun 2018 – Jan 2021</span></div>
+          <div class="job-description">
+            <div class="job-line">• Designed and deployed AI-driven Waste Classification Code (WCC) prediction models enabling fully autonomous waste classification with environmental compliance validation.</div>
+            <div class="job-line">• Built end-to-end invoice auditing and revenue prediction systems using advanced ML and statistical modeling, reducing audit time by 20% and compliance costs by 15%.</div>
+            <div class="job-line">• Applied advanced data mining and predictive analytics to solve complex environmental and financial challenges across multi-site enterprise operations.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY PROJECTS -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-code-branch"></i><span>Key Projects</span></div>
+        <div class="project">
+          <div class="project-title"><span class="bold">Watsonx Orchestrate — Multi-Agent AI Platform</span>, <span class="company-name">IBM</span></div>
+          <div class="project-description">
+            <div class="project-line">• Developed and deployed multiple AI agents on IBM's wxo platform, enabling intelligent multi-agent collaboration and enterprise workflow automation using AI Governance principles.</div>
+            <div class="project-line">• Leveraged advanced LLMs for intelligent task orchestration and agent selection, building scalable agentic AI systems that streamlined complex enterprise operations.</div>
+          </div>
+        </div>
+        <div class="project">
+          <div class="project-title"><span class="bold">PdfGPT — AI Document Intelligence</span>, <span class="company-name">Accenture | Mizuho Bank</span></div>
+          <div class="project-description">
+            <div class="project-line">• Architected a RAG-based AI document processing system enabling intelligent text summarization, key feature extraction, and interactive conversational Q&A for financial document workflows.</div>
+            <div class="project-line">• Reduced document review time by 30% through AI-driven PDF automation, delivering measurable productivity gains for banking operations teams.</div>
+          </div>
+        </div>
+        <div class="project">
+          <div class="project-title"><span class="bold">Customer Segmentation ML Pipeline</span>, <span class="company-name">Accenture | Ulster Bank</span></div>
+          <div class="project-description">
+            <div class="project-line">• Automated end-to-end ML pipelines for customer segmentation using Python, AWS Glue, and Athena, enabling scalable real-time data processing and automated model retraining.</div>
+            <div class="project-line">• Developed and validated comprehensive data models, translating analytical findings into actionable business strategies communicated directly to senior stakeholders.</div>
+          </div>
+        </div>
+        <div class="project">
+          <div class="project-title"><span class="bold">Demand Forecasting ML Pipeline</span>, <span class="company-name">Accenture | Facebook</span></div>
+          <div class="project-description">
+            <div class="project-line">• Designed scalable forecasting ML pipelines leveraging Python, AWS Glue, and SageMaker to surface actionable competitive intelligence for social media operations.</div>
+            <div class="project-line">• Integrated multi-source data ingestion workflows, delivering measurable analytical advantages that enhanced product and marketing decision-making processes.</div>
+          </div>
+        </div>
+        <div class="project">
+          <div class="project-title"><span class="bold">Waste Classification Code (WCC) Prediction</span>, <span class="company-name">Clean Harbors</span></div>
+          <div class="project-description">
+            <div class="project-line">• Fine-tuned WCC prediction models for autonomous waste classification, engineering unified datasets with domain-critical features across all waste classes and regulatory categories.</div>
+            <div class="project-line">• Implemented logical data validation and consistency checks ensuring robust classification aligned to physical property data and environmental compliance standards.</div>
+          </div>
+        </div>
+        <div class="project">
+          <div class="project-title"><span class="bold">Invoice Audit &amp; Revenue Prediction System</span>, <span class="company-name">Clean Harbors</span></div>
+          <div class="project-description">
+            <div class="project-line">• Built comprehensive invoice auditing and revenue forecasting algorithms using advanced ML and statistical analysis, automating verification workflows and improving financial compliance accuracy.</div>
+            <div class="project-line">• Reduced invoice audit processing time by 20% and compliance costs by 15% through intelligent automation and predictive modeling integrated into enterprise operations.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-graduation-cap"></i><span>Education</span></div>
+        <div class="education-item">
+          <div class="education-details"><span class="bold">IIT (ISM) Dhanbad</span> — B.Tech</div>
+          <div class="education-period">2013 – 2017</div>
+        </div>
+        <div class="education-item">
+          <div class="education-details"><span class="bold">Super30</span>, Patna (IIT JEE Prep)</div>
+          <div class="education-period">2012 – 2013</div>
+        </div>
+      </div>
+
+      <!-- KEY ACHIEVEMENTS -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-trophy"></i><span>Key Achievements</span></div>
+        <ul>
+          <li>Ranked <span class="bold">#1 globally on HackerRank SQL</span>, demonstrating elite database management and query optimization skills among a global developer community.</li>
+          <li>Cleared <span class="bold">IIT JEE Advanced 2013</span>, ranking in the <span class="bold">top 1%</span> of national qualifiers — one of the most competitive engineering entrance exams in the world.</li>
+          <li>Consistently recognized by Fortune 500 clients at <span class="bold">IBM and Accenture</span> for error-free, on-time project delivery and high-impact AI solutions.</li>
+          <li>Served as <span class="bold">Student Representative, Mess Committee</span>, IIT (ISM) Dhanbad (2015–2016), demonstrating early leadership and stakeholder management capabilities.</li>
+        </ul>
+      </div>
+
+      <!-- TECHNICAL SKILLS -->
+      <div class="section">
+        <div class="section-title"><i class="fas fa-laptop-code"></i><span>Technical Skills</span></div>
+        <div class="skills-list">
+          <ul>
+            <li><span class="bold">AI &amp; Machine Learning:</span> Generative AI, Large Language Models (LLMs), Small Language Models (SLMs), Foundation Models, Agentic AI, AI Agents, Multi-Agent Systems, Fine-tuning, Retrieval-Augmented Generation (RAG), Prompt Engineering, NLP, Transformers, Text Analytics, Sentiment Analysis, NER, Multi-modal AI, Deep Learning, Time Series Forecasting, Marketing Mix Modeling, Reinforcement Learning, Computer Vision, CNNs, OpenCV, Statistical Modeling, Hypothesis Testing, Synthetic Data Generation, AutoML, Model Monitoring, Responsible AI, AI Governance</li>
+            <li><span class="bold">Programming &amp; Frameworks:</span> Python, R, SQL, TensorFlow, PyTorch, Scikit-learn, Keras, LangChain, LangGraph, CrewAI, AutoGen, Hugging Face, FastAPI, Flask, OpenCV</li>
+            <li><span class="bold">Cloud &amp; Databases:</span> AWS (Bedrock, SageMaker, Redshift, Athena, S3, EC2, Lambda, Glue), Azure (Synapse, Databricks, ML Studio), GCP (BigQuery, Vertex AI), Snowflake, PostgreSQL, MongoDB, Pinecone, Chroma, Milvus</li>
+            <li><span class="bold">Data Visualization:</span> Tableau, Power BI, Matplotlib, Seaborn, Plotly</li>
+            <li><span class="bold">MLOps &amp; DevOps:</span> Git, GitHub, GitLab, Bitbucket, Docker, Kubernetes, CI/CD for ML Pipelines, Microservices, Distributed Systems</li>
+            <li><span class="bold">Analytics &amp; Business:</span> Data Wrangling, Feature Engineering, EDA, Cohort Analysis, Business Intelligence, Product Analytics, Forecasting, Data Governance, ETL, Data Engineering, Data Warehousing</li>
+            <li><span class="bold">Core Competencies:</span> Architecture &amp; System Design, Stakeholder Management, Client Delivery, Scalability, Cost Optimization, Project Management, Product Management</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button class="download-button" id="downloadPdfButton" onclick="downloadPDF()">
+      <i class="fas fa-file-pdf"></i> Download as PDF
+    </button>
+  </div>
+
+  <script>
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const element = document.getElementById('resumeContent');
+      const button = document.getElementById('downloadPdfButton');
+      const originalText = button.innerHTML;
+
+      try {
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+        button.disabled = true;
+
+        const canvas = await html2canvas(element, {
+          scale: 2.5,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          windowWidth: element.scrollWidth,
+          windowHeight: element.scrollHeight,
+          logging: false
+        });
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+        const imgWidth = 210;
+        const pageHeight = 297;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const totalPages = Math.ceil(imgHeight / pageHeight);
+
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+
+        for (let i = 0; i < totalPages; i++) {
+          if (i > 0) doc.addPage();
+          const yOffset = -(i * pageHeight);
+          doc.addImage(imgData, 'JPEG', 0, yOffset, imgWidth, imgHeight, undefined, 'FAST');
+        }
+
+        doc.save('Chandan_Kumar_Resume.pdf');
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert('Failed to generate PDF. Please try again.');
+      } finally {
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
