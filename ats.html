@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chandan_Kumar_Resume_DataScience</title>
+  <style>
+    /* ATS Optimization: System fonts are safest for parsers */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .resume-page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 15mm;
+      margin: 10px auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    header {
+      text-align: center;
+      border-bottom: 2px solid #0D47A1;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24pt;
+      text-transform: uppercase;
+      color: #000;
+    }
+    .contact-line {
+      font-size: 10pt;
+      margin-top: 5px;
+    }
+    .section {
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 12pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #0D47A1;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 5px;
+    }
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 11pt;
+    }
+    .item-sub {
+      font-style: italic;
+      font-size: 10pt;
+      margin-bottom: 3px;
+    }
+    ul {
+      margin: 5px 0;
+      padding-left: 18px;
+    }
+    li {
+      font-size: 10pt;
+      margin-bottom: 4px;
+      text-align: justify;
+    }
+    .skills-block {
+      font-size: 10pt;
+      text-align: justify;
+    }
+    .bold { font-weight: bold; }
+    
+    /* Print Styles */
+    @media print {
+      body { background: none; }
+      .resume-page { 
+        margin: 0; 
+        box-shadow: none; 
+        width: 100%;
+      }
+      .no-print { display: none; }
+    }
+    .no-print {
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #0D47A1;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print">
+    <button onclick="window.print()">Print/Save as PDF</button>
+    <p><small>Note: Use "Save as PDF" in the print dialog. This ensures the text remains searchable for ATS.</small></p>
+  </div>
+
+  <div class="resume-page">
+    <header>
+      <h1>Chandan Kumar</h1>
+      <div class="contact-line">
+        +91-9199000200 | <a href="mailto:chandaniitismg@gmail.com">chandaniitismg@gmail.com</a> | 
+        <a href="https://linkedin.com/in/chandaniit">linkedin.com/in/chandaniit</a>
+      </div>
+      <div class="contact-line bold">
+        IIT Dhanbad | Lead Data Scientist | AI Architect
+      </div>
+    </header>
+
+    <div class="section">
+      <div class="section-title">Professional Summary</div>
+      <p style="font-size: 10pt;">
+        IIT graduate and Lead Data Scientist with 8+ years of experience engineering scalable AI solutions for Fortune 500 clients. Specialized in <b>Generative AI, RAG, and Multi-Agent Systems</b>. Proven track record of deploying production-grade MLOps pipelines on <b>AWS, Azure, and GCP</b>. Expert in architecting end-to-end LLM applications that reduce operational latency and drive measurable multi-million dollar business value.
+      </p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Technical Skills</div>
+      <div class="skills-block">
+        <b>AI & Machine Learning:</b> Generative AI, LLMs (GPT-4, Claude, Llama 3), RAG, Agentic AI (LangGraph, CrewAI), NLP, Computer Vision, MLOps, AI Governance, Reinforcement Learning. <br>
+        <b>Languages & Frameworks:</b> Python, SQL, PyTorch, TensorFlow, Spark, FastAPI, LangChain, Hugging Face. <br>
+        <b>Cloud & Infrastructure:</b> AWS (SageMaker, Bedrock), Azure ML, Vertex AI, Databricks, Docker, Kubernetes, CI/CD. <br>
+        <b>Databases:</b> Pinecone, Milvus, Snowflake, Redshift, MongoDB, PostgreSQL.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Professional Experience</div>
+      
+      <div class="item-header">
+        <span>IBM</span>
+        <span>Mar 2024 – Present</span>
+      </div>
+      <div class="item-sub">Lead Data Scientist</div>
+      <ul>
+        <li>Architected <b>multi-agent AI systems</b> using <b>LangGraph and CrewAI</b>, increasing operational efficiency by 25% for enterprise-scale automated workflows.</li>
+        <li>Implemented <b>MLOps governance frameworks</b> using Docker and Kubernetes, ensuring 100% compliance with ethical AI standards for Fortune 500 banking clients.</li>
+        <li>Deployed scalable LLM pipelines on <b>AWS Bedrock and Azure ML Studio</b>, reducing model inference latency by 40% through advanced quantization and caching strategies.</li>
+      </ul>
+
+      <div class="item-header">
+        <span>Accenture</span>
+        <span>Apr 2021 – Feb 2024</span>
+      </div>
+      <div class="item-sub">Data Scientist</div>
+      <ul>
+        <li>Developed an AI-powered document processing engine using <b>RAG and Hugging Face</b>, reducing manual document review time by 30% for Mizuho Bank.</li>
+        <li>Engineered distributed data pipelines using <b>AWS Glue and Spark</b>, processing multi-terabyte datasets to optimize customer segmentation for global retail clients.</li>
+        <li>Designed and launched <b>PdfGPT</b>, a generative analytics tool that automated insight extraction, resulting in a 15% increase in stakeholder decision-making speed.</li>
+      </ul>
+
+      <div class="item-header">
+        <span>Clean Harbors</span>
+        <span>Jun 2018 – Jan 2021</span>
+      </div>
+      <div class="item-sub">Data Scientist</div>
+      <ul>
+        <li>Built a waste classification system using <b>Deep Learning (CNNs)</b> and TensorFlow, improving classification accuracy by 18% and reducing disposal costs by $1.2M annually.</li>
+        <li>Automated invoice auditing processes using <b>Time Series forecasting</b> on Snowflake, identifying $500k+ in annual revenue leakages.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Key Projects</div>
+      <div class="item-header">
+        <span>Watsonx Orchestrate (IBM)</span>
+      </div>
+      <ul>
+        <li>Integrated <b>Vector Databases (Pinecone)</b> with IBM Watsonx to create a context-aware task orchestrator, handling 50k+ concurrent requests with millisecond latency.</li>
+      </ul>
+      <div class="item-header">
+        <span>Customer Analytics (Facebook/Meta Project)</span>
+      </div>
+      <ul>
+        <li>Leveraged <b>SageMaker and Redshift</b> to build a churn prediction model, identifying at-risk users with 92% precision for social media ad-targeting optimization.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Education</div>
+      <div class="item-header">
+        <span>IIT Dhanbad</span>
+        <span>2013 – 2017</span>
+      </div>
+      <div class="item-sub">Bachelor of Technology (B.Tech)</div>
+      
+      <div class="item-header">
+        <span>Super30, Patna</span>
+        <span>2012 – 2013</span>
+      </div>
+      <div class="item-sub">Top 30 selected students for intensive mathematical training</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Certifications</div>
+      <div class="skills-block">
+        <b>Stanford University:</b> Machine Learning | <b>Northwestern University:</b> AI & Analytics | <b>Databricks:</b> Generative AI | <b>Microsoft:</b> Azure Machine Learning | <b>IBM:</b> Solution Architect (Kubernetes).
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
