@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chandan Kumar — Cover Letter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root {
+      --ink: #0e1117;
+      --navy: #0D2240;
+      --blue: #1149A0;
+      --electric: #1E6EF5;
+      --gold: #C9A84C;
+      --cream: #F8F5EF;
+      --warm-white: #FDFBF7;
+      --muted: #6B7280;
+      --border: #D8D0C4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .page {
+      width: 210mm;
+      background: var(--warm-white);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 80px rgba(14,17,23,0.15), 0 4px 16px rgba(14,17,23,0.08);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── LEFT SPINE ── */
+    .spine {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--electric) 60%, var(--gold) 100%);
+    }
+
+    /* ── TOP DECORATION ── */
+    .top-bar {
+      background: var(--navy);
+      padding: 22px 44px 22px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .top-bar::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--electric), var(--gold));
+    }
+
+    .sender-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: #FDFBF7;
+      text-transform: uppercase;
+    }
+
+    .sender-title {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .contact-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: flex-end;
+    }
+
+    .contact-cluster a,
+    .contact-cluster span {
+      font-size: 9.5px;
+      color: rgba(253,251,247,0.75);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .contact-cluster a:hover { color: var(--gold); }
+
+    .contact-cluster i {
+      color: var(--gold);
+      font-size: 9px;
+    }
+
+    /* ── BODY ── */
+    .body {
+      padding: 38px 44px 40px 52px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 28px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .date {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .label-pill {
+      background: var(--navy);
+      color: var(--gold);
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    .recipient-block {
+      margin-bottom: 26px;
+    }
+
+    .recipient-block p {
+      font-size: 11px;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    .recipient-block strong {
+      font-weight: 600;
+    }
+
+    .salutation {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── OPENING PULL QUOTE ── */
+    .pull-quote {
+      position: relative;
+      margin: 0 0 24px 0;
+      padding: 18px 22px 18px 24px;
+      background: linear-gradient(135deg, rgba(17,73,160,0.05) 0%, rgba(201,168,76,0.05) 100%);
+      border-left: 3px solid var(--gold);
+    }
+
+    .pull-quote p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15.5px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--navy);
+      line-height: 1.65;
+    }
+
+    .pull-quote .quotemark {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      color: var(--gold);
+      opacity: 0.25;
+      line-height: 1;
+    }
+
+    /* ── PARAGRAPHS ── */
+    .body p.para {
+      font-size: 11px;
+      line-height: 1.85;
+      color: #1a1f2e;
+      margin-bottom: 15px;
+      text-align: justify;
+      font-weight: 300;
+    }
+
+    .body p.para strong {
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .body p.para .highlight {
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    /* ── IMPACT GRID ── */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin: 22px 0;
+      border: 1px solid var(--border);
+    }
+
+    .impact-cell {
+      background: var(--warm-white);
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .impact-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .impact-number span {
+      color: var(--gold);
+    }
+
+    .impact-label {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── CLOSING ── */
+    .closing-block {
+      margin-top: 24px;
+    }
+
+    .closing-block p.para:last-of-type {
+      margin-bottom: 22px;
+    }
+
+    .sign-off {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+
+    .signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--navy);
+      letter-spacing: 1px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .signature-name {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 30px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-links a {
+      font-size: 8.5px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a i { font-size: 9px; color: var(--blue); }
+    .footer-links a:hover { color: var(--blue); }
+
+    .footer-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-mark span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    /* ── PRINT & DOWNLOAD ── */
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+      animation: fadeUp 0.8s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--gold);
+    }
+
+    .btn-primary:hover {
+      background: var(--blue);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(17,73,160,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--navy);
+      border: 1.5px solid var(--navy);
+    }
+
+    .btn-secondary:hover {
+      background: var(--navy);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .page { box-shadow: none; width: 100%; }
+      .toolbar { display: none; }
+      .spine { display: block; }
+    }
+
+    @media (max-width: 240mm) {
+      .page { width: 100%; }
+      .top-bar { padding: 18px 24px 18px 32px; }
+      .body { padding: 28px 24px 32px 32px; }
+      .impact-grid { grid-template-columns: repeat(3, 1fr); }
+      .sender-name { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page" id="letterContent">
+  <div class="spine"></div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div>
+      <div class="sender-name">Chandan Kumar</div>
+      <div class="sender-title">Lead Data Scientist &nbsp;·&nbsp; IIT &nbsp;·&nbsp; IBM</div>
+    </div>
+    <div class="contact-cluster">
+      <span><i class="fas fa-phone"></i> +91-9199000200</span>
+      <a href="mailto:chandaniitismg@gmail.com"><i class="fas fa-envelope"></i> chandaniitismg@gmail.com</a>
+      <a href="https://linkedin.com/in/chandaniit" target="_blank"><i class="fab fa-linkedin-in"></i> linkedin.com/in/chandaniit</a>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <div class="meta-row">
+      <span class="date">March 2026</span>
+      <span class="label-pill">Cover Letter</span>
+    </div>
+
+    <div class="recipient-block">
+      <p><strong>Hiring Manager</strong></p>
+      <p>AI/ML Leadership Team</p>
+      <p>Google DeepMind &nbsp;/&nbsp; NVIDIA &nbsp;/&nbsp; OpenAI &nbsp;/&nbsp; Microsoft AI</p>
+    </div>
+
+    <p class="salutation">Dear Hiring Manager,</p>
+
+    <!-- PULL QUOTE -->
+    <div class="pull-quote">
+      <span class="quotemark">"</span>
+      <p>The gap between a model that works and a system that transforms a business at scale is where I have spent the last eight years — closing it, repeatedly, for some of the world's most consequential organizations.</p>
+    </div>
+
+    <p class="para">
+      I am a <strong>Lead Data Scientist and AI/ML architect</strong> with an IIT pedigree and a proven record of shipping production AI systems that generate outsized, measurable value. At IBM, Accenture, and Clean Harbors, I have designed and deployed petabyte-scale ML pipelines, multi-agent LLM systems, and end-to-end MLOps frameworks that collectively saved clients <span class="highlight">over $1M</span>, reduced operational cycle times by up to <span class="highlight">30%</span>, and enabled millisecond-latency inference across multi-region cloud environments — on AWS Bedrock, Azure ML Studio, and GCP Vertex AI simultaneously.
+    </p>
+
+    <!-- IMPACT NUMBERS -->
+    <div class="impact-grid">
+      <div class="impact-cell">
+        <div class="impact-number">8<span>+</span></div>
+        <div class="impact-label">Years Building<br>Production AI</div>
+      </div>
+      <div class="impact-cell">
+        <div class="impact-number">$1<span>M+</span></div>
+        <div class="impact-label">Cost Savings<br>Delivered</div>
+      </div>
+      <div class="impact-cell">
+        <div class="impact-number">30<span>%</span></div>
+        <div class="impact-label">Efficiency Gains<br>Across Projects</div>
+      </div>
+    </div>
+
+    <p class="para">
+      What differentiates me is not simply technical breadth — though I am fluent across <strong>LLMs, RAG, Agentic Workflows, LangGraph, CrewAI, PyTorch, Spark, Ray, Kubeflow, and MLflow</strong> — it is the ability to architect solutions that are <strong>ethically governed, infinitely scalable, and aligned to business strategy</strong>. At Accenture, I built PdfGPT, an AI-powered document intelligence system for Mizuho Bank that reduced document review time by 30% using NLP, RAG, and embeddings — while enforcing enterprise-grade AI governance from day one. At IBM, I am currently designing multi-agent AI systems for Fortune 500 clients, integrating LangGraph and CrewAI with Docker and Kubernetes to deliver a <strong>25% uplift in enterprise operational efficiency</strong>.
+    </p>
+
+    <p class="para">
+      I have developed a rare combination of <strong>deep technical execution and executive communication</strong>. I translate petabyte-scale distributed systems challenges into boardroom-ready roadmaps. I mentor cross-functional teams while personally writing the PyTorch training loops. I hold certifications from Stanford, Northwestern, IBM, Hugging Face, Databricks, LangChain Academy, and Anthropic — not to collect badges, but because staying at the frontier of AI is a professional obligation, not an option.
+    </p>
+
+    <p class="para">
+      I am drawn to organizations where AI is not a feature — it is the core product. Your ambition to push the boundary of what intelligent systems can do, at global scale, with real-world consequences, is precisely the environment in which I do my most impactful work. I bring not only the skills to accelerate your roadmap, but the <strong>judgment, leadership, and architectural instinct</strong> to help define it.
+    </p>
+
+    <!-- CLOSING -->
+    <div class="closing-block">
+      <p class="para">
+        I would welcome the opportunity to discuss how my experience building scalable, responsible, and high-impact AI systems can advance your mission. I am available at your earliest convenience for a conversation.
+      </p>
+
+      <div class="sign-off">With respect and ambition,</div>
+      <div class="signature">Chandan Kumar</div>
+      <div class="signature-name">Lead Data Scientist &nbsp;·&nbsp; IIT &nbsp;·&nbsp; IBM</div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-links">
+        <a href="mailto:chandaniitismg@gmail.com">
+          <i class="fas fa-envelope"></i> chandaniitismg@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/chandaniit" target="_blank">
+          <i class="fab fa-linkedin-in"></i> linkedin.com/in/chandaniit
+        </a>
+        <a href="tel:+919199000200">
+          <i class="fas fa-phone"></i> +91-9199000200
+        </a>
+      </div>
+      <div class="footer-mark"><span>CK</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="btn btn-primary" onclick="window.print()">
+    <i class="fas fa-print"></i> Print / Save as PDF
+  </button>
+  <button class="btn btn-secondary" onclick="copyText()">
+    <i class="fas fa-copy"></i> Copy Text
+  </button>
+</div>
+
+<script>
+  function copyText() {
+    const paragraphs = document.querySelectorAll('.body p.para, .pull-quote p, .salutation, .sign-off, .signature-name');
+    const text = Array.from(paragraphs).map(p => p.textContent.trim()).join('\n\n');
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.currentTarget;
+      btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i> Copy Text', 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
