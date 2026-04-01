@@ -261,14 +261,14 @@ body { font-family: 'Roboto', sans-serif; font-size: 10.5px; line-height: 1.48; 
     <div class="hdr-accent">
       <div class="hdr-bar"></div>
       <div class="hdr-title">
-        <strong>Lead Data Scientist &amp;</strong>
-        &nbsp;·&nbsp; IIT  Dhanbad &nbsp;·&nbsp; IBM &nbsp;·&nbsp; 8+ Years &nbsp;
+        <strong>Lead Data Scientist &amp; GenAI Architect</strong>
+        &nbsp;·&nbsp; IIT (ISM) Dhanbad &nbsp;·&nbsp; IBM India Software Lab &amp; Accenture &nbsp;·&nbsp; 8+ Years &nbsp;·&nbsp; Fortune 500 Scale
       </div>
     </div>
   </div>
   <div class="hdr-right">
     <div class="contact-row"><i class="fas fa-phone"></i><span>+91-9199000200</span></div>
-    <div class="contact-row"><i class="fas fa-envelope"></i><a href="mailto:chandankumar@email.com">chandankumar@email.com</a></div>
+    <div class="contact-row"><i class="fas fa-envelope"></i><a href="/cdn-cgi/l/email-protection#f3909b929d97929d98869e9281b3969e929a9fdd909c9e"><span class="__cf_email__" data-cfemail="aecdc6cfc0cacfc0c5dbc3cfdceecbc3cfc7c280cdc1c3">[email&#160;protected]</span></a></div>
     <div class="contact-row"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/chandaniit" target="_blank">linkedin.com/in/chandaniit</a></div>
   </div>
 </header>
@@ -548,62 +548,135 @@ body { font-family: 'Roboto', sans-serif; font-size: 10.5px; line-height: 1.48; 
 
 <script>
 async function downloadPDF() {
-  const btn   = document.querySelector('.btn-pdf');
-  const orig  = btn.innerHTML;
+  const btn  = document.querySelector('.btn-pdf');
+  const orig = btn.innerHTML;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating…';
   btn.disabled  = true;
 
   try {
+    // Wait for all web fonts to finish loading so text renders exactly as on screen
+    await document.fonts.ready;
+
     const { jsPDF } = window.jspdf;
     const el = document.getElementById('resumeContent');
 
-    // Capture at high DPI
     const canvas = await html2canvas(el, {
-      scale:       2.8,
-      useCORS:     true,
+      scale:           3,
+      useCORS:         true,
+      allowTaint:      true,
       backgroundColor: '#ffffff',
-      windowWidth: el.scrollWidth,
-      windowHeight: el.scrollHeight,
-      logging:     false,
-      imageTimeout: 0,
-      removeContainer: true
+      windowWidth:     el.scrollWidth,
+      windowHeight:    el.scrollHeight,
+      logging:         false,
+      imageTimeout:    0,
+
+      onclone(doc) {
+        // ── Inject a real element for the ::before gradient bar ──
+        const resume = doc.getElementById('resumeContent');
+        const accentBar = doc.createElement('div');
+        accentBar.style.cssText =
+          'position:absolute;top:0;left:0;right:0;height:3px;z-index:99;' +
+          'background:linear-gradient(90deg,#0D47A1 0%,#1976D2 55%,#FFCA28 100%)';
+        resume.prepend(accentBar);
+
+        // ── Skill category pill badges ──
+        doc.querySelectorAll('.skill-cat').forEach(el => {
+          el.style.background             = 'linear-gradient(90deg,#0D47A1,#1565C0)';
+          el.style.color                  = '#ffffff';
+          el.style.webkitPrintColorAdjust = 'exact';
+          el.style.printColorAdjust       = 'exact';
+        });
+
+        // ── Job period navy pills ──
+        doc.querySelectorAll('.job-period').forEach(el => {
+          el.style.background             = '#0D47A1';
+          el.style.color                  = '#ffffff';
+          el.style.webkitPrintColorAdjust = 'exact';
+        });
+
+        // ── Gold left borders on section titles ──
+        doc.querySelectorAll('.section-title').forEach(el => {
+          el.style.borderLeft = '3px solid #FFCA28';
+        });
+
+        // ── Blue left border on summary ──
+        doc.querySelectorAll('.summary-block').forEach(el => {
+          el.style.borderLeft = '3px solid #0D47A1';
+        });
+
+        // ── Header bottom border ──
+        const hdr = doc.querySelector('.resume-header');
+        if (hdr) hdr.style.borderBottom = '2px solid #0D47A1';
+
+        // ── Gold gradient bar in header accent ──
+        doc.querySelectorAll('.hdr-bar').forEach(el => {
+          el.style.background = 'linear-gradient(90deg,#FFCA28,#F59E0B)';
+        });
+
+        // ── Resume outer border & reset box-model for clean capture ──
+        if (resume) {
+          resume.style.border       = '1.5px solid #FFCA28';
+          resume.style.borderRadius = '0';
+          resume.style.boxShadow    = 'none';
+          resume.style.margin       = '0';
+        }
+
+        // ── White backgrounds in clone ──
+        doc.body.style.background = '#ffffff';
+        const wrapper = doc.querySelector('.page-wrapper');
+        if (wrapper) {
+          wrapper.style.background = '#ffffff';
+          wrapper.style.paddingTop = '0';
+        }
+
+        // ── Hide toolbar ──
+        const tb = doc.querySelector('.toolbar');
+        if (tb) tb.style.display = 'none';
+      }
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
-    const pdf     = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+    // ── Build PDF with proper per-slice multi-page support ──
+    const pdf   = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+    const pageW = 210;
+    const pageH = 297;
+    const imgW  = pageW;
+    const imgH  = (canvas.height * pageW) / canvas.width;
 
-    const pageW   = 210;
-    const pageH   = 297;
-    const imgW    = pageW;
-    const imgH    = (canvas.height * pageW) / canvas.width;
-
-    // Multi-page support: slice tall resumes across pages
     if (imgH <= pageH) {
-      pdf.addImage(imgData, 'JPEG', 0, 0, imgW, imgH, undefined, 'FAST');
+      // Single page — PNG for sharp text
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgW, imgH, undefined, 'FAST');
     } else {
-      let yOffset   = 0;
-      let remaining = imgH;
-      let pageNum   = 0;
+      // Slice canvas into page-height strips so content is never clipped mid-line
+      const pxPerPage = Math.round((pageH / imgH) * canvas.height);
+      let srcY    = 0;
+      let pageNum = 0;
 
-      while (remaining > 0) {
+      while (srcY < canvas.height) {
+        const stripH = Math.min(pxPerPage, canvas.height - srcY);
+        const strip  = document.createElement('canvas');
+        strip.width  = canvas.width;
+        strip.height = stripH;
+        strip.getContext('2d').drawImage(
+          canvas, 0, srcY, canvas.width, stripH, 0, 0, canvas.width, stripH
+        );
+        const stripImgH = (stripH * pageW) / canvas.width;
         if (pageNum > 0) pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, -yOffset, imgW, imgH, undefined, 'FAST');
-        yOffset   += pageH;
-        remaining -= pageH;
+        pdf.addImage(strip.toDataURL('image/png'), 'PNG', 0, 0, imgW, stripImgH, undefined, 'FAST');
+        srcY += pxPerPage;
         pageNum++;
       }
     }
 
     pdf.save('Chandan_Kumar_Lead_Data_Scientist_GenAI_Architect.pdf');
+
   } catch (err) {
     console.error('PDF generation failed:', err);
-    alert('PDF generation failed. Please use Print → Save as PDF instead.');
+    alert('PDF generation failed.\n\nFallback: Press Ctrl+P (or Cmd+P) → "Save as PDF" for a pixel-perfect result.');
   } finally {
     btn.innerHTML = orig;
     btn.disabled  = false;
   }
 }
 </script>
-
 </body>
 </html>
