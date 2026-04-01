@@ -19,7 +19,7 @@
   --ink-mid:   #374151;
   --ink-light: #6B7280;
   --border:    #DDE3EC;
-  --page-w:    210mm;
+  --page-w:    794px;
   --r:         4px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -40,7 +40,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 
 /* ── PAGE ── */
 .page-wrapper{padding-top:46px;display:flex;justify-content:center;min-height:100vh;}
-.resume{width:var(--page-w);min-height:297mm;background:#fff;border:1.5px solid var(--border);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
+.resume{width:var(--page-w);min-height:1123px;background:#fff;border:1.5px solid var(--border);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
 .resume::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-dark),var(--blue-soft));z-index:1;}
 
 /* ── HEADER ── */
@@ -436,80 +436,111 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 </div><!-- /page-wrapper -->
 
 <script>
+/* ─────────────────────────────────────────────────────────────
+   PDF Download
+   Strategy: the resume is always 794px wide (fixed px, no mm).
+   We clone it into an off-screen div at exactly 794px so the
+   layout is 100% identical to what the browser renders.
+   html2canvas captures that clone; jsPDF embeds the image.
+   Result: PDF is always pixel-for-pixel identical to the HTML.
+───────────────────────────────────────────────────────────── */
+const RESUME_PX = 794;   // must match --page-w in CSS
+
 async function downloadPDF() {
   const btn = document.getElementById('pdfBtn');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating…';
   btn.disabled = true;
 
   try {
-    // Dynamically load jsPDF and html2canvas from CDN
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
 
     const { jsPDF } = window.jspdf;
-    const el = document.getElementById('resumeContent');
+    const source    = document.getElementById('resumeContent');
 
-    // Temporarily hide the top accent bar (pure CSS pseudo-element, no issue)
-    // Capture at 3x resolution for crisp output
-    const SCALE = 3;
+    // ── 1. Off-screen wrapper (exact resume width, no scrollbars) ──
+    const wrap = document.createElement('div');
+    Object.assign(wrap.style, {
+      position:   'absolute',
+      top:        '0',
+      left:       '-9999px',
+      width:      RESUME_PX + 'px',
+      overflow:   'visible',
+      background: 'transparent',
+      zIndex:     '0',
+    });
+    document.body.appendChild(wrap);
 
-    const canvas = await html2canvas(el, {
-      scale: SCALE,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      scrollX: 0,
-      scrollY: -window.scrollY,
-      windowWidth: el.scrollWidth,
-      windowHeight: el.scrollHeight,
-      logging: false,
-      onclone: function(clonedDoc) {
-        // Remove the toolbar from the clone so it doesn't appear in PDF
-        const toolbar = clonedDoc.querySelector('.toolbar');
-        if (toolbar) toolbar.remove();
-        // Ensure the cloned page wrapper has no top padding
-        const pw = clonedDoc.querySelector('.page-wrapper');
-        if (pw) pw.style.paddingTop = '0';
-        // Ensure resume has no border/shadow artifacts
-        const resume = clonedDoc.querySelector('.resume');
-        if (resume) {
-          resume.style.border = 'none';
-          resume.style.boxShadow = 'none';
-          resume.style.borderRadius = '0';
-          resume.style.margin = '0';
-        }
-        // Force all skill-cat backgrounds (print-color-adjust doesn't apply in canvas)
-        const skillCats = clonedDoc.querySelectorAll('.skill-cat');
-        skillCats.forEach(cat => {
-          cat.style.background = '#0D47A1';
-          cat.style.webkitPrintColorAdjust = 'exact';
-        });
-        // Force the top blue bar
-        const before = clonedDoc.querySelector('.resume');
-        if (before) before.style.setProperty('--blue-dark', '#0D47A1');
-      }
+    // ── 2. Deep-clone the resume card only ─────────────────────
+    const clone = source.cloneNode(true);
+    Object.assign(clone.style, {
+      width:        RESUME_PX + 'px',
+      minHeight:    '0',
+      border:       'none',
+      boxShadow:    'none',
+      borderRadius: '0',
+      margin:       '0',
+      position:     'relative',
     });
 
-    // Calculate dimensions
-    const A4_W_MM = 210;
-    const PX_PER_MM = SCALE / 0.264583;
-    const canvasWidthMM = canvas.width / PX_PER_MM;
-    const canvasHeightMM = canvas.height / PX_PER_MM;
+    // Fix skill-cat pills (html2canvas ignores print-color-adjust)
+    clone.querySelectorAll('.skill-cat').forEach(el => {
+      el.style.cssText += ';background:#0D47A1!important;color:#fff!important;';
+    });
 
-    // Scale to A4 width
-    const scaleFactor = A4_W_MM / canvasWidthMM;
-    const finalHeightMM = canvasHeightMM * scaleFactor;
+    // Replace the CSS ::before top bar with a real element
+    const topBar = document.createElement('div');
+    Object.assign(topBar.style, {
+      position: 'absolute', top: '0', left: '0', right: '0',
+      height: '3px',
+      background: 'linear-gradient(90deg,#0D47A1,#1976D2)',
+      zIndex: '2',
+    });
+    clone.insertBefore(topBar, clone.firstChild);
 
-    // Use actual content height (may exceed A4)
+    wrap.appendChild(clone);
+
+    // ── 3. Let the browser finish layout (2 animation frames) ──
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    // ── 4. Capture at 3× for sharp output ──────────────────────
+    const SCALE  = 3;
+    const canvas = await html2canvas(clone, {
+      scale:           SCALE,
+      useCORS:         true,
+      allowTaint:      true,
+      backgroundColor: '#ffffff',
+      width:           RESUME_PX,
+      height:          clone.scrollHeight,
+      windowWidth:     RESUME_PX,
+      windowHeight:    clone.scrollHeight,
+      x:               0,
+      y:               0,
+      scrollX:         0,
+      scrollY:         0,
+      logging:         false,
+    });
+
+    document.body.removeChild(wrap);
+
+    // ── 5. Build PDF ────────────────────────────────────────────
+    // A4 width = 210mm. canvas.width = RESUME_PX × SCALE.
+    // => mm per canvas-pixel = 210 / (RESUME_PX × SCALE)
+    const A4_W   = 210;
+    const mmPerPx = A4_W / canvas.width;
+    const pdfH   = canvas.height * mmPerPx;
+
     const doc = new jsPDF({
       orientation: 'portrait',
-      unit: 'mm',
-      format: [A4_W_MM, Math.max(297, finalHeightMM)],
-      compress: true
+      unit:        'mm',
+      format:      [A4_W, Math.max(297, pdfH)],
+      compress:    true,
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
-    doc.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, finalHeightMM, undefined, 'FAST');
+    doc.addImage(
+      canvas.toDataURL('image/jpeg', 0.96),
+      'JPEG', 0, 0, A4_W, pdfH, undefined, 'FAST'
+    );
     doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
 
   } catch (err) {
@@ -523,12 +554,9 @@ async function downloadPDF() {
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
-    // If already loaded, skip
     if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
     const s = document.createElement('script');
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = reject;
+    s.src = src; s.onload = resolve; s.onerror = reject;
     document.head.appendChild(s);
   });
 }
