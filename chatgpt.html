@@ -8,24 +8,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root {
   --blue-dark: #0D47A1;
-  --blue-mid:  #1565C0;
+  --blue-mid: #1565C0;
   --blue-soft: #1976D2;
-  --gold:      #FFCA28;
+  --gold: #FFCA28;
   --gold-dark: #F59E0B;
-  --ink:       #1A1A2E;
-  --ink-mid:   #374151;
+  --ink: #1A1A2E;
+  --ink-mid: #374151;
   --ink-light: #6B7280;
-  --border:    #DDE3EC;
-  --page-w:    794px;
-  --r:         4px;
+  --border: #DDE3EC;
+  --page-w: 210mm;
+  --r: 4px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(--ink);background:#f0f4f8;}
-
 /* ── TOOLBAR ── */
 .toolbar{position:fixed;top:0;left:0;right:0;z-index:200;background:linear-gradient(90deg,#0A3880,var(--blue-dark) 40%,var(--blue-soft));padding:6px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 14px rgba(0,0,0,0.28);}
 .toolbar-brand{color:rgba(255,255,255,.92);font-size:11px;font-weight:500;letter-spacing:.3px;display:flex;align-items:center;gap:6px;}
@@ -37,95 +38,84 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 .btn-pdf{background:var(--gold);color:var(--blue-dark);}
 .btn-pdf:hover{background:var(--gold-dark);color:#fff;}
 .btn-pdf:disabled{opacity:.7;cursor:not-allowed;}
-
 /* ── PAGE ── */
 .page-wrapper{padding-top:46px;display:flex;justify-content:center;min-height:100vh;}
-.resume{width:var(--page-w);min-height:1123px;background:#fff;border:1.5px solid var(--border);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
+.resume{width:var(--page-w);min-height:297mm;background:#fff;border:1.5px solid var(--border);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
 .resume::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-dark),var(--blue-soft));z-index:1;}
-
 /* ── HEADER ── */
-.resume-header{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 13px 6px;border-bottom:2px solid var(--blue-dark);background:#fff;gap:10px;}
+.resume-header{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 13px 8px;border-bottom:2px solid var(--blue-dark);background:#fff;gap:10px;}
 .hdr-left{flex:1;}
-.hdr-name{font-size:20px;font-weight:900;letter-spacing:.9px;color:var(--ink);font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;line-height:1.05;}
+.hdr-name{font-size:22px;font-weight:900;letter-spacing:.9px;color:var(--ink);font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;line-height:1.05;}
 .hdr-name em{color:var(--blue-dark);font-style:normal;}
-.hdr-accent{display:flex;align-items:center;gap:6px;margin:2px 0 1px;}
+.hdr-accent{display:flex;align-items:center;gap:6px;margin:3px 0 2px;}
 .hdr-bar{display:none;}
-.hdr-title{font-size:8px;font-weight:600;color:var(--blue-mid);letter-spacing:.1px;line-height:1.3;}
+.hdr-title{font-size:8.5px;font-weight:600;color:var(--blue-mid);letter-spacing:.1px;line-height:1.4;}
 .hdr-title strong{color:var(--blue-dark);font-weight:700;}
-.hdr-right{display:flex;flex-direction:column;gap:2px;align-items:flex-end;flex-shrink:0;padding-top:2px;}
-.contact-row{display:flex;align-items:center;gap:4px;font-size:7.8px;color:var(--ink-mid);font-weight:500;white-space:nowrap;}
-.contact-row i{color:var(--blue-soft);font-size:7px;width:10px;text-align:center;}
+.hdr-right{display:flex;flex-direction:column;gap:2.5px;align-items:flex-end;flex-shrink:0;padding-top:2px;}
+.contact-row{display:flex;align-items:center;gap:4px;font-size:8.3px;color:var(--ink-mid);font-weight:500;white-space:nowrap;}
+.contact-row i{color:var(--blue-soft);font-size:7.5px;width:10px;text-align:center;}
 .contact-row a{color:var(--ink-mid);text-decoration:none;}
 .contact-row a:hover{color:var(--blue-dark);text-decoration:underline;}
-
 /* ── BODY ── */
-.resume-body{padding:3px 11px 4px;}
-.section{margin-bottom:2px;}
-.section-title{display:flex;align-items:center;gap:5px;font-size:8px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.9px;padding:1px 0 1px 6px;border-left:3px solid var(--blue-dark);border-bottom:1px solid var(--border);margin-bottom:2px;font-family:'Roboto Condensed',sans-serif;}
-
+.resume-body{padding:5px 11px 8px;}
+.section{margin-bottom:4px;}
+.section-title{display:flex;align-items:center;gap:5px;font-size:8.5px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.9px;padding:2px 0 2px 6px;border-left:3px solid var(--blue-dark);border-bottom:1px solid var(--border);margin-bottom:3px;font-family:'Roboto Condensed',sans-serif;}
 /* ── SUMMARY ── */
-.summary-block{border-left:3px solid var(--blue-dark);padding:2px 9px 3px;}
-.summary-lines{display:flex;flex-direction:column;gap:1px;}
-.summary-line{display:flex;align-items:flex-start;gap:6px;font-size:8px;line-height:1.38;color:var(--ink);}
-.summary-line i{color:var(--blue-soft);font-size:8px;margin-top:2px;flex-shrink:0;width:10px;text-align:center;}
+.summary-block{border-left:3px solid var(--blue-dark);padding:4px 9px 5px;}
+.summary-lines{display:flex;flex-direction:column;gap:2px;}
+.summary-line{display:flex;align-items:flex-start;gap:6px;font-size:9px;line-height:1.44;color:var(--ink);}
+.summary-line i{color:var(--blue-soft);font-size:8.5px;margin-top:2px;flex-shrink:0;width:10px;text-align:center;}
 .kw{color:var(--ink);font-weight:700;}
 .bk{color:var(--ink);font-weight:700;}
-
 /* ── CERTS ── */
-.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 6px;}
-.cert-item{display:flex;align-items:center;gap:3px;font-size:7.6px;line-height:1.38;padding:.3px 0;white-space:nowrap;overflow:hidden;border-bottom:.5px solid var(--border);}
-.cert-bullet{color:var(--blue-dark);font-size:5px;flex-shrink:0;line-height:1.8;}
+.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 8px;}
+.cert-item{display:flex;align-items:center;gap:3px;font-size:8.3px;line-height:1.45;padding:.5px 0;white-space:nowrap;overflow:hidden;border-bottom:.5px solid var(--border);}
+.cert-bullet{color:var(--blue-dark);font-size:5.5px;flex-shrink:0;line-height:1.8;}
 .cert-inst{font-weight:700;color:var(--blue-dark);}
-.cert-sep{color:var(--ink-light);margin:0 2px;font-size:7px;}
+.cert-sep{color:var(--ink-light);margin:0 2px;font-size:7.5px;}
 .cert-course{color:var(--ink-mid);overflow:hidden;text-overflow:ellipsis;}
-
 /* ── EXPERIENCE ── */
-.job{padding:1px 0 2px 7px;margin-bottom:1px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;}
+.job{padding:2px 0 3px 8px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
 .job:hover{border-left-color:var(--blue-soft);}
 .job:last-child{border-bottom:none;}
-.job-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0px;flex-wrap:wrap;gap:1px;}
+.job-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1px;flex-wrap:wrap;gap:2px;}
 .job-left{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap;}
-.job-company{font-size:9.5px;font-weight:700;color:var(--blue-dark);font-family:'Roboto Condensed',sans-serif;letter-spacing:.2px;}
-.job-dot{color:var(--gold-dark);font-size:7px;margin:0 1px;}
-.job-role{font-size:8.5px;font-weight:600;color:var(--ink);}
-.job-location{font-size:7.5px;color:var(--ink-light);font-style:italic;}
-.job-period{font-size:7.2px;font-weight:600;color:var(--ink-light);flex-shrink:0;white-space:nowrap;letter-spacing:.1px;}
+.job-company{font-size:10.5px;font-weight:700;color:var(--blue-dark);font-family:'Roboto Condensed',sans-serif;letter-spacing:.2px;}
+.job-dot{color:var(--gold-dark);font-size:7.5px;margin:0 1px;}
+.job-role{font-size:9.5px;font-weight:600;color:var(--ink);}
+.job-location{font-size:8px;color:var(--ink-light);font-style:italic;}
+.job-period{font-size:7.8px;font-weight:600;color:var(--ink-light);flex-shrink:0;white-space:nowrap;letter-spacing:.1px;}
 .job-bullets{list-style:none;padding-left:0;margin:0;}
-.job-bullets li{font-size:8px;line-height:1.38;color:var(--ink);text-align:justify;margin-bottom:0;padding-left:10px;position:relative;}
-.job-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5px;font-weight:400;line-height:2.0;}
-
+.job-bullets li{font-size:9px;line-height:1.44;color:var(--ink);text-align:left;margin-bottom:1px;padding-left:12px;position:relative;}
+.job-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5.5px;font-weight:400;line-height:2.1;}
 /* ── PROJECTS ── */
-.project{padding:1px 0 2px 7px;margin-bottom:1px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;}
+.project{padding:2px 0 3px 8px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
 .project:hover{border-left-color:var(--blue-soft);}
 .project:last-child{border-bottom:none;}
-.project-header{display:flex;align-items:baseline;gap:4px;margin-bottom:1px;flex-wrap:wrap;}
-.project-name{font-size:8.5px;font-weight:700;color:var(--ink);}
-.project-company{font-size:8px;font-style:italic;color:var(--blue-soft);}
+.project-header{display:flex;align-items:baseline;gap:4px;margin-bottom:1.5px;flex-wrap:wrap;}
+.project-name{font-size:9.5px;font-weight:700;color:var(--ink);}
+.project-company{font-size:8.5px;font-style:italic;color:var(--blue-soft);}
 .proj-bullets{list-style:none;padding-left:0;margin:0;}
-.proj-bullets li{font-size:8px;line-height:1.38;color:var(--ink);text-align:justify;margin-bottom:0;padding-left:10px;position:relative;}
-.proj-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5px;font-weight:400;line-height:2.0;}
-
+.proj-bullets li{font-size:9px;line-height:1.44;color:var(--ink);text-align:left;margin-bottom:1px;padding-left:12px;position:relative;}
+.proj-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5.5px;font-weight:400;line-height:2.1;}
 /* ── EDUCATION ── */
 .edu-list{display:flex;flex-direction:column;gap:0;}
-.edu-row{display:flex;align-items:center;justify-content:space-between;width:100%;padding:1.5px 7px;border-bottom:.5px solid var(--border);}
+.edu-row{display:flex;align-items:center;justify-content:space-between;width:100%;padding:2.5px 8px;border-bottom:.5px solid var(--border);}
 .edu-row:last-child{border-bottom:none;}
 .edu-left{display:flex;align-items:baseline;gap:4px;flex:1;flex-wrap:wrap;}
-.edu-inst{font-size:8.5px;font-weight:700;color:var(--ink);white-space:nowrap;}
-.edu-degree{font-size:7.8px;color:var(--ink-mid);font-weight:400;white-space:nowrap;}
-.edu-year{font-size:7.2px;font-weight:600;color:var(--ink-light);white-space:nowrap;flex-shrink:0;padding-left:16px;letter-spacing:.1px;}
-
+.edu-inst{font-size:9.5px;font-weight:700;color:var(--ink);white-space:nowrap;}
+.edu-degree{font-size:8.5px;color:var(--ink-mid);font-weight:400;white-space:nowrap;}
+.edu-year{font-size:7.8px;font-weight:600;color:var(--ink-light);white-space:nowrap;flex-shrink:0;padding-left:16px;letter-spacing:.1px;}
 /* ── SKILLS ── */
 .skills-wrap{display:flex;flex-direction:column;gap:0;}
-.skill-row{display:flex;align-items:flex-start;gap:5px;font-size:7.8px;line-height:1.4;color:var(--ink);padding:1.5px 0;border-bottom:.5px solid var(--border);}
+.skill-row{display:flex;align-items:flex-start;gap:6px;font-size:8.5px;line-height:1.5;color:var(--ink);padding:2px 0;border-bottom:.5px solid var(--border);}
 .skill-row:last-child{border-bottom:none;}
-.skill-cat{font-weight:700;color:#fff;background:linear-gradient(90deg,var(--blue-dark),var(--blue-mid));white-space:nowrap;flex-shrink:0;font-family:'Roboto Condensed',sans-serif;font-size:7px;letter-spacing:.2px;padding:2px 5px;border-radius:10px;min-width:100px;text-align:center;margin-top:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.skill-cat{font-weight:700;color:#fff;background:linear-gradient(90deg,var(--blue-dark),var(--blue-mid));white-space:nowrap;flex-shrink:0;font-family:'Roboto Condensed',sans-serif;font-size:7.5px;letter-spacing:.25px;padding:2px 6px;border-radius:10px;min-width:108px;text-align:center;margin-top:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 .skill-vals{color:var(--ink-mid);flex:1;}
-.skill-tag{display:inline;font-size:7.8px;font-weight:400;color:var(--ink-mid);}
+.skill-tag{display:inline;font-size:8.5px;font-weight:400;color:var(--ink-mid);}
 .skill-tag::after{content:", ";}
 .skill-tag:last-child::after{content:"";}
-
 .bottom-row{display:block;}
-
 /* ── PRINT ── */
 @media print{
   .toolbar{display:none!important;}
@@ -137,7 +127,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   .section{page-break-inside:avoid;}
   .job,.project{page-break-inside:avoid;}
   a{color:inherit!important;text-decoration:none;}
-  @page{size:A4 portrait;margin:4mm 5mm;}
+  @page{size:A4;margin:5mm 7mm;}
 }
 @media(max-width:820px){
   .page-wrapper{padding-top:50px;}
@@ -151,19 +141,16 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 </style>
 </head>
 <body>
-
 <!-- TOOLBAR -->
 <div class="toolbar">
   <span class="toolbar-brand"><i class="fas fa-id-badge"></i>Chandan Kumar — Lead GenAI Architect &amp; AI Systems Leader</span>
   <div class="toolbar-actions">
     <button class="btn-tool btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
-    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Save as PDF</button>
+    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
   </div>
 </div>
-
 <div class="page-wrapper">
 <div class="resume" id="resumeContent">
-
 <!-- HEADER -->
 <header class="resume-header">
   <div class="hdr-left">
@@ -182,9 +169,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="contact-row"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/chandaniit" target="_blank">linkedin.com/in/chandaniit</a></div>
   </div>
 </header>
-
 <div class="resume-body">
-
 <!-- 1. PROFESSIONAL SUMMARY -->
 <div class="section">
   <div class="section-title"><i class="fa-regular fa-address-card"></i>Professional Summary</div>
@@ -192,16 +177,15 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="summary-lines">
       <div class="summary-line">
         <i class="fas fa-rocket"></i>
-        <span><span class="kw">IIT (ISM) Dhanbad graduate</span> and <span class="kw">Lead GenAI Architect at IBM India Software Lab (ISL)</span> — bringing <span class="kw">~8 years</span> of end-to-end expertise architecting, scaling, and shipping enterprise-grade AI platforms across Fortune 500 clients in banking, finance, energy, and environmental sectors. Deep expert in <span class="kw">LLMs, Agentic AI &amp; Multi-Agent Orchestration (LangGraph, CrewAI, AutoGen, MCP), enterprise RAG pipelines, LLM fine-tuning (LoRA, RLHF, DPO)</span>, and full-lifecycle <span class="kw">MLOps</span> — delivering p99 sub-200ms inference on <span class="kw">AWS, Azure, and GCP</span>.</span>
+        <span><span class="kw">IIT (ISM) Dhanbad Graduate</span> and <span class="kw">Lead Data Scientist at IBM India Software Lab (ISL)</span> — <span class="kw">8+ years</span> engineering enterprise AI &amp; GenAI systems at Fortune 500 scale. Currently leading R&amp;D-to-production architecture of <span class="kw">IBM Watsonx Orchestrate</span>, IBM's flagship multi-agent AI platform, with deep specialization in <span class="kw">LLMs, Agentic AI &amp; Multi-Agent Orchestration (LangGraph, CrewAI, AutoGen, MCP)</span>, enterprise RAG pipelines, LLM fine-tuning <span class="kw">(LoRA, RLHF, DPO)</span>, and full-lifecycle MLOps — delivering <span class="kw">sub-200ms inference</span>, petabyte-scale data pipelines, and multi-region high-availability on <span class="kw">IBM Cloud, AWS, and Azure</span>.</span>
       </div>
       <div class="summary-line">
         <i class="fas fa-trophy"></i>
-        <span>Consistent <span class="kw">$3M+ total business impact</span> maker: <span class="kw">$1.5M+ annual productivity gains, $1M operational savings, $750K revenue protection, $500K regulatory savings, 40% inference cost reduction</span>, and <span class="kw">25% operational efficiency improvement</span> — sustained with <span class="kw">zero critical compliance incidents</span> through robust <span class="kw">Responsible AI &amp; Governance frameworks</span>. C-suite-trusted <span class="kw">GenAI strategic advisor</span> bridging deep technical system design with executive vision, roadmap ownership, and cross-functional team leadership.</span>
+        <span>Proven architect of multi-million-dollar enterprise impact — delivered <span class="kw">$1.5M+ annual productivity gains, $1M+ operational savings, $750K revenue protection, $500K regulatory savings, 40% inference cost reduction</span>, and <span class="kw">25% enterprise workflow automation</span> — all sustained at <span class="kw">99.9% uptime</span> with <span class="kw">zero critical compliance incidents</span> via robust <span class="kw">Responsible AI &amp; Governance frameworks</span>. C-suite-trusted <span class="kw">GenAI strategic advisor</span> who bridges deep technical system design with executive roadmap ownership to turn ambitious AI bets into enterprise-wide competitive advantage.</span>
       </div>
     </div>
   </div>
 </div>
-
 <!-- 2. CERTIFICATIONS -->
 <div class="section">
   <div class="section-title"><i class="fas fa-certificate"></i>Certifications &amp; Badges</div>
@@ -223,14 +207,11 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Trustworthy AI and AI Ethics</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Udemy</span><span class="cert-sep">·</span><span class="cert-course">Product Management Fundamentals</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Microsoft</span><span class="cert-sep">·</span><span class="cert-course">SQL Server</span></div>
-    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Trustworthy AI and AI Ethics</span></div>
   </div>
 </div>
-
 <!-- 3. PROFESSIONAL EXPERIENCE -->
 <div class="section">
   <div class="section-title"><i class="fas fa-briefcase"></i>Professional Experience</div>
-
   <div class="job">
     <div class="job-header">
       <div class="job-left">
@@ -242,11 +223,10 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="job-period">Mar 2024 – Present</span>
     </div>
     <ul class="job-bullets">
-      <li><span class="bk">Architected and own R&amp;D-to-production engineering of Watsonx Orchestrate</span> — IBM's flagship enterprise multi-agent AI platform — using <span class="kw">LangGraph, CrewAI, AutoGen, and MCP</span> on Kubernetes across 3 global regions; platform serves <span class="kw">10M+ daily API calls</span> at <span class="kw">p99 &lt;200ms latency</span>, automating <span class="kw">25% of enterprise workflows</span> and delivering <span class="kw">$1.5M+ measurable annual productivity gains</span>.</li>
-      <li><span class="bk">Designed and shipped production LLM fine-tuning platform</span> (LoRA, RLHF, DPO) on AWS Bedrock and Azure ML Studio with enterprise Responsible AI governance (GDPR, EU AI Act, SHAP explainability, automated drift monitoring) — slashed <span class="kw">inference costs by 40%</span>, sustained <span class="kw">99.9% model uptime SLA</span>, and maintained <span class="kw">zero critical compliance incidents</span> across all Fortune 500 deployments.</li>
+      <li><span class="bk">Architected and own R&amp;D-to-production engineering of Watsonx Orchestrate</span> — IBM's flagship enterprise multi-agent AI platform — using <span class="kw">LangGraph, CrewAI, AutoGen, and MCP</span> deployed on <span class="kw">IBM Cloud, IBM OpenShift, and IBM Kubernetes Service</span> across 3 global regions; platform serves <span class="kw">10M+ daily API calls</span> at <span class="kw">p99 &lt;200ms latency</span>, automating <span class="kw">25% of enterprise workflows</span> and delivering <span class="kw">$1.5M+ measurable annual productivity gains</span>.</li>
+      <li><span class="bk">Designed and shipped production LLM fine-tuning platform</span> (LoRA, RLHF, DPO) on <span class="kw">IBM Watsonx.ai, IBM Cloud Object Storage, and IBM OpenScale</span> with enterprise Responsible AI governance (GDPR, EU AI Act, SHAP explainability, automated drift monitoring via IBM OpenScale) — slashed <span class="kw">inference costs by 40%</span>, sustained <span class="kw">99.9% model uptime SLA</span>, and maintained <span class="kw">zero critical compliance incidents</span> across all enterprise deployments.</li>
     </ul>
   </div>
-
   <div class="job">
     <div class="job-header">
       <div class="job-left">
@@ -258,11 +238,10 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="job-period">Apr 2021 – Feb 2024</span>
     </div>
     <ul class="job-bullets">
-      <li><span class="bk">Owned full system design and multi-cloud deployment of PdfGPT</span> — an enterprise RAG document intelligence platform for <span class="kw">Mizuho Bank</span> — using LangChain, Hugging Face embeddings, HyDE query rewriting, and hybrid BM25 + dense retrieval on auto-scaling FastAPI microservices on AWS/GCP; processed <span class="kw">50,000+ documents/month</span> at <span class="kw">&lt;500ms latency</span>, accelerated analyst review cycles by <span class="kw">30%</span>, and generated <span class="kw">$1M+ annual operational savings</span>.</li>
-      <li><span class="bk">Architected petabyte-scale real-time ML inference and computer vision platform</span> for <span class="kw">Facebook</span> and <span class="kw">Ulster Bank</span> using CNNs on PyTorch, Spark, Ray, and SageMaker in multi-region active-active topology — processed <span class="kw">1B+ images daily</span> at <span class="kw">&lt;50ms inference</span>, boosted ad relevance by <span class="kw">12%</span>, cut pipeline latency by <span class="kw">60%</span>, and reduced model rollback incidents by <span class="kw">75%</span> via automated shadow deployment.</li>
+      <li><span class="bk">Owned full system design and deployment of PdfGPT</span> — an enterprise RAG document intelligence platform for <span class="kw">Mizuho Bank</span> — using LangChain, Hugging Face embeddings, HyDE query rewriting, and hybrid BM25 + dense retrieval on auto-scaling FastAPI microservices hosted on <span class="kw">AWS ECS, AWS Lambda, and S3</span>; processed <span class="kw">50,000+ documents/month</span> at <span class="kw">&lt;500ms latency</span>, accelerated analyst review cycles by <span class="kw">30%</span>, and generated <span class="kw">$1M+ annual operational savings</span>.</li>
+      <li><span class="bk">Architected petabyte-scale real-time ML inference and computer vision platform</span> for <span class="kw">Facebook</span> and <span class="kw">Ulster Bank</span> using CNNs on PyTorch, <span class="kw">AWS SageMaker, AWS Glue, Amazon Redshift</span>, and Ray in multi-region active-active topology — processed <span class="kw">1B+ images daily</span> at <span class="kw">&lt;50ms inference</span>, boosted ad relevance by <span class="kw">12%</span>, cut pipeline latency by <span class="kw">60%</span>, and reduced model rollback incidents by <span class="kw">75%</span> via automated shadow deployment on <span class="kw">AWS Step Functions</span>.</li>
     </ul>
   </div>
-
   <div class="job">
     <div class="job-header">
       <div class="job-left">
@@ -277,7 +256,6 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <li><span class="bk">Led cross-functional analytics process optimization</span> using advanced statistical modeling and hypothesis testing — established analytics best practices and reporting standards that accelerated insight generation cycles and improved delivery consistency across multiple high-value client engagements.</li>
     </ul>
   </div>
-
   <div class="job">
     <div class="job-header">
       <div class="job-left">
@@ -289,77 +267,70 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="job-period">Jun 2018 – Jan 2021</span>
     </div>
     <ul class="job-bullets">
-      <li><span class="bk">Built end-to-end intelligent waste classification platform</span> ingesting physical &amp; chemical properties (pH, boiling point, melting point) into a hybrid <span class="kw">CNN + rule-based engine</span> — eliminated <span class="kw">100% of manual classification workflows</span>, boosted F1 on rare hazardous categories by <span class="kw">28%</span>, and delivered <span class="kw">$500K in annual regulatory savings</span>.</li>
-      <li><span class="bk">Designed ML-powered invoice audit and revenue protection system</span> with multi-model ensemble, drift detection, and automated retraining on Snowflake, BigQuery, and Redshift pipelines — automated <span class="kw">80% of audit workflows</span>, sustained <span class="kw">&gt;94% prediction accuracy</span>, and safeguarded <span class="kw">$750K in annual revenue</span> through real-time overbilling detection.</li>
+      <li><span class="bk">Built end-to-end intelligent waste classification platform</span> in <span class="kw">Python</span> ingesting physical &amp; chemical properties (pH, boiling point, melting point) into a hybrid <span class="kw">CNN + rule-based engine</span> trained and deployed on <span class="kw">Azure ML Studio</span> — eliminated <span class="kw">100% of manual classification workflows</span>, boosted F1 on rare hazardous categories by <span class="kw">28%</span>, and delivered <span class="kw">$500K in annual regulatory savings</span>.</li>
+      <li><span class="bk">Designed ML-powered invoice audit and revenue protection system</span> using <span class="kw">Python, SQL, and Azure ML Studio</span> with multi-model ensemble and automated retraining on <span class="kw">Azure SQL Database and Azure Data Factory</span> pipelines — automated <span class="kw">80% of audit workflows</span>, sustained <span class="kw">&gt;94% prediction accuracy</span>, safeguarded <span class="kw">$750K in annual revenue</span>, and delivered executive-facing audit dashboards via <span class="kw">Power BI</span>.</li>
     </ul>
   </div>
 </div>
-
 <!-- 4. KEY PROJECTS -->
 <div class="section">
   <div class="section-title"><i class="fas fa-code-branch"></i>Key Projects &amp; System Design Highlights</div>
-
   <div class="project">
     <div class="project-header">
       <span class="project-name">Watsonx Orchestrate — Multi-Agent AI Orchestration Platform (R&amp;D → Production)</span>
       <span class="project-company">— IBM ISL, India Software Lab</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Pioneered R&amp;D-to-production system design of IBM's flagship multi-agent orchestration platform</span> using LangGraph, CrewAI, AutoGen, and MCP with LoRA fine-tuning and Pinecone vector DB integration — enabling autonomous cross-functional enterprise task execution with <span class="kw">25% workflow efficiency gains</span> across 3 global regions serving <span class="kw">10M+ daily API calls</span> at <span class="kw">p99 &lt;200ms response time</span>.</li>
-      <li><span class="bk">Implemented enterprise-grade AI governance layer</span> with built-in LLM guardrails, real-time model monitoring, automated compliance checks, and SHAP-based explainability dashboards — achieving <span class="kw">99.9% model uptime SLA</span>, zero critical incidents, and seamless integration with the full IBM Watsonx ecosystem for regulated Fortune 500 clients.</li>
+      <li><span class="bk">Pioneered R&amp;D-to-production system design of IBM's flagship multi-agent orchestration platform</span> using <span class="kw">LangGraph, CrewAI, AutoGen, and MCP</span> with LoRA fine-tuning on <span class="kw">IBM Watsonx.ai</span> and Pinecone vector DB — deployed on <span class="kw">IBM Cloud, IBM OpenShift, and IBM Kubernetes Service</span> across 3 global regions, serving <span class="kw">10M+ daily API calls</span> at <span class="kw">p99 &lt;200ms response time</span> with <span class="kw">25% workflow efficiency gains</span>.</li>
+      <li><span class="bk">Implemented enterprise-grade AI governance layer on IBM OpenScale</span> with built-in LLM guardrails, real-time model monitoring, automated compliance checks (GDPR, EU AI Act), and SHAP-based explainability dashboards — achieving <span class="kw">99.9% model uptime SLA</span>, zero critical incidents, and seamless integration with the full <span class="kw">IBM Watsonx</span> ecosystem.</li>
       <li><span class="bk">Secured C-suite executive sponsorship by translating agentic architecture research into boardroom-ready strategic narratives</span> — accelerated enterprise rollout timelines by <span class="kw">35%</span> and established Watsonx Orchestrate as IBM's flagship GenAI enterprise product globally.</li>
     </ul>
   </div>
-
   <div class="project">
     <div class="project-header">
       <span class="project-name">PdfGPT — Enterprise RAG Document Intelligence Platform</span>
       <span class="project-company">— Accenture / Mizuho Bank</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Owned complete end-to-end system design and multi-cloud deployment of production RAG pipeline</span> using LangChain, Hugging Face semantic embeddings, HyDE query rewriting, intelligent chunking strategies, and auto-scaling FastAPI microservices on AWS/GCP — supporting <span class="kw">500+ concurrent users</span> at <span class="kw">&lt;500ms query latency</span>, processing <span class="kw">50,000+ documents/month</span> with <span class="kw">99.9% retrieval accuracy</span>.</li>
-      <li><span class="bk">Engineered fault-tolerant horizontally scalable architecture with hybrid BM25 + dense vector retrieval</span> — reduced system downtime by <span class="kw">90%</span>, generated <span class="kw">$1M+ annual cost savings</span>, and established a reusable RAG reference architecture adopted across <span class="kw">3 additional Accenture GenAI client engagements</span>.</li>
-      <li><span class="bk">Accelerated analyst document review cycles by 30%</span> through intelligent summarization, contextual feature extraction, and real-time hybrid retrieval — while maintaining full regulatory audit compliance and zero data privacy violations for a Tier-1 global bank.</li>
+      <li><span class="bk">Owned complete end-to-end system design and deployment of production RAG pipeline</span> using LangChain, Hugging Face semantic embeddings, HyDE query rewriting, and intelligent chunking on auto-scaling FastAPI microservices hosted on <span class="kw">AWS ECS, AWS Lambda, and Amazon S3</span> — supporting <span class="kw">500+ concurrent users</span> at <span class="kw">&lt;500ms query latency</span>, processing <span class="kw">50,000+ documents/month</span> with <span class="kw">99.9% retrieval accuracy</span>.</li>
+      <li><span class="bk">Engineered fault-tolerant horizontally scalable architecture with hybrid BM25 + dense vector retrieval on Amazon OpenSearch</span> — reduced system downtime by <span class="kw">90%</span>, generated <span class="kw">$1M+ annual cost savings</span>, and established a reusable RAG reference architecture adopted across <span class="kw">3 additional Accenture GenAI client engagements</span>.</li>
+      <li><span class="bk">Accelerated analyst document review cycles by 30%</span> through intelligent summarization, contextual feature extraction, and real-time hybrid retrieval — maintaining full regulatory audit compliance and zero data privacy violations for a Tier-1 global bank.</li>
     </ul>
   </div>
-
   <div class="project">
     <div class="project-header">
       <span class="project-name">Real-Time Content Moderation &amp; Ad Relevance Platform</span>
       <span class="project-company">— Accenture / Facebook</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Architected petabyte-scale distributed computer vision system</span> using CNNs on PyTorch with Spark, Ray, and SageMaker in multi-region active-active topology — delivering <span class="kw">1B+ image inferences daily at &lt;50ms latency</span>, improving content moderation recall by <span class="kw">15%</span>, and reducing policy violations by <span class="kw">20%</span> at global social media scale.</li>
-      <li><span class="bk">Built end-to-end real-time feature store and ML data pipeline on AWS Glue and Ray</span> — slashed data processing latency by <span class="kw">60%</span>, boosted ad relevance by <span class="kw">12%</span>, and enabled sub-second feature freshness for <span class="kw">billions of users</span> in production.</li>
-      <li><span class="bk">Implemented continuous A/B testing and automated shadow deployment loop</span> — reduced policy violations by <span class="kw">20%</span>, cut model rollback incidents by <span class="kw">75%</span>, and accelerated model iteration velocity from monthly to <span class="kw">weekly release cadence</span>.</li>
+      <li><span class="bk">Architected petabyte-scale distributed computer vision system</span> using CNNs on PyTorch with <span class="kw">AWS SageMaker, AWS Glue, Amazon Redshift</span>, and Ray in multi-region active-active topology — delivered <span class="kw">1B+ image inferences daily at &lt;50ms latency</span>, improved content moderation recall by <span class="kw">15%</span>, and reduced policy violations by <span class="kw">20%</span> at global social media scale.</li>
+      <li><span class="bk">Built end-to-end real-time feature store and ML data pipeline on AWS Glue, Amazon Kinesis, and Ray</span> — slashed data processing latency by <span class="kw">60%</span>, boosted ad relevance by <span class="kw">12%</span>, and enabled sub-second feature freshness for <span class="kw">billions of users</span> in production.</li>
+      <li><span class="bk">Implemented continuous A/B testing and automated shadow deployment loop on AWS Step Functions</span> — cut model rollback incidents by <span class="kw">75%</span> and accelerated model iteration velocity from monthly to <span class="kw">weekly release cadence</span>.</li>
     </ul>
   </div>
-
   <div class="project">
     <div class="project-header">
       <span class="project-name">Waste Classification Code System (WCC) — End-to-End Lifecycle Platform</span>
       <span class="project-company">— Clean Harbors</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Architected full end-to-end intelligent waste management platform</span> connecting customer intake of physical/chemical properties through a hybrid CNN + rule-based engine for regulatory code assignment across the complete lifecycle (intake → transportation → treatment → disposal) — replacing <span class="kw">100% of manual classification workflows</span>.</li>
-      <li><span class="bk">Designed synthetic data augmentation pipeline and MLOps monitoring stack</span> addressing extreme class imbalance in rare hazardous waste categories — boosting model F1 on critical minority classes by <span class="kw">28%</span>, cutting compliance errors by <span class="kw">15%</span>, and delivering <span class="kw">$500K annual regulatory savings</span>.</li>
-      <li><span class="bk">Deployed real-time classification API with explainability layer and regulatory audit trail</span> integrated into field operations systems — reducing misclassification incidents by <span class="kw">40%</span>, accelerating operational throughput by <span class="kw">22%</span>, and enabling on-site instant classification decisions.</li>
+      <li><span class="bk">Architected full end-to-end intelligent waste management platform in Python</span> — hybrid CNN + rule-based engine built and deployed on <span class="kw">Azure ML Studio</span>, ingesting physical/chemical properties (pH, boiling point, melting point) for regulatory code assignment across the complete lifecycle (intake → transportation → treatment → disposal) — replacing <span class="kw">100% of manual classification workflows</span>.</li>
+      <li><span class="bk">Designed synthetic data augmentation pipeline and MLOps monitoring stack on Azure ML</span> addressing extreme class imbalance in rare hazardous waste categories — boosting model F1 on critical minority classes by <span class="kw">28%</span>, cutting compliance errors by <span class="kw">15%</span>, and delivering <span class="kw">$500K annual regulatory savings</span>.</li>
+      <li><span class="bk">Deployed real-time classification API on Azure App Service with SHAP explainability layer and regulatory audit trail</span> — reducing misclassification incidents by <span class="kw">40%</span>, accelerating operational throughput by <span class="kw">22%</span>, and enabling on-site instant classification decisions surfaced via <span class="kw">Power BI</span> dashboards.</li>
     </ul>
   </div>
-
   <div class="project">
     <div class="project-header">
       <span class="project-name">Invoice Audit Automation &amp; Revenue Protection Platform</span>
       <span class="project-company">— Clean Harbors</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Built ML-powered cost prediction and anomaly detection engine</span> with multi-model ensemble, drift detection, and automated retraining triggers on Snowflake, BigQuery, and Redshift ETL pipelines — automating <span class="kw">80% of manual audit workflows</span> and protecting <span class="kw">$750K in annual revenue</span> through real-time overbilling flagging.</li>
-      <li><span class="bk">Sustained prediction accuracy above 94%</span> with automated retraining triggers — reduced false-positive audit flags by <span class="kw">35%</span> and improved billing dispute resolution speed by <span class="kw">50%</span>.</li>
-      <li><span class="bk">Integrated invoice audit platform directly with the upstream WCC classification system</span> — creating a closed-loop data flow from waste intake through cost validation, enabling proactive discrepancy detection before invoice issuance and improving pricing transparency across the full waste lifecycle.</li>
+      <li><span class="bk">Built ML-powered cost prediction and anomaly detection engine in Python and SQL</span> with multi-model ensemble, drift detection, and automated retraining on <span class="kw">Azure SQL Database, Azure Data Factory, and Azure ML Studio</span> — automating <span class="kw">80% of manual audit workflows</span> and protecting <span class="kw">$750K in annual revenue</span> through real-time overbilling flagging.</li>
+      <li><span class="bk">Sustained prediction accuracy above 94%</span> with Azure ML automated retraining pipelines — reduced false-positive audit flags by <span class="kw">35%</span>, improved billing dispute resolution speed by <span class="kw">50%</span>, and delivered executive-facing revenue analytics via <span class="kw">Power BI</span>.</li>
+      <li><span class="bk">Integrated invoice audit platform directly with the upstream WCC classification system via Azure Data Factory pipelines</span> — creating a closed-loop data flow from waste intake through cost validation, enabling proactive discrepancy detection before invoice issuance.</li>
     </ul>
   </div>
 </div>
-
 <!-- 5. EDUCATION -->
 <div class="bottom-row">
   <div class="section">
@@ -382,145 +353,137 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     </div>
   </div>
 </div>
-
-<!-- 6. TECHNICAL SKILLS — 5 categories, all skills preserved -->
-<div class="section" style="margin-top:2px;">
+<!-- 6. TECHNICAL SKILLS -->
+<div class="section" style="margin-top:4px;">
   <div class="section-title"><i class="fas fa-laptop-code"></i>Technical Skills</div>
   <div class="skills-wrap">
-
-    <!-- CAT 1: GenAI, LLMs & Agentic AI -->
     <div class="skill-row">
-      <span class="skill-cat">GenAI, LLMs &amp; Agentic AI</span>
+      <span class="skill-cat">AI / GenAI &amp; Deep Learning</span>
       <span class="skill-vals">
-        <span class="skill-tag">GPT-4o</span><span class="skill-tag">Claude 3.5/3.7 Sonnet</span><span class="skill-tag">Llama 3.x</span><span class="skill-tag">Mistral</span><span class="skill-tag">Gemini 1.5</span><span class="skill-tag">Phi-3/3.5</span><span class="skill-tag">IBM Granite</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">AutoGen</span><span class="skill-tag">MCP (Model Context Protocol)</span><span class="skill-tag">LangChain</span><span class="skill-tag">LlamaIndex</span><span class="skill-tag">Semantic Kernel</span><span class="skill-tag">Multi-Agent Orchestration</span><span class="skill-tag">RAG Pipelines</span><span class="skill-tag">GraphRAG</span><span class="skill-tag">HyDE</span><span class="skill-tag">Hybrid Retrieval (BM25+Dense)</span><span class="skill-tag">Re-ranking</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">RLHF</span><span class="skill-tag">DPO</span><span class="skill-tag">LoRA</span><span class="skill-tag">QLoRA</span><span class="skill-tag">PEFT</span><span class="skill-tag">GPTQ/AWQ</span><span class="skill-tag">RAGAS</span><span class="skill-tag">LangSmith</span><span class="skill-tag">ReAct &amp; Chain-of-Thought</span><span class="skill-tag">Tool Use &amp; Function Calling</span><span class="skill-tag">Agent Planning &amp; Decomposition</span><span class="skill-tag">Self-Reflection &amp; Self-Critique</span><span class="skill-tag">Memory Management (Short/Long-term)</span><span class="skill-tag">Tool Orchestration</span><span class="skill-tag">Agentic Evaluation Frameworks</span><span class="skill-tag">Prompt Versioning</span><span class="skill-tag">Context Window Management</span><span class="skill-tag">Token Cost Optimization</span><span class="skill-tag">Red-Teaming &amp; Adversarial Prompting</span>
+        <span class="skill-tag">GPT-4o</span><span class="skill-tag">Claude 3.5/3.7 Sonnet</span><span class="skill-tag">Llama 3.x</span><span class="skill-tag">Mistral</span><span class="skill-tag">Gemini 1.5</span><span class="skill-tag">Phi-3/3.5</span><span class="skill-tag">IBM Granite</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">AutoGen</span><span class="skill-tag">MCP (Model Context Protocol)</span><span class="skill-tag">LangChain</span><span class="skill-tag">LlamaIndex</span><span class="skill-tag">Semantic Kernel</span><span class="skill-tag">Multi-Agent Orchestration</span><span class="skill-tag">RAG Pipelines</span><span class="skill-tag">GraphRAG</span><span class="skill-tag">HyDE</span><span class="skill-tag">Hybrid Retrieval (BM25+Dense)</span><span class="skill-tag">Re-ranking</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">RLHF</span><span class="skill-tag">DPO</span><span class="skill-tag">LoRA</span><span class="skill-tag">QLoRA</span><span class="skill-tag">PEFT</span><span class="skill-tag">GPTQ/AWQ</span><span class="skill-tag">RAGAS</span><span class="skill-tag">LangSmith</span>
       </span>
     </div>
-
-    <!-- CAT 2: ML, Deep Learning & MLOps -->
     <div class="skill-row">
-      <span class="skill-cat">ML, Deep Learning &amp; MLOps</span>
+      <span class="skill-cat">Agentic AI &amp; LLMOps</span>
+      <span class="skill-vals">
+        <span class="skill-tag">ReAct &amp; Chain-of-Thought</span><span class="skill-tag">Tool Use &amp; Function Calling</span><span class="skill-tag">Agent Planning &amp; Decomposition</span><span class="skill-tag">Self-Reflection &amp; Self-Critique</span><span class="skill-tag">Memory Management (Short/Long-term)</span><span class="skill-tag">Tool Orchestration</span><span class="skill-tag">Agentic Evaluation Frameworks</span><span class="skill-tag">Prompt Versioning</span><span class="skill-tag">Context Window Management</span><span class="skill-tag">Token Cost Optimization</span><span class="skill-tag">LLM Observability (Arize AI, Langfuse)</span><span class="skill-tag">Guardrails AI</span><span class="skill-tag">NeMo Guardrails</span><span class="skill-tag">Red-Teaming &amp; Adversarial Prompting</span>
+      </span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cat">ML, MLOps &amp; System Design</span>
       <span class="skill-vals">
         <span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Hugging Face Transformers</span><span class="skill-tag">Scikit-learn</span><span class="skill-tag">XGBoost</span><span class="skill-tag">LightGBM</span><span class="skill-tag">CNNs</span><span class="skill-tag">ViT</span><span class="skill-tag">BERT/RoBERTa</span><span class="skill-tag">Diffusion Models</span><span class="skill-tag">Time-Series Forecasting</span><span class="skill-tag">Graph Neural Networks</span><span class="skill-tag">MLflow</span><span class="skill-tag">Kubeflow</span><span class="skill-tag">ZenML</span><span class="skill-tag">Weights &amp; Biases</span><span class="skill-tag">DVC</span><span class="skill-tag">CI/CD for ML</span><span class="skill-tag">Shadow Deployment</span><span class="skill-tag">A/B Testing</span><span class="skill-tag">Drift Detection &amp; Retraining</span><span class="skill-tag">vLLM</span><span class="skill-tag">Triton Inference Server</span><span class="skill-tag">FSDP/DeepSpeed</span><span class="skill-tag">Multi-Region HA Architecture</span><span class="skill-tag">Feature Stores (Feast, Tecton)</span>
       </span>
     </div>
-
-    <!-- CAT 3: Cloud, Data & Vector Infrastructure -->
     <div class="skill-row">
-      <span class="skill-cat">Cloud, Data &amp; Vector Infra</span>
+      <span class="skill-cat">Cloud &amp; Data Platforms</span>
       <span class="skill-vals">
-        <span class="skill-tag">AWS Bedrock</span><span class="skill-tag">SageMaker</span><span class="skill-tag">Redshift</span><span class="skill-tag">AWS Glue</span><span class="skill-tag">Azure ML Studio</span><span class="skill-tag">Azure OpenAI Service</span><span class="skill-tag">GCP Vertex AI</span><span class="skill-tag">BigQuery</span><span class="skill-tag">IBM Watsonx</span><span class="skill-tag">Snowflake</span><span class="skill-tag">Databricks</span><span class="skill-tag">Delta Lake</span><span class="skill-tag">Apache Iceberg</span><span class="skill-tag">dbt</span><span class="skill-tag">Apache Airflow</span><span class="skill-tag">Prefect</span><span class="skill-tag">Pinecone</span><span class="skill-tag">Weaviate</span><span class="skill-tag">FAISS</span><span class="skill-tag">Qdrant</span><span class="skill-tag">Milvus</span><span class="skill-tag">Neo4j</span><span class="skill-tag">Elasticsearch</span><span class="skill-tag">OpenSearch</span><span class="skill-tag">Redis</span><span class="skill-tag">Kafka</span><span class="skill-tag">Apache Flink</span>
+        <span class="skill-tag"><strong>IBM:</strong> IBM Cloud</span><span class="skill-tag">IBM Watsonx.ai</span><span class="skill-tag">IBM Watsonx Orchestrate</span><span class="skill-tag">IBM OpenShift</span><span class="skill-tag">IBM Kubernetes Service</span><span class="skill-tag">IBM OpenScale</span><span class="skill-tag">IBM Cloud Object Storage</span><span class="skill-tag">IBM Cloud Pak for Data</span><span class="skill-tag"><strong>AWS:</strong> SageMaker</span><span class="skill-tag">AWS Bedrock</span><span class="skill-tag">AWS Glue</span><span class="skill-tag">Amazon Redshift</span><span class="skill-tag">Amazon S3</span><span class="skill-tag">AWS ECS / Lambda</span><span class="skill-tag">Amazon Kinesis</span><span class="skill-tag">AWS Step Functions</span><span class="skill-tag">Amazon OpenSearch</span><span class="skill-tag"><strong>Azure:</strong> Azure ML Studio</span><span class="skill-tag">Azure OpenAI Service</span><span class="skill-tag">Azure SQL Database</span><span class="skill-tag">Azure Data Factory</span><span class="skill-tag">Azure App Service</span><span class="skill-tag">Azure Blob Storage</span><span class="skill-tag">Power BI</span>
       </span>
     </div>
-
-    <!-- CAT 4: Programming, Engineering & Observability -->
     <div class="skill-row">
-      <span class="skill-cat">Programming, Eng &amp; Observability</span>
+      <span class="skill-cat">Databases &amp; Datastores</span>
       <span class="skill-vals">
-        <span class="skill-tag">Python (Expert)</span><span class="skill-tag">SQL</span><span class="skill-tag">PySpark</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Ray</span><span class="skill-tag">FastAPI</span><span class="skill-tag">Flask</span><span class="skill-tag">REST APIs</span><span class="skill-tag">GraphQL</span><span class="skill-tag">gRPC</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span><span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span><span class="skill-tag">Git</span><span class="skill-tag">Bash/Shell</span><span class="skill-tag">C++ (Proficient)</span><span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span><span class="skill-tag">OpenTelemetry</span><span class="skill-tag">Datadog</span><span class="skill-tag">Evidently AI</span><span class="skill-tag">WhyLabs</span><span class="skill-tag">Arize AI</span><span class="skill-tag">Langfuse</span><span class="skill-tag">HelixML</span><span class="skill-tag">LLM Observability</span><span class="skill-tag">Distributed Tracing</span><span class="skill-tag">Log Aggregation (ELK Stack)</span>
+        <span class="skill-tag">Snowflake</span><span class="skill-tag">Databricks</span><span class="skill-tag">Delta Lake</span><span class="skill-tag">Apache Iceberg</span><span class="skill-tag">dbt</span><span class="skill-tag">Apache Airflow</span><span class="skill-tag">Prefect</span><span class="skill-tag">Pinecone</span><span class="skill-tag">Weaviate</span><span class="skill-tag">FAISS</span><span class="skill-tag">Qdrant</span><span class="skill-tag">Milvus</span><span class="skill-tag">Neo4j</span><span class="skill-tag">Elasticsearch</span><span class="skill-tag">OpenSearch</span><span class="skill-tag">Redis</span><span class="skill-tag">Kafka</span><span class="skill-tag">Apache Flink</span>
       </span>
     </div>
-
-    <!-- CAT 5: AI Governance, Safety & Leadership -->
     <div class="skill-row">
-      <span class="skill-cat">AI Governance &amp; Leadership</span>
+      <span class="skill-cat">Programming &amp; Big Data</span>
       <span class="skill-vals">
-        <span class="skill-tag">Responsible AI</span><span class="skill-tag">AI Ethics &amp; Fairness</span><span class="skill-tag">Bias Detection (AIF360, Fairlearn)</span><span class="skill-tag">Explainability (SHAP, LIME)</span><span class="skill-tag">LLM Guardrails</span><span class="skill-tag">Guardrails AI</span><span class="skill-tag">NeMo Guardrails</span><span class="skill-tag">Data Privacy (GDPR, PII, CCPA)</span><span class="skill-tag">Model Governance</span><span class="skill-tag">EU AI Act Compliance</span><span class="skill-tag">Model Cards &amp; Datasheets</span><span class="skill-tag">AI Risk Assessment</span><span class="skill-tag">AI Strategy &amp; Roadmap</span><span class="skill-tag">C-Suite Stakeholder Management</span><span class="skill-tag">Cross-Functional Team Leadership</span><span class="skill-tag">Technical Mentorship</span><span class="skill-tag">Pre-Sales &amp; Solutioning</span><span class="skill-tag">Business Case Development</span><span class="skill-tag">OKRs/KPIs</span><span class="skill-tag">Agile/Scrum</span><span class="skill-tag">Design Thinking</span><span class="skill-tag">Technical Writing</span><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Python (Expert)</span><span class="skill-tag">SQL</span><span class="skill-tag">PySpark</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Ray</span><span class="skill-tag">FastAPI</span><span class="skill-tag">Flask</span><span class="skill-tag">REST APIs</span><span class="skill-tag">GraphQL</span><span class="skill-tag">gRPC</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span><span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span><span class="skill-tag">Git</span><span class="skill-tag">Bash/Shell</span><span class="skill-tag">C++ (Proficient)</span>
       </span>
     </div>
-
+    <div class="skill-row">
+      <span class="skill-cat">Observability &amp; Monitoring</span>
+      <span class="skill-vals">
+        <span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span><span class="skill-tag">OpenTelemetry</span><span class="skill-tag">Datadog</span><span class="skill-tag">Evidently AI</span><span class="skill-tag">WhyLabs</span><span class="skill-tag">Arize AI</span><span class="skill-tag">Langfuse</span><span class="skill-tag">HelixML</span><span class="skill-tag">Model Performance Monitoring</span><span class="skill-tag">Distributed Tracing</span><span class="skill-tag">Log Aggregation (ELK Stack)</span>
+      </span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cat">AI Governance &amp; Safety</span>
+      <span class="skill-vals">
+        <span class="skill-tag">Responsible AI</span><span class="skill-tag">AI Ethics &amp; Fairness</span><span class="skill-tag">Bias Detection (AIF360, Fairlearn)</span><span class="skill-tag">Explainability (SHAP, LIME, LIME-Text)</span><span class="skill-tag">LLM Guardrails</span><span class="skill-tag">Data Privacy (GDPR, PII, CCPA)</span><span class="skill-tag">Model Governance</span><span class="skill-tag">EU AI Act Compliance</span><span class="skill-tag">Model Cards &amp; Datasheets</span><span class="skill-tag">AI Risk Assessment</span>
+      </span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cat">Leadership &amp; Strategy</span>
+      <span class="skill-vals">
+        <span class="skill-tag">AI Strategy &amp; Roadmap</span><span class="skill-tag">C-Suite Stakeholder Management</span><span class="skill-tag">Cross-Functional Team Leadership</span><span class="skill-tag">Technical Mentorship</span><span class="skill-tag">Pre-Sales &amp; Solutioning</span><span class="skill-tag">Business Case Development</span><span class="skill-tag">OKRs/KPIs</span><span class="skill-tag">Agile/Scrum</span><span class="skill-tag">Design Thinking</span><span class="skill-tag">Technical Writing</span><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span>
+      </span>
+    </div>
   </div>
 </div>
-
 </div><!-- /resume-body -->
 </div><!-- /resume -->
 </div><!-- /page-wrapper -->
 
 <script>
-/*
-  PDF Download — uses the browser's own print engine.
-  Opens a minimal popup containing ONLY the resume HTML+CSS
-  (no toolbar, no page wrapper, no shadows), then calls print().
-  Browser "Save as PDF" = pixel-perfect match to what you see.
-  No html2canvas, no jsPDF, no re-rendering artifacts.
-*/
-function downloadPDF() {
-  // Grab all <style> and <link rel="stylesheet"> tags from this page
-  const styleBlocks = Array.from(document.querySelectorAll('style'))
-    .map(s => `<style>${s.innerHTML}</style>`)
-    .join('\n');
-  const linkBlocks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-    .map(l => `<link rel="stylesheet" href="${l.href}"/>`)
-    .join('\n');
+async function downloadPDF() {
+  const btn = document.getElementById('pdfBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating…';
+  btn.disabled = true;
 
-  // Grab the resume inner HTML
-  const resumeHTML = document.getElementById('resumeContent').outerHTML;
+  try {
+    // Wait for Google Fonts + Font Awesome to fully load (this was the #1 cause of alignment shifts)
+    await document.fonts.ready;
 
-  const printCSS = `
-    <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      html, body {
-        background: #fff !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-      .toolbar { display: none !important; }
-      body > #resumeContent {
-        width: 794px !important;
-        min-height: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-      }
-      .skill-cat {
-        background: #0D47A1 !important;
-        color: #fff !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-      @page {
-        size: A4 portrait;
-        margin: 0;
-      }
-      @media print {
-        html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        body > #resumeContent { width: 100% !important; }
-      }
-    </style>
-  `;
+    const { jsPDF } = window.jspdf;
+    const el = document.getElementById('resumeContent');
 
-  const popup = window.open('', '_blank',
-    'width=900,height=700,scrollbars=yes,resizable=yes');
+    const SCALE = 3;                    // Increased from 2.5 → sharper text & better bullet alignment
+    const A4_W_MM = 210;
+    const A4_H_MM = 297;
 
-  if (!popup) {
-    alert('Popup blocked! Please allow popups for this page, then try again.');
-    return;
+    const canvas = await html2canvas(el, {
+      scale: SCALE,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: el.scrollWidth,
+      windowHeight: el.scrollHeight,
+      logging: false,
+      allowTaint: true,
+      // Force exact pixel rendering of the resume container
+      width: el.offsetWidth,
+      height: el.offsetHeight
+    });
+
+    const imgW = canvas.width;
+    const imgH = canvas.height;
+
+    // Convert rendered pixels back to mm (standard 96dpi)
+    const cssW_mm = (imgW / SCALE) * 0.26458333;
+    const cssH_mm = (imgH / SCALE) * 0.26458333;
+
+    // Scale everything to exact A4 width while preserving aspect ratio
+    const ratio = A4_W_MM / cssW_mm;
+    let finalH_mm = cssH_mm * ratio;
+
+    // If content is slightly taller than A4, we still keep it on one page (most resumes do this)
+    const pageHeight = Math.max(A4_H_MM, finalH_mm);
+
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: [A4_W_MM, pageHeight],
+      compress: true
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    doc.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, finalH_mm, undefined, 'FAST');
+
+    doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
+
+  } catch (err) {
+    console.error('PDF generation error:', err);
+    alert('PDF generation failed. Please use the Print button → “Save as PDF” as fallback.');
   }
 
-  popup.document.open();
-  popup.document.write(`<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chandan Kumar — Lead GenAI Architect</title>
-${linkBlocks}
-${styleBlocks}
-${printCSS}
-</head>
-<body>
-${resumeHTML}
-<script>
-  // Auto-trigger print dialog once fonts + icons are loaded
-  window.addEventListener('load', function() {
-    setTimeout(function() {
-      window.print();
-    }, 800); // small delay lets web fonts render
-  });
-<\/script>
-</body>
-</html>`);
-  popup.document.close();
+  // Restore button
+  btn.innerHTML = originalText;
+  btn.disabled = false;
 }
 </script>
 </body>
