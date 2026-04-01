@@ -8,8 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root {
   --blue-dark: #0D47A1;
@@ -385,64 +383,48 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   </div>
 </div>
 
-<!-- 6. TECHNICAL SKILLS -->
+<!-- 6. TECHNICAL SKILLS — 5 categories, all skills preserved -->
 <div class="section" style="margin-top:4px;">
   <div class="section-title"><i class="fas fa-laptop-code"></i>Technical Skills</div>
   <div class="skills-wrap">
 
+    <!-- CAT 1: GenAI, LLMs & Agentic AI -->
     <div class="skill-row">
-      <span class="skill-cat">AI / GenAI &amp; Deep Learning</span>
+      <span class="skill-cat">GenAI, LLMs &amp; Agentic AI</span>
       <span class="skill-vals">
-        <span class="skill-tag">GPT-4o</span><span class="skill-tag">Claude 3.5/3.7 Sonnet</span><span class="skill-tag">Llama 3.x</span><span class="skill-tag">Mistral</span><span class="skill-tag">Gemini 1.5</span><span class="skill-tag">Phi-3/3.5</span><span class="skill-tag">IBM Granite</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">AutoGen</span><span class="skill-tag">MCP (Model Context Protocol)</span><span class="skill-tag">LangChain</span><span class="skill-tag">LlamaIndex</span><span class="skill-tag">Semantic Kernel</span><span class="skill-tag">Multi-Agent Orchestration</span><span class="skill-tag">RAG Pipelines</span><span class="skill-tag">GraphRAG</span><span class="skill-tag">HyDE</span><span class="skill-tag">Hybrid Retrieval (BM25+Dense)</span><span class="skill-tag">Re-ranking</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">RLHF</span><span class="skill-tag">DPO</span><span class="skill-tag">LoRA</span><span class="skill-tag">QLoRA</span><span class="skill-tag">PEFT</span><span class="skill-tag">GPTQ/AWQ</span><span class="skill-tag">RAGAS</span><span class="skill-tag">LangSmith</span>
+        <span class="skill-tag">GPT-4o</span><span class="skill-tag">Claude 3.5/3.7 Sonnet</span><span class="skill-tag">Llama 3.x</span><span class="skill-tag">Mistral</span><span class="skill-tag">Gemini 1.5</span><span class="skill-tag">Phi-3/3.5</span><span class="skill-tag">IBM Granite</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">AutoGen</span><span class="skill-tag">MCP (Model Context Protocol)</span><span class="skill-tag">LangChain</span><span class="skill-tag">LlamaIndex</span><span class="skill-tag">Semantic Kernel</span><span class="skill-tag">Multi-Agent Orchestration</span><span class="skill-tag">RAG Pipelines</span><span class="skill-tag">GraphRAG</span><span class="skill-tag">HyDE</span><span class="skill-tag">Hybrid Retrieval (BM25+Dense)</span><span class="skill-tag">Re-ranking</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">RLHF</span><span class="skill-tag">DPO</span><span class="skill-tag">LoRA</span><span class="skill-tag">QLoRA</span><span class="skill-tag">PEFT</span><span class="skill-tag">GPTQ/AWQ</span><span class="skill-tag">RAGAS</span><span class="skill-tag">LangSmith</span><span class="skill-tag">ReAct &amp; Chain-of-Thought</span><span class="skill-tag">Tool Use &amp; Function Calling</span><span class="skill-tag">Agent Planning &amp; Decomposition</span><span class="skill-tag">Self-Reflection &amp; Self-Critique</span><span class="skill-tag">Memory Management (Short/Long-term)</span><span class="skill-tag">Tool Orchestration</span><span class="skill-tag">Agentic Evaluation Frameworks</span><span class="skill-tag">Prompt Versioning</span><span class="skill-tag">Context Window Management</span><span class="skill-tag">Token Cost Optimization</span><span class="skill-tag">Red-Teaming &amp; Adversarial Prompting</span>
       </span>
     </div>
 
+    <!-- CAT 2: ML, Deep Learning & MLOps -->
     <div class="skill-row">
-      <span class="skill-cat">Agentic AI &amp; LLMOps</span>
-      <span class="skill-vals">
-        <span class="skill-tag">ReAct &amp; Chain-of-Thought</span><span class="skill-tag">Tool Use &amp; Function Calling</span><span class="skill-tag">Agent Planning &amp; Decomposition</span><span class="skill-tag">Self-Reflection &amp; Self-Critique</span><span class="skill-tag">Memory Management (Short/Long-term)</span><span class="skill-tag">Tool Orchestration</span><span class="skill-tag">Agentic Evaluation Frameworks</span><span class="skill-tag">Prompt Versioning</span><span class="skill-tag">Context Window Management</span><span class="skill-tag">Token Cost Optimization</span><span class="skill-tag">LLM Observability (Arize AI, Langfuse)</span><span class="skill-tag">Guardrails AI</span><span class="skill-tag">NeMo Guardrails</span><span class="skill-tag">Red-Teaming &amp; Adversarial Prompting</span>
-      </span>
-    </div>
-
-    <div class="skill-row">
-      <span class="skill-cat">ML, MLOps &amp; System Design</span>
+      <span class="skill-cat">ML, Deep Learning &amp; MLOps</span>
       <span class="skill-vals">
         <span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Hugging Face Transformers</span><span class="skill-tag">Scikit-learn</span><span class="skill-tag">XGBoost</span><span class="skill-tag">LightGBM</span><span class="skill-tag">CNNs</span><span class="skill-tag">ViT</span><span class="skill-tag">BERT/RoBERTa</span><span class="skill-tag">Diffusion Models</span><span class="skill-tag">Time-Series Forecasting</span><span class="skill-tag">Graph Neural Networks</span><span class="skill-tag">MLflow</span><span class="skill-tag">Kubeflow</span><span class="skill-tag">ZenML</span><span class="skill-tag">Weights &amp; Biases</span><span class="skill-tag">DVC</span><span class="skill-tag">CI/CD for ML</span><span class="skill-tag">Shadow Deployment</span><span class="skill-tag">A/B Testing</span><span class="skill-tag">Drift Detection &amp; Retraining</span><span class="skill-tag">vLLM</span><span class="skill-tag">Triton Inference Server</span><span class="skill-tag">FSDP/DeepSpeed</span><span class="skill-tag">Multi-Region HA Architecture</span><span class="skill-tag">Feature Stores (Feast, Tecton)</span>
       </span>
     </div>
 
+    <!-- CAT 3: Cloud, Data & Vector Infrastructure -->
     <div class="skill-row">
-      <span class="skill-cat">Cloud &amp; Data</span>
+      <span class="skill-cat">Cloud, Data &amp; Vector Infra</span>
       <span class="skill-vals">
         <span class="skill-tag">AWS Bedrock</span><span class="skill-tag">SageMaker</span><span class="skill-tag">Redshift</span><span class="skill-tag">AWS Glue</span><span class="skill-tag">Azure ML Studio</span><span class="skill-tag">Azure OpenAI Service</span><span class="skill-tag">GCP Vertex AI</span><span class="skill-tag">BigQuery</span><span class="skill-tag">IBM Watsonx</span><span class="skill-tag">Snowflake</span><span class="skill-tag">Databricks</span><span class="skill-tag">Delta Lake</span><span class="skill-tag">Apache Iceberg</span><span class="skill-tag">dbt</span><span class="skill-tag">Apache Airflow</span><span class="skill-tag">Prefect</span><span class="skill-tag">Pinecone</span><span class="skill-tag">Weaviate</span><span class="skill-tag">FAISS</span><span class="skill-tag">Qdrant</span><span class="skill-tag">Milvus</span><span class="skill-tag">Neo4j</span><span class="skill-tag">Elasticsearch</span><span class="skill-tag">OpenSearch</span><span class="skill-tag">Redis</span><span class="skill-tag">Kafka</span><span class="skill-tag">Apache Flink</span>
       </span>
     </div>
 
+    <!-- CAT 4: Programming, Engineering & Observability -->
     <div class="skill-row">
-      <span class="skill-cat">Programming &amp; Big Data</span>
+      <span class="skill-cat">Programming, Eng &amp; Observability</span>
       <span class="skill-vals">
-        <span class="skill-tag">Python (Expert)</span><span class="skill-tag">SQL</span><span class="skill-tag">PySpark</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Ray</span><span class="skill-tag">FastAPI</span><span class="skill-tag">Flask</span><span class="skill-tag">REST APIs</span><span class="skill-tag">GraphQL</span><span class="skill-tag">gRPC</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span><span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span><span class="skill-tag">Git</span><span class="skill-tag">Bash/Shell</span><span class="skill-tag">C++ (Proficient)</span>
+        <span class="skill-tag">Python (Expert)</span><span class="skill-tag">SQL</span><span class="skill-tag">PySpark</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Ray</span><span class="skill-tag">FastAPI</span><span class="skill-tag">Flask</span><span class="skill-tag">REST APIs</span><span class="skill-tag">GraphQL</span><span class="skill-tag">gRPC</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span><span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span><span class="skill-tag">Git</span><span class="skill-tag">Bash/Shell</span><span class="skill-tag">C++ (Proficient)</span><span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span><span class="skill-tag">OpenTelemetry</span><span class="skill-tag">Datadog</span><span class="skill-tag">Evidently AI</span><span class="skill-tag">WhyLabs</span><span class="skill-tag">Arize AI</span><span class="skill-tag">Langfuse</span><span class="skill-tag">HelixML</span><span class="skill-tag">LLM Observability</span><span class="skill-tag">Distributed Tracing</span><span class="skill-tag">Log Aggregation (ELK Stack)</span>
       </span>
     </div>
 
+    <!-- CAT 5: AI Governance, Safety & Leadership -->
     <div class="skill-row">
-      <span class="skill-cat">Observability &amp; Monitoring</span>
+      <span class="skill-cat">AI Governance &amp; Leadership</span>
       <span class="skill-vals">
-        <span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span><span class="skill-tag">OpenTelemetry</span><span class="skill-tag">Datadog</span><span class="skill-tag">Evidently AI</span><span class="skill-tag">WhyLabs</span><span class="skill-tag">Arize AI</span><span class="skill-tag">Langfuse</span><span class="skill-tag">HelixML</span><span class="skill-tag">Model Performance Monitoring</span><span class="skill-tag">Distributed Tracing</span><span class="skill-tag">Log Aggregation (ELK Stack)</span>
-      </span>
-    </div>
-
-    <div class="skill-row">
-      <span class="skill-cat">AI Governance &amp; Safety</span>
-      <span class="skill-vals">
-        <span class="skill-tag">Responsible AI</span><span class="skill-tag">AI Ethics &amp; Fairness</span><span class="skill-tag">Bias Detection (AIF360, Fairlearn)</span><span class="skill-tag">Explainability (SHAP, LIME, LIME-Text)</span><span class="skill-tag">LLM Guardrails</span><span class="skill-tag">Data Privacy (GDPR, PII, CCPA)</span><span class="skill-tag">Model Governance</span><span class="skill-tag">EU AI Act Compliance</span><span class="skill-tag">Model Cards &amp; Datasheets</span><span class="skill-tag">AI Risk Assessment</span>
-      </span>
-    </div>
-
-    <div class="skill-row">
-      <span class="skill-cat">Leadership &amp; Strategy</span>
-      <span class="skill-vals">
-        <span class="skill-tag">AI Strategy &amp; Roadmap</span><span class="skill-tag">C-Suite Stakeholder Management</span><span class="skill-tag">Cross-Functional Team Leadership</span><span class="skill-tag">Technical Mentorship</span><span class="skill-tag">Pre-Sales &amp; Solutioning</span><span class="skill-tag">Business Case Development</span><span class="skill-tag">OKRs/KPIs</span><span class="skill-tag">Agile/Scrum</span><span class="skill-tag">Design Thinking</span><span class="skill-tag">Technical Writing</span><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Responsible AI</span><span class="skill-tag">AI Ethics &amp; Fairness</span><span class="skill-tag">Bias Detection (AIF360, Fairlearn)</span><span class="skill-tag">Explainability (SHAP, LIME)</span><span class="skill-tag">LLM Guardrails</span><span class="skill-tag">Guardrails AI</span><span class="skill-tag">NeMo Guardrails</span><span class="skill-tag">Data Privacy (GDPR, PII, CCPA)</span><span class="skill-tag">Model Governance</span><span class="skill-tag">EU AI Act Compliance</span><span class="skill-tag">Model Cards &amp; Datasheets</span><span class="skill-tag">AI Risk Assessment</span><span class="skill-tag">AI Strategy &amp; Roadmap</span><span class="skill-tag">C-Suite Stakeholder Management</span><span class="skill-tag">Cross-Functional Team Leadership</span><span class="skill-tag">Technical Mentorship</span><span class="skill-tag">Pre-Sales &amp; Solutioning</span><span class="skill-tag">Business Case Development</span><span class="skill-tag">OKRs/KPIs</span><span class="skill-tag">Agile/Scrum</span><span class="skill-tag">Design Thinking</span><span class="skill-tag">Technical Writing</span><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span>
       </span>
     </div>
 
@@ -458,37 +440,97 @@ async function downloadPDF() {
   const btn = document.getElementById('pdfBtn');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating…';
   btn.disabled = true;
+
   try {
+    // Dynamically load jsPDF and html2canvas from CDN
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+
     const { jsPDF } = window.jspdf;
     const el = document.getElementById('resumeContent');
-    const A4_W_MM = 210;
-    const A4_H_MM = 297;
-    const SCALE = 2.5;
+
+    // Temporarily hide the top accent bar (pure CSS pseudo-element, no issue)
+    // Capture at 3x resolution for crisp output
+    const SCALE = 3;
+
     const canvas = await html2canvas(el, {
       scale: SCALE,
       useCORS: true,
+      allowTaint: true,
       backgroundColor: '#ffffff',
-      scrollX: 0, scrollY: 0,
+      scrollX: 0,
+      scrollY: -window.scrollY,
       windowWidth: el.scrollWidth,
       windowHeight: el.scrollHeight,
-      logging: false
+      logging: false,
+      onclone: function(clonedDoc) {
+        // Remove the toolbar from the clone so it doesn't appear in PDF
+        const toolbar = clonedDoc.querySelector('.toolbar');
+        if (toolbar) toolbar.remove();
+        // Ensure the cloned page wrapper has no top padding
+        const pw = clonedDoc.querySelector('.page-wrapper');
+        if (pw) pw.style.paddingTop = '0';
+        // Ensure resume has no border/shadow artifacts
+        const resume = clonedDoc.querySelector('.resume');
+        if (resume) {
+          resume.style.border = 'none';
+          resume.style.boxShadow = 'none';
+          resume.style.borderRadius = '0';
+          resume.style.margin = '0';
+        }
+        // Force all skill-cat backgrounds (print-color-adjust doesn't apply in canvas)
+        const skillCats = clonedDoc.querySelectorAll('.skill-cat');
+        skillCats.forEach(cat => {
+          cat.style.background = '#0D47A1';
+          cat.style.webkitPrintColorAdjust = 'exact';
+        });
+        // Force the top blue bar
+        const before = clonedDoc.querySelector('.resume');
+        if (before) before.style.setProperty('--blue-dark', '#0D47A1');
+      }
     });
-    const imgW = canvas.width, imgH = canvas.height;
-    const cssW_mm = (imgW / SCALE) * 0.264583;
-    const cssH_mm = (imgH / SCALE) * 0.264583;
-    const ratio = A4_W_MM / cssW_mm;
-    const finalH = cssH_mm * ratio;
-    const pageH = Math.max(A4_H_MM, finalH);
-    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:[A4_W_MM, pageH], compress:true });
-    const imgData = canvas.toDataURL('image/jpeg', 0.93);
-    doc.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, finalH, undefined, 'FAST');
+
+    // Calculate dimensions
+    const A4_W_MM = 210;
+    const PX_PER_MM = SCALE / 0.264583;
+    const canvasWidthMM = canvas.width / PX_PER_MM;
+    const canvasHeightMM = canvas.height / PX_PER_MM;
+
+    // Scale to A4 width
+    const scaleFactor = A4_W_MM / canvasWidthMM;
+    const finalHeightMM = canvasHeightMM * scaleFactor;
+
+    // Use actual content height (may exceed A4)
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: [A4_W_MM, Math.max(297, finalHeightMM)],
+      compress: true
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    doc.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, finalHeightMM, undefined, 'FAST');
     doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
-  } catch(err) {
+
+  } catch (err) {
     console.error('PDF error:', err);
     alert('PDF generation failed. Please use Print → Save as PDF instead.');
   }
+
   btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download PDF';
   btn.disabled = false;
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    // If already loaded, skip
+    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
 }
 </script>
 </body>
