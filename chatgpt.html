@@ -42,8 +42,8 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 
 /* ── PAGE ── */
 .page-wrapper{padding-top:46px;display:flex;justify-content:center;min-height:100vh;}
-.resume{width:var(--page-w);min-height:297mm;background:#fff;border:1.5px solid var(--gold);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
-.resume::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-dark),var(--blue-soft) 55%,var(--gold));z-index:1;}
+.resume{width:var(--page-w);min-height:297mm;background:#fff;border:1.5px solid var(--border);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
+.resume::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-dark),var(--blue-soft));z-index:1;}
 
 /* ── HEADER ── */
 .resume-header{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 13px 8px;border-bottom:2px solid var(--blue-dark);background:#fff;gap:10px;}
@@ -51,7 +51,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 .hdr-name{font-size:22px;font-weight:900;letter-spacing:.9px;color:var(--ink);font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;line-height:1.05;}
 .hdr-name em{color:var(--blue-dark);font-style:normal;}
 .hdr-accent{display:flex;align-items:center;gap:6px;margin:3px 0 2px;}
-.hdr-bar{width:32px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold-dark));flex-shrink:0;}
+.hdr-bar{display:none;}
 .hdr-title{font-size:8.5px;font-weight:600;color:var(--blue-mid);letter-spacing:.1px;line-height:1.4;}
 .hdr-title strong{color:var(--blue-dark);font-weight:700;}
 .hdr-right{display:flex;flex-direction:column;gap:2.5px;align-items:flex-end;flex-shrink:0;padding-top:2px;}
@@ -63,7 +63,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 /* ── BODY ── */
 .resume-body{padding:5px 11px 8px;}
 .section{margin-bottom:4px;}
-.section-title{display:flex;align-items:center;gap:5px;font-size:8.5px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.9px;padding:2px 0 2px 6px;border-left:3px solid var(--gold);border-bottom:1px solid var(--border);margin-bottom:3px;font-family:'Roboto Condensed',sans-serif;}
+.section-title{display:flex;align-items:center;gap:5px;font-size:8.5px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.9px;padding:2px 0 2px 6px;border-left:3px solid var(--blue-dark);border-bottom:1px solid var(--border);margin-bottom:3px;font-family:'Roboto Condensed',sans-serif;}
 
 /* ── SUMMARY ── */
 .summary-block{border-left:3px solid var(--blue-dark);padding:4px 9px 5px;}
@@ -114,7 +114,6 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 .edu-left{display:flex;align-items:baseline;gap:4px;flex:1;flex-wrap:wrap;}
 .edu-inst{font-size:9.5px;font-weight:700;color:var(--ink);white-space:nowrap;}
 .edu-degree{font-size:8.5px;color:var(--ink-mid);font-weight:400;white-space:nowrap;}
-/* identical to .job-period */
 .edu-year{font-size:7.8px;font-weight:600;color:var(--ink-light);white-space:nowrap;flex-shrink:0;padding-left:16px;letter-spacing:.1px;}
 
 /* ── SKILLS ── */
@@ -175,13 +174,13 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <div class="hdr-bar"></div>
       <div class="hdr-title">
         <strong>Lead GenAI Architect &amp; AI Systems Leader</strong>
-        &nbsp;·&nbsp; IIT (ISM) Dhanbad &nbsp;·&nbsp; IBM ISL (India Software Lab) &amp; Accenture &nbsp;·&nbsp; 8 Years &nbsp;·&nbsp; Fortune 500 Scale
+        &nbsp;·&nbsp; IIT (ISM) Dhanbad &nbsp;·&nbsp; IBM ISL (India Software Lab) &amp; Accenture &nbsp;·&nbsp; 8 Years
       </div>
     </div>
   </div>
   <div class="hdr-right">
     <div class="contact-row"><i class="fas fa-phone"></i><span>+91-9199000200</span></div>
-    <div class="contact-row"><i class="fas fa-envelope"></i><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91f2f9f0fff5f0ffd1f4e9f0fce1fdf4bff2fefc">[email&#160;protected]</a></span></div>
+    <div class="contact-row"><i class="fas fa-envelope"></i><span>chandan[at]email.com</span></div>
     <div class="contact-row"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/chandaniit" target="_blank">linkedin.com/in/chandaniit</a></div>
   </div>
 </header>
@@ -195,11 +194,11 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="summary-lines">
       <div class="summary-line">
         <i class="fas fa-rocket"></i>
-        <span>IIT (ISM) Dhanbad Graduate and <span class="kw">Lead GenAI Architect</span> currently driving cutting-edge R&amp;D and production AI systems at <span class="kw">IBM India Software Lab (ISL)</span> — bringing <span class="kw">~8 years</span> of end-to-end expertise in architecting, scaling, and shipping enterprise-grade AI platforms across Fortune 500 clients in banking, finance, energy, and environmental sectors. Expert in <span class="kw">LLMs, Agentic AI &amp; Multi-Agent Orchestration (LangGraph, CrewAI, AutoGen, MCP), enterprise RAG pipelines, LLM fine-tuning (LoRA, RLHF, DPO)</span>, and full-lifecycle <span class="kw">MLOps</span> — delivering sub-200ms inference on <span class="kw">AWS, Azure, and GCP</span>.</span>
+        <span><span class="kw">IIT (ISM) Dhanbad graduate</span> and <span class="kw">Lead GenAI Architect at IBM India Software Lab (ISL)</span> — bringing <span class="kw">~8 years</span> of end-to-end expertise architecting, scaling, and shipping enterprise-grade AI platforms across Fortune 500 clients in banking, finance, energy, and environmental sectors. Deep expert in <span class="kw">LLMs, Agentic AI &amp; Multi-Agent Orchestration (LangGraph, CrewAI, AutoGen, MCP), enterprise RAG pipelines, LLM fine-tuning (LoRA, RLHF, DPO)</span>, and full-lifecycle <span class="kw">MLOps</span> — delivering p99 sub-200ms inference on <span class="kw">AWS, Azure, and GCP</span>.</span>
       </div>
       <div class="summary-line">
         <i class="fas fa-trophy"></i>
-        <span>Consistent multi-million-dollar impact maker: <span class="kw">$1.5M+ annual productivity gains, $750K revenue protection, $500K regulatory savings, 40% inference cost reduction</span>, and <span class="kw">25% operational efficiency improvement</span> — sustained with zero critical compliance incidents through robust <span class="kw">Responsible AI &amp; Governance frameworks</span>. C-suite-trusted <span class="kw">GenAI strategic advisor</span> bridging deep technical system design with executive vision, roadmap ownership, and cross-functional team leadership.</span>
+        <span>Consistent <span class="kw">$3M+ total business impact</span> maker: <span class="kw">$1.5M+ annual productivity gains, $1M operational savings, $750K revenue protection, $500K regulatory savings, 40% inference cost reduction</span>, and <span class="kw">25% operational efficiency improvement</span> — sustained with <span class="kw">zero critical compliance incidents</span> through robust <span class="kw">Responsible AI &amp; Governance frameworks</span>. C-suite-trusted <span class="kw">GenAI strategic advisor</span> bridging deep technical system design with executive vision, roadmap ownership, and cross-functional team leadership.</span>
       </div>
     </div>
   </div>
@@ -214,19 +213,19 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Databricks Academy</span><span class="cert-sep">·</span><span class="cert-course">Generative AI</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Solution Architect — Kubernetes &amp; IBM Cloud Paks</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Neo4j</span><span class="cert-sep">·</span><span class="cert-course">Neo4j &amp; LLM Fundamentals</span></div>
-    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">·</span><span class="cert-course">LangGraph</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">·</span><span class="cert-course">LangGraph &amp; LangSmith</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Claude with Google Cloud Vertex AI</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Hugging Face</span><span class="cert-sep">·</span><span class="cert-course">AI Agents Fundamentals</span></div>
-    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">·</span><span class="cert-course">LangSmith</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Model Context Protocol: Advanced Topics</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Generative &amp; Agentic AI Foundation</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Duke University</span><span class="cert-sep">·</span><span class="cert-course">DevOps, DataOps, MLOps</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Microsoft</span><span class="cert-sep">·</span><span class="cert-course">Azure Machine Learning</span></div>
-    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Model Context Protocol: Advanced Topics</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Claude with Amazon Bedrock</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">IBM AI Associate Data Scientist</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Trustworthy AI and AI Ethics</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Udemy</span><span class="cert-sep">·</span><span class="cert-course">Product Management Fundamentals</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Microsoft</span><span class="cert-sep">·</span><span class="cert-course">SQL Server</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Trustworthy AI and AI Ethics</span></div>
   </div>
 </div>
 
@@ -245,8 +244,8 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="job-period">Mar 2024 – Present</span>
     </div>
     <ul class="job-bullets">
-      <li><span class="bk">Spearheading R&amp;D and production architecture of Watsonx Orchestrate</span> — IBM's flagship enterprise multi-agent AI platform — using LangGraph, CrewAI, AutoGen, and MCP on Kubernetes across 3 regions, serving <span class="kw">10M+ daily API calls</span> at <span class="kw">&lt;200ms latency</span> and delivering <span class="kw">$1.5M+ in measurable annual productivity gains</span> while automating 25% of enterprise workflows for Fortune 500 clients.</li>
-      <li><span class="bk">Designed production LLM fine-tuning platform (LoRA, RLHF, DPO) with enterprise Responsible AI governance</span> on AWS Bedrock and Azure ML Studio — reducing <span class="kw">inference costs by 40%</span>, achieving <span class="kw">99.9% model uptime</span>, and maintaining <span class="kw">zero critical compliance incidents</span> across automated bias detection, drift monitoring, and full MLOps CI/CD pipelines.</li>
+      <li><span class="bk">Architected and own R&amp;D-to-production engineering of Watsonx Orchestrate</span> — IBM's flagship enterprise multi-agent AI platform — using <span class="kw">LangGraph, CrewAI, AutoGen, and MCP</span> on Kubernetes across 3 global regions; platform serves <span class="kw">10M+ daily API calls</span> at <span class="kw">p99 &lt;200ms latency</span>, automating <span class="kw">25% of enterprise workflows</span> and delivering <span class="kw">$1.5M+ measurable annual productivity gains</span>.</li>
+      <li><span class="bk">Designed and shipped production LLM fine-tuning platform</span> (LoRA, RLHF, DPO) on AWS Bedrock and Azure ML Studio with enterprise Responsible AI governance (GDPR, EU AI Act, SHAP explainability, automated drift monitoring) — slashed <span class="kw">inference costs by 40%</span>, sustained <span class="kw">99.9% model uptime SLA</span>, and maintained <span class="kw">zero critical compliance incidents</span> across all Fortune 500 deployments.</li>
     </ul>
   </div>
 
@@ -261,8 +260,8 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="job-period">Apr 2021 – Feb 2024</span>
     </div>
     <ul class="job-bullets">
-      <li><span class="bk">Led full system design and multi-cloud deployment of PdfGPT</span> — a high-performance RAG document intelligence platform for Mizuho Bank using LangChain, Hugging Face embeddings, and auto-scaling FastAPI microservices on AWS/GCP — processing <span class="kw">50,000+ documents/month</span> at <span class="kw">&lt;500ms latency</span>, accelerating analyst review cycles by <span class="kw">30%</span> and generating <span class="kw">$1M+ annual operational savings</span>.</li>
-      <li><span class="bk">Architected petabyte-scale real-time ML pipelines and low-latency computer vision platform</span> for Facebook and Ulster Bank on Spark, Ray, and SageMaker with multi-region active-active deployment — processing <span class="kw">1B+ images daily</span> at <span class="kw">&lt;50ms inference</span>, boosting ad relevance by <span class="kw">12%</span>, and cutting data processing latency by <span class="kw">60%</span>.</li>
+      <li><span class="bk">Owned full system design and multi-cloud deployment of PdfGPT</span> — an enterprise RAG document intelligence platform for <span class="kw">Mizuho Bank</span> — using LangChain, Hugging Face embeddings, HyDE query rewriting, and hybrid BM25 + dense retrieval on auto-scaling FastAPI microservices on AWS/GCP; processed <span class="kw">50,000+ documents/month</span> at <span class="kw">&lt;500ms latency</span>, accelerated analyst review cycles by <span class="kw">30%</span>, and generated <span class="kw">$1M+ annual operational savings</span>.</li>
+      <li><span class="bk">Architected petabyte-scale real-time ML inference and computer vision platform</span> for <span class="kw">Facebook</span> and <span class="kw">Ulster Bank</span> using CNNs on PyTorch, Spark, Ray, and SageMaker in multi-region active-active topology — processed <span class="kw">1B+ images daily</span> at <span class="kw">&lt;50ms inference</span>, boosted ad relevance by <span class="kw">12%</span>, cut pipeline latency by <span class="kw">60%</span>, and reduced model rollback incidents by <span class="kw">75%</span> via automated shadow deployment.</li>
     </ul>
   </div>
 
@@ -277,8 +276,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="job-period">Feb 2021 – Mar 2021</span>
     </div>
     <ul class="job-bullets">
-      <li><span class="bk">Led cross-functional process optimization initiative</span> using advanced statistical modeling and hypothesis testing — delivering measurable operational efficiency gains and strengthening data-driven decision frameworks across multiple high-value client engagements.</li>
-      <li><span class="bk">Established analytics best practices and reporting standards</span> that accelerated insight generation cycles and improved delivery consistency, laying the foundation for a scalable analytics practice across the engagement portfolio.</li>
+      <li><span class="bk">Led cross-functional analytics process optimization</span> using advanced statistical modeling and hypothesis testing — established analytics best practices and reporting standards that accelerated insight generation cycles and improved delivery consistency across multiple high-value client engagements.</li>
     </ul>
   </div>
 
@@ -293,8 +291,8 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="job-period">Jun 2018 – Jan 2021</span>
     </div>
     <ul class="job-bullets">
-      <li><span class="bk">Designed end-to-end intelligent waste classification platform</span> ingesting physical &amp; chemical properties (pH, boiling point, melting point) into a hybrid CNN + rule-based engine — eliminating 100% of manual workflows, cutting compliance errors by <span class="kw">15%</span>, and delivering <span class="kw">$500K annual regulatory savings</span>.</li>
-      <li><span class="bk">Built ML-powered invoice audit and revenue protection system</span> using operational factors (trucks, workers, hours, waste properties) on Snowflake, BigQuery, and Redshift pipelines — automating <span class="kw">80% of audit workflows</span> and safeguarding <span class="kw">$750K in annual revenue</span> through real-time overbilling detection.</li>
+      <li><span class="bk">Built end-to-end intelligent waste classification platform</span> ingesting physical &amp; chemical properties (pH, boiling point, melting point) into a hybrid <span class="kw">CNN + rule-based engine</span> — eliminated <span class="kw">100% of manual classification workflows</span>, boosted F1 on rare hazardous categories by <span class="kw">28%</span>, and delivered <span class="kw">$500K in annual regulatory savings</span>.</li>
+      <li><span class="bk">Designed ML-powered invoice audit and revenue protection system</span> with multi-model ensemble, drift detection, and automated retraining on Snowflake, BigQuery, and Redshift pipelines — automated <span class="kw">80% of audit workflows</span>, sustained <span class="kw">&gt;94% prediction accuracy</span>, and safeguarded <span class="kw">$750K in annual revenue</span> through real-time overbilling detection.</li>
     </ul>
   </div>
 </div>
@@ -305,13 +303,13 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 
   <div class="project">
     <div class="project-header">
-      <span class="project-name">Watsonx Orchestrate — Multi-Agent AI Orchestration Platform (R&amp;D)</span>
+      <span class="project-name">Watsonx Orchestrate — Multi-Agent AI Orchestration Platform (R&amp;D → Production)</span>
       <span class="project-company">— IBM ISL, India Software Lab</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Pioneered R&amp;D-to-production system design of IBM's flagship multi-agent orchestration platform</span> using LangGraph, CrewAI, AutoGen, and MCP with LoRA fine-tuning and Pinecone vector DB integration — enabling autonomous cross-functional enterprise task execution with <span class="kw">25% workflow efficiency gains</span> across 3 regions serving <span class="kw">10M+ daily API calls</span> at &lt;200ms response time.</li>
-      <li><span class="bk">Implemented enterprise-grade AI governance layer</span> with built-in guardrails, real-time model monitoring, automated compliance checks, and explainability dashboards — achieving <span class="kw">99.9% model uptime</span>, zero critical incidents, and seamless integration with the full IBM Watsonx ecosystem for regulated Fortune 500 clients.</li>
-      <li><span class="bk">Transformed complex agentic architecture research into boardroom-ready strategic narratives</span> — securing C-suite executive sponsorship, accelerating enterprise rollout timelines by <span class="kw">35%</span>, and establishing Watsonx Orchestrate as IBM's flagship GenAI enterprise product globally.</li>
+      <li><span class="bk">Pioneered R&amp;D-to-production system design of IBM's flagship multi-agent orchestration platform</span> using LangGraph, CrewAI, AutoGen, and MCP with LoRA fine-tuning and Pinecone vector DB integration — enabling autonomous cross-functional enterprise task execution with <span class="kw">25% workflow efficiency gains</span> across 3 global regions serving <span class="kw">10M+ daily API calls</span> at <span class="kw">p99 &lt;200ms response time</span>.</li>
+      <li><span class="bk">Implemented enterprise-grade AI governance layer</span> with built-in LLM guardrails, real-time model monitoring, automated compliance checks, and SHAP-based explainability dashboards — achieving <span class="kw">99.9% model uptime SLA</span>, zero critical incidents, and seamless integration with the full IBM Watsonx ecosystem for regulated Fortune 500 clients.</li>
+      <li><span class="bk">Secured C-suite executive sponsorship by translating agentic architecture research into boardroom-ready strategic narratives</span> — accelerated enterprise rollout timelines by <span class="kw">35%</span> and established Watsonx Orchestrate as IBM's flagship GenAI enterprise product globally.</li>
     </ul>
   </div>
 
@@ -321,9 +319,9 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="project-company">— Accenture / Mizuho Bank</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Owned complete end-to-end system design and multi-cloud deployment of production RAG pipeline</span> using LangChain, Hugging Face semantic embeddings, intelligent chunking strategies, and auto-scaling FastAPI microservices on AWS/GCP — supporting <span class="kw">500+ concurrent users</span> with <span class="kw">&lt;500ms query latency</span> and processing <span class="kw">50,000+ documents/month</span>.</li>
-      <li><span class="bk">Delivered 30% acceleration in analyst document review cycles</span> through intelligent summarization, contextual feature extraction, and real-time hybrid retrieval — generating <span class="kw">$1M+ annual cost savings</span> while maintaining 99.9% retrieval accuracy and full regulatory audit compliance for a Tier-1 global bank.</li>
-      <li><span class="bk">Engineered fault-tolerant horizontally scalable architecture with hybrid BM25 + dense vector retrieval</span> — reducing system downtime by 90%, enabling fallback retrieval under peak load, and establishing a reusable RAG reference architecture adopted across 3 additional Accenture GenAI client engagements.</li>
+      <li><span class="bk">Owned complete end-to-end system design and multi-cloud deployment of production RAG pipeline</span> using LangChain, Hugging Face semantic embeddings, HyDE query rewriting, intelligent chunking strategies, and auto-scaling FastAPI microservices on AWS/GCP — supporting <span class="kw">500+ concurrent users</span> at <span class="kw">&lt;500ms query latency</span>, processing <span class="kw">50,000+ documents/month</span> with <span class="kw">99.9% retrieval accuracy</span>.</li>
+      <li><span class="bk">Engineered fault-tolerant horizontally scalable architecture with hybrid BM25 + dense vector retrieval</span> — reduced system downtime by <span class="kw">90%</span>, generated <span class="kw">$1M+ annual cost savings</span>, and established a reusable RAG reference architecture adopted across <span class="kw">3 additional Accenture GenAI client engagements</span>.</li>
+      <li><span class="bk">Accelerated analyst document review cycles by 30%</span> through intelligent summarization, contextual feature extraction, and real-time hybrid retrieval — while maintaining full regulatory audit compliance and zero data privacy violations for a Tier-1 global bank.</li>
     </ul>
   </div>
 
@@ -333,9 +331,9 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="project-company">— Accenture / Facebook</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Architected petabyte-scale distributed computer vision system</span> using CNNs on PyTorch with Spark, Ray, and SageMaker in multi-region active-active topology — delivering <span class="kw">&lt;50ms real-time inference on 1B+ images daily</span> and improving content moderation recall by <span class="kw">15%</span> at global social media scale.</li>
-      <li><span class="bk">Designed end-to-end feature store and real-time ML data pipeline on AWS Glue and Ray</span> for ad targeting — reducing data processing latency by <span class="kw">60%</span>, boosting ad relevance by <span class="kw">12%</span>, and enabling production-grade model serving with sub-second feature freshness for billions of users.</li>
-      <li><span class="bk">Implemented continuous A/B testing and model improvement loop with automated shadow deployment</span> — reducing policy violations by <span class="kw">20%</span>, cutting model rollback incidents by <span class="kw">75%</span>, and accelerating model iteration velocity from monthly to weekly release cadence.</li>
+      <li><span class="bk">Architected petabyte-scale distributed computer vision system</span> using CNNs on PyTorch with Spark, Ray, and SageMaker in multi-region active-active topology — delivering <span class="kw">1B+ image inferences daily at &lt;50ms latency</span>, improving content moderation recall by <span class="kw">15%</span>, and reducing policy violations by <span class="kw">20%</span> at global social media scale.</li>
+      <li><span class="bk">Built end-to-end real-time feature store and ML data pipeline on AWS Glue and Ray</span> — slashed data processing latency by <span class="kw">60%</span>, boosted ad relevance by <span class="kw">12%</span>, and enabled sub-second feature freshness for <span class="kw">billions of users</span> in production.</li>
+      <li><span class="bk">Implemented continuous A/B testing and automated shadow deployment loop</span> — reduced policy violations by <span class="kw">20%</span>, cut model rollback incidents by <span class="kw">75%</span>, and accelerated model iteration velocity from monthly to <span class="kw">weekly release cadence</span>.</li>
     </ul>
   </div>
 
@@ -345,9 +343,9 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="project-company">— Clean Harbors</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Architected full end-to-end intelligent waste management platform</span> connecting customer intake of physical/chemical properties through a hybrid CNN + rule-based engine for regulatory code assignment across the complete lifecycle (intake → transportation → treatment → disposal) — replacing 100% of manual classification workflows.</li>
+      <li><span class="bk">Architected full end-to-end intelligent waste management platform</span> connecting customer intake of physical/chemical properties through a hybrid CNN + rule-based engine for regulatory code assignment across the complete lifecycle (intake → transportation → treatment → disposal) — replacing <span class="kw">100% of manual classification workflows</span>.</li>
       <li><span class="bk">Designed synthetic data augmentation pipeline and MLOps monitoring stack</span> addressing extreme class imbalance in rare hazardous waste categories — boosting model F1 on critical minority classes by <span class="kw">28%</span>, cutting compliance errors by <span class="kw">15%</span>, and delivering <span class="kw">$500K annual regulatory savings</span>.</li>
-      <li><span class="bk">Deployed real-time classification API with explainability layer and regulatory audit trail</span> integrated into field operations systems — enabling on-site instant classification decisions, reducing misclassification incidents by <span class="kw">40%</span> and accelerating operational throughput by <span class="kw">22%</span>.</li>
+      <li><span class="bk">Deployed real-time classification API with explainability layer and regulatory audit trail</span> integrated into field operations systems — reducing misclassification incidents by <span class="kw">40%</span>, accelerating operational throughput by <span class="kw">22%</span>, and enabling on-site instant classification decisions.</li>
     </ul>
   </div>
 
@@ -357,14 +355,14 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <span class="project-company">— Clean Harbors</span>
     </div>
     <ul class="proj-bullets">
-      <li><span class="bk">Built ML-powered cost prediction and anomaly detection engine</span> using operational factors on Snowflake, BigQuery, and Redshift ETL pipelines — automating <span class="kw">80% of manual audit workflows</span> and protecting <span class="kw">$750K in annual revenue</span> through real-time overbilling flagging.</li>
-      <li><span class="bk">Designed multi-model ensemble architecture with drift detection and automated retraining triggers</span> — sustaining prediction accuracy above 94%, reducing false-positive audit flags by <span class="kw">35%</span>, and improving billing dispute resolution speed by <span class="kw">50%</span>.</li>
-      <li><span class="bk">Integrated invoice audit platform directly with the upstream WCC classification system</span> — creating a closed-loop data flow from waste intake through cost validation that enabled proactive discrepancy detection before invoice issuance, improving pricing transparency and financial control across the full waste lifecycle.</li>
+      <li><span class="bk">Built ML-powered cost prediction and anomaly detection engine</span> with multi-model ensemble, drift detection, and automated retraining triggers on Snowflake, BigQuery, and Redshift ETL pipelines — automating <span class="kw">80% of manual audit workflows</span> and protecting <span class="kw">$750K in annual revenue</span> through real-time overbilling flagging.</li>
+      <li><span class="bk">Sustained prediction accuracy above 94%</span> with automated retraining triggers — reduced false-positive audit flags by <span class="kw">35%</span> and improved billing dispute resolution speed by <span class="kw">50%</span>.</li>
+      <li><span class="bk">Integrated invoice audit platform directly with the upstream WCC classification system</span> — creating a closed-loop data flow from waste intake through cost validation, enabling proactive discrepancy detection before invoice issuance and improving pricing transparency across the full waste lifecycle.</li>
     </ul>
   </div>
 </div>
 
-<!-- 5. EDUCATION + (spacer) -->
+<!-- 5. EDUCATION -->
 <div class="bottom-row">
   <div class="section">
     <div class="section-title"><i class="fas fa-graduation-cap"></i>Education</div>
@@ -379,13 +377,12 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <div class="edu-row">
         <div class="edu-left">
           <span class="edu-inst">Super30, Patna</span>
-          <span class="edu-degree">&nbsp;— JEE Advanced Preparation</span>
+          <span class="edu-degree">&nbsp;— JEE Advanced Preparation (Anand Kumar's Super30)</span>
         </div>
         <span class="edu-year">2012 – 2013</span>
       </div>
     </div>
   </div>
-  <div></div>
 </div>
 
 <!-- 6. TECHNICAL SKILLS -->
@@ -396,42 +393,56 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="skill-row">
       <span class="skill-cat">AI / GenAI &amp; Deep Learning</span>
       <span class="skill-vals">
-        <span class="skill-tag">GPT-4o</span><span class="skill-tag">Claude 3.5/3.7</span><span class="skill-tag">Llama 3</span><span class="skill-tag">Mistral</span><span class="skill-tag">Gemini</span><span class="skill-tag">Phi-3</span><span class="skill-tag">IBM Granite</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">AutoGen</span><span class="skill-tag">MCP</span><span class="skill-tag">LangChain</span><span class="skill-tag">LlamaIndex</span><span class="skill-tag">Semantic Kernel</span><span class="skill-tag">Multi-Agent Systems</span><span class="skill-tag">RAG Pipelines</span><span class="skill-tag">GraphRAG</span><span class="skill-tag">HyDE</span><span class="skill-tag">Hybrid Retrieval (BM25+Dense)</span><span class="skill-tag">Re-ranking</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">RLHF</span><span class="skill-tag">DPO</span><span class="skill-tag">LoRA</span><span class="skill-tag">QLoRA</span><span class="skill-tag">PEFT</span><span class="skill-tag">GPTQ/AWQ</span><span class="skill-tag">RAGAS</span><span class="skill-tag">LangSmith</span>
+        <span class="skill-tag">GPT-4o</span><span class="skill-tag">Claude 3.5/3.7 Sonnet</span><span class="skill-tag">Llama 3.x</span><span class="skill-tag">Mistral</span><span class="skill-tag">Gemini 1.5</span><span class="skill-tag">Phi-3/3.5</span><span class="skill-tag">IBM Granite</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">AutoGen</span><span class="skill-tag">MCP (Model Context Protocol)</span><span class="skill-tag">LangChain</span><span class="skill-tag">LlamaIndex</span><span class="skill-tag">Semantic Kernel</span><span class="skill-tag">Multi-Agent Orchestration</span><span class="skill-tag">RAG Pipelines</span><span class="skill-tag">GraphRAG</span><span class="skill-tag">HyDE</span><span class="skill-tag">Hybrid Retrieval (BM25+Dense)</span><span class="skill-tag">Re-ranking</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">RLHF</span><span class="skill-tag">DPO</span><span class="skill-tag">LoRA</span><span class="skill-tag">QLoRA</span><span class="skill-tag">PEFT</span><span class="skill-tag">GPTQ/AWQ</span><span class="skill-tag">RAGAS</span><span class="skill-tag">LangSmith</span>
+      </span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-cat">Agentic AI &amp; LLMOps</span>
+      <span class="skill-vals">
+        <span class="skill-tag">ReAct &amp; Chain-of-Thought</span><span class="skill-tag">Tool Use &amp; Function Calling</span><span class="skill-tag">Agent Planning &amp; Decomposition</span><span class="skill-tag">Self-Reflection &amp; Self-Critique</span><span class="skill-tag">Memory Management (Short/Long-term)</span><span class="skill-tag">Tool Orchestration</span><span class="skill-tag">Agentic Evaluation Frameworks</span><span class="skill-tag">Prompt Versioning</span><span class="skill-tag">Context Window Management</span><span class="skill-tag">Token Cost Optimization</span><span class="skill-tag">LLM Observability (Arize AI, Langfuse)</span><span class="skill-tag">Guardrails AI</span><span class="skill-tag">NeMo Guardrails</span><span class="skill-tag">Red-Teaming &amp; Adversarial Prompting</span>
       </span>
     </div>
 
     <div class="skill-row">
       <span class="skill-cat">ML, MLOps &amp; System Design</span>
       <span class="skill-vals">
-        <span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Hugging Face Transformers</span><span class="skill-tag">Scikit-learn</span><span class="skill-tag">XGBoost</span><span class="skill-tag">LightGBM</span><span class="skill-tag">CNNs</span><span class="skill-tag">ViT</span><span class="skill-tag">BERT/RoBERTa</span><span class="skill-tag">Diffusion Models</span><span class="skill-tag">Time-Series Forecasting</span><span class="skill-tag">Graph Neural Networks</span><span class="skill-tag">MLflow</span><span class="skill-tag">Kubeflow</span><span class="skill-tag">ZenML</span><span class="skill-tag">Weights &amp; Biases</span><span class="skill-tag">DVC</span><span class="skill-tag">CI/CD for ML</span><span class="skill-tag">Shadow Deployment</span><span class="skill-tag">A/B Testing</span><span class="skill-tag">Drift Detection</span><span class="skill-tag">vLLM</span><span class="skill-tag">Triton Inference Server</span><span class="skill-tag">FSDP/DeepSpeed</span><span class="skill-tag">Multi-Region HA Architecture</span>
+        <span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Hugging Face Transformers</span><span class="skill-tag">Scikit-learn</span><span class="skill-tag">XGBoost</span><span class="skill-tag">LightGBM</span><span class="skill-tag">CNNs</span><span class="skill-tag">ViT</span><span class="skill-tag">BERT/RoBERTa</span><span class="skill-tag">Diffusion Models</span><span class="skill-tag">Time-Series Forecasting</span><span class="skill-tag">Graph Neural Networks</span><span class="skill-tag">MLflow</span><span class="skill-tag">Kubeflow</span><span class="skill-tag">ZenML</span><span class="skill-tag">Weights &amp; Biases</span><span class="skill-tag">DVC</span><span class="skill-tag">CI/CD for ML</span><span class="skill-tag">Shadow Deployment</span><span class="skill-tag">A/B Testing</span><span class="skill-tag">Drift Detection &amp; Retraining</span><span class="skill-tag">vLLM</span><span class="skill-tag">Triton Inference Server</span><span class="skill-tag">FSDP/DeepSpeed</span><span class="skill-tag">Multi-Region HA Architecture</span><span class="skill-tag">Feature Stores (Feast, Tecton)</span>
       </span>
     </div>
 
     <div class="skill-row">
       <span class="skill-cat">Cloud &amp; Data</span>
       <span class="skill-vals">
-        <span class="skill-tag">AWS Bedrock</span><span class="skill-tag">SageMaker</span><span class="skill-tag">Redshift</span><span class="skill-tag">AWS Glue</span><span class="skill-tag">Azure ML Studio</span><span class="skill-tag">Azure OpenAI</span><span class="skill-tag">GCP Vertex AI</span><span class="skill-tag">BigQuery</span><span class="skill-tag">IBM Watsonx</span><span class="skill-tag">Snowflake</span><span class="skill-tag">Databricks</span><span class="skill-tag">Pinecone</span><span class="skill-tag">Weaviate</span><span class="skill-tag">FAISS</span><span class="skill-tag">Qdrant</span><span class="skill-tag">Milvus</span><span class="skill-tag">Neo4j</span><span class="skill-tag">Elasticsearch</span><span class="skill-tag">Redis</span><span class="skill-tag">Kafka</span>
+        <span class="skill-tag">AWS Bedrock</span><span class="skill-tag">SageMaker</span><span class="skill-tag">Redshift</span><span class="skill-tag">AWS Glue</span><span class="skill-tag">Azure ML Studio</span><span class="skill-tag">Azure OpenAI Service</span><span class="skill-tag">GCP Vertex AI</span><span class="skill-tag">BigQuery</span><span class="skill-tag">IBM Watsonx</span><span class="skill-tag">Snowflake</span><span class="skill-tag">Databricks</span><span class="skill-tag">Delta Lake</span><span class="skill-tag">Apache Iceberg</span><span class="skill-tag">dbt</span><span class="skill-tag">Apache Airflow</span><span class="skill-tag">Prefect</span><span class="skill-tag">Pinecone</span><span class="skill-tag">Weaviate</span><span class="skill-tag">FAISS</span><span class="skill-tag">Qdrant</span><span class="skill-tag">Milvus</span><span class="skill-tag">Neo4j</span><span class="skill-tag">Elasticsearch</span><span class="skill-tag">OpenSearch</span><span class="skill-tag">Redis</span><span class="skill-tag">Kafka</span><span class="skill-tag">Apache Flink</span>
       </span>
     </div>
 
     <div class="skill-row">
       <span class="skill-cat">Programming &amp; Big Data</span>
       <span class="skill-vals">
-        <span class="skill-tag">Python (Expert)</span><span class="skill-tag">SQL</span><span class="skill-tag">PySpark</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Ray</span><span class="skill-tag">FastAPI</span><span class="skill-tag">Flask</span><span class="skill-tag">REST APIs</span><span class="skill-tag">GraphQL</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span><span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span><span class="skill-tag">Git</span><span class="skill-tag">Bash/Shell</span>
+        <span class="skill-tag">Python (Expert)</span><span class="skill-tag">SQL</span><span class="skill-tag">PySpark</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Ray</span><span class="skill-tag">FastAPI</span><span class="skill-tag">Flask</span><span class="skill-tag">REST APIs</span><span class="skill-tag">GraphQL</span><span class="skill-tag">gRPC</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span><span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span><span class="skill-tag">Git</span><span class="skill-tag">Bash/Shell</span><span class="skill-tag">C++ (Proficient)</span>
+      </span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-cat">Observability &amp; Monitoring</span>
+      <span class="skill-vals">
+        <span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span><span class="skill-tag">OpenTelemetry</span><span class="skill-tag">Datadog</span><span class="skill-tag">Evidently AI</span><span class="skill-tag">WhyLabs</span><span class="skill-tag">Arize AI</span><span class="skill-tag">Langfuse</span><span class="skill-tag">HelixML</span><span class="skill-tag">Model Performance Monitoring</span><span class="skill-tag">Distributed Tracing</span><span class="skill-tag">Log Aggregation (ELK Stack)</span>
       </span>
     </div>
 
     <div class="skill-row">
       <span class="skill-cat">AI Governance &amp; Safety</span>
       <span class="skill-vals">
-        <span class="skill-tag">Responsible AI</span><span class="skill-tag">AI Ethics &amp; Fairness</span><span class="skill-tag">Bias Detection (AIF360, Fairlearn)</span><span class="skill-tag">Explainability (SHAP, LIME)</span><span class="skill-tag">LLM Guardrails</span><span class="skill-tag">Data Privacy (GDPR, PII)</span><span class="skill-tag">Model Governance</span><span class="skill-tag">EU AI Act Compliance</span>
+        <span class="skill-tag">Responsible AI</span><span class="skill-tag">AI Ethics &amp; Fairness</span><span class="skill-tag">Bias Detection (AIF360, Fairlearn)</span><span class="skill-tag">Explainability (SHAP, LIME, LIME-Text)</span><span class="skill-tag">LLM Guardrails</span><span class="skill-tag">Data Privacy (GDPR, PII, CCPA)</span><span class="skill-tag">Model Governance</span><span class="skill-tag">EU AI Act Compliance</span><span class="skill-tag">Model Cards &amp; Datasheets</span><span class="skill-tag">AI Risk Assessment</span>
       </span>
     </div>
 
     <div class="skill-row">
       <span class="skill-cat">Leadership &amp; Strategy</span>
       <span class="skill-vals">
-        <span class="skill-tag">AI Strategy &amp; Roadmap</span><span class="skill-tag">C-Suite Stakeholder Management</span><span class="skill-tag">Cross-Functional Team Leadership</span><span class="skill-tag">Technical Mentorship</span><span class="skill-tag">Pre-Sales &amp; Solutioning</span><span class="skill-tag">Business Case Development</span><span class="skill-tag">OKRs/KPIs</span><span class="skill-tag">Agile/Scrum</span><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span>
+        <span class="skill-tag">AI Strategy &amp; Roadmap</span><span class="skill-tag">C-Suite Stakeholder Management</span><span class="skill-tag">Cross-Functional Team Leadership</span><span class="skill-tag">Technical Mentorship</span><span class="skill-tag">Pre-Sales &amp; Solutioning</span><span class="skill-tag">Business Case Development</span><span class="skill-tag">OKRs/KPIs</span><span class="skill-tag">Agile/Scrum</span><span class="skill-tag">Design Thinking</span><span class="skill-tag">Technical Writing</span><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span>
       </span>
     </div>
 
@@ -442,58 +453,43 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 </div><!-- /resume -->
 </div><!-- /page-wrapper -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 async function downloadPDF() {
   const btn = document.getElementById('pdfBtn');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating…';
   btn.disabled = true;
-
   try {
     const { jsPDF } = window.jspdf;
     const el = document.getElementById('resumeContent');
-
-    // A4 dimensions in px at 96dpi → mm conversion: 210mm × 297mm
     const A4_W_MM = 210;
     const A4_H_MM = 297;
-
-    // Render at 2× for sharpness
     const SCALE = 2.5;
     const canvas = await html2canvas(el, {
       scale: SCALE,
       useCORS: true,
       backgroundColor: '#ffffff',
-      scrollX: 0,
-      scrollY: 0,
+      scrollX: 0, scrollY: 0,
       windowWidth: el.scrollWidth,
       windowHeight: el.scrollHeight,
       logging: false
     });
-
-    const imgW = canvas.width;
-    const imgH = canvas.height;
-
-    // Compute mm dimensions of rendered content
-    // 1px (CSS) = 0.264583 mm; canvas pixels are at SCALE×
+    const imgW = canvas.width, imgH = canvas.height;
     const cssW_mm = (imgW / SCALE) * 0.264583;
     const cssH_mm = (imgH / SCALE) * 0.264583;
-
-    // Scale so width fits A4 (with 0 margin — margins handled by @page print)
     const ratio = A4_W_MM / cssW_mm;
-    const finalH = cssH_mm * ratio; // may exceed 297mm if content is very long
-
-    // Always force single page: fit entire content height into A4
-    const pageH = Math.max(A4_H_MM, finalH); // use larger so nothing clips
-
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: [A4_W_MM, pageH], // dynamic page height = all content
-      compress: true
-    });
-
+    const finalH = cssH_mm * ratio;
+    const pageH = Math.max(A4_H_MM, finalH);
+    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:[A4_W_MM, pageH], compress:true });
     const imgData = canvas.toDataURL('image/jpeg', 0.93);
     doc.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, finalH, undefined, 'FAST');
-
     doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
-  } catch (err) {
+  } catch(err) {
     console.error('PDF error:', err);
+    alert('PDF generation failed. Please use Print → Save as PDF instead.');
+  }
+  btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download PDF';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
