@@ -157,7 +157,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   <span class="toolbar-brand"><i class="fas fa-id-badge"></i>Chandan Kumar — Lead GenAI Architect &amp; AI Systems Leader</span>
   <div class="toolbar-actions">
     <button class="btn-tool btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
-    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Save as PDF</button>
   </div>
 </div>
 
@@ -436,129 +436,95 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 </div><!-- /page-wrapper -->
 
 <script>
-/* ─────────────────────────────────────────────────────────────
-   PDF Download
-   Strategy: the resume is always 794px wide (fixed px, no mm).
-   We clone it into an off-screen div at exactly 794px so the
-   layout is 100% identical to what the browser renders.
-   html2canvas captures that clone; jsPDF embeds the image.
-   Result: PDF is always pixel-for-pixel identical to the HTML.
-───────────────────────────────────────────────────────────── */
-const RESUME_PX = 794;   // must match --page-w in CSS
+/*
+  PDF Download — uses the browser's own print engine.
+  Opens a minimal popup containing ONLY the resume HTML+CSS
+  (no toolbar, no page wrapper, no shadows), then calls print().
+  Browser "Save as PDF" = pixel-perfect match to what you see.
+  No html2canvas, no jsPDF, no re-rendering artifacts.
+*/
+function downloadPDF() {
+  // Grab all <style> and <link rel="stylesheet"> tags from this page
+  const styleBlocks = Array.from(document.querySelectorAll('style'))
+    .map(s => `<style>${s.innerHTML}</style>`)
+    .join('\n');
+  const linkBlocks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+    .map(l => `<link rel="stylesheet" href="${l.href}"/>`)
+    .join('\n');
 
-async function downloadPDF() {
-  const btn = document.getElementById('pdfBtn');
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating…';
-  btn.disabled = true;
+  // Grab the resume inner HTML
+  const resumeHTML = document.getElementById('resumeContent').outerHTML;
 
-  try {
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  const printCSS = `
+    <style>
+      /* Reset popup chrome */
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        background: #fff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      /* Hide toolbar (just in case) */
+      .toolbar { display: none !important; }
+      /* Remove page-wrapper centering — resume fills the page directly */
+      body > #resumeContent {
+        width: 794px !important;
+        min-height: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+      }
+      /* Force skill-cat pill color — print engines sometimes strip backgrounds */
+      .skill-cat {
+        background: #0D47A1 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      @media print {
+        html, body { width: 210mm; }
+        body > #resumeContent { width: 100% !important; }
+      }
+    </style>
+  `;
 
-    const { jsPDF } = window.jspdf;
-    const source    = document.getElementById('resumeContent');
+  const popup = window.open('', '_blank',
+    'width=900,height=700,scrollbars=yes,resizable=yes');
 
-    // ── 1. Off-screen wrapper (exact resume width, no scrollbars) ──
-    const wrap = document.createElement('div');
-    Object.assign(wrap.style, {
-      position:   'absolute',
-      top:        '0',
-      left:       '-9999px',
-      width:      RESUME_PX + 'px',
-      overflow:   'visible',
-      background: 'transparent',
-      zIndex:     '0',
-    });
-    document.body.appendChild(wrap);
-
-    // ── 2. Deep-clone the resume card only ─────────────────────
-    const clone = source.cloneNode(true);
-    Object.assign(clone.style, {
-      width:        RESUME_PX + 'px',
-      minHeight:    '0',
-      border:       'none',
-      boxShadow:    'none',
-      borderRadius: '0',
-      margin:       '0',
-      position:     'relative',
-    });
-
-    // Fix skill-cat pills (html2canvas ignores print-color-adjust)
-    clone.querySelectorAll('.skill-cat').forEach(el => {
-      el.style.cssText += ';background:#0D47A1!important;color:#fff!important;';
-    });
-
-    // Replace the CSS ::before top bar with a real element
-    const topBar = document.createElement('div');
-    Object.assign(topBar.style, {
-      position: 'absolute', top: '0', left: '0', right: '0',
-      height: '3px',
-      background: 'linear-gradient(90deg,#0D47A1,#1976D2)',
-      zIndex: '2',
-    });
-    clone.insertBefore(topBar, clone.firstChild);
-
-    wrap.appendChild(clone);
-
-    // ── 3. Let the browser finish layout (2 animation frames) ──
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-
-    // ── 4. Capture at 3× for sharp output ──────────────────────
-    const SCALE  = 3;
-    const canvas = await html2canvas(clone, {
-      scale:           SCALE,
-      useCORS:         true,
-      allowTaint:      true,
-      backgroundColor: '#ffffff',
-      width:           RESUME_PX,
-      height:          clone.scrollHeight,
-      windowWidth:     RESUME_PX,
-      windowHeight:    clone.scrollHeight,
-      x:               0,
-      y:               0,
-      scrollX:         0,
-      scrollY:         0,
-      logging:         false,
-    });
-
-    document.body.removeChild(wrap);
-
-    // ── 5. Build PDF ────────────────────────────────────────────
-    // A4 width = 210mm. canvas.width = RESUME_PX × SCALE.
-    // => mm per canvas-pixel = 210 / (RESUME_PX × SCALE)
-    const A4_W   = 210;
-    const mmPerPx = A4_W / canvas.width;
-    const pdfH   = canvas.height * mmPerPx;
-
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit:        'mm',
-      format:      [A4_W, Math.max(297, pdfH)],
-      compress:    true,
-    });
-
-    doc.addImage(
-      canvas.toDataURL('image/jpeg', 0.96),
-      'JPEG', 0, 0, A4_W, pdfH, undefined, 'FAST'
-    );
-    doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
-
-  } catch (err) {
-    console.error('PDF error:', err);
-    alert('PDF generation failed. Please use Print → Save as PDF instead.');
+  if (!popup) {
+    alert('Popup blocked! Please allow popups for this page, then try again.');
+    return;
   }
 
-  btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download PDF';
-  btn.disabled = false;
-}
-
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
-    const s = document.createElement('script');
-    s.src = src; s.onload = resolve; s.onerror = reject;
-    document.head.appendChild(s);
+  popup.document.open();
+  popup.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chandan Kumar — Lead GenAI Architect</title>
+${linkBlocks}
+${styleBlocks}
+${printCSS}
+</head>
+<body>
+${resumeHTML}
+<script>
+  // Auto-trigger print dialog once fonts + icons are loaded
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      window.print();
+    }, 800); // small delay lets web fonts render
   });
+<\/script>
+</body>
+</html>`);
+  popup.document.close();
 }
 </script>
 </body>
