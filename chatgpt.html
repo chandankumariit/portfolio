@@ -419,71 +419,27 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 
 <script>
 async function downloadPDF() {
-  const btn = document.getElementById('pdfBtn');
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating…';
-  btn.disabled = true;
-
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+  const element = document.getElementById('resumeContent');
+  const button = document.getElementById('pdfBtn');
+  const originalText = button.innerHTML;
   try {
-    // Wait for Google Fonts + Font Awesome to fully load (this was the #1 cause of alignment shifts)
-    await document.fonts.ready;
-
-    const { jsPDF } = window.jspdf;
-    const el = document.getElementById('resumeContent');
-
-    const SCALE = 3;                    // Increased from 2.5 → sharper text & better bullet alignment
-    const A4_W_MM = 210;
-    const A4_H_MM = 297;
-
-    const canvas = await html2canvas(el, {
-      scale: SCALE,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: el.scrollWidth,
-      windowHeight: el.scrollHeight,
-      logging: false,
-      allowTaint: true,
-      // Force exact pixel rendering of the resume container
-      width: el.offsetWidth,
-      height: el.offsetHeight
-    });
-
-    const imgW = canvas.width;
-    const imgH = canvas.height;
-
-    // Convert rendered pixels back to mm (standard 96dpi)
-    const cssW_mm = (imgW / SCALE) * 0.26458333;
-    const cssH_mm = (imgH / SCALE) * 0.26458333;
-
-    // Scale everything to exact A4 width while preserving aspect ratio
-    const ratio = A4_W_MM / cssW_mm;
-    let finalH_mm = cssH_mm * ratio;
-
-    // If content is slightly taller than A4, we still keep it on one page (most resumes do this)
-    const pageHeight = Math.max(A4_H_MM, finalH_mm);
-
-    const doc = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: [A4_W_MM, pageHeight],
-      compress: true
-    });
-
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
-    doc.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, finalH_mm, undefined, 'FAST');
-
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+    button.disabled = true;
+    const canvas = await html2canvas(element, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', windowHeight: element.scrollHeight, logging: false });
+    const imgData = canvas.toDataURL('image/jpeg', 0.85);
+    const imgWidth = 210;
+    const pageHeight = 297;
+    doc.addImage(imgData, 'JPEG', 0, 0, imgWidth, pageHeight, undefined, 'FAST');
     doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
-
-  } catch (err) {
-    console.error('PDF generation error:', err);
-    alert('PDF generation failed. Please use the Print button → “Save as PDF” as fallback.');
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    alert('Failed to generate PDF. Please try again.');
+  } finally {
+    button.innerHTML = originalText;
+    button.disabled = false;
   }
-
-  // Restore button
-  btn.innerHTML = originalText;
-  btn.disabled = false;
 }
 </script>
 </body>
