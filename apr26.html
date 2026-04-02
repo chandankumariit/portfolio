@@ -72,7 +72,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   border-bottom:1px solid var(--border);
 }
 /* ── SUMMARY ── */
-.summary-block{padding:4px 9px 5px;}
+.summary-block{padding:4px 20px 5px;}   /* aligned with bullet sections */
 .summary-lines{display:flex;flex-direction:column;gap:2px;}
 .summary-line{display:flex;align-items:flex-start;gap:6px;font-size:9px;line-height:1.44;color:var(--ink);}
 .summary-line i{color:var(--blue-soft);font-size:8.5px;margin-top:2px;flex-shrink:0;width:10px;text-align:center;}
@@ -83,6 +83,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:0 8px;
+  padding-left:20px;          /* perfectly aligned with all bullets */
 }
 .cert-item{
   display:flex;
@@ -100,7 +101,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 .cert-sep{color:var(--ink-light);margin:0 2px;font-size:7.5px;}
 .cert-course{color:var(--ink-mid);overflow:hidden;text-overflow:ellipsis;}
 /* ── EXPERIENCE ── */
-.job{padding:2px 0 3px 8px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
+.job{padding:2px 0 3px 20px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;} /* updated to 20px */
 .job:hover{border-left-color:var(--blue-soft);}
 .job:last-child{border-bottom:none;}
 .job-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1px;flex-wrap:wrap;gap:2px;}
@@ -114,7 +115,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 .job-bullets li{font-size:9px;line-height:1.44;color:var(--ink);text-align:left;margin-bottom:1px;padding-left:12px;position:relative;}
 .job-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5.5px;font-weight:400;line-height:2.1;}
 /* ── PROJECTS ── */
-.project{padding:2px 0 3px 8px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
+.project{padding:2px 0 3px 20px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;} /* updated to 20px */
 .project:hover{border-left-color:var(--blue-soft);}
 .project:last-child{border-bottom:none;}
 .project-header{display:flex;align-items:baseline;gap:4px;margin-bottom:1.5px;flex-wrap:wrap;}
@@ -124,15 +125,15 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 .proj-bullets li{font-size:9px;line-height:1.44;color:var(--ink);text-align:left;margin-bottom:1px;padding-left:12px;position:relative;}
 .proj-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5.5px;font-weight:400;line-height:2.1;}
 /* ── EDUCATION ── */
-.edu-list{display:flex;flex-direction:column;gap:0;}
-.edu-row{display:flex;align-items:center;justify-content:space-between;width:100%;padding:2.5px 8px;border-bottom:.5px solid var(--border);}
+.edu-list{display:flex;flex-direction:column;gap:0;padding-left:20px;} /* aligned */
+.edu-row{display:flex;align-items:center;justify-content:space-between;width:100%;padding:2.5px 0;border-bottom:.5px solid var(--border);}
 .edu-row:last-child{border-bottom:none;}
 .edu-left{display:flex;align-items:baseline;gap:4px;flex:1;flex-wrap:wrap;}
 .edu-inst{font-size:9.5px;font-weight:700;color:var(--ink);white-space:nowrap;}
 .edu-degree{font-size:8.5px;color:var(--ink-mid);font-weight:400;white-space:nowrap;}
 .edu-year{font-size:7.8px;font-weight:600;color:var(--ink-light);white-space:nowrap;flex-shrink:0;padding-left:16px;letter-spacing:.1px;}
 /* ── SKILLS ── */
-.skills-wrap{display:flex;flex-direction:column;gap:0;}
+.skills-wrap{display:flex;flex-direction:column;gap:0;padding-left:20px;} /* aligned */
 .skill-row{display:flex;align-items:flex-start;gap:6px;font-size:8.5px;line-height:1.5;color:var(--ink);padding:2px 0;border-bottom:.5px solid var(--border);}
 .skill-row:last-child{border-bottom:none;}
 .skill-cat{font-weight:700;color:#fff;background:linear-gradient(90deg,var(--blue-dark),var(--blue-mid));white-space:nowrap;flex-shrink:0;font-family:'Roboto Condensed',sans-serif;font-size:7.5px;letter-spacing:.25px;padding:2px 6px;border-radius:10px;min-width:108px;text-align:center;margin-top:1px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
@@ -159,7 +160,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   .resume{width:100%;border-radius:0;border-left:none;border-right:none;margin:0 0 20px;}
   .resume-header{flex-direction:column;gap:5px;}
   .hdr-right{align-items:flex-start;}
-  .cert-grid{grid-template-columns:repeat(2,1fr);}
+  .cert-grid{grid-template-columns:repeat(2,1fr); padding-left:12px;}
   .bottom-row{grid-template-columns:1fr;}
 }
 </style>
@@ -175,7 +176,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
 </div>
 <div class="page-wrapper">
 <div class="resume" id="resumeContent">
-<!-- HEADER (REDUCED) -->
+<!-- HEADER -->
 <header class="resume-header">
   <div class="hdr-left">
     <div class="hdr-name">CHANDAN <em>KUMAR</em></div>
@@ -192,13 +193,13 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   </div>
 </header>
 <div class="resume-body">
-<!-- 1. PROFESSIONAL SUMMARY (ONE POWERFUL PARAGRAPH) -->
+<!-- 1. PROFESSIONAL SUMMARY -->
 <div class="section">
   <div class="section-title"><i class="fa-regular fa-address-card"></i>Professional Summary</div>
   <div class="summary-block">
     <div class="summary-lines">
       <div class="summary-line">
-        <span><span class="kw">IIT graduate and Lead Data Scientist at IBM Lab</span> with <span class="kw">8+ years</span> architecting and scaling enterprise GenAI systems that deliver transformative business outcomes at Fortune 500 level. Currently own the complete R&amp;D-to-production lifecycle of <span class="kw">IBM Watsonx Orchestrate</span> — IBM’s flagship multi-agent AI platform — serving <span class="kw">10M+ daily API calls at p99 &lt;200ms latency</span> with <span class="kw">99.9% uptime</span> across global regions and unlocking <span class="kw">$1.5M+ annual productivity gains</span>. Recognized expert in Agentic AI orchestration, enterprise RAG, LLM fine-tuning, and hybrid-cloud MLOps, I have driven <span class="kw">$4M+ cumulative enterprise impact</span> while ensuring full regulatory compliance and C-suite confidence.</span>
+        <span><span class="kw">IIT graduate and Lead Data Scientist at IBM Lab R&amp;D</span> with <span class="kw">8+ years</span> of end-to-end ownership across the full AI/ML lifecycle — from <span class="kw">0→1 platform R&amp;D through global production</span>. Currently <span class="kw">sole architect</span> of <span class="kw">IBM Watsonx Orchestrate</span>, IBM's flagship multi-agent AI platform built on <span class="kw">LangGraph, CrewAI, AutoGen &amp; MCP</span>, serving <span class="kw">10M+ daily API calls</span> at <span class="kw">p99 &lt;200ms latency</span> across <span class="kw">3 global regions</span> with <span class="kw">99.9% uptime</span> and <span class="kw">$1.5M+ annual productivity gains</span>. Deep expertise in <span class="kw">Generative AI, Large Language Models (LLMs), RAG pipelines, LLM fine-tuning (LoRA/QLoRA/RLHF), MLOps, and distributed ML systems</span> — with proven delivery for <span class="kw">Fortune 100 clients (Meta/Facebook, Mizuho Bank)</span> driving <span class="kw">$4M+ cumulative enterprise impact</span>. Full <span class="kw">GDPR/EU AI Act compliance</span> across all regulated production deployments with <span class="kw">zero critical incidents</span>.</span>
       </div>
     </div>
   </div>
@@ -212,8 +213,8 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Stanford University</span><span class="cert-sep">·</span><span class="cert-course">Machine Learning</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Databricks Academy</span><span class="cert-sep">·</span><span class="cert-course">Generative AI</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Solution Architect — Kubernetes &amp; IBM Cloud Paks</span></div>
-    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Neo4j</span><span class="cert-sep">·</span><span class="cert-course">Neo4j &amp; LLM Fundamentals</span></div>
-    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">·</span><span class="cert-course">LangGraph &amp; LangSmith</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">·</span><span class="cert-course">LangSmith</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">·</span><span class="cert-course">LangGraph</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Claude with Google Cloud Vertex AI</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Hugging Face</span><span class="cert-sep">·</span><span class="cert-course">AI Agents Fundamentals</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Model Context Protocol: Advanced Topics</span></div>
@@ -225,13 +226,13 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Trustworthy AI and AI Ethics</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Udemy</span><span class="cert-sep">·</span><span class="cert-course">Product Management Fundamentals</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Microsoft</span><span class="cert-sep">·</span><span class="cert-course">SQL Server</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Neo4j</span><span class="cert-sep">·</span><span class="cert-course">Neo4j &amp; LLM Fundamentals</span></div>
   </div>
 </div>
 
-<!-- 3. PROFESSIONAL EXPERIENCE (REORDERED: IBM → Accenture → Capgemini → Clean Harbors | ONLY 2 POWERFUL BULLETS EACH) -->
+<!-- 3. PROFESSIONAL EXPERIENCE -->
 <div class="section">
   <div class="section-title"><i class="fas fa-briefcase"></i>Professional Experience</div>
-  
   <!-- IBM -->
   <div class="job">
     <div class="job-header">
@@ -248,7 +249,6 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <li><span class="bk">Architected enterprise-grade LLM fine-tuning and Responsible AI governance platform</span> using LoRA, QLoRA, RLHF &amp; DPO on IBM Watsonx.ai with SHAP explainability and full GDPR/EU AI Act compliance — delivered 40% inference cost reduction, sustained 99.9% uptime SLA, and achieved zero critical compliance incidents across all production systems.</li>
     </ul>
   </div>
-
   <!-- Accenture -->
   <div class="job">
     <div class="job-header">
@@ -265,7 +265,6 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
       <li><span class="bk">Architected petabyte-scale real-time computer vision inference platform for Facebook</span> using CNNs on PyTorch with AWS SageMaker, Glue &amp; Ray in multi-region active-active topology — processed 1B+ images daily at &lt;50ms latency, boosted ad relevance by 12%, improved moderation recall by 15%, and slashed pipeline latency by 60%.</li>
     </ul>
   </div>
-
   <!-- Capgemini -->
   <div class="job">
     <div class="job-header">
@@ -279,10 +278,8 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
     </div>
     <ul class="job-bullets">
       <li><span class="bk">Orchestrated cross-functional analytics process optimization</span> using advanced statistical modeling and hypothesis testing — established scalable delivery best practices that accelerated insight generation and improved operational consistency across high-value client engagements.</li>
-      <li><span class="bk">Drove data &amp; analytics process excellence</span> by implementing structured frameworks and quality gates that enhanced project velocity and ensured consistent, high-impact outcomes in fast-paced consulting environments.</li>
     </ul>
   </div>
-
   <!-- Clean Harbors -->
   <div class="job">
     <div class="job-header">
@@ -301,7 +298,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   </div>
 </div>
 
-<!-- 4. KEY PROJECTS (KEPT AS HIGH-VALUE HIGHLIGHTS) -->
+<!-- 4. KEY PROJECTS -->
 <div class="section">
   <div class="section-title"><i class="fas fa-code-branch"></i>Key Projects &amp; System Design Highlights</div>
   <div class="project">
@@ -379,7 +376,7 @@ body{font-family:'Roboto',sans-serif;font-size:9.5px;line-height:1.42;color:var(
   </div>
 </div>
 
-<!-- 6. TECHNICAL SKILLS (REMOVED Infra &amp; DevOps + Leadership &amp; Strategy categories) -->
+<!-- 6. TECHNICAL SKILLS -->
 <div class="section" style="margin-top:4px;">
   <div class="section-title"><i class="fas fa-laptop-code"></i>Technical Skills</div>
   <div class="skills-wrap">
