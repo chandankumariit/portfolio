@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kashvi Goel — Economics, Data Analytics &amp; Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --blue-dark: #0D47A1;
+  --blue-mid: #1565C0;
+  --blue-soft: #1976D2;
+  --gold: #FFCA28;
+  --gold-dark: #F59E0B;
+  --ink: #1A1A2E;
+  --ink-mid: #374151;
+  --ink-light: #6B7280;
+  --border: #DDE3EC;
+  --page-w: 210mm;
+  --r: 4px;
+  --font: 'Roboto', sans-serif;
+  --font-base: 9px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+body{font-family:var(--font);font-size:var(--font-base);line-height:1.44;color:var(--ink);background:#f0f4f8;}
+.toolbar{position:fixed;top:0;left:0;right:0;z-index:200;background:linear-gradient(90deg,#0A3880,var(--blue-dark) 40%,var(--blue-soft));padding:6px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 14px rgba(0,0,0,0.28);}
+.toolbar-brand{color:rgba(255,255,255,.92);font-size:11px;font-weight:500;letter-spacing:.3px;display:flex;align-items:center;gap:6px;font-family:var(--font);}
+.toolbar-brand i{color:var(--gold);font-size:13px;}
+.toolbar-actions{display:flex;gap:7px;}
+.btn-tool{display:flex;align-items:center;gap:5px;padding:4px 12px;border:none;border-radius:var(--r);cursor:pointer;font-family:var(--font);font-size:10px;font-weight:600;letter-spacing:.2px;transition:all .18s;}
+.btn-print{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.30);}
+.btn-print:hover{background:rgba(255,255,255,.25);}
+.btn-pdf{background:var(--gold);color:var(--blue-dark);}
+.btn-pdf:hover{background:var(--gold-dark);color:#fff;}
+.btn-pdf:disabled{opacity:.7;cursor:not-allowed;}
+.page-wrapper{padding-top:46px;display:flex;justify-content:center;min-height:100vh;}
+.resume{width:var(--page-w);min-height:297mm;background:#fff;border:1.5px solid var(--border);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
+.resume-header{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 13px 8px;border-bottom:2px solid var(--border);background:#fff;gap:10px;}
+.hdr-left{flex:1;}
+.hdr-name{font-size:22px;font-weight:900;letter-spacing:.9px;color:var(--ink);font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;line-height:1.05;}
+.hdr-name em{color:var(--blue-dark);font-style:normal;}
+.hdr-accent{display:flex;align-items:center;gap:6px;margin:3px 0 2px;}
+.hdr-title{font-size:8.5px;font-weight:600;color:var(--blue-mid);letter-spacing:.1px;line-height:1.4;font-family:var(--font);}
+.hdr-title strong{color:var(--blue-dark);font-weight:700;}
+.hdr-right{display:flex;flex-direction:column;gap:2.5px;align-items:flex-end;flex-shrink:0;padding-top:2px;}
+.contact-row{display:flex;align-items:center;gap:4px;font-size:8.3px;color:var(--ink-mid);font-weight:400;white-space:nowrap;font-family:var(--font);}
+.contact-row i{color:var(--blue-soft);font-size:7.5px;width:10px;text-align:center;}
+.contact-row a{color:var(--ink-mid);text-decoration:none;}
+.contact-row a:hover{color:var(--blue-dark);text-decoration:underline;}
+.resume-body{padding:5px 11px 8px;}
+.section{margin-bottom:4px;}
+.section-title{display:flex;align-items:center;gap:5px;font-size:8.5px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.9px;padding:2px 0 4px 0;font-family:var(--font);border-bottom:1px solid var(--border);margin-bottom:3px;}
+.summary-text{padding-left:20px;font-size:9px;line-height:1.62;color:var(--ink-mid);font-family:var(--font);}
+.summary-text strong{color:var(--ink);font-weight:700;}
+.job{padding:3px 0 3px 20px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
+.job:hover{border-left-color:var(--blue-soft);}
+.job:last-child{border-bottom:none;}
+.job-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;flex-wrap:wrap;gap:2px;}
+.job-left{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap;}
+.job-company{font-size:10px;font-weight:700;color:var(--blue-dark);font-family:var(--font);letter-spacing:.1px;}
+.job-dot{color:var(--ink-light);font-size:7px;margin:0 2px;}
+.job-role{font-size:9px;font-weight:600;color:var(--ink);font-family:var(--font);}
+.job-location{font-size:8px;color:var(--ink-light);font-style:italic;font-family:var(--font);}
+.job-period{font-size:8px;font-weight:400;color:var(--ink-light);flex-shrink:0;white-space:nowrap;font-family:var(--font);}
+.job-bullets{list-style:none;padding-left:0;margin:0;}
+.job-bullets li{font-size:9px;line-height:1.5;color:var(--ink-mid);text-align:left;margin-bottom:1.5px;padding-left:12px;position:relative;font-family:var(--font);}
+.job-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5px;font-weight:400;line-height:2.2;}
+.project{padding:3px 0 3px 20px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
+.project:hover{border-left-color:var(--blue-soft);}
+.project:last-child{border-bottom:none;}
+.project-header{display:flex;align-items:baseline;gap:4px;margin-bottom:2px;flex-wrap:wrap;}
+.project-name{font-size:9px;font-weight:700;color:var(--ink);font-family:var(--font);}
+.project-company{font-size:8.5px;font-style:italic;color:var(--blue-soft);font-weight:400;font-family:var(--font);}
+.proj-bullets{list-style:none;padding-left:0;margin:0;}
+.proj-bullets li{font-size:9px;line-height:1.5;color:var(--ink-mid);text-align:left;margin-bottom:1.5px;padding-left:12px;position:relative;font-family:var(--font);}
+.proj-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5px;font-weight:400;line-height:2.2;}
+.skills-wrap{display:flex;flex-direction:column;gap:0;padding-left:20px;}
+.skill-row{display:flex;align-items:flex-start;gap:8px;font-size:9px;line-height:1.5;color:var(--ink);padding:2.5px 0;border-bottom:.5px solid var(--border);}
+.skill-row:last-child{border-bottom:none;}
+.skill-cat{font-weight:700;color:var(--ink);background:none;white-space:normal;flex-shrink:0;font-family:var(--font);font-size:7.5px;letter-spacing:.3px;padding:0;border-radius:0;width:90px;min-width:90px;max-width:90px;text-align:left;margin-top:1px;text-transform:uppercase;line-height:1.4;}
+.skill-vals{color:var(--ink-mid);flex:1;font-family:var(--font);font-size:9px;}
+.skill-tag{display:inline;font-size:9px;font-weight:400;color:var(--ink-mid);font-family:var(--font);}
+.skill-tag::after{content:", ";}
+.skill-tag:last-child::after{content:"";}
+.skill-tag.hot{font-weight:700;color:var(--ink);font-family:var(--font);}
+/* CERTIFICATIONS — inline pipe style */
+.cert-inline{padding-left:20px;font-size:9px;line-height:1.9;color:var(--ink-mid);font-family:var(--font);}
+.cert-inline .cert-name{color:var(--ink);font-weight:500;}
+.cert-inline .cert-pipe{color:var(--blue-soft);margin:0 5px;font-weight:300;}
+@media print{
+  .toolbar{display:none!important;}
+  .page-wrapper{padding-top:0;display:block;background:#fff;}
+  body{background:#fff;}
+  .resume{width:100%;min-height:auto;border:none;border-radius:0;box-shadow:none;margin:0;}
+  .section{page-break-inside:avoid;}
+  .job,.project{page-break-inside:avoid;}
+  a{color:inherit!important;text-decoration:none;}
+  @page{size:A4;margin:5mm 7mm;}
+}
+@media(max-width:820px){
+  .page-wrapper{padding-top:50px;}
+  .resume{width:100%;border-radius:0;border-left:none;border-right:none;margin:0 0 20px;}
+  .resume-header{flex-direction:column;gap:5px;}
+  .hdr-right{align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="toolbar-brand"><i class="fas fa-id-badge"></i>Kashvi Goel — Economics, Data Analytics &amp; Research</span>
+  <div class="toolbar-actions">
+    <button class="btn-tool btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+  </div>
+</div>
+
+<div class="page-wrapper">
+<div class="resume" id="resumeContent">
+
+<header class="resume-header">
+  <div class="hdr-left">
+    <div class="hdr-name">KASHVI <em>GOEL</em></div>
+    <div class="hdr-accent">
+      <div class="hdr-title">
+        <strong>B.Sc. Economics, Mathematics &amp; Statistics</strong> · CHRIST University, Bangalore · GPA 3.89/4.00
+      </div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="contact-row"><i class="fas fa-phone"></i><span>+91-9899163272</span></div>
+    <div class="contact-row"><i class="fas fa-envelope"></i><a href="mailto:kashvigoel3005@gmail.com">kashvigoel3005@gmail.com</a></div>
+    <div class="contact-row"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/kashvi-goel30" target="_blank">linkedin.com/in/kashvi-goel30</a></div>
+  </div>
+</header>
+
+<div class="resume-body">
+
+<div class="section">
+  <div class="section-title"><i class="fas fa-user-circle"></i>Professional Summary</div>
+  <p class="summary-text">
+    Economics, Mathematics &amp; Statistics undergraduate at CHRIST University (<strong>GPA 3.89/4.00</strong>) with policy research experience at <strong>NITI Aayog's Economic Intelligence Unit</strong> and industry exposure in data analytics and marketing. Skilled in <strong>Python, R, SQL</strong>, and statistical modelling, with a strong record in team leadership, client management, and evidence-based research. Google-certified in data analytics, digital marketing, and project management.
+  </p>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="fas fa-graduation-cap"></i>Education</div>
+  <div style="padding-left:20px;">
+    <table style="width:100%;border-collapse:collapse;font-family:var(--font);">
+      <thead>
+        <tr>
+          <th style="font-size:8px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.5px;padding:3px 6px;border-bottom:1.5px solid var(--border);text-align:left;background:#f7f9fc;">Examination</th>
+          <th style="font-size:8px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.5px;padding:3px 6px;border-bottom:1.5px solid var(--border);text-align:left;background:#f7f9fc;">Institution</th>
+          <th style="font-size:8px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.5px;padding:3px 6px;border-bottom:1.5px solid var(--border);text-align:left;background:#f7f9fc;">Course</th>
+          <th style="font-size:8px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.5px;padding:3px 6px;border-bottom:1.5px solid var(--border);text-align:left;background:#f7f9fc;">Year</th>
+          <th style="font-size:8px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.5px;padding:3px 6px;border-bottom:1.5px solid var(--border);text-align:left;background:#f7f9fc;">GPA / %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink);font-weight:700;vertical-align:middle;line-height:1.4;">Graduation (First Year)</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink-mid);vertical-align:middle;line-height:1.4;">CHRIST University, Bangalore</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink-mid);vertical-align:middle;line-height:1.4;">B.Sc. Economics, Mathematics &amp; Statistics</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink-mid);vertical-align:middle;line-height:1.4;">July 2023 – Present</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);font-weight:700;color:var(--blue-dark);vertical-align:middle;line-height:1.4;">3.89 / 4.00</td>
+        </tr>
+        <tr>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink);font-weight:700;vertical-align:middle;line-height:1.4;">Senior Secondary</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink-mid);vertical-align:middle;line-height:1.4;">Amity International School, New Delhi</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink-mid);vertical-align:middle;line-height:1.4;">Science: Physics, Chemistry, Mathematics, Economics</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);color:var(--ink-mid);vertical-align:middle;line-height:1.4;">Mar 2022 – Mar 2023</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:.5px solid var(--border);font-weight:700;color:var(--blue-dark);vertical-align:middle;line-height:1.4;">96.60%</td>
+        </tr>
+        <tr>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:none;color:var(--ink);font-weight:700;vertical-align:middle;line-height:1.4;">Secondary</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:none;color:var(--ink-mid);vertical-align:middle;line-height:1.4;">Amity International School, New Delhi</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:none;color:var(--ink-mid);vertical-align:middle;line-height:1.4;">CBSE Board</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:none;color:var(--ink-mid);vertical-align:middle;line-height:1.4;">Mar 2020 – Mar 2021</td>
+          <td style="font-size:8.5px;padding:3.5px 6px;border-bottom:none;font-weight:700;color:var(--blue-dark);vertical-align:middle;line-height:1.4;">96.67%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="fas fa-briefcase"></i>Experience</div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">NITI Aayog</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">Economic Intelligence Unit Intern</span>
+        <span class="job-location">· New Delhi</span>
+      </div>
+      <span class="job-period">May 2025 – June 2025</span>
+    </div>
+    <ul class="job-bullets">
+      <li>Conducted data-driven research on FDI, CAPEX-REVEX, and GDP trends to support evidence-based economic policy recommendations and fiscal analysis.</li>
+      <li>Compiled and validated datasets from IMF, World Bank, and UN Comtrade, creating visual insights for internal policy briefs and newsletters.</li>
+      <li>Authored and presented a payroll data report on EPFO, ESIC, and PFRDA, highlighting employment trends and structural policy gaps.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">MNI AppWaala</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">Marketing and Data Analyst Intern</span>
+        <span class="job-location">· New Delhi</span>
+      </div>
+      <span class="job-period">April 2025 – May 2025</span>
+    </div>
+    <ul class="job-bullets">
+      <li>Conducted app market analysis and tracked user downloads, retention, and engagement metrics to enhance overall app performance and visibility.</li>
+      <li>Utilized keyword research and SEO techniques to craft optimized app descriptions, improving app discoverability and organic traffic growth.</li>
+      <li>Analyzed customer behavior and feedback data to recommend data-driven marketing improvements and boost user retention rates.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">CAPS, CHRIST University</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">Media and PR Team Lead</span>
+        <span class="job-location">· Yeshwanthpur, Bangalore</span>
+      </div>
+      <span class="job-period">June 2024 – Present</span>
+    </div>
+    <ul class="job-bullets">
+      <li>Directed social media strategy for the biggest varsity quiz organized by CAPS in partnership with Qshaala and Zerodha.</li>
+      <li>Collaborated with the Placement Cell to create portfolios on Google Sites, facilitating interviews for selected candidates with business firms.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">CHRIST Consulting, CHRIST University</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">Graphic Design Chief</span>
+        <span class="job-location">· Yeshwanthpur, Bangalore</span>
+      </div>
+      <span class="job-period">Sep 2023 – Dec 2024</span>
+    </div>
+    <ul class="job-bullets">
+      <li>Managed various client projects of companies like BirthBond, Brown Brews, TDH, etc.</li>
+      <li>Directed a team of 20+ interns specialising in Graphic Designing and Video Editing.</li>
+      <li>Spearheaded social media marketing efforts on platforms such as LinkedIn, Instagram, and YouTube.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">Entrepreneurship Cell, CHRIST University</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">Research Volunteer</span>
+        <span class="job-location">· Yeshwanthpur, Bangalore</span>
+      </div>
+      <span class="job-period">Aug 2024 – Present</span>
+    </div>
+    <ul class="job-bullets">
+      <li>Researched various business strategies to identify key growth opportunities.</li>
+      <li>Conducted in-depth SWOT analysis of multiple companies to evaluate strengths, weaknesses, opportunities, and threats.</li>
+      <li>Collaborated with team members to refine research methodologies and ensure comprehensive analysis.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">COGNOSCERE, CHRIST University</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">Junior Secretary</span>
+        <span class="job-location">· Yeshwanthpur, Bangalore</span>
+      </div>
+      <span class="job-period">Aug 2023 – July 2024</span>
+    </div>
+    <ul class="job-bullets">
+      <li>Oversaw logistics, scheduling, and communication to ensure successful event delivery.</li>
+      <li>Organised the first intercollegiate fest of COGNOSCERE in the university.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><i class="fas fa-code-branch"></i>Projects</div>
+
+  <div class="project">
+    <div class="project-header">
+      <span class="project-name">Accenture North America — Data Analytics and Visualization Simulation</span>
+      <span class="project-company">— Accenture / Virtual</span>
+    </div>
+    <ul class="proj-bullets">
+      <li>Completed a simulation focused on advising a hypothetical social media client as a Data Analyst at Accenture.</li>
+      <li>Cleaned, modelled and analysed 7 datasets to uncover insights into content trends to inform strategic decisions.</li>
+      <li>Prepared a PowerPoint deck and video presentation to communicate key insights for the client and internal stakeholders.</li>
+    </ul>
+  </div>
+
+  <div class="project">
+    <div class="project-header">
+      <span class="project-name">Swasthyabandhu — Smart Medicine Box</span>
+      <span class="project-company">— Hardware &amp; Healthcare Innovation</span>
+    </div>
+    <ul class="proj-bullets">
+      <li>Designed a user-friendly interface to ensure ease of use for patients with varying levels of technical proficiency.</li>
+      <li>Utilised a combination of visual (LED) and auditory (buzzer) signals to alert patients about their medication schedule.</li>
+      <li>Recognised as one of the top 100 ATL projects in 2023 for innovative design and impact in healthcare technology.</li>
+      <li>Represented school at the IIIT Raipur Marathon for Young Thinkers, showcasing innovative solutions to real-world problems.</li>
+    </ul>
+  </div>
+
+  <div class="project">
+    <div class="project-header">
+      <span class="project-name">Ecoenzyme — Eco-friendly Chemical-free Cleaner</span>
+      <span class="project-company">— Environmental Science Innovation</span>
+    </div>
+    <ul class="proj-bullets">
+      <li>Developed an eco-friendly, chemical-free cleaner by repurposing garbage waste.</li>
+      <li>Represented school at the Indian International Science Festival (IISF) in Lucknow, showcasing innovative projects and contributing to scientific discussions.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 4. CERTIFICATIONS — inline pipe format -->
+<div class="section">
+  <div class="section-title"><i class="fas fa-certificate"></i>Certifications</div>
+  <div class="cert-inline">
+    <span class="cert-name">Bachelors in Kathak</span><span class="cert-pipe">|</span><span class="cert-name">A2 Course in German</span><span class="cert-pipe">|</span><span class="cert-name">UX Kickstarter Workshop</span><span class="cert-pipe">|</span><span class="cert-name">Stock Market and Finance</span><span class="cert-pipe">|</span><span class="cert-name">Foundations: Data, Data, Everywhere</span><span class="cert-pipe">|</span><span class="cert-name">Public Speaking</span><span class="cert-pipe">|</span><span class="cert-name">Foundations of Project Management</span><span class="cert-pipe">|</span><span class="cert-name">Foundations of Digital Marketing &amp; E-commerce</span><span class="cert-pipe">|</span><span class="cert-name">Digital Marketing &amp; E-commerce</span>
+  </div>
+</div>
+
+<div class="section" style="margin-top:4px;">
+  <div class="section-title"><i class="fas fa-laptop-code"></i>Technical Skills</div>
+  <div class="skills-wrap">
+    <div class="skill-row">
+      <span class="skill-cat">Technical</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">Python</span><span class="skill-tag hot">R Programming</span><span class="skill-tag hot">SQL</span><span class="skill-tag">LaTeX</span><span class="skill-tag">MATLAB</span>
+      </span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cat">Data &amp; Analytics</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">Data Analysis</span><span class="skill-tag hot">Data Visualization</span><span class="skill-tag hot">Statistical Modelling</span><span class="skill-tag">Economic Research</span><span class="skill-tag">SEO &amp; Keyword Research</span><span class="skill-tag">App Market Analytics</span>
+      </span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cat">Languages</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">English</span><span class="skill-tag hot">Hindi</span><span class="skill-tag">German (A2)</span>
+      </span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cat">Soft Skills</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">Team Management</span><span class="skill-tag hot">Leadership</span><span class="skill-tag hot">Communication</span><span class="skill-tag">Organisational Skills</span><span class="skill-tag">Public Speaking</span><span class="skill-tag">Research &amp; SWOT Analysis</span><span class="skill-tag">Graphic Design</span><span class="skill-tag">Social Media Marketing</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+  const element = document.getElementById('resumeContent');
+  const button = document.getElementById('pdfBtn');
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+  button.disabled = true;
+  try {
+    const canvas = await html2canvas(element, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', windowHeight: element.scrollHeight, logging: false });
+    const imgData = canvas.toDataURL('image/jpeg', 0.85);
+    const imgWidth = 210;
+    const pageHeight = 297;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      doc.addPage();
+      doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+      heightLeft -= pageHeight;
+    }
+    doc.save('Kashvi_Goel_Resume.pdf');
+  } catch(e) { console.error(e); }
+  button.innerHTML = '<i class="fas fa-file-pdf"></i> Download PDF';
+  button.disabled = false;
+}
+</script>
+</body>
+</html>
