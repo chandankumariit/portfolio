@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vishal Kumar — Data Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --blue-dark: #0D47A1;
+  --blue-mid: #1565C0;
+  --blue-soft: #1976D2;
+  --gold: #FFCA28;
+  --gold-dark: #F59E0B;
+  --ink: #1A1A2E;
+  --ink-mid: #374151;
+  --ink-light: #6B7280;
+  --border: #DDE3EC;
+  --page-w: 210mm;
+  --r: 4px;
+  --font: 'Roboto', sans-serif;
+  --font-base: 9px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+body{font-family:var(--font);font-size:var(--font-base);line-height:1.44;color:var(--ink);background:#f0f4f8;}
+/* ── TOOLBAR ── */
+.toolbar{position:fixed;top:0;left:0;right:0;z-index:200;background:linear-gradient(90deg,#0A3880,var(--blue-dark) 40%,var(--blue-soft));padding:6px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 14px rgba(0,0,0,0.28);}
+.toolbar-brand{color:rgba(255,255,255,.92);font-size:11px;font-weight:500;letter-spacing:.3px;display:flex;align-items:center;gap:6px;font-family:var(--font);}
+.toolbar-brand i{color:var(--gold);font-size:13px;}
+.toolbar-actions{display:flex;gap:7px;}
+.btn-tool{display:flex;align-items:center;gap:5px;padding:4px 12px;border:none;border-radius:var(--r);cursor:pointer;font-family:var(--font);font-size:10px;font-weight:600;letter-spacing:.2px;transition:all .18s;}
+.btn-print{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.30);}
+.btn-print:hover{background:rgba(255,255,255,.25);}
+.btn-pdf{background:var(--gold);color:var(--blue-dark);}
+.btn-pdf:hover{background:var(--gold-dark);color:#fff;}
+.btn-pdf:disabled{opacity:.7;cursor:not-allowed;}
+/* ── PAGE ── */
+.page-wrapper{padding-top:46px;display:flex;justify-content:center;min-height:100vh;}
+.resume{width:var(--page-w);min-height:297mm;background:#fff;border:1.5px solid var(--border);border-radius:6px;box-shadow:0 10px 40px rgba(13,71,161,.12),0 2px 8px rgba(0,0,0,.05);overflow:hidden;margin:12px 0 32px;position:relative;}
+/* ── HEADER ── */
+.resume-header{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 13px 8px;border-bottom:2px solid var(--border);background:#fff;gap:10px;}
+.hdr-left{flex:1;}
+.hdr-name{font-size:22px;font-weight:900;letter-spacing:.9px;color:var(--ink);font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;line-height:1.05;}
+.hdr-name em{color:var(--blue-dark);font-style:normal;}
+.hdr-accent{display:flex;align-items:center;gap:6px;margin:3px 0 2px;}
+.hdr-title{font-size:8.5px;font-weight:600;color:var(--blue-mid);letter-spacing:.1px;line-height:1.4;font-family:var(--font);}
+.hdr-title strong{color:var(--blue-dark);font-weight:700;}
+.hdr-right{display:flex;flex-direction:column;gap:2.5px;align-items:flex-end;flex-shrink:0;padding-top:2px;}
+.contact-row{display:flex;align-items:center;gap:4px;font-size:8.3px;color:var(--ink-mid);font-weight:400;white-space:nowrap;font-family:var(--font);}
+.contact-row i{color:var(--blue-soft);font-size:7.5px;width:10px;text-align:center;}
+.contact-row a{color:var(--ink-mid);text-decoration:none;}
+.contact-row a:hover{color:var(--blue-dark);text-decoration:underline;}
+/* ── BODY ── */
+.resume-body{padding:5px 11px 8px;}
+.section{margin-bottom:4px;}
+.section-title{
+  display:flex;align-items:center;gap:5px;font-size:8.5px;font-weight:700;color:var(--blue-dark);
+  text-transform:uppercase;letter-spacing:.9px;padding:2px 0 4px 0;font-family:var(--font);
+  border-bottom:1px solid var(--border);margin-bottom:3px;
+}
+/* ── SUMMARY ── */
+.summary-block{padding:3px 20px 4px;}
+.summary-line{font-size:9px;line-height:1.5;color:var(--ink);font-family:var(--font);}
+.kw{color:var(--ink);font-weight:700;}
+/* ── CERT GRID ── */
+.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 8px;padding-left:20px;}
+.cert-item{display:flex;align-items:center;gap:4px;font-size:8.3px;line-height:1.45;padding:2px 0;white-space:nowrap;overflow:hidden;border-bottom:.5px solid var(--border);font-family:var(--font);}
+.cert-bullet{color:var(--ink-light);font-size:5px;flex-shrink:0;line-height:2;}
+.cert-inst{font-weight:700;color:var(--ink);}
+.cert-sep{color:var(--ink-light);margin:0 2px;font-size:7.5px;}
+.cert-course{color:var(--ink-mid);font-weight:400;overflow:hidden;text-overflow:ellipsis;}
+/* ── EXPERIENCE / ACHIEVEMENTS ── */
+.job{padding:3px 0 3px 20px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
+.job:hover{border-left-color:var(--blue-soft);}
+.job:last-child{border-bottom:none;}
+.job-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;flex-wrap:wrap;gap:2px;}
+.job-left{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap;}
+.job-company{font-size:10px;font-weight:700;color:var(--blue-dark);font-family:var(--font);letter-spacing:.1px;}
+.job-dot{color:var(--ink-light);font-size:7px;margin:0 2px;}
+.job-role{font-size:9px;font-weight:600;color:var(--ink);font-family:var(--font);}
+.job-location{font-size:8px;color:var(--ink-light);font-style:italic;font-family:var(--font);}
+.job-period{font-size:8px;font-weight:400;color:var(--ink-light);flex-shrink:0;white-space:nowrap;font-family:var(--font);}
+.job-bullets{list-style:none;padding-left:0;margin:0;}
+.job-bullets li{font-size:9px;line-height:1.5;color:var(--ink-mid);text-align:left;margin-bottom:1.5px;padding-left:12px;position:relative;font-family:var(--font);}
+.job-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5px;font-weight:400;line-height:2.2;}
+/* ── PROJECTS ── */
+.project{padding:3px 0 3px 20px;margin-bottom:1.5px;border-bottom:.5px solid var(--border);border-left:2px solid transparent;transition:border-color .15s;}
+.project:hover{border-left-color:var(--blue-soft);}
+.project:last-child{border-bottom:none;}
+.project-header{display:flex;align-items:baseline;gap:4px;margin-bottom:2px;flex-wrap:wrap;}
+.project-name{font-size:9px;font-weight:700;color:var(--ink);font-family:var(--font);}
+.project-company{font-size:8.5px;font-style:italic;color:var(--blue-soft);font-weight:400;font-family:var(--font);}
+.proj-bullets{list-style:none;padding-left:0;margin:0;}
+.proj-bullets li{font-size:9px;line-height:1.5;color:var(--ink-mid);text-align:left;margin-bottom:1.5px;padding-left:12px;position:relative;font-family:var(--font);}
+.proj-bullets li::before{content:"●";position:absolute;left:0;color:var(--blue-dark);font-size:5px;font-weight:400;line-height:2.2;}
+/* ── EDUCATION ── */
+.edu-list{display:flex;flex-direction:column;gap:0;padding-left:20px;}
+.edu-row{display:flex;align-items:center;justify-content:space-between;width:100%;padding:3px 0;border-bottom:.5px solid var(--border);}
+.edu-row:last-child{border-bottom:none;}
+.edu-left{display:flex;align-items:baseline;gap:4px;flex:1;flex-wrap:wrap;}
+.edu-inst{font-size:9px;font-weight:700;color:var(--ink);font-family:var(--font);}
+.edu-degree{font-size:9px;color:var(--ink-mid);font-weight:400;font-family:var(--font);}
+.edu-sub{font-size:8px;color:var(--ink-light);font-style:italic;font-family:var(--font);}
+.edu-year{font-size:8px;font-weight:400;color:var(--ink-light);white-space:nowrap;flex-shrink:0;padding-left:16px;font-family:var(--font);}
+/* ── SKILLS ── */
+.skills-wrap{display:flex;flex-direction:column;gap:0;padding-left:20px;}
+.skill-row{display:flex;align-items:flex-start;gap:8px;font-size:9px;line-height:1.5;color:var(--ink);padding:2.5px 0;border-bottom:.5px solid var(--border);}
+.skill-row:last-child{border-bottom:none;}
+.skill-cat{font-weight:700;color:var(--ink);background:none;white-space:normal;flex-shrink:0;font-family:var(--font);font-size:7.5px;letter-spacing:.3px;padding:0;border-radius:0;width:90px;min-width:90px;max-width:90px;text-align:left;margin-top:1px;text-transform:uppercase;line-height:1.4;}
+.skill-vals{color:var(--ink-mid);flex:1;font-family:var(--font);font-size:9px;}
+.skill-tag{display:inline;font-size:9px;font-weight:400;color:var(--ink-mid);font-family:var(--font);}
+.skill-tag::after{content:", ";}
+.skill-tag:last-child::after{content:"";}
+.skill-tag.hot{font-weight:700;color:var(--ink);font-family:var(--font);}
+/* ── PRINT ── */
+@media print{
+  .toolbar{display:none!important;}
+  .page-wrapper{padding-top:0;display:block;background:#fff;}
+  body{background:#fff;}
+  .resume{width:100%;min-height:auto;border:none;border-radius:0;box-shadow:none;margin:0;}
+  .section{page-break-inside:avoid;}
+  .job,.project{page-break-inside:avoid;}
+  a{color:inherit!important;text-decoration:none;}
+  @page{size:A4;margin:5mm 7mm;}
+}
+@media(max-width:820px){
+  .page-wrapper{padding-top:50px;}
+  .resume{width:100%;border-radius:0;border-left:none;border-right:none;margin:0 0 20px;}
+  .resume-header{flex-direction:column;gap:5px;}
+  .hdr-right{align-items:flex-start;}
+  .cert-grid{grid-template-columns:repeat(2,1fr);padding-left:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <span class="toolbar-brand"><i class="fas fa-id-badge"></i>Vishal Kumar — Data Scientist</span>
+  <div class="toolbar-actions">
+    <button class="btn-tool btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+  </div>
+</div>
+
+<div class="page-wrapper">
+<div class="resume" id="resumeContent">
+
+<!-- HEADER -->
+<header class="resume-header">
+  <div class="hdr-left">
+    <div class="hdr-name">VISHAL <em>KUMAR</em></div>
+    <div class="hdr-accent">
+      <div class="hdr-title">
+        <strong>Data Scientist</strong> · IIIT Nagpur · B.Tech CSE 2023–2027
+      </div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="contact-row"><i class="fas fa-phone"></i><span>+91-8374085156</span></div>
+    <div class="contact-row"><i class="fas fa-envelope"></i><a href="/cdn-cgi/l/email-protection#66100d5454520900000f050f070a26010b070f0a4805090b"><span class="__cf_email__" data-cfemail="88fee3bababce7eeeee1ebe1e9e4c8efe5e9e1e4a6ebe7e5">[email&#160;protected]</span></a></div>
+    <div class="contact-row"><i class="fab fa-github"></i><a href="https://github.com/Vk2245" target="_blank">github.com/Vk2245</a></div>
+    <div class="contact-row"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/vishal-kumar-7a74462a0/" target="_blank">linkedin.com/in/vishal-kumar-7a74462a0</a></div>
+  </div>
+</header>
+
+<div class="resume-body">
+
+<!-- 0. PROFESSIONAL SUMMARY -->
+<div class="section">
+  <div class="section-title"><i class="fa-regular fa-address-card"></i>Professional Summary</div>
+  <div class="summary-block">
+    <div class="summary-line">
+      <span>
+        <span class="kw">Final-year B.Tech CSE student at IIIT Nagpur</span> with a strong track record in <span class="kw">Data Science, Machine Learning, and Agentic AI</span> — delivering production-grade systems under competitive and real-world conditions.
+        Ranked <span class="kw">#120 of 4,917 globally (Top 2.4%)</span> at the Wunder Fund LOB Predictorum AI Competition, outperforming PhD researchers and institutional quant teams as one of the only undergraduates in the Top 150.
+        <span class="kw">1st Runner-Up at ArtPark CodeForge Hackathon, IISc Bangalore</span> — shipped a full-stack AI onboarding engine in 48 hours processing 4,761 real-world documents.
+        Hands-on expertise across the full ML stack: <span class="kw">deep learning (PyTorch, LSTM, Transformers), ensemble methods (XGBoost, LightGBM), RAG pipelines, and agentic orchestration (LangChain, LangGraph, n8n, MCP)</span>.
+        Proven ability to deploy end-to-end systems with <span class="kw">FastAPI, React, Docker, AWS, and Azure</span> — collapsing multi-day workflows to seconds and achieving <span class="kw">99.8% classification accuracy</span> in production. Certified in <span class="kw">Anthropic MCP, Claude Code, and Deloitte Data Analytics</span>.
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- 1. EDUCATION -->
+<div class="section">
+  <div class="section-title"><i class="fas fa-graduation-cap"></i>Education</div>
+  <div class="edu-list">
+    <div class="edu-row">
+      <div class="edu-left">
+        <span class="edu-inst">Indian Institute of Information Technology Nagpur</span>
+        <span class="edu-degree">&nbsp;— B.Tech, Computer Science &amp; Engineering</span>
+        <span class="edu-sub">&nbsp;· Specialization: Human Computer Interaction &amp; Gaming Technology</span>
+      </div>
+      <span class="edu-year">2023 – 2027</span>
+    </div>
+  </div>
+</div>
+
+<!-- 2. CERTIFICATIONS -->
+<div class="section">
+  <div class="section-title"><i class="fas fa-certificate"></i>Certifications &amp; Badges</div>
+  <div class="cert-grid">
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Model Context Protocol (MCP)</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-course">Claude Code</span></div>
+    <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Deloitte</span><span class="cert-sep">·</span><span class="cert-course">Data Analytics Work Simulation</span></div>
+  </div>
+</div>
+
+<!-- 3. ACHIEVEMENTS & COMPETITIONS -->
+<div class="section">
+  <div class="section-title"><i class="fas fa-trophy"></i>Achievements &amp; Competitions</div>
+
+  <!-- LOB Predictorum -->
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">LOB Predictorum Global AI Competition</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">Wunder Fund</span>
+      </div>
+      <span class="job-period">2026</span>
+    </div>
+    <ul class="job-bullets">
+      <li><span class="kw">Ranked #120 out of 4,917 participants (Top 2.4%)</span> across 100+ countries, outperforming professional quant traders, PhD researchers and institutional teams; one of the only undergraduates in the global Top 150.</li>
+      <li>Engineered 8+ market microstructure features (order-flow imbalance, cross-level bid–ask spreads, cumulative depth) from raw LOB event streams across multiple instruments and time horizons.</li>
+      <li>Achieved weighted Pearson correlation of <span class="kw">0.2812</span>; delivered a production-quality inference pipeline handling thousands of sequential trading events end-to-end.</li>
+    </ul>
+  </div>
+
+  <!-- ArtPark CodeForge -->
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">ArtPark CodeForge Hackathon</span>
+        <span class="job-dot">◆</span>
+        <span class="job-role">IISc Bangalore · Team: AI Apex</span>
+      </div>
+      <span class="job-period">Mar 2026</span>
+    </div>
+    <ul class="job-bullets">
+      <li><span class="kw">1st Runner-Up (Top 2 of all teams)</span> with SkillBridge — built and shipped a full-stack AI onboarding engine in under 48 hours, processing 2,484 resumes and 2,277 job descriptions to power data-driven skill gap analysis.</li>
+      <li>Designed original <span class="kw">WGT algorithm</span> scoring 71 canonical skills using a 4-component P-Score; pipeline reduces onboarding plan creation from 2–4 weeks to <span class="kw">under 60 seconds</span>.</li>
+    </ul>
+  </div>
+
+  <!-- Other -->
+  <div class="job">
+    <div class="job-header">
+      <div class="job-left">
+        <span class="job-company">Other Honours</span>
+      </div>
+    </div>
+    <ul class="job-bullets">
+      <li><span class="kw">1st Place</span> — StockGro Paper Trading, IIIT Nagpur (2024); won college-wide championship among entire student body.</li>
+      <li><span class="kw">4th Place</span> — GENESIS III Game Jam, AIT Pune (Mar 2024).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 4. KEY PROJECTS -->
+<div class="section">
+  <div class="section-title"><i class="fas fa-code-branch"></i>Key Projects &amp; System Design Highlights</div>
+
+  <!-- SkillBridge -->
+  <div class="project">
+    <div class="project-header">
+      <span class="project-name">SkillBridge — AI-Adaptive Onboarding Engine</span>
+      <span class="project-company">— ArtPark CodeForge · IISc Bangalore</span>
+    </div>
+    <ul class="proj-bullets">
+      <li>Processed <span class="kw">4,761 real-world documents</span> (2,484 resumes + 2,277 JDs) to build a skill taxonomy of 71 canonical skills, 200+ aliases and 66 demand weights; integrated O*NET 28.1 for prerequisite relationships across 12+ domains.</li>
+      <li>3-layer gap analysis (exact, family, cosine via FAISS at 0.62 threshold) using <span class="kw">Mistral-7B + all-MiniLM-L6-v2</span> (384-dim embeddings); typical analysis generates 15–21 personalised learning steps with readiness scores averaging 70–80%.</li>
+      <li>Full <span class="kw">FastAPI + React + Docker</span> deployment (3-service stack); async 6-stage pipeline completes in under 30 seconds (alias mode) with anti-hallucination architecture across 58 curated course modules. · <a href="https://github.com/Arnav10090/SkillsBridge-Engine" target="_blank">github.com/Arnav10090/SkillsBridge-Engine</a></li>
+    </ul>
+  </div>
+
+  <!-- SmartCredit -->
+  <div class="project">
+    <div class="project-header">
+      <span class="project-name">SmartCredit-AI — Credit Risk Assessment Platform</span>
+      <span class="project-company">— Personal Project</span>
+    </div>
+    <ul class="proj-bullets">
+      <li><span class="kw">XGBoost + LightGBM ensemble</span> trained on real-world credit datasets achieving <span class="kw">99.8% classification accuracy</span>; automated feature extraction from raw financial statements reducing manual effort by over 90%.</li>
+      <li>End-to-end pipeline from raw data ingestion to CAM report generation; collapsed multi-day underwriting workflow to <span class="kw">under 3 minutes</span>; deployed via <span class="kw">Next.js + FastAPI</span> with 5 REST API endpoints. · <a href="https://github.com/Vk2245/SmartCredit-AI" target="_blank">github.com/Vk2245/SmartCredit-AI</a></li>
+    </ul>
+  </div>
+
+  <!-- Stock Price Predictor -->
+  <div class="project">
+    <div class="project-header">
+      <span class="project-name">Stock Market Close Price Predictor</span>
+      <span class="project-company">— Personal Project</span>
+    </div>
+    <ul class="proj-bullets">
+      <li><span class="kw">LSTM network</span> trained on 5+ years of historical OHLCV data; engineered 10+ technical indicators (EMAs, VWAP, volatility) with sliding window normalisation and multi-step inference achieving consistent directional accuracy.</li>
+    </ul>
+  </div>
+
+  <!-- Portalium -->
+  <div class="project">
+    <div class="project-header">
+      <span class="project-name">Portalium — Portal-Based Puzzle Platformer</span>
+      <span class="project-company">— 48-Hour Game Jam Submission</span>
+    </div>
+    <ul class="proj-bullets">
+      <li>Independently built a complete 48-hour game jam submission with portal mechanics, spatial physics and multi-level non-linear navigation; managed end-to-end hardware setup and participant coordination for <span class="kw">100+ students</span> at VR event. · <a href="https://vk224.itch.io/portalium" target="_blank">vk224.itch.io/portalium</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 5. LEADERSHIP & COURSEWORK -->
+<div class="section">
+  <div class="section-title"><i class="fas fa-users"></i>Leadership &amp; Coursework</div>
+  <div class="job" style="border-bottom:none;">
+    <ul class="job-bullets">
+      <li><span class="kw">Marketing Team Lead, E-Summit'24, IIIT Nagpur</span> — led 10-member team, drove outreach and branding for institute's flagship entrepreneurship summit reaching 500+ participants.</li>
+      <li><span class="kw">Core Design Team, E-Summit'24</span> — contributed to visual identity and event collateral for institute-wide summit.</li>
+      <li><span class="kw">Organised VR Gaming Experience Event</span> — introduced 100+ students to VR technology with end-to-end hardware and logistics management.</li>
+      <li><span class="kw">Courses:</span> Machine Learning · Data Structures &amp; Algorithms · Operating Systems · GPU Computing · Human Computer Interaction · Computer Architecture</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 6. TECHNICAL SKILLS -->
+<div class="section" style="margin-top:4px;">
+  <div class="section-title"><i class="fas fa-laptop-code"></i>Technical Skills</div>
+  <div class="skills-wrap">
+
+    <div class="skill-row">
+      <span class="skill-cat">ML &amp; AI</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">PyTorch</span><span class="skill-tag hot">TensorFlow</span><span class="skill-tag hot">Scikit-learn</span><span class="skill-tag hot">XGBoost</span><span class="skill-tag hot">LightGBM</span><span class="skill-tag hot">LSTM</span><span class="skill-tag hot">Transformers</span><span class="skill-tag">Mistral-7B</span><span class="skill-tag">MiniLM</span><span class="skill-tag">FAISS</span><span class="skill-tag">NLP</span><span class="skill-tag">Time-Series</span>
+      </span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-cat">Agentic AI &amp;<br>Orchestration</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">LangChain</span><span class="skill-tag hot">LangGraph</span><span class="skill-tag hot">n8n</span><span class="skill-tag hot">MCP (Model Context Protocol)</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">Tool Use &amp; Function Calling</span>
+      </span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-cat">Data &amp;<br>Visualization</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">Python</span><span class="skill-tag hot">SQL</span><span class="skill-tag hot">Pandas</span><span class="skill-tag hot">NumPy</span><span class="skill-tag">Matplotlib</span><span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span><span class="skill-tag">NetworkX</span>
+      </span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-cat">Cloud &amp; Infra</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">Docker</span><span class="skill-tag hot">AWS</span><span class="skill-tag hot">Azure</span><span class="skill-tag">Databricks</span><span class="skill-tag">Azure Data Factory</span><span class="skill-tag">ADLS Gen2</span><span class="skill-tag">MongoDB</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Redis</span>
+      </span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-cat">Full-Stack</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">FastAPI</span><span class="skill-tag hot">React</span><span class="skill-tag hot">Next.js</span><span class="skill-tag">Django</span><span class="skill-tag">SQLAlchemy</span><span class="skill-tag">MySQL</span><span class="skill-tag">JavaScript</span><span class="skill-tag">TailwindCSS</span><span class="skill-tag">REST APIs</span>
+      </span>
+    </div>
+
+    <div class="skill-row">
+      <span class="skill-cat">Scientific</span>
+      <span class="skill-vals">
+        <span class="skill-tag hot">MATLAB</span><span class="skill-tag">Simulink</span><span class="skill-tag">Signal Processing</span><span class="skill-tag">State-Space Modeling</span><span class="skill-tag">Intel OneAPI</span>
+      </span>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /resume-body -->
+</div><!-- /resume -->
+</div><!-- /page-wrapper -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+  const element = document.getElementById('resumeContent');
+  const button = document.getElementById('pdfBtn');
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+  button.disabled = true;
+  try {
+    const canvas = await html2canvas(element, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', windowHeight: element.scrollHeight, logging: false });
+    const imgData = canvas.toDataURL('image/jpeg', 0.85);
+    const imgWidth = 210;
+    const pageHeight = 297;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      doc.addPage();
+      doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefin
