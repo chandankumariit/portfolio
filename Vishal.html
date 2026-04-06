@@ -8,8 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <style>
 :root {
   --blue-dark: #0D47A1;
@@ -164,7 +163,7 @@ body{font-family:var(--font);font-size:var(--font-base);line-height:1.44;color:v
   </div>
   <div class="hdr-right">
     <div class="contact-row"><i class="fas fa-phone"></i><span>+91-8374085156</span></div>
-    <div class="contact-row"><i class="fas fa-envelope"></i><span>vk224official@gmail.com</span></div>
+    <div class="contact-row"><i class="fas fa-envelope"></i><a href="/cdn-cgi/l/email-protection#66100d5454520900000f050f070a26010b070f0a4805090b"><span class="__cf_email__" data-cfemail="88fee3bababce7eeeee1ebe1e9e4c8efe5e9e1e4a6ebe7e5">[email&#160;protected]</span></a></div>
     <div class="contact-row"><i class="fab fa-github"></i><a href="https://github.com/Vk2245" target="_blank">github.com/Vk2245</a></div>
     <div class="contact-row"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/vishal-kumar-7a74462a0/" target="_blank">linkedin.com/in/vishal-kumar-7a74462a0</a></div>
   </div>
@@ -383,25 +382,45 @@ body{font-family:var(--font);font-size:var(--font-base);line-height:1.44;color:v
 </div><!-- /resume -->
 </div><!-- /page-wrapper -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-async function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
-  const element = document.getElementById('resumeContent');
+<script>
+function downloadPDF() {
   const button = document.getElementById('pdfBtn');
-  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening...';
   button.disabled = true;
-  try {
-    const canvas = await html2canvas(element, { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', windowHeight: element.scrollHeight, logging: false });
-    const imgData = canvas.toDataURL('image/jpeg', 0.85);
-    const imgWidth = 210;
-    const pageHeight = 297;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 0;
-    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-    heightLeft -= pageHeight;
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      doc.addPage();
-      doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefin
+
+  const resumeHTML = document.getElementById('resumeContent').outerHTML;
+  const styles = Array.from(document.querySelectorAll('style')).map(el => el.outerHTML).join('\n');
+  const fonts = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(el => el.outerHTML).join('\n');
+
+  const printWindow = window.open('', '_blank', 'width=900,height=700');
+  printWindow.document.write(`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+${fonts}
+${styles}
+<style>
+  body { background: #fff !important; margin: 0; padding: 0; }
+  .toolbar { display: none !important; }
+  .page-wrapper { padding-top: 0 !important; display: block !important; background: #fff !important; }
+  .resume { width: 100% !important; border: none !important; border-radius: 0 !important;
+    box-shadow: none !important; margin: 0 !important; min-height: auto !important; }
+  @page { size: A4; margin: 5mm 7mm; }
+</style>
+</head>
+<body>
+<div class="page-wrapper">${resumeHTML}</div>
+<script>window.onload=function(){setTimeout(function(){window.print();},800);};<\/script>
+</body></html>`);
+  printWindow.document.close();
+
+  setTimeout(function() {
+    button.innerHTML = '<i class="fas fa-file-pdf"></i> Download PDF';
+    button.disabled = false;
+  }, 2000);
+}
+
+}
+</script>
+</body>
+</html>
