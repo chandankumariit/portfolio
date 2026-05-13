@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vector Databases – Complete Beginner's Notes</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
+:root{
+  --bg:#0A0E1A;
+  --surface:#111827;
+  --surface2:#1A2233;
+  --surface3:#1E2A40;
+  --border:#243048;
+  --border2:#2E3D5C;
+  --teal:#00D4B8;
+  --teal2:#00F0D0;
+  --blue:#3B82F6;
+  --blue2:#60A5FA;
+  --purple:#A78BFA;
+  --pink:#F472B6;
+  --amber:#FBBF24;
+  --green:#34D399;
+  --red:#F87171;
+  --text:#E2E8F0;
+  --text2:#94A3B8;
+  --text3:#64748B;
+  --font-head:'Syne',sans-serif;
+  --font-body:'Space Grotesk',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.7;
+}
+
+/* ── FLOATING DOWNLOAD BUTTON ─────────────────────────── */
+.fab{
+  position:fixed;bottom:28px;right:28px;z-index:9999;
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--teal),var(--blue));
+  color:#0A0E1A;font-weight:700;font-family:var(--font-body);
+  padding:14px 24px;border-radius:50px;border:none;cursor:pointer;
+  font-size:14px;box-shadow:0 8px 32px rgba(0,212,184,.35);
+  transition:all .3s;letter-spacing:.3px;
+}
+.fab:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,212,184,.5)}
+.fab:disabled{background:#2E3D5C;color:#64748B;box-shadow:none;cursor:not-allowed;transform:none}
+.fab i{font-size:16px}
+
+/* ── PROGRESS BAR ─────────────────────────────────────── */
+.progress-bar{
+  position:fixed;top:0;left:0;height:3px;z-index:9998;
+  background:linear-gradient(90deg,var(--teal),var(--blue),var(--purple));
+  width:0%;transition:width .1s;
+}
+
+/* ── CONTAINER ─────────────────────────────────────────── */
+.page{max-width:960px;margin:0 auto;padding:0 24px 80px}
+
+/* ── HERO ──────────────────────────────────────────────── */
+.hero{
+  padding:70px 0 50px;text-align:center;position:relative;
+  border-bottom:1px solid var(--border);margin-bottom:48px;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,212,184,.08),transparent 70%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,212,184,.1);border:1px solid rgba(0,212,184,.25);
+  color:var(--teal);padding:6px 16px;border-radius:50px;
+  font-family:var(--font-mono);font-size:12px;margin-bottom:24px;
+  letter-spacing:.5px;
+}
+.hero-tag span{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{
+  font-family:var(--font-head);font-size:clamp(36px,7vw,64px);
+  font-weight:800;line-height:1.05;margin-bottom:18px;
+  background:linear-gradient(135deg,#fff 0%,var(--teal) 50%,var(--blue) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:16px;color:var(--text2);max-width:560px;margin:0 auto 32px;line-height:1.8;
+}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.chip{
+  padding:6px 14px;border-radius:6px;font-family:var(--font-mono);font-size:12px;
+  border:1px solid;cursor:default;
+}
+.chip-teal{background:rgba(0,212,184,.08);border-color:rgba(0,212,184,.3);color:var(--teal)}
+.chip-blue{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.3);color:var(--blue2)}
+.chip-purple{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:var(--purple)}
+.chip-amber{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);color:var(--amber)}
+.chip-pink{background:rgba(244,114,182,.08);border-color:rgba(244,114,182,.3);color:var(--pink)}
+.chip-green{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3);color:var(--green)}
+
+/* ── TOC ───────────────────────────────────────────────── */
+.toc{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;margin-bottom:48px;
+}
+.toc h3{
+  font-family:var(--font-head);font-size:13px;font-weight:700;
+  color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;
+}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+.toc-link{
+  display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;
+  text-decoration:none;color:var(--text2);font-size:13px;
+  border:1px solid transparent;transition:all .2s;
+}
+.toc-link:hover{background:var(--surface2);border-color:var(--border2);color:var(--teal)}
+.toc-num{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--surface3);color:var(--text3);
+  font-family:var(--font-mono);font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+/* ── SECTION ───────────────────────────────────────────── */
+.section{margin-bottom:56px}
+.section-header{
+  display:flex;align-items:center;gap:16px;margin-bottom:28px;
+  padding-bottom:16px;border-bottom:1px solid var(--border);
+}
+.section-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+.icon-teal{background:rgba(0,212,184,.15)}
+.icon-blue{background:rgba(59,130,246,.15)}
+.icon-purple{background:rgba(167,139,250,.15)}
+.icon-amber{background:rgba(251,191,36,.15)}
+.icon-pink{background:rgba(244,114,182,.15)}
+.icon-green{background:rgba(52,211,153,.15)}
+.icon-red{background:rgba(248,113,113,.15)}
+
+.section-label{
+  font-family:var(--font-mono);font-size:11px;color:var(--text3);
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;
+}
+.section-title{
+  font-family:var(--font-head);font-size:clamp(20px,3.5vw,26px);
+  font-weight:800;color:#fff;line-height:1.2;
+}
+
+/* ── CARDS ─────────────────────────────────────────────── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:24px;margin-bottom:16px;
+}
+.card-teal{border-left:3px solid var(--teal)}
+.card-blue{border-left:3px solid var(--blue)}
+.card-purple{border-left:3px solid var(--purple)}
+.card-amber{border-left:3px solid var(--amber)}
+.card-pink{border-left:3px solid var(--pink)}
+.card-green{border-left:3px solid var(--green)}
+.card-red{border-left:3px solid var(--red)}
+
+.card-title{
+  font-family:var(--font-mono);font-size:12px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;
+}
+.ct-teal{color:var(--teal)} .ct-blue{color:var(--blue2)}
+.ct-purple{color:var(--purple)} .ct-amber{color:var(--amber)}
+.ct-pink{color:var(--pink)} .ct-green{color:var(--green)} .ct-red{color:var(--red)}
+
+.card p{color:var(--text2);font-size:13.5px;line-height:1.75;margin-bottom:8px}
+.card p:last-child{margin-bottom:0}
+
+/* ── GRID 2 ────────────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ── COMPARISON TABLE ──────────────────────────────────── */
+.table-wrap{overflow-x:auto;margin-bottom:16px;border-radius:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--surface3)}
+thead th{
+  padding:12px 16px;text-align:left;font-family:var(--font-mono);
+  font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody tr{background:var(--surface);border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surface2)}
+tbody td{padding:11px 16px;font-size:13px;color:var(--text2);vertical-align:top}
+td.hl{color:#fff;font-weight:600}
+td .tag{
+  display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;
+  font-family:var(--font-mono);font-weight:600;
+}
+.tag-teal{background:rgba(0,212,184,.15);color:var(--teal)}
+.tag-blue{background:rgba(59,130,246,.15);color:var(--blue2)}
+.tag-purple{background:rgba(167,139,250,.15);color:var(--purple)}
+.tag-amber{background:rgba(251,191,36,.15);color:var(--amber)}
+.tag-red{background:rgba(248,113,113,.15);color:var(--red)}
+.tag-green{background:rgba(52,211,153,.15);color:var(--green)}
+
+/* ── CODE BLOCK ────────────────────────────────────────── */
+.code-block{
+  background:rgba(0,0,0,.4);border:1px solid var(--border2);
+  border-radius:10px;padding:16px 20px;margin:12px 0;
+  font-family:var(--font-mono);font-size:12.5px;color:#94A3B8;
+  overflow-x:auto;line-height:1.8;
+}
+.code-block .kw{color:var(--purple)}
+.code-block .str{color:var(--green)}
+.code-block .fn{color:var(--blue2)}
+.code-block .cm{color:var(--text3);font-style:italic}
+.code-block .num{color:var(--amber)}
+
+/* ── CALLOUT ───────────────────────────────────────────── */
+.callout{
+  display:flex;gap:14px;padding:16px 20px;border-radius:12px;margin:16px 0;
+  font-size:13.5px;line-height:1.7;
+}
+.callout-warn{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2)}
+.callout-tip{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2)}
+.callout-info{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.2)}
+.callout-danger{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.2)}
+.callout-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+.callout-body strong{display:block;margin-bottom:4px;font-weight:700}
+.callout-warn .callout-body strong{color:var(--amber)}
+.callout-tip .callout-body strong{color:var(--green)}
+.callout-info .callout-body strong{color:var(--blue2)}
+.callout-danger .callout-body strong{color:var(--red)}
+.callout-body{color:var(--text2)}
+
+/* ── BULLET LIST ───────────────────────────────────────── */
+.blist{list-style:none;margin:10px 0}
+.blist li{
+  display:flex;gap:10px;padding:5px 0;color:var(--text2);font-size:13.5px;line-height:1.65;
+}
+.blist li::before{
+  content:'›';color:var(--teal);font-weight:700;font-size:16px;
+  flex-shrink:0;margin-top:-1px;
+}
+.blist li strong{color:#fff}
+
+/* ── STEP FLOW (INLINE) ────────────────────────────────── */
+.step-row{display:flex;align-items:stretch;gap:0;margin:16px 0;flex-wrap:wrap}
+.step-box{
+  flex:1;min-width:120px;background:var(--surface);border:1px solid var(--border);
+  padding:14px;text-align:center;position:relative;
+}
+.step-box:not(:last-child)::after{
+  content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);
+  color:var(--teal);font-size:16px;font-weight:700;z-index:1;
+  background:var(--bg);padding:0 4px;
+}
+.step-box:first-child{border-radius:10px 0 0 10px}
+.step-box:last-child{border-radius:0 10px 10px 0}
+.step-n{
+  font-family:var(--font-mono);font-size:10px;color:var(--teal);
+  font-weight:700;margin-bottom:6px;letter-spacing:1px;
+}
+.step-t{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+.step-d{font-size:11px;color:var(--text3);line-height:1.4}
+
+/* ── METRIC FORMULA ────────────────────────────────────── */
+.formula-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin-bottom:14px;
+}
+.formula-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:12px;flex-wrap:wrap;gap:8px;
+}
+.formula-name{font-size:15px;font-weight:700;color:#fff}
+.formula-badge{
+  font-family:var(--font-mono);font-size:11px;padding:3px 10px;
+  border-radius:4px;background:rgba(0,212,184,.15);color:var(--teal);
+}
+.formula-eq{
+  font-family:var(--font-mono);font-size:13px;color:var(--teal);
+  background:rgba(0,212,184,.06);border:1px solid rgba(0,212,184,.15);
+  border-radius:8px;padding:10px 16px;margin-bottom:12px;
+}
+.formula-desc{font-size:13px;color:var(--text2);margin-bottom:10px}
+.formula-when{
+  font-size:12px;color:var(--text3);border-top:1px solid var(--border);
+  padding-top:10px;display:flex;gap:8px;align-items:flex-start;
+}
+.formula-when strong{color:var(--amber);flex-shrink:0}
+
+/* ── INDEX CARD ────────────────────────────────────────── */
+.idx-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:22px;margin-bottom:14px;
+}
+.idx-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.idx-name{font-size:15px;font-weight:700;color:#fff}
+.idx-big-o{font-family:var(--font-mono);font-size:12px;padding:3px 10px;border-radius:4px}
+.idx-body{color:var(--text2);font-size:13px;margin-bottom:12px;line-height:1.7}
+.idx-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.idx-pro h5,.idx-con h5{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.idx-pro h5{color:var(--green)} .idx-con h5{color:var(--red)}
+.idx-pro li,.idx-con li{font-size:12.5px;margin-bottom:4px;color:var(--text2)}
+.idx-pro li::before{content:'+ ';color:var(--green);font-weight:700}
+.idx-con li::before{content:'− ';color:var(--red);font-weight:700}
+
+/* ── PITFALL CARD ──────────────────────────────────────── */
+.pitfall{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;margin-bottom:16px;
+}
+.pitfall-top{padding:18px 22px;background:rgba(248,113,113,.06);border-bottom:1px solid rgba(248,113,113,.15)}
+.pitfall-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.pitfall-desc{font-size:13px;color:var(--text2);line-height:1.7}
+.pitfall-bottom{padding:18px 22px;background:rgba(52,211,153,.04);border-top:1px solid rgba(52,211,153,.12)}
+.pitfall-fix{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.pitfall-fix-text{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* ── DB GRID ───────────────────────────────────────────── */
+.db-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:16px}
+.db-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:18px;transition:all .2s;
+}
+.db-card:hover{border-color:var(--teal);background:var(--surface2)}
+.db-name{font-family:var(--font-mono);font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.db-type{font-size:11px;color:var(--text3);margin-bottom:10px}
+.db-desc{font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.db-best{
+  font-size:11px;padding:4px 10px;border-radius:6px;
+  background:rgba(0,212,184,.08);border:1px solid rgba(0,212,184,.2);color:var(--teal);
+  display:inline-block;font-family:var(--font-mono);
+}
+
+/* ── QUICK REF TABLE ───────────────────────────────────── */
+.qr-table{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;margin-bottom:24px;
+}
+.qr-row{
+  display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);
+}
+.qr-row:last-child{border-bottom:none}
+.qr-row.header{background:var(--surface3)}
+.qr-q{padding:12px 20px;font-size:13px;color:var(--text2);border-right:1px solid var(--border)}
+.qr-a{padding:12px 20px;font-size:13px;font-weight:600;color:var(--teal);font-family:var(--font-mono)}
+.qr-row.header .qr-q,.qr-row.header .qr-a{color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.qr-a.danger{color:var(--red)}
+.qr-a.warn{color:var(--amber)}
+
+/* ── GLOSSARY ──────────────────────────────────────────── */
+.glossary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+@media(max-width:640px){.glossary{grid-template-columns:1fr}}
+.gloss-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;
+}
+.gloss-term{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--teal);margin-bottom:4px}
+.gloss-def{font-size:12.5px;color:var(--text2);line-height:1.55}
+
+/* ── FLOW DIAGRAM ──────────────────────────────────────── */
+#flow-diagram-svg{width:100%;max-width:900px;display:block;margin:0 auto}
+
+/* ── FOOTER ────────────────────────────────────────────── */
+.footer{
+  text-align:center;padding:32px 0 20px;
+  border-top:1px solid var(--border);margin-top:48px;
+  color:var(--text3);font-size:12px;
+}
+.footer strong{color:var(--teal)}
+
+/* ── PRINT ─────────────────────────────────────────────── */
+@media print{
+  .fab,.progress-bar{display:none}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progress"></div>
+
+<!-- FAB Download Button -->
+<button class="fab" id="dlBtn" onclick="downloadPDF()">
+  <i class="fas fa-file-pdf"></i> Download PDF
+</button>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!--  PAGE CONTENT                                           -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="page" id="pageContent">
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-tag"><span></span> Beginner's Complete Reference</div>
+  <h1>Vector Databases</h1>
+  <p class="hero-sub">Everything from embeddings to retrieval — explained simply, with real analogies and zero assumed knowledge.</p>
+  <div class="hero-chips">
+    <span class="chip chip-teal">What & Why</span>
+    <span class="chip chip-blue">The Pipeline</span>
+    <span class="chip chip-purple">Similarity Metrics</span>
+    <span class="chip chip-amber">Index Types</span>
+    <span class="chip chip-pink">ANN Trade-offs</span>
+    <span class="chip chip-green">Hybrid Search</span>
+    <span class="chip chip-teal">Production Pitfalls</span>
+    <span class="chip chip-blue">Database Comparison</span>
+    <span class="chip chip-purple">When NOT to Use</span>
+  </div>
+</section>
+
+<!-- ── TABLE OF CONTENTS ─────────────────────────────────── -->
+<div class="toc">
+  <h3>Contents</h3>
+  <div class="toc-grid">
+    <a href="#ch1" class="toc-link"><span class="toc-num">1</span>What is a Vector DB?</a>
+    <a href="#ch2" class="toc-link"><span class="toc-num">2</span>The Data Pipeline</a>
+    <a href="#ch3" class="toc-link"><span class="toc-num">3</span>Measuring Similarity</a>
+    <a href="#ch4" class="toc-link"><span class="toc-num">4</span>Index Types</a>
+    <a href="#ch5" class="toc-link"><span class="toc-num">5</span>ANN Trade-off</a>
+    <a href="#ch6" class="toc-link"><span class="toc-num">6</span>Filtering & Hybrid</a>
+    <a href="#ch7" class="toc-link"><span class="toc-num">7</span>Production Pitfalls</a>
+    <a href="#ch8" class="toc-link"><span class="toc-num">8</span>Database Comparison</a>
+    <a href="#ch9" class="toc-link"><span class="toc-num">9</span>When NOT to Use</a>
+    <a href="#flow" class="toc-link"><span class="toc-num">↗</span>Flow Diagram</a>
+    <a href="#glossary" class="toc-link"><span class="toc-num">G</span>Glossary</a>
+    <a href="#quickref" class="toc-link"><span class="toc-num">★</span>Quick Reference</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 1 — What Is a Vector Database?                        -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch1">
+  <div class="section-header">
+    <div class="section-icon icon-teal">🗄️</div>
+    <div>
+      <div class="section-label">Chapter 01</div>
+      <h2 class="section-title">What Is a Vector Database?</h2>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="card card-teal">
+      <div class="card-title ct-teal">SQL / Relational</div>
+      <p><strong>Question:</strong> "Find the row WHERE id = 42"</p>
+      <p>Exact match. Returns one specific row. Think of it like finding a book by its ISBN.</p>
+    </div>
+    <div class="card card-blue">
+      <div class="card-title ct-blue">Key-Value Store</div>
+      <p><strong>Question:</strong> "GET user:42"</p>
+      <p>Dictionary lookup. Lightning fast but returns only the exact key. Like a locker with a combination.</p>
+    </div>
+    <div class="card card-pink" style="border-left-color:var(--teal);background:rgba(0,212,184,.04)">
+      <div class="card-title" style="color:var(--teal)">Vector Database ★</div>
+      <p><strong>Question:</strong> "Find things <em>similar</em> to this"</p>
+      <p>Nearest-neighbour search. Returns the most similar items in N-dimensional space.</p>
+    </div>
+  </div>
+
+  <div class="card card-teal" style="margin-top:0">
+    <div class="card-title ct-teal">What Is a Vector?</div>
+    <p>A vector is simply a <strong>list of numbers</strong>. That's it. But the magic is <em>what those numbers represent</em>.</p>
+    <p>🎵 <em>Analogy:</em> Describe a song with numbers: <code style="color:var(--teal);font-family:var(--font-mono)">tempo=128, energy=0.9, danceability=0.85, valence=0.7…</code><br>
+    Songs that sound similar will have similar lists of numbers. A vector database exploits this — it finds items whose number-lists are closest to any query you give it.</p>
+  </div>
+
+  <div class="card card-blue">
+    <div class="card-title ct-blue">What Are Embeddings?</div>
+    <p>An <strong>embedding model</strong> is an AI model that converts raw data (text, images, audio) into a vector. Modern models produce vectors with <strong>768 – 3,072 dimensions</strong> (numbers per vector).</p>
+    <div class="code-block">
+<span class="cm"># Same meaning → similar vectors, even with different words</span>
+<span class="str">"How do I reset my password?"</span> → [<span class="num">0.12</span>, <span class="num">-0.45</span>, <span class="num">0.88</span>, <span class="num">0.03</span>, …] <span class="cm"># 1536 numbers</span>
+<span class="str">"I forgot my login credentials"</span>  → [<span class="num">0.11</span>, <span class="num">-0.43</span>, <span class="num">0.87</span>, <span class="num">0.04</span>, …] <span class="cm"># very close!</span>
+    </div>
+    <p>Different words, nearly identical vectors — because they <strong>mean the same thing</strong>. This is the superpower of embeddings.</p>
+  </div>
+
+  <div class="card card-purple">
+    <div class="card-title ct-purple">Real-World Use Cases</div>
+    <ul class="blist">
+      <li><strong>Semantic Search</strong> — Search docs by meaning, not just keywords (Notion AI, Google Search)</li>
+      <li><strong>Recommendation Engines</strong> — "You might also like…" on Netflix, Spotify, Amazon</li>
+      <li><strong>RAG (Retrieval-Augmented Generation)</strong> — Give ChatGPT / Claude access to your own company data</li>
+      <li><strong>Image Search</strong> — Find visually similar images (Google Lens, Pinterest)</li>
+      <li><strong>Fraud Detection</strong> — Detect transactions similar to known fraudulent patterns</li>
+      <li><strong>Drug Discovery</strong> — Find molecules similar to effective compounds</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 2 — The Data Pipeline                                 -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch2">
+  <div class="section-header">
+    <div class="section-icon icon-blue">⚙️</div>
+    <div>
+      <div class="section-label">Chapter 02</div>
+      <h2 class="section-title">The Data Pipeline</h2>
+    </div>
+  </div>
+
+  <p style="color:var(--text2);margin-bottom:20px">There are two phases: <strong style="color:#fff">write time</strong> (storing data) and <strong style="color:#fff">query time</strong> (searching). Both share the same embedding model — this is critical.</p>
+
+  <div class="card card-teal" style="margin-bottom:20px">
+    <div class="card-title ct-teal">Write-Time Pipeline — Storing Data</div>
+    <div class="step-row">
+      <div class="step-box"><div class="step-n">STEP 1</div><div class="step-t">Raw Input</div><div class="step-d">Text / Image / Audio</div></div>
+      <div class="step-box"><div class="step-n">STEP 2</div><div class="step-t">Embedding Model</div><div class="step-d">AI converts → vector</div></div>
+      <div class="step-box"><div class="step-n">STEP 3</div><div class="step-t">Vector Created</div><div class="step-d">~1536 float numbers</div></div>
+      <div class="step-box"><div class="step-n">STEP 4</div><div class="step-t">Stored + Indexed</div><div class="step-d">Vector + metadata saved</div></div>
+    </div>
+  </div>
+
+  <div class="card card-blue" style="margin-bottom:20px">
+    <div class="card-title ct-blue">Query-Time Pipeline — Searching</div>
+    <div class="step-row">
+      <div class="step-box"><div class="step-n">STEP 1</div><div class="step-t">User Query</div><div class="step-d">"reset my password"</div></div>
+      <div class="step-box"><div class="step-n">STEP 2</div><div class="step-t">Same Model</div><div class="step-d">Query → vector</div></div>
+      <div class="step-box"><div class="step-n">STEP 3</div><div class="step-t">Similarity Search</div><div class="step-d">Nearest vectors found</div></div>
+      <div class="step-box"><div class="step-n">STEP 4</div><div class="step-t">Top-K Results</div><div class="step-d">5 most similar returned</div></div>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">
+    <div class="callout-icon">🚨</div>
+    <div class="callout-body">
+      <strong>Critical Rule: Same Model Always</strong>
+      You MUST use the SAME embedding model for writing AND querying. If you store data with Model A but search with Model B, the vectors live in completely different mathematical spaces — all results will be garbage. This is the #1 beginner mistake.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 3 — Measuring Similarity                              -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch3">
+  <div class="section-header">
+    <div class="section-icon icon-purple">📐</div>
+    <div>
+      <div class="section-label">Chapter 03</div>
+      <h2 class="section-title">Measuring Similarity</h2>
+    </div>
+  </div>
+
+  <p style="color:var(--text2);margin-bottom:20px">Once vectors are stored, the database must decide which are "closest" to the query. Three main metrics, each with different strengths:</p>
+
+  <div class="formula-card">
+    <div class="formula-header">
+      <span class="formula-name">1. Cosine Similarity</span>
+      <span class="formula-badge">Angle between vectors</span>
+    </div>
+    <div class="formula-eq">score = 1 − cos(θ)   →   range: 0 (identical) to 2 (opposite)</div>
+    <div class="formula-desc">
+      🧭 <em>Analogy:</em> Two arrows pointing in nearly the same direction are similar, even if one is much longer. Only <strong>direction</strong> matters, not length.<br><br>
+      Measures the <strong>angle</strong> between two vectors, completely ignoring their length (magnitude). Word frequency (how many times a word appears) shouldn't affect semantic similarity — cosine handles this automatically.
+    </div>
+    <div class="formula-when"><strong>Best for:</strong> Text / NLP tasks — almost universally the right choice for language models. "Text → cosine, almost always."</div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-header">
+      <span class="formula-name">2. Euclidean Distance</span>
+      <span class="formula-badge">Straight-line distance</span>
+    </div>
+    <div class="formula-eq">d(x,y) = √( (x₁−y₁)² + (x₂−y₂)² + … + (xₙ−yₙ)² )</div>
+    <div class="formula-desc">
+      📏 <em>Analogy:</em> Measuring the physical distance between two cities on a map with a ruler.<br><br>
+      The straight-line distance between two points in N-dimensional space. Considers both <strong>direction and magnitude</strong>. Works well when all dimensions have consistent units and scale.
+    </div>
+    <div class="formula-when"><strong>Best for:</strong> Spatial/geographic data, sensor readings, physical measurements where magnitude is meaningful.</div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-header">
+      <span class="formula-name">3. Dot Product</span>
+      <span class="formula-badge">Projection (angle + length)</span>
+    </div>
+    <div class="formula-eq">x · y = |x| × |y| × cos(θ)   →   considers both angle AND length</div>
+    <div class="formula-desc">
+      🔦 <em>Analogy:</em> The shadow (projection) one arrow casts onto another — longer arrows cast bigger shadows, so magnitude amplifies the score.<br><br>
+      If a longer vector should naturally score higher (e.g. more prominent/popular items), dot product naturally accounts for this.
+    </div>
+    <div class="formula-when"><strong>Best for:</strong> When vector magnitude carries meaning — e.g. item popularity or relevance scores in recommendation systems.</div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>The Practical Rule</strong>
+      For text / NLP tasks, always start with Cosine Similarity. It's the industry standard used by virtually every production NLP system. Move to Dot Product only when you've normalized your vectors and need the speed advantage.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 4 — Index Types                                       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch4">
+  <div class="section-header">
+    <div class="section-icon icon-amber">🗂️</div>
+    <div>
+      <div class="section-label">Chapter 04</div>
+      <h2 class="section-title">Index Types — The Secret Sauce</h2>
+    </div>
+  </div>
+
+  <p style="color:var(--text2);margin-bottom:20px">Without an index, finding the nearest vector requires comparing your query against <strong>every single</strong> stored vector — impossibly slow at scale. Indexes are data structures that make search fast through clever shortcuts.</p>
+
+  <div class="idx-card">
+    <div class="idx-header">
+      <span class="idx-name">Brute Force (Flat Index)</span>
+      <span class="idx-big-o tag-red">O(N) — checks everything</span>
+    </div>
+    <div class="idx-body">📚 <em>Like reading every book in the library to find the most relevant one.</em><br>Compares the query against every stored vector. 100% accurate but gets impossibly slow as data grows. If you have 1 million vectors, it makes 1 million comparisons every query.</div>
+    <div class="idx-cols">
+      <div class="idx-pro"><h5>✅ Pros</h5><ul>
+        <li>Perfect accuracy (exact nearest neighbour)</li>
+        <li>Zero configuration needed</li>
+        <li>Works for small datasets (&lt;10K)</li>
+      </ul></div>
+      <div class="idx-con"><h5>❌ Cons</h5><ul>
+        <li>Extremely slow at scale</li>
+        <li>Not viable in production</li>
+        <li>No improvement with more RAM</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="idx-card" style="border-color:rgba(0,212,184,.3)">
+    <div class="idx-header">
+      <span class="idx-name">HNSW <span style="color:var(--text3);font-size:13px;font-weight:400">(Hierarchical Navigable Small World)</span></span>
+      <span class="idx-big-o tag-teal">O(log N) — very fast</span>
+    </div>
+    <div class="idx-body">🗺️ <em>Like a multi-level map: zoom out to a continent map, then country, then city, then street. Navigate at each level to home in on your destination quickly.</em><br>
+    Builds a multi-layered graph. Upper layers are coarse — few nodes with long connections. Lower layers are dense — many nodes with short connections. Search starts at the top and navigates down. <strong>Industry default for most production systems.</strong></div>
+    <div class="idx-cols">
+      <div class="idx-pro"><h5>✅ Pros</h5><ul>
+        <li>Very fast queries</li>
+        <li>High recall (accuracy)</li>
+        <li>Tunable via ef parameter</li>
+      </ul></div>
+      <div class="idx-con"><h5>❌ Cons</h5><ul>
+        <li>High RAM usage</li>
+        <li>Slow / hard to delete entries</li>
+        <li>Large build time for huge datasets</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="idx-card">
+    <div class="idx-header">
+      <span class="idx-name">IVF <span style="color:var(--text3);font-size:13px;font-weight:400">(Inverted File Index)</span></span>
+      <span class="idx-big-o tag-blue">O(√N) — clusters first</span>
+    </div>
+    <div class="idx-body">📂 <em>Like filing papers into labelled folders. When searching, you only open the relevant folders instead of scanning every paper.</em><br>
+    Groups vectors into K clusters (using k-means). At query time, only the nearest cluster(s) are searched, skipping the rest. Requires a training step to define the clusters.</div>
+    <div class="idx-cols">
+      <div class="idx-pro"><h5>✅ Pros</h5><ul>
+        <li>Faster than brute force</li>
+        <li>Lower memory than HNSW</li>
+        <li>Good for disk-based storage</li>
+      </ul></div>
+      <div class="idx-con"><h5>❌ Cons</h5><ul>
+        <li>Less accurate (approximate)</li>
+        <li>Needs training step</li>
+        <li>Poor if query is near cluster edge</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="idx-card">
+    <div class="idx-header">
+      <span class="idx-name">PQ <span style="color:var(--text3);font-size:13px;font-weight:400">(Product Quantization)</span></span>
+      <span class="idx-big-o tag-purple">Compression technique</span>
+    </div>
+    <div class="idx-body">🖼️ <em>Like compressing a high-res photo to a smaller file — you lose some detail but save enormous storage space.</em><br>
+    Splits each high-dimensional vector into sub-vectors and replaces each with a short code (centroid ID). A 1536-dim float vector (6KB) might compress to just 96 bytes — a 64× reduction. Often combined with IVF as <strong>IVF-PQ</strong>.</div>
+    <div class="idx-cols">
+      <div class="idx-pro"><h5>✅ Pros</h5><ul>
+        <li>Dramatic memory savings (~96%)</li>
+        <li>Enables billion-scale storage</li>
+        <li>Combinable with IVF</li>
+      </ul></div>
+      <div class="idx-con"><h5>❌ Cons</h5><ul>
+        <li>Lower accuracy (lossy)</li>
+        <li>Complex to tune properly</li>
+        <li>Training step required</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 5 — ANN Trade-off                                     -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch5">
+  <div class="section-header">
+    <div class="section-icon icon-pink">⚖️</div>
+    <div>
+      <div class="section-label">Chapter 05</div>
+      <h2 class="section-title">The ANN Trade-off: Pick Two</h2>
+    </div>
+  </div>
+
+  <div class="card card-pink">
+    <div class="card-title ct-pink">What Is ANN?</div>
+    <p><strong>ANN = Approximate Nearest Neighbour.</strong> Most vector databases don't find the <em>exact</em> closest vector — they find an <em>approximate</em> answer very quickly. This is a deliberate design choice: exact search at billion-scale would take minutes; approximate search takes milliseconds.</p>
+  </div>
+
+  <p style="color:var(--text2);margin:20px 0">Like the engineering classic "Good, Fast, Cheap — pick two", vector search has its own iron triangle. You can optimise for <strong style="color:#fff">two</strong> of these three, but never all three simultaneously:</p>
+
+  <div class="grid3">
+    <div class="card" style="border-color:var(--teal);text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">🎯</div>
+      <div style="font-size:16px;font-weight:700;color:var(--teal);margin-bottom:8px">RECALL</div>
+      <p>Accuracy — finding the true nearest neighbours, not approximations. 1.0 = perfect.</p>
+    </div>
+    <div class="card" style="border-color:var(--blue);text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">⚡</div>
+      <div style="font-size:16px;font-weight:700;color:var(--blue2);margin-bottom:8px">LATENCY</div>
+      <p>Speed — how fast you get a result. Critical for real-time user-facing applications.</p>
+    </div>
+    <div class="card" style="border-color:var(--purple);text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">💾</div>
+      <div style="font-size:16px;font-weight:700;color:var(--purple);margin-bottom:8px">MEMORY</div>
+      <p>RAM cost — how much the index consumes. Low memory = cheaper infrastructure.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Optimise For</th><th>Sacrifice</th><th>Example Approach</th></tr></thead>
+      <tbody>
+        <tr><td class="hl">High Recall + Low Latency</td><td>Memory — need huge expensive RAM</td><td>Brute Force with GPU acceleration</td></tr>
+        <tr><td class="hl">Low Latency + Low Memory</td><td>Recall — approximation errors creep in</td><td>HNSW + heavy PQ compression</td></tr>
+        <tr><td class="hl">High Recall + Low Memory</td><td>Latency — index checks many candidates</td><td>IVF with many clusters, high nprobe</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Practical Starting Point</strong>
+      Start with HNSW and tune the <code style="font-family:var(--font-mono);color:var(--teal)">ef</code> (search breadth) parameter. Increasing <code style="font-family:var(--font-mono);color:var(--teal)">ef</code> improves recall at the cost of latency. Target: <strong>≥95% recall with &lt;50ms latency</strong> for most real-time search use cases.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 6 — Filtering & Hybrid Search                         -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch6">
+  <div class="section-header">
+    <div class="section-icon icon-green">🔀</div>
+    <div>
+      <div class="section-label">Chapter 06</div>
+      <h2 class="section-title">Filtering & Hybrid Search</h2>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card card-green">
+      <div class="card-title ct-green">Pre-filter</div>
+      <div class="step-row" style="margin-bottom:10px">
+        <div class="step-box" style="border-radius:8px 0 0 8px"><div class="step-t" style="font-size:11px">Filter</div></div>
+        <div class="step-box" style="border-radius:0 8px 8px 0"><div class="step-t" style="font-size:11px">Search</div></div>
+      </div>
+      <p>Apply metadata filter first, then run vector search on the filtered subset.</p>
+      <p style="color:var(--red);font-size:12.5px;margin-top:8px">⚠️ Risk: With very tight filters, the subset may be too small → poor recall</p>
+    </div>
+    <div class="card card-blue">
+      <div class="card-title ct-blue">Post-filter</div>
+      <div class="step-row" style="margin-bottom:10px">
+        <div class="step-box" style="border-radius:8px 0 0 8px"><div class="step-t" style="font-size:11px">Search</div></div>
+        <div class="step-box" style="border-radius:0 8px 8px 0"><div class="step-t" style="font-size:11px">Filter</div></div>
+      </div>
+      <p>Run vector search first, then apply filter to the Top-K results.</p>
+      <p style="color:var(--red);font-size:12.5px;margin-top:8px">⚠️ Risk: If most top results are filtered out, you may return fewer results than requested</p>
+    </div>
+  </div>
+
+  <div class="card card-teal" style="margin-top:8px">
+    <div class="card-title ct-teal">Hybrid Search: Sparse + Dense = Best of Both Worlds</div>
+    <div class="table-wrap" style="margin:12px 0">
+      <table>
+        <thead><tr><th>Search Type</th><th>Also Called</th><th>Great At</th><th>Bad At</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="hl">Keyword Search</td>
+            <td><span class="tag tag-blue">Sparse / BM25</span></td>
+            <td>Exact terms, legal jargon, product codes, rare words</td>
+            <td>Synonyms, paraphrases, multi-language</td>
+          </tr>
+          <tr>
+            <td class="hl">Vector Search</td>
+            <td><span class="tag tag-teal">Dense</span></td>
+            <td>Semantic meaning, paraphrases, intent understanding</td>
+            <td>Rare specific keywords, exact codes</td>
+          </tr>
+          <tr style="background:rgba(0,212,184,.04)">
+            <td class="hl" style="color:var(--teal)">Hybrid Search ★</td>
+            <td><span class="tag tag-green">Sparse + Dense</span></td>
+            <td colspan="2" style="color:var(--green);font-weight:600">Both! Combined via Reciprocal Rank Fusion (RRF)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>RRF Formula:</strong></p>
+    <div class="code-block"><span class="cm"># Reciprocal Rank Fusion — merges two ranked lists into one</span>
+Score_RRF(doc) = <span class="num">1</span>/(rank_sparse + k) + <span class="num">1</span>/(rank_dense + k)
+<span class="cm"># k = 60 is the standard default constant</span>
+<span class="cm"># Items that rank well in BOTH systems score highest</span></div>
+    <p>RRF doesn't require normalising scores across different systems — it only uses <strong>rank positions</strong>, making it robust and easy to implement.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 7 — Production Pitfalls                               -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch7">
+  <div class="section-header">
+    <div class="section-icon icon-red">🐛</div>
+    <div>
+      <div class="section-label">Chapter 07</div>
+      <h2 class="section-title">What Bites You in Production</h2>
+    </div>
+  </div>
+
+  <p style="color:var(--text2);margin-bottom:24px">Building a working prototype is easy. Surviving production is where teams stumble. Here are the five most common pitfalls and how to avoid them:</p>
+
+  <div class="pitfall">
+    <div class="pitfall-top">
+      <div class="pitfall-title">🔴 1. Re-embedding Cost When the Model Updates</div>
+      <div class="pitfall-desc">When OpenAI releases a new, better embedding model, you can't just start using it for queries — you must re-embed <strong>every single document</strong> in your database with the new model. For a 10-million-document database, this costs thousands of dollars and days of compute time.</div>
+    </div>
+    <div class="pitfall-bottom">
+      <div class="pitfall-fix">✅ The Fix</div>
+      <div class="pitfall-fix-text">Pin your embedding model version. Before upgrading, budget for a full re-embedding run. Consider open-source models you control (Sentence-Transformers, BGE) to avoid vendor lock-in.</div>
+    </div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-top">
+      <div class="pitfall-title">🔴 2. Dimension Mismatch Errors</div>
+      <div class="pitfall-desc">Model A produces 768-dimensional vectors. Model B produces 1536-dimensional vectors. If your schema is configured for 1536 and you accidentally use Model A, every insert and query fails with cryptic errors that are hard to debug in production.</div>
+    </div>
+    <div class="pitfall-bottom">
+      <div class="pitfall-fix">✅ The Fix</div>
+      <div class="pitfall-fix-text">Strictly enforce model versions in your code. Store the model name/version in your database schema metadata. Add dimension validation checks on every insert operation.</div>
+    </div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-top">
+      <div class="pitfall-title">🔴 3. Index Rebuild Cost on Inserts</div>
+      <div class="pitfall-desc">HNSW indices are fast to query but slow to update. Adding millions of new vectors may require a full index rebuild, causing downtime or degraded query performance during the rebuild window.</div>
+    </div>
+    <div class="pitfall-bottom">
+      <div class="pitfall-fix">✅ The Fix</div>
+      <div class="pitfall-fix-text">Use databases with incremental indexing support (Qdrant, Weaviate). Plan your data ingestion strategy upfront. Use batch insert endpoints rather than inserting one-by-one.</div>
+    </div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-top">
+      <div class="pitfall-title">🔴 4. Multi-tenancy: Namespaces vs Separate Indexes</div>
+      <div class="pitfall-desc">In a SaaS product where each customer has their own data, you must isolate their data perfectly. A bug in tenant filtering leaks one customer's data to another — a catastrophic privacy violation.</div>
+    </div>
+    <div class="pitfall-bottom">
+      <div class="pitfall-fix">✅ The Fix</div>
+      <div class="pitfall-fix-text">For &lt;100 customers: separate indexes (safe, expensive). For 100+ customers: shared index with strict tenant ID metadata filtering — but test isolation rigorously before launch. Never trust it without adversarial testing.</div>
+    </div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-top">
+      <div class="pitfall-title">🔴 5. Cold Start — Vectors Are Useless Without Enough Data</div>
+      <div class="pitfall-desc">A vector database with 50 items returns poor results — not because the technology is broken, but because there's nothing meaningful to retrieve. Similarity search only shines with thousands+ of diverse, high-quality items.</div>
+    </div>
+    <div class="pitfall-bottom">
+      <div class="pitfall-fix">✅ The Fix</div>
+      <div class="pitfall-fix-text">If you have &lt;1,000 items, don't use a vector database yet. Use simple in-memory search or PostgreSQL full-text search. Build up your dataset first, then migrate to a proper vector DB.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 8 — Database Landscape                                -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch8">
+  <div class="section-header">
+    <div class="section-icon icon-teal">🌐</div>
+    <div>
+      <div class="section-label">Chapter 08</div>
+      <h2 class="section-title">Choosing a Vector Database</h2>
+    </div>
+  </div>
+
+  <div class="db-grid">
+    <div class="db-card">
+      <div class="db-name">Pinecone</div>
+      <div class="db-type">Managed / Serverless</div>
+      <div class="db-desc">Easiest to start. No infrastructure to manage. Great for startups wanting zero DevOps overhead.</div>
+      <span class="db-best">Beginners & MVPs</span>
+    </div>
+    <div class="db-card">
+      <div class="db-name">Weaviate</div>
+      <div class="db-type">Open-source / Cloud</div>
+      <div class="db-desc">Best-in-class hybrid search (BM25 + vector). Built-in modules for auto-embedding. Rich GraphQL API.</div>
+      <span class="db-best">Hybrid Search & RAG</span>
+    </div>
+    <div class="db-card">
+      <div class="db-name">Qdrant</div>
+      <div class="db-type">Open-source / Cloud (Rust)</div>
+      <div class="db-desc">Written in Rust — blazing fast. Excellent filtering. Great docs. Very active development community.</div>
+      <span class="db-best">Speed + Filtering</span>
+    </div>
+    <div class="db-card">
+      <div class="db-name">Milvus</div>
+      <div class="db-type">Open-source (Go)</div>
+      <div class="db-desc">Designed for billion-scale. GPU support. Battle-tested at Alibaba, Shopee at massive scale.</div>
+      <span class="db-best">Billion-scale Enterprise</span>
+    </div>
+    <div class="db-card">
+      <div class="db-name">pgvector</div>
+      <div class="db-type">PostgreSQL Extension</div>
+      <div class="db-desc">Stays inside your existing Postgres database. No new infrastructure. All SQL queries still work perfectly.</div>
+      <span class="db-best">Already on Postgres</span>
+    </div>
+    <div class="db-card">
+      <div class="db-name">Chroma</div>
+      <div class="db-type">Open-source (Local)</div>
+      <div class="db-desc">Dead simple to run locally. Great for prototyping and learning. Python-native, zero config.</div>
+      <span class="db-best">Development & Learning</span>
+    </div>
+    <div class="db-card">
+      <div class="db-name">LanceDB</div>
+      <div class="db-type">Embedded / Serverless</div>
+      <div class="db-desc">Runs inside your app (no separate server). Columnar storage. Cost-effective for ML workflows.</div>
+      <span class="db-best">Embedded & Cost-Sensitive</span>
+    </div>
+    <div class="db-card">
+      <div class="db-name">Redis</div>
+      <div class="db-type">In-memory + Vector</div>
+      <div class="db-desc">Extreme low-latency (&lt;1ms). Combines caching + vector search. Perfect for real-time apps.</div>
+      <span class="db-best">Sub-millisecond Latency</span>
+    </div>
+  </div>
+
+  <div class="card card-teal">
+    <div class="card-title ct-teal">Quick Decision Guide</div>
+    <ul class="blist">
+      <li><strong>I want the easiest possible start</strong> → Pinecone (managed, no DevOps)</li>
+      <li><strong>I'm already on PostgreSQL</strong> → pgvector (zero new infrastructure)</li>
+      <li><strong>I'm just learning / prototyping</strong> → Chroma (local, instant setup)</li>
+      <li><strong>I need hybrid keyword + vector search</strong> → Weaviate</li>
+      <li><strong>I need maximum query speed with filtering</strong> → Qdrant</li>
+      <li><strong>I have billions of vectors</strong> → Milvus (battle-tested at scale)</li>
+      <li><strong>I need sub-millisecond latency</strong> → Redis (everything in RAM)</li>
+      <li><strong>I want no separate server overhead</strong> → LanceDB (embedded)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  CH 9 — When NOT to Use                                   -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="ch9">
+  <div class="section-header">
+    <div class="section-icon icon-red">🚫</div>
+    <div>
+      <div class="section-label">Chapter 09</div>
+      <h2 class="section-title">When NOT to Use a Vector Database</h2>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>Don't Over-Engineer</strong>
+      Vector databases are powerful but often unnecessary. Using them when simpler tools suffice adds cost, complexity, and operational burden with zero benefit.
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:16px">
+    <div class="card card-red">
+      <div class="card-title ct-red">❌ Fewer than 10,000 vectors</div>
+      <p>At this scale, brute-force search takes milliseconds. A vector DB adds infrastructure complexity with zero performance benefit.</p>
+      <p style="color:var(--green);font-size:12.5px;margin-top:8px">✅ Use: In-memory search (NumPy, FAISS locally)</p>
+    </div>
+    <div class="card card-red">
+      <div class="card-title ct-red">❌ Exact match is what you need</div>
+      <p>"Find all records where country = US and status = active" — that's a filter, not similarity search. Vector DBs handle this poorly.</p>
+      <p style="color:var(--green);font-size:12.5px;margin-top:8px">✅ Use: PostgreSQL / MySQL with indexed columns</p>
+    </div>
+    <div class="card card-red">
+      <div class="card-title ct-red">❌ Metadata filtering dominates</div>
+      <p>If 90% of your query logic is metadata filtering and only 10% is semantic, a traditional database does it better and cheaper.</p>
+      <p style="color:var(--green);font-size:12.5px;margin-top:8px">✅ Use: Elasticsearch for filtering + light re-ranking</p>
+    </div>
+    <div class="card card-red">
+      <div class="card-title ct-red">❌ You haven't fixed your chunking</div>
+      <p>Bad RAG results are almost always caused by poor document chunking, not the vector DB. No amount of vector magic fixes badly chunked text.</p>
+      <p style="color:var(--green);font-size:12.5px;margin-top:8px">✅ Do: Fix semantic chunking with overlap first</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  FLOW DIAGRAM                                             -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="flow">
+  <div class="section-header">
+    <div class="section-icon icon-teal">🔄</div>
+    <div>
+      <div class="section-label">Visual Reference</div>
+      <h2 class="section-title">End-to-End Flow Diagram</h2>
+    </div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <svg id="flow-diagram-svg" viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#00D4B8"/>
+        </marker>
+        <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#F87171"/>
+        </marker>
+        <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#3B82F6"/>
+        </marker>
+        <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#00D4B8"/>
+          <stop offset="100%" stop-color="#3B82F6"/>
+        </linearGradient>
+        <filter id="shadow">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity=".4"/>
+        </filter>
+      </defs>
+
+      <!-- Background -->
+      <rect width="900" height="620" fill="#0A0E1A" rx="14"/>
+
+      <!-- Title -->
+      <text x="450" y="32" text-anchor="middle" fill="url(#hdr)" font-family="Syne,sans-serif" font-size="18" font-weight="800">Vector Database — Complete Flow</text>
+      <line x1="120" y1="42" x2="780" y2="42" stroke="#243048" stroke-width="1"/>
+
+      <!-- ─── WRITE PATH LABEL ─── -->
+      <rect x="14" y="55" width="110" height="20" rx="4" fill="rgba(0,212,184,.12)" stroke="rgba(0,212,184,.3)" stroke-width="1"/>
+      <text x="69" y="69" text-anchor="middle" fill="#00D4B8" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">WRITE PATH</text>
+
+      <!-- Write Path Boxes -->
+      <!-- Box 1: Raw Data -->
+      <rect x="14" y="84" width="120" height="64" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="14" y="84" width="120" height="6" rx="10" fill="#00D4B8"/>
+      <text x="74" y="110" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">Raw Input</text>
+      <text x="74" y="127" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">Text / Image / Audio</text>
+      <text x="74" y="142" text-anchor="middle" fill="#64748B" font-family="JetBrains Mono,monospace" font-size="9">STEP 1</text>
+
+      <!-- Arrow 1→2 -->
+      <line x1="134" y1="116" x2="164" y2="116" stroke="#00D4B8" stroke-width="1.8" marker-end="url(#arr)"/>
+
+      <!-- Box 2: Embedding Model -->
+      <rect x="164" y="84" width="130" height="64" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="164" y="84" width="130" height="6" rx="10" fill="#A78BFA"/>
+      <text x="229" y="110" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">Embedding Model</text>
+      <text x="229" y="127" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">AI converts data</text>
+      <text x="229" y="142" text-anchor="middle" fill="#64748B" font-family="JetBrains Mono,monospace" font-size="9">STEP 2</text>
+
+      <!-- Arrow 2→3 -->
+      <line x1="294" y1="116" x2="324" y2="116" stroke="#00D4B8" stroke-width="1.8" marker-end="url(#arr)"/>
+
+      <!-- Box 3: Vector -->
+      <rect x="324" y="84" width="130" height="64" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="324" y="84" width="130" height="6" rx="10" fill="#FBBF24"/>
+      <text x="389" y="110" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">Vector</text>
+      <text x="389" y="127" text-anchor="middle" fill="#FBBF24" font-family="JetBrains Mono,monospace" font-size="9">[0.12, -0.45, …]</text>
+      <text x="389" y="142" text-anchor="middle" fill="#64748B" font-family="JetBrains Mono,monospace" font-size="9">STEP 3 · 1536 dims</text>
+
+      <!-- Arrow 3→4 -->
+      <line x1="454" y1="116" x2="484" y2="116" stroke="#00D4B8" stroke-width="1.8" marker-end="url(#arr)"/>
+
+      <!-- Box 4: Index -->
+      <rect x="484" y="84" width="130" height="64" rx="10" fill="#111827" stroke="#00D4B8" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="484" y="84" width="130" height="6" rx="10" fill="#00D4B8"/>
+      <text x="549" y="107" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">Index + Store</text>
+      <text x="549" y="122" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">HNSW / IVF / PQ</text>
+      <text x="549" y="137" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">+ Metadata</text>
+      <text x="549" y="148" text-anchor="middle" fill="#00D4B8" font-family="JetBrains Mono,monospace" font-size="9">STEP 4 ✓ STORED</text>
+
+      <!-- Index Type callouts -->
+      <rect x="630" y="72" width="255" height="90" rx="10" fill="#111827" stroke="#243048" stroke-width="1"/>
+      <text x="643" y="92" fill="#64748B" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700">INDEX TYPES</text>
+      <text x="643" y="110" fill="#00D4B8" font-family="JetBrains Mono,monospace" font-size="10">HNSW</text>
+      <text x="710" y="110" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10"> O(log N) · fast · high RAM</text>
+      <text x="643" y="126" fill="#A78BFA" font-family="JetBrains Mono,monospace" font-size="10">IVF</text>
+      <text x="710" y="126" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10"> O(√N) · clusters · less RAM</text>
+      <text x="643" y="142" fill="#FBBF24" font-family="JetBrains Mono,monospace" font-size="10">PQ</text>
+      <text x="710" y="142" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10"> compressed · ~96% savings</text>
+      <text x="643" y="158" fill="#F87171" font-family="JetBrains Mono,monospace" font-size="10">Brute</text>
+      <text x="710" y="158" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10"> O(N) · exact · too slow</text>
+      <line x1="630" y1="116" x2="614" y2="116" stroke="#243048" stroke-width="1" stroke-dasharray="4,2"/>
+
+      <!-- ─── QUERY PATH LABEL ─── -->
+      <rect x="14" y="205" width="110" height="20" rx="4" fill="rgba(59,130,246,.12)" stroke="rgba(59,130,246,.3)" stroke-width="1"/>
+      <text x="69" y="219" text-anchor="middle" fill="#3B82F6" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">QUERY PATH</text>
+
+      <!-- Query Path Boxes -->
+      <rect x="14" y="233" width="120" height="64" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="14" y="233" width="120" height="6" rx="10" fill="#3B82F6"/>
+      <text x="74" y="258" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">User Query</text>
+      <text x="74" y="275" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">"find similar docs"</text>
+      <text x="74" y="290" text-anchor="middle" fill="#64748B" font-family="JetBrains Mono,monospace" font-size="9">STEP 1</text>
+
+      <line x1="134" y1="265" x2="164" y2="265" stroke="#3B82F6" stroke-width="1.8" marker-end="url(#arr-blue)"/>
+
+      <rect x="164" y="233" width="130" height="64" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="164" y="233" width="130" height="6" rx="10" fill="#A78BFA"/>
+      <text x="229" y="258" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">Same Model ⚠️</text>
+      <text x="229" y="275" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">Query → vector</text>
+      <text x="229" y="290" text-anchor="middle" fill="#64748B" font-family="JetBrains Mono,monospace" font-size="9">STEP 2</text>
+
+      <line x1="294" y1="265" x2="324" y2="265" stroke="#3B82F6" stroke-width="1.8" marker-end="url(#arr-blue)"/>
+
+      <rect x="324" y="233" width="130" height="64" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="324" y="233" width="130" height="6" rx="10" fill="#00D4B8"/>
+      <text x="389" y="255" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">Similarity Search</text>
+      <text x="389" y="271" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">ANN in index</text>
+      <text x="389" y="286" text-anchor="middle" fill="#00D4B8" font-family="JetBrains Mono,monospace" font-size="9">Cosine / Euclidean</text>
+      <text x="389" y="297" text-anchor="middle" fill="#64748B" font-family="JetBrains Mono,monospace" font-size="9">STEP 3</text>
+
+      <line x1="454" y1="265" x2="484" y2="265" stroke="#3B82F6" stroke-width="1.8" marker-end="url(#arr-blue)"/>
+
+      <rect x="484" y="233" width="130" height="64" rx="10" fill="#111827" stroke="#3B82F6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="484" y="233" width="130" height="6" rx="10" fill="#3B82F6"/>
+      <text x="549" y="256" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="12" font-weight="700">Top-K Results</text>
+      <text x="549" y="272" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">5 most similar</text>
+      <text x="549" y="287" text-anchor="middle" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10">items returned</text>
+      <text x="549" y="300" text-anchor="middle" fill="#3B82F6" font-family="JetBrains Mono,monospace" font-size="9">STEP 4 ✓ DONE</text>
+
+      <!-- Vertical connector between write and query at index -->
+      <line x1="549" y1="148" x2="549" y2="233" stroke="#243048" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="558" y="196" fill="#64748B" font-family="Space Grotesk,sans-serif" font-size="9">read</text>
+
+      <!-- ─── SIMILARITY METRICS ─── -->
+      <rect x="14" y="365" width="258" height="110" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5"/>
+      <rect x="14" y="365" width="258" height="6" rx="10" fill="#A78BFA"/>
+      <text x="143" y="389" text-anchor="middle" fill="#A78BFA" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">SIMILARITY METRICS</text>
+      <text x="30" y="410" fill="#00D4B8" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700">Cosine</text>
+      <text x="100" y="410" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10"> 1−cos(θ) · angle only · text ★</text>
+      <text x="30" y="430" fill="#FBBF24" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700">Euclidean</text>
+      <text x="115" y="430" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10"> √Σ(xᵢ−yᵢ)²</text>
+      <text x="30" y="450" fill="#F472B6" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700">Dot Product</text>
+      <text x="120" y="450" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="10"> x·y = |x||y|cos(θ)</text>
+      <rect x="20" y="458" width="246" height="14" rx="4" fill="rgba(0,212,184,.1)"/>
+      <text x="143" y="469" text-anchor="middle" fill="#00D4B8" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="600">Text → cosine, almost always</text>
+
+      <!-- ─── ANN TRADE-OFF TRIANGLE ─── -->
+      <rect x="290" y="365" width="290" height="110" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5"/>
+      <rect x="290" y="365" width="290" height="6" rx="10" fill="#F472B6"/>
+      <text x="435" y="389" text-anchor="middle" fill="#F472B6" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">ANN TRADE-OFF — PICK TWO</text>
+      <!-- triangle -->
+      <polygon points="435,405 390,460 480,460" fill="none" stroke="#F472B6" stroke-width="1.5"/>
+      <text x="435" y="400" text-anchor="middle" fill="#00D4B8" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700">RECALL</text>
+      <text x="378" y="474" text-anchor="middle" fill="#3B82F6" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700">LATENCY</text>
+      <text x="494" y="474" text-anchor="middle" fill="#A78BFA" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700">MEMORY</text>
+      <text x="435" y="438" text-anchor="middle" fill="#F87171" font-family="Syne,sans-serif" font-size="13" font-weight="800">PICK 2</text>
+
+      <!-- ─── FILTERING ─── -->
+      <rect x="598" y="365" width="288" height="110" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5"/>
+      <rect x="598" y="365" width="288" height="6" rx="10" fill="#34D399"/>
+      <text x="742" y="389" text-anchor="middle" fill="#34D399" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">FILTERING & HYBRID SEARCH</text>
+
+      <rect x="610" y="398" width="80" height="20" rx="5" fill="#1E2A40" stroke="#243048"/>
+      <text x="650" y="412" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="10">Pre-filter</text>
+      <text x="700" y="412" fill="#F87171" font-family="JetBrains Mono,monospace" font-size="9">→ breaks recall</text>
+
+      <rect x="610" y="425" width="80" height="20" rx="5" fill="#1E2A40" stroke="#243048"/>
+      <text x="650" y="439" text-anchor="middle" fill="#fff" font-family="Space Grotesk,sans-serif" font-size="10">Post-filter</text>
+      <text x="700" y="439" fill="#FBBF24" font-family="JetBrains Mono,monospace" font-size="9">→ may miss results</text>
+
+      <rect x="610" y="452" width="80" height="20" rx="5" fill="rgba(52,211,153,.15)" stroke="rgba(52,211,153,.4)"/>
+      <text x="650" y="466" text-anchor="middle" fill="#34D399" font-family="Space Grotesk,sans-serif" font-size="10" font-weight="700">Hybrid ★</text>
+      <text x="700" y="466" fill="#34D399" font-family="JetBrains Mono,monospace" font-size="9">Sparse + Dense/RRF</text>
+
+      <!-- ─── DATABASES ROW ─── -->
+      <rect x="14" y="500" width="872" height="100" rx="10" fill="#111827" stroke="#243048" stroke-width="1.5"/>
+      <rect x="14" y="500" width="872" height="6" rx="10" fill="url(#hdr)"/>
+      <text x="450" y="522" text-anchor="middle" fill="#94A3B8" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">DATABASE LANDSCAPE</text>
+
+      <!-- DB pills -->
+      <g font-family="JetBrains Mono,monospace" font-size="10">
+        <rect x="26" y="532" width="80" height="28" rx="6" fill="rgba(59,130,246,.15)" stroke="rgba(59,130,246,.4)"/>
+        <text x="66" y="543" text-anchor="middle" fill="#3B82F6" font-weight="700">Pinecone</text>
+        <text x="66" y="555" text-anchor="middle" fill="#64748B" font-size="9">managed</text>
+
+        <rect x="116" y="532" width="80" height="28" rx="6" fill="rgba(0,212,184,.12)" stroke="rgba(0,212,184,.4)"/>
+        <text x="156" y="543" text-anchor="middle" fill="#00D4B8" font-weight="700">Weaviate</text>
+        <text x="156" y="555" text-anchor="middle" fill="#64748B" font-size="9">hybrid-native</text>
+
+        <rect x="206" y="532" width="80" height="28" rx="6" fill="rgba(167,139,250,.12)" stroke="rgba(167,139,250,.4)"/>
+        <text x="246" y="543" text-anchor="middle" fill="#A78BFA" font-weight="700">Qdrant</text>
+        <text x="246" y="555" text-anchor="middle" fill="#64748B" font-size="9">Rust speed</text>
+
+        <rect x="296" y="532" width="80" height="28" rx="6" fill="rgba(251,191,36,.12)" stroke="rgba(251,191,36,.4)"/>
+        <text x="336" y="543" text-anchor="middle" fill="#FBBF24" font-weight="700">Milvus</text>
+        <text x="336" y="555" text-anchor="middle" fill="#64748B" font-size="9">billion-scale</text>
+
+        <rect x="386" y="532" width="80" height="28" rx="6" fill="rgba(52,211,153,.12)" stroke="rgba(52,211,153,.4)"/>
+        <text x="426" y="543" text-anchor="middle" fill="#34D399" font-weight="700">pgvector</text>
+        <text x="426" y="555" text-anchor="middle" fill="#64748B" font-size="9">postgres-native</text>
+
+        <rect x="476" y="532" width="80" height="28" rx="6" fill="rgba(248,113,113,.12)" stroke="rgba(248,113,113,.4)"/>
+        <text x="516" y="543" text-anchor="middle" fill="#F87171" font-weight="700">Chroma</text>
+        <text x="516" y="555" text-anchor="middle" fill="#64748B" font-size="9">dev-friendly</text>
+
+        <rect x="566" y="532" width="80" height="28" rx="6" fill="rgba(244,114,182,.12)" stroke="rgba(244,114,182,.4)"/>
+        <text x="606" y="543" text-anchor="middle" fill="#F472B6" font-weight="700">LanceDB</text>
+        <text x="606" y="555" text-anchor="middle" fill="#64748B" font-size="9">serverless</text>
+
+        <rect x="656" y="532" width="80" height="28" rx="6" fill="rgba(96,165,250,.12)" stroke="rgba(96,165,250,.4)"/>
+        <text x="696" y="543" text-anchor="middle" fill="#60A5FA" font-weight="700">Redis</text>
+        <text x="696" y="555" text-anchor="middle" fill="#64748B" font-size="9">low-latency</text>
+      </g>
+
+      <!-- "When NOT to use" box -->
+      <rect x="750" y="530" width="126" height="64" rx="8" fill="rgba(248,113,113,.08)" stroke="rgba(248,113,113,.3)" stroke-width="1"/>
+      <text x="813" y="547" text-anchor="middle" fill="#F87171" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700">WHEN NOT TO USE</text>
+      <text x="760" y="562" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="9">• &lt; 10K vectors</text>
+      <text x="760" y="574" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="9">• Exact match only</text>
+      <text x="760" y="586" fill="#94A3B8" font-family="Space Grotesk,sans-serif" font-size="9">• Bad chunking</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  QUICK REFERENCE                                          -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="quickref">
+  <div class="section-header">
+    <div class="section-icon icon-teal">⚡</div>
+    <div>
+      <div class="section-label">Quick Reference</div>
+      <h2 class="section-title">One-Page Cheat Sheet</h2>
+    </div>
+  </div>
+
+  <div class="qr-table">
+    <div class="qr-row header">
+      <div class="qr-q">Question / Situation</div>
+      <div class="qr-a">Answer / Rule</div>
+    </div>
+    <div class="qr-row"><div class="qr-q">Which distance metric for text?</div><div class="qr-a">Cosine Similarity — always</div></div>
+    <div class="qr-row"><div class="qr-q">Default index type to use?</div><div class="qr-a">HNSW (fast, high recall)</div></div>
+    <div class="qr-row"><div class="qr-q">Can I use different models for write/query?</div><div class="qr-a danger">NO — must be the same model</div></div>
+    <div class="qr-row"><div class="qr-q">Dataset has fewer than 10K vectors?</div><div class="qr-a warn">Use in-memory / NumPy, not a vector DB</div></div>
+    <div class="qr-row"><div class="qr-q">Need exact keyword matching?</div><div class="qr-a warn">Use PostgreSQL, not a vector DB</div></div>
+    <div class="qr-row"><div class="qr-q">Need keyword + semantic search?</div><div class="qr-a">Hybrid search (BM25 + dense) via RRF</div></div>
+    <div class="qr-row"><div class="qr-q">Easiest production start?</div><div class="qr-a">Pinecone (managed, zero DevOps)</div></div>
+    <div class="qr-row"><div class="qr-q">Already on PostgreSQL?</div><div class="qr-a">Add pgvector extension</div></div>
+    <div class="qr-row"><div class="qr-q">Just prototyping / learning?</div><div class="qr-a">Chroma (local, instant setup)</div></div>
+    <div class="qr-row"><div class="qr-q">Need max speed + filtering?</div><div class="qr-a">Qdrant</div></div>
+    <div class="qr-row"><div class="qr-q">Billion-scale deployment?</div><div class="qr-a">Milvus</div></div>
+    <div class="qr-row"><div class="qr-q">Sub-millisecond latency?</div><div class="qr-a">Redis</div></div>
+    <div class="qr-row"><div class="qr-q">RAG results are bad?</div><div class="qr-a danger">Fix chunking first, then the DB</div></div>
+    <div class="qr-row"><div class="qr-q">Model upgraded to new version?</div><div class="qr-a warn">Budget for full re-embedding of all data</div></div>
+    <div class="qr-row"><div class="qr-q">ANN recall target for production?</div><div class="qr-a">≥ 95% recall, &lt; 50ms latency</div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  GLOSSARY                                                  -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section class="section" id="glossary">
+  <div class="section-header">
+    <div class="section-icon icon-purple">📖</div>
+    <div>
+      <div class="section-label">Reference</div>
+      <h2 class="section-title">Glossary of Key Terms</h2>
+    </div>
+  </div>
+
+  <div class="glossary">
+    <div class="gloss-item"><div class="gloss-term">ANN</div><div class="gloss-def">Approximate Nearest Neighbour — fast but approximate version of finding the closest vector</div></div>
+    <div class="gloss-item"><div class="gloss-term">BM25</div><div class="gloss-def">Best Match 25 — the classic keyword scoring algorithm used in Elasticsearch and Lucene</div></div>
+    <div class="gloss-item"><div class="gloss-term">Chunk</div><div class="gloss-def">A piece of a larger document, split into smaller units for embedding and storage</div></div>
+    <div class="gloss-item"><div class="gloss-term">Cosine Similarity</div><div class="gloss-def">Distance metric measuring the angle between two vectors (0 = identical, 2 = opposite)</div></div>
+    <div class="gloss-item"><div class="gloss-term">Dense Vector</div><div class="gloss-def">A vector where most values are non-zero; produced by neural embedding models</div></div>
+    <div class="gloss-item"><div class="gloss-term">Dimension</div><div class="gloss-def">A single number in a vector; modern embeddings typically have 768–3,072 dimensions</div></div>
+    <div class="gloss-item"><div class="gloss-term">Embedding</div><div class="gloss-def">A vector representation of data (text, image, audio) produced by an ML model</div></div>
+    <div class="gloss-item"><div class="gloss-term">HNSW</div><div class="gloss-def">Hierarchical Navigable Small World — most popular index type for fast ANN search in production</div></div>
+    <div class="gloss-item"><div class="gloss-term">Hybrid Search</div><div class="gloss-def">Combining sparse (keyword) and dense (vector) search results, merged via RRF</div></div>
+    <div class="gloss-item"><div class="gloss-term">IVF</div><div class="gloss-def">Inverted File Index — groups vectors into clusters for faster, memory-efficient search</div></div>
+    <div class="gloss-item"><div class="gloss-term">KNN</div><div class="gloss-def">K-Nearest Neighbours — finding the K closest vectors to a query (exact version of ANN)</div></div>
+    <div class="gloss-item"><div class="gloss-term">Multi-tenancy</div><div class="gloss-def">Serving multiple isolated customers from a single database instance</div></div>
+    <div class="gloss-item"><div class="gloss-term">PQ</div><div class="gloss-def">Product Quantization — lossy compression technique reducing vector storage by up to 96%</div></div>
+    <div class="gloss-item"><div class="gloss-term">RAG</div><div class="gloss-def">Retrieval-Augmented Generation — using vector search to give LLMs access to custom data</div></div>
+    <div class="gloss-item"><div class="gloss-term">Recall</div><div class="gloss-def">Fraction of true nearest neighbours returned (1.0 = perfect, 0.95 = industry target)</div></div>
+    <div class="gloss-item"><div class="gloss-term">RRF</div><div class="gloss-def">Reciprocal Rank Fusion — algorithm for merging multiple ranked search result lists</div></div>
+    <div class="gloss-item"><div class="gloss-term">Semantic Search</div><div class="gloss-def">Searching by meaning rather than exact keyword matching</div></div>
+    <div class="gloss-item"><div class="gloss-term">Sparse Vector</div><div class="gloss-def">A vector where most values are zero; used in BM25 / keyword search systems</div></div>
+    <div class="gloss-item"><div class="gloss-term">Top-K</div><div class="gloss-def">Returning the K most similar results to a query (e.g. Top-5 = 5 closest vectors)</div></div>
+    <div class="gloss-item"><div class="gloss-term">Vector Database</div><div class="gloss-def">A database optimised for storing, indexing, and similarity-searching vector embeddings</div></div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<div class="footer">
+  <p>Vector Databases — Complete Beginner's Notes &nbsp;·&nbsp; Based on the cheat sheet by <strong>@brijpandeyji</strong></p>
+  <p style="margin-top:6px">Expanded and annotated for complete beginners &nbsp;·&nbsp; Generated with Claude AI</p>
+</div>
+
+</div><!-- /page -->
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!--  SCRIPTS                                                  -->
+<!-- ════════════════════════════════════════════════════════ -->
+<script>
+/* ── Progress bar ── */
+window.addEventListener('scroll',()=>{
+  const el=document.documentElement;
+  const pct=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100;
+  document.getElementById('progress').style.width=pct+'%';
+});
+
+/* ── PDF Download ── */
+async function downloadPDF(){
+  const {jsPDF}=window.jspdf;
+  const btn=document.getElementById('dlBtn');
+  const orig=btn.innerHTML;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating PDF…';
+  btn.disabled=true;
+
+  try{
+    /* Capture the full page */
+    const el=document.getElementById('pageContent');
+
+    const canvas=await html2canvas(el,{
+      scale:1.8,
+      useCORS:true,
+      backgroundColor:'#0A0E1A',
+      windowWidth:960,
+      logging:false,
+      allowTaint:true,
+    });
+
+    const imgData=canvas.toDataURL('image/jpeg',0.88);
+    const pageW=210, pageH=297;          // A4 mm
+    const imgW=pageW;
+    const imgH=(canvas.height*pageW)/canvas.width;
+
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+
+    let posY=0;
+    while(posY<imgH){
+      if(posY>0) doc.addPage();
+      doc.addImage(imgData,'JPEG',0,-posY,imgW,imgH,undefined,'FAST');
+      posY+=pageH;
+    }
+
+    doc.save('Vector_Databases_Beginner_Notes.pdf');
+  }catch(e){
+    alert('PDF generation failed: '+e.message);
+    console.error(e);
+  }finally{
+    btn.innerHTML=orig;
+    btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>
