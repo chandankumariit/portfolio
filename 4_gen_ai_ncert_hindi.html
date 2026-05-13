@@ -1,0 +1,3389 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GenAI Mastery — Hinglish Notes Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;700&family=JetBrains+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --cream: #FFF8F0;
+  --paper: #FFFDF8;
+  --deep: #1A0A00;
+  --ink: #2D1B00;
+  --ink2: #4A3520;
+  --ink3: #7A6050;
+  --orange: #E8470A;
+  --orange2: #FF6B35;
+  --saffron: #FF9F1C;
+  --green: #2D7A1F;
+  --green2: #4CAF50;
+  --blue: #0047AB;
+  --blue2: #1565C0;
+  --cyan: #006D77;
+  --red: #C0392B;
+  --gold: #B8860B;
+  --gold2: #DAA520;
+  --purple: #6B21A8;
+  --pink: #D63384;
+  --border: #D4A574;
+  --border2: #E8C99A;
+  --shadow: rgba(139,90,43,0.15);
+  --fh: 'Baloo 2', sans-serif;
+  --fb: 'Baloo 2', sans-serif;
+  --fi: 'Libre Baskerville', serif;
+  --fm: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--fb);
+  background: #E8D5B7;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* ===== PAPER TEXTURE BACKGROUND ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== BOOK CONTAINER ===== */
+.book-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 20px 20px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== COVER PAGE ===== */
+.cover {
+  background: var(--paper);
+  border: 3px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 #B8975A, 8px 8px 20px rgba(0,0,0,0.25);
+  padding: 0;
+  margin-bottom: 30px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cover-top-band {
+  background: var(--orange);
+  height: 14px;
+}
+.cover-bottom-band {
+  background: var(--orange);
+  height: 14px;
+}
+
+.cover-inner {
+  padding: 40px 50px;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 29px,
+      rgba(212,165,116,0.3) 29px,
+      rgba(212,165,116,0.3) 30px
+    );
+}
+
+.cover-govt {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-family: var(--fm);
+}
+
+.cover-emblem {
+  text-align: center;
+  font-size: 50px;
+  margin: 10px 0;
+  line-height: 1;
+}
+
+.cover-ncert-tag {
+  text-align: center;
+  font-family: var(--fi);
+  font-size: 13px;
+  color: var(--ink2);
+  font-style: italic;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 0;
+}
+
+.cover-title-block {
+  text-align: center;
+  margin: 24px 0;
+  padding: 20px;
+  border: 2px solid var(--orange);
+  border-radius: 2px;
+  background: rgba(232,71,10,0.04);
+  position: relative;
+}
+
+.cover-title-block::before,
+.cover-title-block::after {
+  content: '◆';
+  position: absolute;
+  color: var(--orange);
+  font-size: 12px;
+}
+.cover-title-block::before { top: -8px; left: 50%; transform: translateX(-50%); background: var(--paper); padding: 0 6px; }
+.cover-title-block::after { bottom: -8px; left: 50%; transform: translateX(-50%); background: var(--paper); padding: 0 6px; }
+
+.cover-subject {
+  font-family: var(--fh);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.cover-main-title {
+  font-family: var(--fh);
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800;
+  color: var(--deep);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.cover-main-title span {
+  color: var(--orange);
+}
+
+.cover-subtitle {
+  font-family: var(--fi);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink2);
+  margin-top: 8px;
+}
+
+.cover-hindi {
+  text-align: center;
+  font-size: 18px;
+  color: var(--ink2);
+  font-weight: 600;
+  margin: 16px 0;
+  letter-spacing: 1px;
+}
+
+.cover-illustration {
+  text-align: center;
+  font-size: 80px;
+  margin: 16px 0;
+  filter: saturate(0.8);
+}
+
+.cover-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.cstat {
+  text-align: center;
+}
+.cstat-num {
+  font-family: var(--fh);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--orange);
+  line-height: 1;
+}
+.cstat-label {
+  font-size: 11px;
+  color: var(--ink3);
+  font-family: var(--fm);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cover-class-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 2px double var(--border);
+}
+
+.class-badge {
+  background: var(--orange);
+  color: white;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 6px 18px;
+  border-radius: 2px;
+  font-family: var(--fh);
+}
+
+.cover-year {
+  font-family: var(--fm);
+  font-size: 12px;
+  color: var(--ink3);
+}
+
+/* ===== CHAPTER PAGE BREAK ===== */
+.chapter-cover {
+  background: var(--paper);
+  border: 2px solid var(--border);
+  border-radius: 2px;
+  box-shadow: 4px 4px 0 var(--border2), 5px 5px 15px var(--shadow);
+  margin: 30px 0 0;
+  overflow: hidden;
+  page-break-before: always;
+}
+
+.chapter-band {
+  height: 8px;
+}
+.cb-orange { background: linear-gradient(90deg, var(--orange), var(--saffron)); }
+.cb-green { background: linear-gradient(90deg, var(--green), var(--green2)); }
+.cb-blue { background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+.cb-purple { background: linear-gradient(90deg, var(--purple), var(--pink)); }
+.cb-red { background: linear-gradient(90deg, var(--red), var(--orange)); }
+
+.chapter-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 36px 20px;
+  border-bottom: 2px solid var(--border2);
+  background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,248,240,0.9));
+}
+
+.chapter-num-big {
+  font-family: var(--fi);
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--border);
+  line-height: 1;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.chapter-meta {
+  flex: 1;
+}
+
+.chapter-label {
+  font-family: var(--fm);
+  font-size: 10px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+}
+
+.chapter-title {
+  font-family: var(--fh);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800;
+  color: var(--deep);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.chapter-title-hi {
+  font-size: 15px;
+  color: var(--orange);
+  font-weight: 600;
+}
+
+.chapter-emoji {
+  font-size: 56px;
+  flex-shrink: 0;
+}
+
+/* ===== PAGE CONTENT ===== */
+.page-content {
+  background: var(--paper);
+  border: 2px solid var(--border);
+  border-top: none;
+  padding: 36px 44px;
+  box-shadow: 4px 4px 0 var(--border2), 5px 5px 15px var(--shadow);
+  margin-bottom: 30px;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      rgba(212,165,116,0.25) 31px,
+      rgba(212,165,116,0.25) 32px
+    );
+}
+
+/* ===== HEADINGS ===== */
+h2.section-title {
+  font-family: var(--fh);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--deep);
+  margin: 32px 0 6px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--orange);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h2.section-title::before {
+  content: '§';
+  color: var(--orange);
+  font-family: var(--fi);
+  font-style: italic;
+}
+
+h3.sub-title {
+  font-family: var(--fh);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--blue2);
+  margin: 22px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h3.sub-title::before {
+  content: '▶';
+  font-size: 10px;
+  color: var(--saffron);
+}
+
+h4.mini-title {
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green);
+  margin: 16px 0 6px;
+}
+
+/* ===== PARAGRAPH ===== */
+p.para {
+  color: var(--ink2);
+  font-size: 14.5px;
+  line-height: 2;
+  margin-bottom: 14px;
+  text-align: justify;
+}
+
+p.para strong {
+  color: var(--deep);
+  font-weight: 700;
+}
+
+p.para em {
+  color: var(--orange);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ===== STORY BOX ===== */
+.story-box {
+  background: linear-gradient(135deg, #FFF3E0, #FFF8F0);
+  border: 2px solid var(--saffron);
+  border-left: 5px solid var(--saffron);
+  border-radius: 4px;
+  padding: 18px 22px;
+  margin: 18px 0;
+  position: relative;
+}
+
+.story-box::before {
+  content: '📖 Ek Choti si Kahani';
+  display: block;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--saffron);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.story-box p {
+  font-family: var(--fi);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.9;
+}
+
+/* ===== DEFINITION BOX ===== */
+.def-box {
+  background: #EEF4FF;
+  border: 1.5px solid #90B8F0;
+  border-left: 5px solid var(--blue2);
+  border-radius: 4px;
+  padding: 14px 20px;
+  margin: 14px 0;
+}
+
+.def-box::before {
+  content: '📘 Paribhasha (Definition)';
+  display: block;
+  font-family: var(--fh);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--blue2);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.def-box p {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.85;
+}
+
+/* ===== REMEMBER BOX ===== */
+.remember-box {
+  background: #FFF8DC;
+  border: 2px dashed var(--gold);
+  border-radius: 6px;
+  padding: 14px 20px;
+  margin: 14px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.remember-box .rem-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.remember-box .rem-body {
+  flex: 1;
+}
+
+.remember-box .rem-body strong {
+  display: block;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.remember-box .rem-body p {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+
+/* ===== IMPORTANT BOX ===== */
+.imp-box {
+  background: #FFF0F0;
+  border: 2px solid #F5A0A0;
+  border-left: 5px solid var(--red);
+  border-radius: 4px;
+  padding: 14px 20px;
+  margin: 14px 0;
+}
+
+.imp-box::before {
+  content: '⚠️ Bahut Zaroori! (Important)';
+  display: block;
+  font-family: var(--fh);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.imp-box p {
+  font-size: 13.5px;
+  color: var(--ink);
+  line-height: 1.8;
+}
+
+/* ===== FUN FACT ===== */
+.fun-fact {
+  background: linear-gradient(135deg, #F0FFF4, #E8F8FF);
+  border: 2px solid var(--green2);
+  border-radius: 8px;
+  padding: 14px 20px;
+  margin: 14px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.fun-fact .ff-icon { font-size: 26px; flex-shrink: 0; }
+
+.fun-fact .ff-body strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+  font-family: var(--fh);
+}
+
+.fun-fact .ff-body p {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+
+/* ===== ANALOGY BOX ===== */
+.analogy {
+  background: linear-gradient(135deg, #F8F0FF, #FFF0FA);
+  border: 2px solid #C8A0E8;
+  border-left: 5px solid var(--purple);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin: 14px 0;
+}
+
+.analogy::before {
+  content: '💡 Aise Samjho (Think of it like this...)';
+  display: block;
+  font-family: var(--fh);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.analogy p {
+  font-family: var(--fi);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.85;
+}
+
+/* ===== FLOW DIAGRAM ===== */
+.flow-container {
+  background: linear-gradient(135deg, #FFFCF8, #FFF8F0);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  margin: 18px 0;
+  overflow-x: auto;
+}
+
+.flow-title {
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.flow-title::before, .flow-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border2);
+}
+
+.flow-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.flow-step {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 24px;
+  text-align: center;
+  min-width: 260px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 2px 2px 0 var(--border2);
+}
+
+.flow-step.highlight {
+  border-color: var(--orange);
+  background: rgba(232,71,10,0.04);
+  box-shadow: 2px 2px 0 rgba(232,71,10,0.3);
+}
+
+.flow-step.green {
+  border-color: var(--green);
+  background: rgba(45,122,31,0.04);
+}
+
+.flow-step.blue {
+  border-color: var(--blue2);
+  background: rgba(21,101,192,0.04);
+}
+
+.flow-step.purple {
+  border-color: var(--purple);
+  background: rgba(107,33,168,0.04);
+}
+
+.fs-label {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 3px;
+}
+
+.fs-main {
+  font-family: var(--fh);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--deep);
+}
+
+.fs-sub {
+  font-size: 11px;
+  color: var(--ink3);
+  font-family: var(--fm);
+  margin-top: 2px;
+}
+
+.flow-arrow-down {
+  font-size: 20px;
+  color: var(--orange);
+  padding: 4px 0;
+  line-height: 1;
+}
+
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  justify-content: center;
+}
+
+.flow-row .flow-step {
+  min-width: 0;
+  flex: 1;
+  border-radius: 0;
+}
+
+.flow-row .flow-step:first-child { border-radius: 6px 0 0 6px; }
+.flow-row .flow-step:last-child { border-radius: 0 6px 6px 0; }
+
+.flow-row-arrow {
+  font-size: 18px;
+  color: var(--blue2);
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+/* ===== CODE BLOCK ===== */
+.code-block {
+  background: #1A1200;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 0;
+  margin: 14px 0;
+  overflow: hidden;
+  font-family: var(--fm);
+}
+
+.code-header {
+  background: #2D1B00;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.code-dots { display: flex; gap: 5px; }
+.code-dot { width: 10px; height: 10px; border-radius: 50%; }
+.cd-r { background: #FF5F57; }
+.cd-y { background: #FFBD2E; }
+.cd-g { background: #28CA41; }
+
+.code-lang {
+  font-size: 10px;
+  color: var(--border2);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-left: auto;
+}
+
+.code-body {
+  padding: 14px 18px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: #C8B99A;
+  overflow-x: auto;
+}
+
+.code-body .kw { color: #FF9F1C; font-weight: 500; }
+.code-body .fn { color: #66D9E8; }
+.code-body .str { color: #A8E6A3; }
+.code-body .cm { color: #7A6050; font-style: italic; }
+.code-body .num { color: #FFD700; }
+.code-body .cls { color: #FFA0A0; }
+.code-body .hl { color: #FFFFFF; font-weight: 600; }
+
+/* ===== TWO COLUMN GRID ===== */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0;
+}
+
+@media(max-width: 600px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 14px 0;
+}
+
+/* ===== MINI CARD ===== */
+.mini-card {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 6px;
+  padding: 14px;
+  box-shadow: 2px 2px 0 var(--border2);
+}
+
+.mc-title {
+  font-family: var(--fh);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mc-orange .mc-title { color: var(--orange); border-bottom: 2px solid var(--orange); padding-bottom: 5px; }
+.mc-blue .mc-title { color: var(--blue2); border-bottom: 2px solid var(--blue2); padding-bottom: 5px; }
+.mc-green .mc-title { color: var(--green); border-bottom: 2px solid var(--green); padding-bottom: 5px; }
+.mc-purple .mc-title { color: var(--purple); border-bottom: 2px solid var(--purple); padding-bottom: 5px; }
+.mc-red .mc-title { color: var(--red); border-bottom: 2px solid var(--red); padding-bottom: 5px; }
+.mc-gold .mc-title { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
+
+.mc-body {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+
+/* ===== BULLET LIST ===== */
+.bullet-list {
+  list-style: none;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.bullet-list li {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.7;
+  align-items: flex-start;
+}
+
+.bullet-list li::before {
+  content: '◆';
+  color: var(--orange);
+  font-size: 8px;
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+.bullet-list.bl-green li::before { color: var(--green); }
+.bullet-list.bl-blue li::before { color: var(--blue2); }
+.bullet-list.bl-purple li::before { color: var(--purple); }
+
+.bullet-list li strong { color: var(--deep); font-weight: 700; }
+
+/* ===== NUMBERED LIST ===== */
+.num-list {
+  counter-reset: nl;
+  list-style: none;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.num-list li {
+  counter-increment: nl;
+  display: flex;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.75;
+  align-items: flex-start;
+}
+
+.num-list li::before {
+  content: counter(nl);
+  background: var(--orange);
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* ===== TABLE ===== */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 14px 0;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  box-shadow: 3px 3px 0 var(--border2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  background: linear-gradient(135deg, var(--orange), var(--saffron));
+}
+
+thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: white;
+  border-right: 1px solid rgba(255,255,255,0.3);
+}
+
+tbody tr:nth-child(even) { background: #FFF8F0; }
+tbody tr:nth-child(odd) { background: white; }
+tbody tr:hover { background: #FFF0E0; }
+
+tbody td {
+  padding: 9px 14px;
+  font-size: 13px;
+  color: var(--ink2);
+  border-right: 1px solid var(--border2);
+  border-bottom: 1px solid var(--border2);
+  vertical-align: top;
+}
+
+td.td-hl { color: var(--deep); font-weight: 700; }
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: var(--fm);
+  font-weight: 600;
+}
+
+.tag-o { background: rgba(232,71,10,0.12); color: var(--orange); }
+.tag-b { background: rgba(0,71,171,0.12); color: var(--blue2); }
+.tag-g { background: rgba(45,122,31,0.12); color: var(--green); }
+.tag-p { background: rgba(107,33,168,0.12); color: var(--purple); }
+
+/* ===== FORMULA BOX ===== */
+.formula-box {
+  background: #F0F8FF;
+  border: 2px solid #90B8F0;
+  border-radius: 8px;
+  padding: 16px 22px;
+  margin: 14px 0;
+  text-align: center;
+}
+
+.formula-name {
+  font-family: var(--fh);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue2);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.formula-eq {
+  font-family: var(--fm);
+  font-size: 16px;
+  color: var(--blue2);
+  background: white;
+  border: 1px solid #90B8F0;
+  border-radius: 6px;
+  padding: 10px 20px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.formula-explain {
+  font-size: 12.5px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+
+/* ===== ARCHITECTURE SVG BOX ===== */
+.arch-box {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 0;
+  margin: 16px 0;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 var(--border2);
+}
+
+.arch-title {
+  background: linear-gradient(135deg, var(--deep), var(--ink));
+  color: var(--saffron);
+  font-family: var(--fh);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.arch-box svg { display: block; width: 100%; }
+
+/* ===== COMPARE TABLE ===== */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0;
+}
+@media(max-width:600px) { .compare-grid { grid-template-columns: 1fr; } }
+
+.cmp-card {
+  background: white;
+  border: 2px solid var(--border2);
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 2px 2px 0 var(--border2);
+}
+
+.cmp-title {
+  font-family: var(--fh);
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid;
+}
+
+.cmp-title.ct-o { color: var(--orange); border-color: var(--orange); }
+.cmp-title.ct-b { color: var(--blue2); border-color: var(--blue2); }
+.cmp-title.ct-g { color: var(--green); border-color: var(--green); }
+
+.pro-list, .con-list { list-style: none; margin-top: 6px; }
+.pro-list li, .con-list li {
+  font-size: 13px;
+  color: var(--ink2);
+  margin-bottom: 5px;
+  display: flex;
+  gap: 8px;
+  line-height: 1.5;
+}
+.pro-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.con-list li::before { content: '✗'; color: var(--red); font-weight: 700; flex-shrink: 0; }
+
+/* ===== MILESTONE STEPS ===== */
+.milestone-row {
+  display: flex;
+  gap: 0;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.ms {
+  flex: 1;
+  min-width: 110px;
+  background: white;
+  border: 1.5px solid var(--border2);
+  padding: 12px 8px;
+  text-align: center;
+  position: relative;
+}
+
+.ms:first-child { border-radius: 6px 0 0 6px; }
+.ms:last-child { border-radius: 0 6px 6px 0; }
+
+.ms:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--orange);
+  font-size: 18px;
+  font-weight: 700;
+  z-index: 1;
+  background: var(--paper);
+  padding: 0 4px;
+}
+
+.ms-n {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.ms-t {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--deep);
+  margin-bottom: 3px;
+  font-family: var(--fh);
+}
+
+.ms-d {
+  font-size: 11px;
+  color: var(--ink3);
+  line-height: 1.3;
+}
+
+/* ===== ACTIVITY BOX ===== */
+.activity-box {
+  background: linear-gradient(135deg, #F0FFF4, #E8FFEE);
+  border: 2px solid var(--green2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 14px 0;
+}
+
+.activity-box::before {
+  content: '🎯 Try Karo! (Activity)';
+  display: block;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.activity-box p, .activity-box ol {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.8;
+}
+
+/* ===== QUESTION BOX ===== */
+.question-box {
+  background: #FFF8DC;
+  border: 2px solid var(--gold2);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  display: flex;
+  gap: 12px;
+}
+
+.q-icon { font-size: 22px; flex-shrink: 0; }
+
+.q-body strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--deep);
+  margin-bottom: 4px;
+}
+
+.q-body p {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+
+/* ===== INTERVIEW Q ===== */
+.iq-container { counter-reset: iq; }
+
+.iq-item {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 6px;
+  padding: 14px 18px 14px 52px;
+  margin-bottom: 10px;
+  position: relative;
+  box-shadow: 2px 2px 0 var(--border2);
+}
+
+.iq-item::before {
+  counter-increment: iq;
+  content: 'Q' counter(iq);
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--fh);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+.iq-q {
+  font-weight: 700;
+  color: var(--deep);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.iq-a {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+
+/* ===== QUICK REF ===== */
+.qref {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 14px 0;
+  box-shadow: 3px 3px 0 var(--border2);
+}
+
+.qref-head {
+  background: linear-gradient(135deg, var(--deep), var(--ink));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.qref-head div {
+  padding: 9px 16px;
+  font-family: var(--fm);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--border2);
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.qref-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--border2);
+}
+
+.qref-row:last-child { border-bottom: none; }
+.qref-row:hover { background: #FFF8F0; }
+
+.qref-q {
+  padding: 9px 16px;
+  font-size: 13px;
+  color: var(--ink2);
+  border-right: 1px solid var(--border2);
+}
+
+.qref-a {
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue2);
+  font-family: var(--fm);
+}
+
+.qref-a.danger { color: var(--red); }
+.qref-a.warn { color: var(--gold); }
+
+/* ===== GLOSSARY ===== */
+.gloss-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0;
+}
+@media(max-width:600px) { .gloss-grid { grid-template-columns: 1fr; } }
+
+.gloss-item {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 5px;
+  padding: 10px 14px;
+  box-shadow: 1px 1px 0 var(--border2);
+}
+
+.gloss-term {
+  font-family: var(--fh);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gloss-def {
+  font-size: 12.5px;
+  color: var(--ink2);
+  line-height: 1.55;
+}
+
+/* ===== TOC ===== */
+.toc-page {
+  background: var(--paper);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  padding: 32px 40px;
+  margin-bottom: 30px;
+  box-shadow: 4px 4px 0 var(--border2), 5px 5px 15px var(--shadow);
+}
+
+.toc-title {
+  font-family: var(--fi);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--deep);
+  text-align: center;
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.toc-sub {
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink3);
+  font-family: var(--fm);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 2px double var(--border);
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+@media(max-width:600px) { .toc-grid { grid-template-columns: 1fr; } }
+
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--ink2);
+  font-size: 13px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.toc-item:hover {
+  background: #FFF0E0;
+  border-color: var(--border2);
+  color: var(--orange);
+}
+
+.toc-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: white;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toc-num.tn-green { background: var(--green); }
+.toc-num.tn-blue { background: var(--blue2); }
+.toc-num.tn-purple { background: var(--purple); }
+.toc-num.tn-gold { background: var(--gold); }
+
+/* ===== PAGINATION ===== */
+.page-num {
+  text-align: center;
+  font-family: var(--fm);
+  font-size: 11px;
+  color: var(--ink3);
+  padding: 10px 0 0;
+  border-top: 1px solid var(--border2);
+  margin-top: 24px;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 28px 0 18px;
+}
+
+.sd-line { flex: 1; height: 1px; background: var(--border2); }
+.sd-text {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  padding: 4px 10px;
+  background: var(--border2);
+  border-radius: 2px;
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  margin: 16px 0;
+  padding-left: 24px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--orange), var(--blue2), var(--green));
+}
+
+.tl-item {
+  position: relative;
+  padding: 0 0 20px 30px;
+}
+
+.tl-dot {
+  position: absolute;
+  left: -18px;
+  top: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border: 2px solid;
+  background: white;
+}
+
+.tl-dot.d-o { border-color: var(--orange); color: var(--orange); }
+.tl-dot.d-b { border-color: var(--blue2); color: var(--blue2); }
+.tl-dot.d-g { border-color: var(--green); color: var(--green); }
+.tl-dot.d-p { border-color: var(--purple); color: var(--purple); }
+
+.tl-title {
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--deep);
+  margin-bottom: 4px;
+}
+
+.tl-body {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+
+/* ===== FAB DOWNLOAD BUTTON ===== */
+.fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--orange), var(--saffron));
+  color: white;
+  font-weight: 800;
+  font-family: var(--fh);
+  padding: 14px 26px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 6px 24px rgba(232,71,10,0.4);
+  transition: all 0.3s;
+  letter-spacing: 0.3px;
+}
+
+.fab:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(232,71,10,0.55);
+}
+
+.fab:disabled {
+  background: var(--border2);
+  color: var(--ink3);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--saffron), var(--green));
+  width: 0%;
+  z-index: 9998;
+  transition: width 0.1s;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 30px 0 20px;
+  color: var(--ink3);
+  font-size: 12px;
+  font-family: var(--fm);
+  border-top: 2px double var(--border);
+  margin-top: 20px;
+}
+
+footer strong { color: var(--orange); }
+
+/* ===== HIGHLIGHT TEXT ===== */
+.hl-orange { color: var(--orange); font-weight: 700; }
+.hl-blue { color: var(--blue2); font-weight: 700; }
+.hl-green { color: var(--green); font-weight: 700; }
+.hl-purple { color: var(--purple); font-weight: 700; }
+.hl-red { color: var(--red); font-weight: 700; }
+
+/* ===== SUMMARY BOX ===== */
+.summary-box {
+  background: linear-gradient(135deg, #FFF8F0, #FFFCF8);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 18px 0;
+}
+
+.summary-box::before {
+  content: '📝 Chapter Summary — Is Chapter Mein Humne Seekha';
+  display: block;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border2);
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="prog"></div>
+
+<button class="fab" id="dlBtn" onclick="downloadPDF()">
+  📄 PDF Download Karo
+</button>
+
+<div class="book-wrapper" id="book">
+
+<!-- ══════════════════════════════════════════ -->
+<!--  COVER PAGE                                 -->
+<!-- ══════════════════════════════════════════ -->
+<div class="cover" id="cover">
+  <div class="cover-top-band"></div>
+  <div class="cover-inner">
+    <div class="cover-govt">Rashtriya Shiksha Parishad · भारत सरकार</div>
+    <div class="cover-emblem">🏛️</div>
+    <div class="cover-ncert-tag">National Council of Educational Research and Training</div>
+
+    <div class="cover-title-block">
+      <div class="cover-subject">Computer Science / Artificial Intelligence</div>
+      <div class="cover-main-title">
+        GenAI<br><span>Mastery</span>
+      </div>
+      <div class="cover-subtitle">Artificial Intelligence ki Poori Pathyakram</div>
+    </div>
+
+    <div class="cover-hindi">
+      "Artificial Intelligence — Bilkul Shuruaat Se Expert Tak"
+    </div>
+
+    <div class="cover-illustration">🧠⚡🤖</div>
+
+    <div class="cover-stats">
+      <div class="cstat">
+        <div class="cstat-num">9</div>
+        <div class="cstat-label">Adhyay (Chapters)</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-num">80+</div>
+        <div class="cstat-label">Topics</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-num">500+</div>
+        <div class="cstat-label">Concepts</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-num">∞</div>
+        <div class="cstat-label">Samajhne ki Gehraai</div>
+      </div>
+    </div>
+
+    <div class="cover-class-tag">
+      <div class="class-badge">Class XI–XII / Beginners to Expert</div>
+      <div class="cover-year">2025–26 Edition</div>
+    </div>
+  </div>
+  <div class="cover-bottom-band"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  TABLE OF CONTENTS                          -->
+<!-- ══════════════════════════════════════════ -->
+<div class="toc-page" id="toc">
+  <div class="toc-title">Vishay Soochi</div>
+  <div class="toc-sub">Table of Contents · विषय सूची</div>
+  <div class="toc-grid">
+    <a href="#ch1" class="toc-item"><span class="toc-num">1</span> Computer Kya Hota Hai?</a>
+    <a href="#ch2" class="toc-item"><span class="toc-num tn-blue">2</span> AI Kya Hai? — Pehli Nazar</a>
+    <a href="#ch3" class="toc-item"><span class="toc-num">3</span> Neural Networks — Dimaag ka Model</a>
+    <a href="#ch4" class="toc-item"><span class="toc-num tn-blue">4</span> CNN — Aankhon Wali Machine</a>
+    <a href="#ch5" class="toc-item"><span class="toc-num tn-green">5</span> Transformer — AI ka Superpower</a>
+    <a href="#ch6" class="toc-item"><span class="toc-num tn-purple">6</span> LLM — Baat Karne Wala AI</a>
+    <a href="#ch7" class="toc-item"><span class="toc-num">7</span> RAG — AI ko Memory Dena</a>
+    <a href="#ch8" class="toc-item"><span class="toc-num tn-blue">8</span> AI Agents — Khud Kaam Karne Wale</a>
+    <a href="#ch9" class="toc-item"><span class="toc-num tn-green">9</span> Production — Real World Mein</a>
+    <a href="#interview" class="toc-item"><span class="toc-num tn-gold">★</span> Interview Preparation</a>
+    <a href="#quickref" class="toc-item"><span class="toc-num tn-purple">⚡</span> Quick Reference</a>
+    <a href="#glossary" class="toc-item"><span class="toc-num tn-gold">📖</span> Shabdaavali (Glossary)</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 1 — COMPUTER KYA HOTA HAI?                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch1">
+  <div class="chapter-band cb-orange"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">1</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Ek · Chapter One</div>
+      <div class="chapter-title">Computer aur Programming — Shuruaat</div>
+      <div class="chapter-title-hi">नींव (Foundation) — Bilkul Zero Se</div>
+    </div>
+    <div class="chapter-emoji">💻</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <h2 class="section-title">Computer Kya Hota Hai?</h2>
+
+  <div class="story-box">
+    <p>Imagine karo — ek bahut hi tez dimag wala insaan hai jisko tum koi bhi kaam dete ho, aur woh bilkul exactly wohi kaam karta hai jo tum kehte ho — na zyada, na kam. Computer bhi aisa hi ek machine hai. Tum usse batao "2+2 karo" — woh bolega 4. Tum batao "mujhe picture dikhao" — woh dikhayega. Lekin woh khud se kuch nahi sochta... <strong>abhi tak!</strong></p>
+  </div>
+
+  <p class="para">Computer ek electronic machine hai jo <em>data ko process karke information produce karta hai</em>. Yeh kaam kuch basic steps mein hota hai:</p>
+
+  <div class="flow-container">
+    <div class="flow-title">Computer ka Basic Kaam</div>
+    <div class="flow-row">
+      <div class="flow-step highlight">
+        <div class="fs-label">Input</div>
+        <div class="fs-main">Data Lo</div>
+        <div class="fs-sub">Keyboard, Mouse, Camera</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step blue">
+        <div class="fs-label">Process</div>
+        <div class="fs-main">Kaam Karo</div>
+        <div class="fs-sub">CPU Calculate karta hai</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step green">
+        <div class="fs-label">Output</div>
+        <div class="fs-main">Result Do</div>
+        <div class="fs-sub">Screen, Speaker, Print</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Traditional Programming vs. Machine Learning</h3>
+
+  <div class="compare-grid">
+    <div class="cmp-card">
+      <div class="cmp-title ct-o">⚙️ Traditional Programming</div>
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:8px">Tum rules likhte ho, computer follow karta hai</p>
+      <ul class="pro-list">
+        <li>Clear aur predictable</li>
+        <li>Debug karna easy</li>
+      </ul>
+      <ul class="con-list">
+        <li>Har cheez ke liye rules likhne padte hain</li>
+        <li>Handwriting recognize karna? Impossible!</li>
+      </ul>
+      <div style="margin-top:10px;padding:8px;background:#FFF8F0;border-radius:4px;font-size:12px;font-family:var(--fm);color:var(--ink3)">
+        Rules + Data → <strong style="color:var(--orange)">Answer</strong>
+      </div>
+    </div>
+    <div class="cmp-card">
+      <div class="cmp-title ct-b">🧠 Machine Learning</div>
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:8px">Tum data dete ho, computer rules khud seekhta hai</p>
+      <ul class="pro-list">
+        <li>Khud seekhta hai patterns</li>
+        <li>Handwriting, faces sab pehchan sakta hai</li>
+      </ul>
+      <ul class="con-list">
+        <li>Bahut data chahiye</li>
+        <li>Black box — andar kya hota hai?</li>
+      </ul>
+      <div style="margin-top:10px;padding:8px;background:#EEF4FF;border-radius:4px;font-size:12px;font-family:var(--fm);color:var(--ink3)">
+        Data + Answers → <strong style="color:var(--blue2)">Rules khud seekho!</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <p>Socho ek baccha hai jo pehli baar "billi" dekhta hai. Uski maa kehti hai "yeh billi hai". Phir ek aur billi dikhti hai — alag rang ki — maa phir bolti hai "yeh bhi billi hai". Dhire dhire baccha samajh jaata hai ki billi kaisi dikhti hai — bina kisi rule book ke! Yahi <strong>Machine Learning</strong> hai. Lakhs of examples dikho, patterns seekho, aur phir khud identify karo!</p>
+  </div>
+
+  <div class="page-num">— 3 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 2 — AI KYA HAI?                                       -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch2">
+  <div class="chapter-band cb-blue"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">2</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Do · Chapter Two</div>
+      <div class="chapter-title">Artificial Intelligence — Pehli Nazar</div>
+      <div class="chapter-title-hi">AI kya hai aur yeh kaam kaise karta hai?</div>
+    </div>
+    <div class="chapter-emoji">🤖</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <h2 class="section-title">AI Ka Poora Pariwar</h2>
+
+  <p class="para">AI (Artificial Intelligence) ek bada umbrella term hai. Jaise "khana" ke andar roti, sabzi, biryani sab aata hai — usi tarah AI ke andar bahut saari cheezein aati hain. Neeche dekho poora pariwar:</p>
+
+  <div class="arch-box">
+    <div class="arch-title">🗺️ AI Family Tree — AI ka Parivaar</div>
+    <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+      <rect width="760" height="380" fill="#FFFDF8"/>
+      <!-- Root -->
+      <rect x="280" y="20" width="200" height="50" rx="8" fill="#E8470A" stroke="#C03A08" stroke-width="2"/>
+      <text x="380" y="42" text-anchor="middle" fill="white" font-family="Baloo 2,sans-serif" font-size="14" font-weight="800">Artificial Intelligence</text>
+      <text x="380" y="60" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono,monospace" font-size="10">AI (1950s se ab tak)</text>
+
+      <!-- Line to ML -->
+      <line x1="380" y1="70" x2="200" y2="120" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+      <!-- Line to Expert -->
+      <line x1="380" y1="70" x2="560" y2="120" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+
+      <!-- Machine Learning -->
+      <rect x="80" y="120" width="240" height="50" rx="8" fill="#0047AB" stroke="#003A8C" stroke-width="2"/>
+      <text x="200" y="142" text-anchor="middle" fill="white" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">Machine Learning</text>
+      <text x="200" y="160" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono,monospace" font-size="10">Data se seekhna (1980s+)</text>
+
+      <!-- Expert Systems -->
+      <rect x="440" y="120" width="240" height="50" rx="8" fill="#6B21A8" stroke="#5B1898" stroke-width="2"/>
+      <text x="560" y="142" text-anchor="middle" fill="white" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">Expert Systems</text>
+      <text x="560" y="160" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono,monospace" font-size="10">Rule-based knowledge</text>
+
+      <!-- Lines from ML -->
+      <line x1="200" y1="170" x2="120" y2="220" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+      <line x1="200" y1="170" x2="280" y2="220" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+
+      <!-- Deep Learning -->
+      <rect x="20" y="220" width="200" height="50" rx="8" fill="#2D7A1F" stroke="#236617" stroke-width="2"/>
+      <text x="120" y="242" text-anchor="middle" fill="white" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">Deep Learning</text>
+      <text x="120" y="260" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono,monospace" font-size="10">Neural Networks (2010s+)</text>
+
+      <!-- Classical ML -->
+      <rect x="240" y="220" width="200" height="50" rx="8" fill="#006D77" stroke="#005A63" stroke-width="2"/>
+      <text x="340" y="242" text-anchor="middle" fill="white" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">Classical ML</text>
+      <text x="340" y="260" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono,monospace" font-size="10">SVM, Trees, Regression</text>
+
+      <!-- Line from DL -->
+      <line x1="120" y1="270" x2="120" y2="310" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+
+      <!-- GenAI -->
+      <rect x="20" y="310" width="360" height="52" rx="8" fill="#B8860B" stroke="#9A7008" stroke-width="2"/>
+      <text x="200" y="333" text-anchor="middle" fill="white" font-family="Baloo 2,sans-serif" font-size="14" font-weight="800">⭐ Generative AI (GenAI)</text>
+      <text x="200" y="352" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="JetBrains Mono,monospace" font-size="10">GPT, Claude, Gemini, Stable Diffusion (2022+)</text>
+
+      <!-- You are here -->
+      <text x="440" y="340" fill="#E8470A" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">← Yahan Hain Hum! 🎯</text>
+      <text x="440" y="360" fill="#7A6050" font-family="JetBrains Mono,monospace" font-size="10">Is book mein yahi padhenge</text>
+    </svg>
+  </div>
+
+  <h3 class="sub-title">AI ke Types — Teen Tarah ki AI</h3>
+
+  <div class="grid3">
+    <div class="mini-card mc-orange">
+      <div class="mc-title">🐣 Narrow AI</div>
+      <div class="mc-body">Sirf ek kaam karta hai. Chess khelna, ya tumhara chehra pehchanna — bas ek cheez mein mahir. <strong>Abhi hum yahaan hain.</strong></div>
+    </div>
+    <div class="mini-card mc-blue">
+      <div class="mc-title">🧠 General AI (AGI)</div>
+      <div class="mc-body">Insaan jaisa dimag — har kaam kar sake. Reading, cooking, coding sab kuch. <strong>Abhi exist nahi karta.</strong></div>
+    </div>
+    <div class="mini-card mc-purple">
+      <div class="mc-title">🚀 Super AI (ASI)</div>
+      <div class="mc-body">Insaan se hazaaron guna tez dimag. Science fiction mein hai. <strong>Future ki baat hai.</strong></div>
+    </div>
+  </div>
+
+  <div class="fun-fact">
+    <div class="ff-icon">🤯</div>
+    <div class="ff-body">
+      <strong>Interesting Fact!</strong>
+      <p>ChatGPT ne 5 din mein 1 million users haasiyl kiye! Compare karo — Netflix ko 3.5 saal lage the. Yeh hai AI ki taakat!</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">Machine Learning — Data se Seekhna</h2>
+
+  <p class="para">Machine Learning mein teen main types hote hain. Samjho kaise:</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Matlab</th>
+          <th>Example</th>
+          <th>Kab Use Karein</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-hl">Supervised Learning</td>
+          <td>Labeled data se seekhna</td>
+          <td>1000 cat photos + labels → naya cat pehchano</td>
+          <td>Jab answers pata ho</td>
+        </tr>
+        <tr>
+          <td class="td-hl">Unsupervised Learning</td>
+          <td>Bina labels ke patterns dhundho</td>
+          <td>Customers ko automatically groups mein baanto</td>
+          <td>Jab patterns dhundhe ho</td>
+        </tr>
+        <tr>
+          <td class="td-hl">Reinforcement Learning</td>
+          <td>Trial-error + reward se seekhna</td>
+          <td>AlphaGo ne chess seekhi — khud se!</td>
+          <td>Games, robots</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-num">— 8 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 3 — NEURAL NETWORKS                                   -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch3">
+  <div class="chapter-band cb-orange"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">3</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Teen · Chapter Three</div>
+      <div class="chapter-title">Neural Networks — Dimagh ka Digital Model</div>
+      <div class="chapter-title-hi">🧠 Neurons se Neural Networks tak</div>
+    </div>
+    <div class="chapter-emoji">🧠</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <h2 class="section-title">Hamara Dimagh Kaise Kaam Karta Hai?</h2>
+
+  <div class="story-box">
+    <p>Socho — pehli baar tum bicycle chalana seekh rahe ho. Tum girte ho, maa pakad leti hai. Phir dobaara try karo — thoda balance aaya. Baar baar karne ke baad — bicycle chal gayi! Tumhara dimag neural connections bana raha tha. <br/><br/>Jab tum koi cheez baar baar karte ho, woh connections mazboot hote hain (synaptic strength badhti hai). Yahi idea Neural Networks mein use kiya gaya!</p>
+  </div>
+
+  <div class="def-box">
+    <p><strong>Neural Network</strong> ek mathematical model hai jo human brain ke neurons ki tarah kaam karta hai. Yeh <em>interconnected nodes (neurons)</em> ka ek network hota hai jo data se patterns seekhta hai.</p>
+  </div>
+
+  <h3 class="sub-title">Ek Neuron Kaise Kaam Karta Hai?</h3>
+
+  <div class="arch-box">
+    <div class="arch-title">🔬 Ek Neuron ka Anatomy</div>
+    <svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="740" height="200" fill="white"/>
+      <!-- Inputs -->
+      <circle cx="60" cy="60" r="24" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/>
+      <text x="60" y="56" text-anchor="middle" fill="#0047AB" font-family="Baloo 2" font-size="11" font-weight="700">x₁</text>
+      <text x="60" y="72" text-anchor="middle" fill="#0047AB" font-family="JetBrains Mono" font-size="9">0.5</text>
+
+      <circle cx="60" cy="130" r="24" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/>
+      <text x="60" y="126" text-anchor="middle" fill="#0047AB" font-family="Baloo 2" font-size="11" font-weight="700">x₂</text>
+      <text x="60" y="142" text-anchor="middle" fill="#0047AB" font-family="JetBrains Mono" font-size="9">0.8</text>
+
+      <circle cx="60" cy="168" r="24" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/>
+      <text x="60" y="164" text-anchor="middle" fill="#0047AB" font-family="Baloo 2" font-size="11" font-weight="700">x₃</text>
+      <text x="60" y="180" text-anchor="middle" fill="#0047AB" font-family="JetBrains Mono" font-size="9">0.2</text>
+
+      <!-- Weights on lines -->
+      <line x1="84" y1="68" x2="210" y2="100" stroke="#D4A574" stroke-width="2"/>
+      <text x="145" y="75" fill="#E8470A" font-family="JetBrains Mono" font-size="10" font-weight="700">w₁=0.7</text>
+      
+      <line x1="84" y1="130" x2="210" y2="108" stroke="#D4A574" stroke-width="2"/>
+      <text x="130" y="128" fill="#E8470A" font-family="JetBrains Mono" font-size="10" font-weight="700">w₂=0.4</text>
+      
+      <line x1="84" y1="162" x2="210" y2="114" stroke="#D4A574" stroke-width="2"/>
+      <text x="130" y="158" fill="#E8470A" font-family="JetBrains Mono" font-size="10" font-weight="700">w₃=0.9</text>
+
+      <!-- Summation Node -->
+      <circle cx="270" cy="108" r="44" fill="#FFF3E0" stroke="#E8470A" stroke-width="2.5"/>
+      <text x="270" y="100" text-anchor="middle" fill="#E8470A" font-family="Libre Baskerville,serif" font-size="20" font-style="italic">Σ</text>
+      <text x="270" y="118" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">w₁x₁+w₂x₂</text>
+      <text x="270" y="130" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">+w₃x₃+bias</text>
+
+      <!-- Activation -->
+      <line x1="314" y1="108" x2="400" y2="108" stroke="#D4A574" stroke-width="2"/>
+      <rect x="400" y="82" width="120" height="52" rx="8" fill="#F0FFF4" stroke="#2D7A1F" stroke-width="2"/>
+      <text x="460" y="104" text-anchor="middle" fill="#2D7A1F" font-family="Baloo 2" font-size="12" font-weight="700">Activation</text>
+      <text x="460" y="118" text-anchor="middle" fill="#2D7A1F" font-family="JetBrains Mono" font-size="10">f(x) = ReLU</text>
+      <text x="460" y="130" text-anchor="middle" fill="#2D7A1F" font-family="JetBrains Mono" font-size="9">max(0, x)</text>
+
+      <!-- Output -->
+      <line x1="520" y1="108" x2="590" y2="108" stroke="#D4A574" stroke-width="2"/>
+      <circle cx="640" cy="108" r="40" fill="#FFF3E0" stroke="#E8470A" stroke-width="2.5"/>
+      <text x="640" y="104" text-anchor="middle" fill="#E8470A" font-family="Baloo 2" font-size="12" font-weight="700">Output</text>
+      <text x="640" y="120" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="11">0.73</text>
+
+      <!-- Labels -->
+      <text x="60" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="10">Inputs</text>
+      <text x="270" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="10">Weights × Inputs</text>
+      <text x="460" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="10">Non-linearity</text>
+      <text x="640" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="10">Result</text>
+    </svg>
+  </div>
+
+  <div class="remember-box">
+    <div class="rem-icon">💡</div>
+    <div class="rem-body">
+      <strong>Yaad Rakho!</strong>
+      <p><strong>Weight</strong> = kitna important hai yeh input? (jaise exam mein Math ke marks zyada count hote hain)<br/><strong>Bias</strong> = ek extra adjustment, jaise "by default mujhe thodi positivity chahiye"<br/><strong>Activation Function</strong> = decide karta hai ki neuron "fire" kare ya nahi</p>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Activation Functions — Types aur Use</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Function</th><th>Formula</th><th>Output Range</th><th>Kab Use Karein</th><th>Problem</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-hl">Sigmoid</td>
+          <td><span class="tag tag-b">1/(1+e⁻ˣ)</span></td>
+          <td>(0, 1)</td>
+          <td>Binary classification output</td>
+          <td>Deep nets mein gradient vanish hota hai</td>
+        </tr>
+        <tr>
+          <td class="td-hl" style="color:var(--orange)">ReLU ⭐</td>
+          <td><span class="tag tag-o">max(0, x)</span></td>
+          <td>[0, ∞)</td>
+          <td>Zyaatar hidden layers</td>
+          <td>Negative inputs hamesha 0 — "dying ReLU"</td>
+        </tr>
+        <tr>
+          <td class="td-hl" style="color:var(--green)">GELU ⭐⭐</td>
+          <td><span class="tag tag-g">x·Φ(x)</span></td>
+          <td>(−∞, ∞)</td>
+          <td>GPT, BERT, Claude mein</td>
+          <td>Thodi slow computation</td>
+        </tr>
+        <tr>
+          <td class="td-hl">Softmax</td>
+          <td><span class="tag tag-p">eˣⁱ/Σeˣʲ</span></td>
+          <td>(0,1) sum=1</td>
+          <td>Multi-class output layer</td>
+          <td>Sirf output layer mein</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">Backpropagation — Galti Se Seekhna</h2>
+
+  <div class="story-box">
+    <p>Sochi ek chef soup bana raha hai. Usne taste kiya — "bahut namak hai!" 🧂<br/>Ab woh sochta hai: "Kaunse step mein zyada namak pada? Aloo boil karte waqt? Ya gravy mein?"<br/>Woh har step trace back karta hai aur adjust karta hai. Yahi <strong>Backpropagation</strong> hai — network apni galti trace karke weights adjust karta hai!</p>
+  </div>
+
+  <div class="flow-container">
+    <div class="flow-title">Training Loop — Seekhne ka Cycle</div>
+    <div class="milestone-row">
+      <div class="ms">
+        <div class="ms-n">Step 1</div>
+        <div class="ms-t">Forward Pass</div>
+        <div class="ms-d">Data daalo, answer nikalo</div>
+      </div>
+      <div class="ms">
+        <div class="ms-n">Step 2</div>
+        <div class="ms-t">Loss Compute</div>
+        <div class="ms-d">Kitna galat answer?</div>
+      </div>
+      <div class="ms">
+        <div class="ms-n">Step 3</div>
+        <div class="ms-t">Backprop</div>
+        <div class="ms-d">Kaunse weights ki galti?</div>
+      </div>
+      <div class="ms">
+        <div class="ms-n">Step 4</div>
+        <div class="ms-t">Update</div>
+        <div class="ms-d">Weights thoda adjust</div>
+      </div>
+      <div class="ms">
+        <div class="ms-n">Repeat</div>
+        <div class="ms-t">Train Karo</div>
+        <div class="ms-d">Jab tak theek na ho</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-name">Gradient Descent — Seekhne ka Darwaza</div>
+    <div class="formula-eq">θ = θ − α · ∇L(θ)</div>
+    <div class="formula-explain">
+      <strong>θ</strong> = weights (jo hum adjust karte hain)<br/>
+      <strong>α</strong> = learning rate (ek baar mein kitna badlo — bahut bada step = overshoot, bahut chota = bahut slow)<br/>
+      <strong>∇L(θ)</strong> = gradient (loss kis direction mein badhta hai — hum opposite direction mein jaate hain!)
+    </div>
+  </div>
+
+  <div class="analogy">
+    <p>Socho tum ek pahad ki ghati mein utarna chahte ho lekin aankhon pe patti baandhi hai. Tum sirf ek kaam kar sakte ho — feel karo ki zameen neeche jaati hai kis direction mein, aur ek chota sa kadam us direction mein lo. Baar baar aisa karo — aakhirkaar tum ghati (minimum loss) mein pahunch jaoge! Yahi Gradient Descent hai.</p>
+  </div>
+
+  <h3 class="sub-title">Optimizers — Gradient Descent ke Types</h3>
+
+  <div class="grid2">
+    <div class="mini-card mc-orange">
+      <div class="mc-title">SGD (Stochastic Gradient Descent)</div>
+      <div class="mc-body">Classic method. Ek example dekho, update karo. Bahut noisy but fast. Purana style, abhi bhi use hota hai tuning mein.</div>
+    </div>
+    <div class="mini-card mc-blue">
+      <div class="mc-title">⭐ Adam / AdamW</div>
+      <div class="mc-body"><strong>Industry default!</strong> Adaptive learning rates — har weight ke liye alag learning rate. Bahut fast converge karta hai. LLMs mein AdamW use hota hai.</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Deep Neural Network — Layers pe Layers</h2>
+
+  <div class="arch-box">
+    <div class="arch-title">🏗️ Multi-Layer Perceptron (MLP) Architecture</div>
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+      <rect width="700" height="280" fill="white"/>
+
+      <!-- Input Layer -->
+      <text x="90" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="11" font-weight="700">Input Layer</text>
+      <text x="90" y="36" text-anchor="middle" fill="#B89050" font-family="JetBrains Mono" font-size="9">(Features)</text>
+      <circle cx="90" cy="65" r="20" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/><text x="90" y="70" text-anchor="middle" fill="#0047AB" font-family="JetBrains Mono" font-size="11" font-weight="600">x₁</text>
+      <circle cx="90" cy="120" r="20" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/><text x="90" y="125" text-anchor="middle" fill="#0047AB" font-family="JetBrains Mono" font-size="11" font-weight="600">x₂</text>
+      <circle cx="90" cy="175" r="20" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/><text x="90" y="180" text-anchor="middle" fill="#0047AB" font-family="JetBrains Mono" font-size="11" font-weight="600">x₃</text>
+      <circle cx="90" cy="230" r="20" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/><text x="90" y="235" text-anchor="middle" fill="#0047AB" font-family="JetBrains Mono" font-size="11" font-weight="600">x₄</text>
+
+      <!-- Hidden Layer 1 -->
+      <text x="260" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="11" font-weight="700">Hidden Layer 1</text>
+      <text x="260" y="36" text-anchor="middle" fill="#B89050" font-family="JetBrains Mono" font-size="9">(Pattern Seekhna)</text>
+      <circle cx="260" cy="80" r="22" fill="#FFF3E0" stroke="#E8470A" stroke-width="2"/><text x="260" y="85" text-anchor="middle" fill="#E8470A" font-family="JetBrains Mono" font-size="11" font-weight="600">h₁</text>
+      <circle cx="260" cy="140" r="22" fill="#FFF3E0" stroke="#E8470A" stroke-width="2"/><text x="260" y="145" text-anchor="middle" fill="#E8470A" font-family="JetBrains Mono" font-size="11" font-weight="600">h₂</text>
+      <circle cx="260" cy="200" r="22" fill="#FFF3E0" stroke="#E8470A" stroke-width="2"/><text x="260" y="205" text-anchor="middle" fill="#E8470A" font-family="JetBrains Mono" font-size="11" font-weight="600">h₃</text>
+
+      <!-- Hidden Layer 2 -->
+      <text x="440" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="11" font-weight="700">Hidden Layer 2</text>
+      <text x="440" y="36" text-anchor="middle" fill="#B89050" font-family="JetBrains Mono" font-size="9">(Higher Patterns)</text>
+      <circle cx="440" cy="105" r="22" fill="#F0FFF4" stroke="#2D7A1F" stroke-width="2"/><text x="440" y="110" text-anchor="middle" fill="#2D7A1F" font-family="JetBrains Mono" font-size="11" font-weight="600">h₄</text>
+      <circle cx="440" cy="175" r="22" fill="#F0FFF4" stroke="#2D7A1F" stroke-width="2"/><text x="440" y="180" text-anchor="middle" fill="#2D7A1F" font-family="JetBrains Mono" font-size="11" font-weight="600">h₅</text>
+
+      <!-- Output Layer -->
+      <text x="610" y="22" text-anchor="middle" fill="#7A6050" font-family="Baloo 2" font-size="11" font-weight="700">Output Layer</text>
+      <text x="610" y="36" text-anchor="middle" fill="#B89050" font-family="JetBrains Mono" font-size="9">(Prediction)</text>
+      <circle cx="610" cy="140" r="26" fill="#FFF8DC" stroke="#B8860B" stroke-width="2.5"/><text x="610" y="136" text-anchor="middle" fill="#B8860B" font-family="Baloo 2" font-size="11" font-weight="800">Cat</text><text x="610" y="150" text-anchor="middle" fill="#B8860B" font-family="JetBrains Mono" font-size="9">87%</text>
+
+      <!-- Connections (simplified) -->
+      <line x1="110" y1="65" x2="238" y2="80" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="110" y1="65" x2="238" y2="140" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="110" y1="120" x2="238" y2="80" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="110" y1="120" x2="238" y2="140" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="110" y1="175" x2="238" y2="140" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="110" y1="175" x2="238" y2="200" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="110" y1="230" x2="238" y2="200" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      
+      <line x1="282" y1="80" x2="418" y2="105" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="282" y1="140" x2="418" y2="105" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="282" y1="140" x2="418" y2="175" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      <line x1="282" y1="200" x2="418" y2="175" stroke="#D4A574" stroke-width="0.8" opacity="0.6"/>
+      
+      <line x1="462" y1="105" x2="584" y2="140" stroke="#D4A574" stroke-width="1.2" opacity="0.8"/>
+      <line x1="462" y1="175" x2="584" y2="140" stroke="#D4A574" stroke-width="1.2" opacity="0.8"/>
+    </svg>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+      <div class="code-lang">Python (PyTorch)</div>
+    </div>
+    <div class="code-body"><span class="cm"># Ek Simple Neural Network banate hain PyTorch mein</span>
+<span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+
+<span class="kw">class</span> <span class="cls">HamariNetwork</span>(nn.Module):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="hl">self</span>):
+        <span class="fn">super</span>().<span class="fn">__init__</span>()
+        <span class="hl">self</span>.layers = nn.<span class="fn">Sequential</span>(
+            nn.<span class="fn">Linear</span>(<span class="num">784</span>, <span class="num">256</span>),   <span class="cm"># 784 pixels → 256 neurons</span>
+            nn.<span class="fn">ReLU</span>(),             <span class="cm"># Activation function</span>
+            nn.<span class="fn">Linear</span>(<span class="num">256</span>, <span class="num">128</span>),   <span class="cm"># 256 → 128</span>
+            nn.<span class="fn">ReLU</span>(),
+            nn.<span class="fn">Linear</span>(<span class="num">128</span>, <span class="num">10</span>)    <span class="cm"># 128 → 10 classes (0-9 digits)</span>
+        )
+    
+    <span class="kw">def</span> <span class="fn">forward</span>(<span class="hl">self</span>, x):
+        <span class="kw">return</span> <span class="hl">self</span>.layers(x)
+
+model = <span class="fn">HamariNetwork</span>()
+<span class="fn">print</span>(model)  <span class="cm"># Architecture dekho</span></div>
+  </div>
+
+  <div class="summary-box">
+    <ul class="bullet-list">
+      <li>Neural Network = artificial neurons ka web jo patterns seekhta hai</li>
+      <li>Weights = importance of each connection (training mein adjust hoti hain)</li>
+      <li>Activation Function = non-linearity add karta hai (bina iske sab linear hai)</li>
+      <li>Forward Pass = data in → answer out</li>
+      <li>Backpropagation = galti trace karke weights update karo</li>
+      <li>AdamW optimizer = industry ka best choice abhi ke liye</li>
+    </ul>
+  </div>
+
+  <div class="page-num">— 15 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 4 — CNN                                               -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch4">
+  <div class="chapter-band cb-blue"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">4</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Chaar · Chapter Four</div>
+      <div class="chapter-title">CNN — Tasveerein Samajhne Wali Machine</div>
+      <div class="chapter-title-hi">👁️ Computer Aankhein Kaise Dekhta Hai?</div>
+    </div>
+    <div class="chapter-emoji">👁️</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="story-box">
+    <p>Tumhara dimag koi photo dekhne se pehle automatically edges dhundta hai, phir shapes, phir "oh yeh cat hai!" Agar main tumse puchoon "yeh photo kya hai?" tum 0.1 second mein bol doge. Computer ko yeh "automatically karna" sikhana tha — CNN ne yeh possible kiya! 🐱</p>
+  </div>
+
+  <div class="imp-box">
+    <p><strong>Problem with Normal MLP for Images:</strong> Ek 224×224 pixel image mein 150,528 pixels × 3 colors = <strong>451,584 inputs</strong> hote hain. Ek hidden layer ke liye = 451 MILLION weights! Yeh bilkul impractical hai. Plus — MLP spatial relationships nahi samajhti (kaunsa pixel kaunse ke paas hai).</p>
+  </div>
+
+  <h2 class="section-title">CNN Ka Jadoo — Convolution Operation</h2>
+
+  <p class="para">CNN ek <em>chota sa filter (3×3 ya 5×5 pixels)</em> poori image pe slide karata hai. Yeh filter kisi specific pattern ke liye dhundta hai — horizontal edge, diagonal line, etc. Har filter ek "feature map" create karta hai.</p>
+
+  <div class="analogy">
+    <p>Socho tum ek magnifying glass lekar ek painting dekh rahe ho. Pehle tum edges dhundthe ho, phir specific colors, phir textures. CNN bhi yehi karta hai — choti choti windows se poori image scan karta hai!</p>
+  </div>
+
+  <div class="flow-container">
+    <div class="flow-title">CNN Pipeline — Image se Answer Tak</div>
+    <div class="flow-row">
+      <div class="flow-step highlight">
+        <div class="fs-label">Input</div>
+        <div class="fs-main">224×224×3</div>
+        <div class="fs-sub">Color Image</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step blue">
+        <div class="fs-label">Conv Layers</div>
+        <div class="fs-main">Filters Apply</div>
+        <div class="fs-sub">Edges, Shapes</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step green">
+        <div class="fs-label">Pooling</div>
+        <div class="fs-main">Size Reduce</div>
+        <div class="fs-sub">Important rakhna</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step purple">
+        <div class="fs-label">Flatten + FC</div>
+        <div class="fs-main">MLP Decide</div>
+        <div class="fs-sub">"Cat — 95%!"</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">CNN Layers Kya Seekhte Hain?</h3>
+
+  <div class="grid3">
+    <div class="mini-card mc-blue">
+      <div class="mc-title">🔲 Layer 1–2</div>
+      <div class="mc-body"><strong>Edges aur Colors</strong><br/>Horizontal lines, vertical lines, color boundaries. Simple patterns.</div>
+    </div>
+    <div class="mini-card mc-orange">
+      <div class="mc-title">🔶 Layer 3–5</div>
+      <div class="mc-body"><strong>Shapes aur Textures</strong><br/>Circles, curves, fur patterns, scales, tires. Medium complexity.</div>
+    </div>
+    <div class="mini-card mc-green">
+      <div class="mc-title">🐱 Final Layers</div>
+      <div class="mc-body"><strong>Objects!</strong><br/>"Yeh cat ki aankhein hain!" "Yeh car ka tyre hai!" High-level understanding.</div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Famous CNN Architectures</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Network</th><th>Saal</th><th>Innovation</th><th>Importance</th></tr></thead>
+      <tbody>
+        <tr><td class="td-hl">LeNet-5</td><td>1998</td><td>Pehli successful CNN</td><td>MNIST digits recognize ki</td></tr>
+        <tr><td class="td-hl">AlexNet</td><td>2012</td><td>GPU training + ReLU + Dropout</td><td>Deep Learning era shuru hua!</td></tr>
+        <tr><td class="td-hl">VGG-16</td><td>2014</td><td>Bahut deep, sirf 3×3 filters</td><td>Transfer learning ka base</td></tr>
+        <tr><td class="td-hl" style="color:var(--orange)">ResNet ⭐</td><td>2015</td><td>Skip Connections = vanishing gradient solution</td><td>Ab tak use hota hai</td></tr>
+        <tr><td class="td-hl">EfficientNet ⭐</td><td>2019</td><td>Smart scaling</td><td>Best accuracy/efficiency ratio</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="remember-box">
+    <div class="rem-icon">🔗</div>
+    <div class="rem-body">
+      <strong>ResNet ka Secret — Skip Connections</strong>
+      <p><strong>Problem:</strong> 100+ layer network mein gradient "vanish" ho jaata tha — early layers sikhna band kar deti theen.<br/><strong>Solution:</strong> <code style="font-family:var(--fm);color:var(--orange)">output = F(x) + x</code> — Skip connection! Data directly jump karke aage jaata hai. Gradient bhi directly flow karta hai. Ab 1000+ layer networks possible hain!</p>
+    </div>
+  </div>
+
+  <div class="page-num">— 22 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 5 — TRANSFORMERS                                      -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch5">
+  <div class="chapter-band cb-orange"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">5</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Paanch · Chapter Five</div>
+      <div class="chapter-title">Transformer — Modern AI Ka Dil</div>
+      <div class="chapter-title-hi">⚡ "Attention Is All You Need" — Jo Paper ne AI badal diya</div>
+    </div>
+    <div class="chapter-emoji">⚡</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="story-box">
+    <p>2017 mein Google ke kuch researchers ne ek paper likha jiska naam tha <strong>"Attention Is All You Need"</strong>. Yeh ek dum simple idea tha lekin iska impact was unimaginable. Aaj GPT, Claude, Gemini, aur practically har modern AI system isi ek paper ke ideas pe chal raha hai. Yeh ek paper AI ka future ban gaya. Chalte hain andar!</p>
+  </div>
+
+  <div class="def-box">
+    <p>Ek <strong>Transformer</strong> ek neural network architecture hai jo <em>Attention Mechanism</em> use karta hai — yani har word ya token dusre sabhi tokens ko "dekh" sakta hai simultaneously. RNN ke jagah jo ek ek word sequentially process karta tha, Transformer sab kuch ek saath process karta hai!</p>
+  </div>
+
+  <h2 class="section-title">Attention Mechanism — Dhyan Dena Seekhna</h2>
+
+  <div class="story-box">
+    <p>"The animal didn't cross the street because <strong>it</strong> was too tired."<br/><br/>Yahan "it" ka matlab kya hai? Street ya Animal? Tumhara dimag instantly jaanta hai — <strong>Animal</strong>! Lekin yeh kaise? Tumne "it" word ko "animal" se connect kiya — ek pattern of attention. Transformer bhi yahi karta hai — har word decide karta hai ki dusre kis word par kitna "dhyan" de!</p>
+  </div>
+
+  <h3 class="sub-title">Query, Key, Value — Library Analogy</h3>
+
+  <div class="analogy">
+    <p>Library mein jaate ho aur search karte ho "Python programming books".<br/>
+    → <strong>Query (Q)</strong> = Tumhara search — "Python programming books chahiye"<br/>
+    → <strong>Key (K)</strong> = Har book ka title/subject ("Python Crash Course", "Java Basics"...)<br/>
+    → <strong>Value (V)</strong> = Book ka actual content<br/><br/>
+    Computer milata hai Q ko K se — jo books zyada match karti hain unka V (content) zyada contribute karta hai tumhare answer mein! Yehi hai Attention.</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+      <div class="code-lang">Self-Attention — Step by Step</div>
+    </div>
+    <div class="code-body"><span class="cm"># Self-Attention ka poora process</span>
+<span class="cm"># 1. Input X ko Q, K, V mein project karo</span>
+Q = X @ W_Q  <span class="cm"># "Main kya dhundh raha hoon?"</span>
+K = X @ W_K  <span class="cm"># "Mere paas kya information hai?"</span>
+V = X @ W_V  <span class="cm"># "Meri actual information kya hai?"</span>
+
+<span class="cm"># 2. Attention scores nikalo (Q aur K ka similarity)</span>
+scores = Q @ K.transpose(-<span class="num">2</span>, -<span class="num">1</span>) / math.sqrt(d_k)
+
+<span class="cm"># 3. Future tokens mat dekho (decoder mein)</span>
+scores = scores.masked_fill(mask == <span class="num">0</span>, <span class="fn">float</span>(<span class="str">'-inf'</span>))
+
+<span class="cm"># 4. Softmax se probabilities banao</span>
+attn_weights = F.softmax(scores, dim=-<span class="num">1</span>)
+
+<span class="cm"># 5. Values ka weighted sum lo</span>
+output = attn_weights @ V
+<span class="cm"># Bas! Har token ab "jaanta" hai dusre tokens ke baare mein</span></div>
+  </div>
+
+  <h2 class="section-title">Poora Transformer Architecture</h2>
+
+  <div class="arch-box">
+    <div class="arch-title">⚡ Encoder-Decoder Transformer — Poora Diagram</div>
+    <svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3z" fill="#E8470A"/></marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3z" fill="#0047AB"/></marker>
+        <linearGradient id="encGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8470A" stop-opacity="0.15"/><stop offset="100%" stop-color="#FF9F1C" stop-opacity="0.05"/></linearGradient>
+        <linearGradient id="decGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0047AB" stop-opacity="0.15"/><stop offset="100%" stop-color="#006D77" stop-opacity="0.05"/></linearGradient>
+      </defs>
+      <rect width="760" height="500" fill="white"/>
+      
+      <!-- ENCODER -->
+      <rect x="20" y="30" width="330" height="440" rx="10" fill="url(#encGrad)" stroke="#E8470A" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="185" y="52" text-anchor="middle" fill="#E8470A" font-family="Baloo 2" font-size="12" font-weight="800" letter-spacing="2">ENCODER</text>
+
+      <rect x="60" y="65" width="250" height="42" rx="6" fill="white" stroke="#D4A574" stroke-width="1.5"/>
+      <text x="185" y="83" text-anchor="middle" fill="#2D1B00" font-family="Baloo 2" font-size="12" font-weight="700">Input Embedding</text>
+      <text x="185" y="97" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">"Namaste" → [0.2, 0.8, ...]</text>
+
+      <rect x="60" y="118" width="250" height="42" rx="6" fill="white" stroke="#D4A574" stroke-width="1.5"/>
+      <text x="185" y="136" text-anchor="middle" fill="#2D7A1F" font-family="Baloo 2" font-size="12" font-weight="700">+ Positional Encoding</text>
+      <text x="185" y="150" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">Position info add karo (sin/cos)</text>
+
+      <rect x="40" y="174" width="290" height="72" rx="6" fill="#FFF3E0" stroke="#E8470A" stroke-width="2"/>
+      <text x="185" y="193" text-anchor="middle" fill="#E8470A" font-family="Baloo 2" font-size="13" font-weight="800">Multi-Head Self-Attention</text>
+      <text x="100" y="215" fill="#7A6050" font-family="JetBrains Mono" font-size="10">Q (Query)</text>
+      <text x="185" y="215" fill="#7A6050" font-family="JetBrains Mono" font-size="10" text-anchor="middle">K (Key)</text>
+      <text x="265" y="215" fill="#7A6050" font-family="JetBrains Mono" font-size="10">V (Value)</text>
+      <text x="185" y="234" text-anchor="middle" fill="#E8470A" font-family="JetBrains Mono" font-size="10">softmax(QKᵀ/√dₖ)·V</text>
+
+      <rect x="60" y="258" width="250" height="36" rx="6" fill="white" stroke="#6B21A8" stroke-width="1.5"/>
+      <text x="185" y="281" text-anchor="middle" fill="#6B21A8" font-family="Baloo 2" font-size="12" font-weight="700">Add &amp; Norm (Residual Connection)</text>
+
+      <rect x="60" y="306" width="250" height="42" rx="6" fill="white" stroke="#D4A574" stroke-width="1.5"/>
+      <text x="185" y="324" text-anchor="middle" fill="#2D1B00" font-family="Baloo 2" font-size="12" font-weight="700">Feed-Forward Network</text>
+      <text x="185" y="338" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">FFN(x) = ReLU(xW₁)W₂</text>
+
+      <rect x="60" y="360" width="250" height="36" rx="6" fill="white" stroke="#6B21A8" stroke-width="1.5"/>
+      <text x="185" y="383" text-anchor="middle" fill="#6B21A8" font-family="Baloo 2" font-size="12" font-weight="700">Add &amp; Norm</text>
+
+      <text x="30" y="320" fill="#E8470A" font-family="Baloo 2" font-size="11" font-weight="700">Nx</text>
+      <rect x="22" y="168" width="12" height="240" rx="3" fill="none" stroke="rgba(232,71,10,0.4)" stroke-width="1.5"/>
+
+      <!-- Encoder arrows -->
+      <line x1="185" y1="107" x2="185" y2="118" stroke="#E8470A" stroke-width="1.5" marker-end="url(#arr1)"/>
+      <line x1="185" y1="160" x2="185" y2="174" stroke="#E8470A" stroke-width="1.5" marker-end="url(#arr1)"/>
+      <line x1="185" y1="246" x2="185" y2="258" stroke="#E8470A" stroke-width="1.5" marker-end="url(#arr1)"/>
+      <line x1="185" y1="294" x2="185" y2="306" stroke="#E8470A" stroke-width="1.5" marker-end="url(#arr1)"/>
+      <line x1="185" y1="348" x2="185" y2="360" stroke="#E8470A" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+      <!-- DECODER -->
+      <rect x="410" y="30" width="330" height="440" rx="10" fill="url(#decGrad)" stroke="#0047AB" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="575" y="52" text-anchor="middle" fill="#0047AB" font-family="Baloo 2" font-size="12" font-weight="800" letter-spacing="2">DECODER</text>
+
+      <rect x="450" y="65" width="250" height="42" rx="6" fill="white" stroke="#D4A574" stroke-width="1.5"/>
+      <text x="575" y="83" text-anchor="middle" fill="#2D1B00" font-family="Baloo 2" font-size="12" font-weight="700">Output Embedding</text>
+      <text x="575" y="97" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">Target (shifted right)</text>
+
+      <rect x="450" y="118" width="250" height="42" rx="6" fill="white" stroke="#D4A574" stroke-width="1.5"/>
+      <text x="575" y="136" text-anchor="middle" fill="#2D7A1F" font-family="Baloo 2" font-size="12" font-weight="700">+ Positional Encoding</text>
+      <text x="575" y="150" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">same mechanism</text>
+
+      <rect x="430" y="174" width="290" height="64" rx="6" fill="#EEF4FF" stroke="#0047AB" stroke-width="2"/>
+      <text x="575" y="196" text-anchor="middle" fill="#0047AB" font-family="Baloo 2" font-size="12" font-weight="800">Masked Multi-Head Attention</text>
+      <text x="575" y="214" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">Future tokens nahi dekh sakte!</text>
+      <text x="575" y="228" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">(Causal Masking)</text>
+
+      <rect x="450" y="250" width="250" height="36" rx="6" fill="white" stroke="#6B21A8" stroke-width="1.5"/>
+      <text x="575" y="273" text-anchor="middle" fill="#6B21A8" font-family="Baloo 2" font-size="11" font-weight="700">Add &amp; Norm</text>
+
+      <rect x="430" y="298" width="290" height="58" rx="6" fill="#FFF3E0" stroke="#E8470A" stroke-width="2"/>
+      <text x="575" y="320" text-anchor="middle" fill="#E8470A" font-family="Baloo 2" font-size="12" font-weight="800">Cross-Attention ⭐</text>
+      <text x="575" y="338" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">Q = Decoder, K,V = Encoder</text>
+      <text x="575" y="350" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">Encoder se context lena</text>
+
+      <rect x="450" y="368" width="250" height="36" rx="6" fill="#FFF8DC" stroke="#B8860B" stroke-width="2"/>
+      <text x="575" y="387" text-anchor="middle" fill="#B8860B" font-family="Baloo 2" font-size="12" font-weight="800">Linear + Softmax → Output!</text>
+      <text x="575" y="400" text-anchor="middle" fill="#7A6050" font-family="JetBrains Mono" font-size="9">Token probabilities</text>
+
+      <!-- Decoder arrows -->
+      <line x1="575" y1="107" x2="575" y2="118" stroke="#0047AB" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="575" y1="160" x2="575" y2="174" stroke="#0047AB" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="575" y1="238" x2="575" y2="250" stroke="#0047AB" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="575" y1="286" x2="575" y2="298" stroke="#0047AB" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="575" y1="356" x2="575" y2="368" stroke="#0047AB" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Cross-attention connection -->
+      <line x1="350" y1="320" x2="426" y2="320" stroke="#B8860B" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr1)"/>
+      <text x="386" y="312" text-anchor="middle" fill="#B8860B" font-family="JetBrains Mono" font-size="9">K, V</text>
+    </svg>
+  </div>
+
+  <h3 class="sub-title">RNN vs Transformer — Kyun Badla?</h3>
+
+  <div class="compare-grid">
+    <div class="cmp-card">
+      <div class="cmp-title ct-o">🐌 RNN (Purana)</div>
+      <ul class="con-list">
+        <li>Sequential processing — ek ek word</li>
+        <li>GPU parallel nahi kar sakta</li>
+        <li>Long sequences mein "bhool" jaata hai</li>
+        <li>1000 words = 1000 steps</li>
+      </ul>
+    </div>
+    <div class="cmp-card">
+      <div class="cmp-title ct-b">⚡ Transformer (Naaya)</div>
+      <ul class="pro-list">
+        <li>Sab tokens ek saath process!</li>
+        <li>GPU pe fully parallel</li>
+        <li>Har token, har doosre token se directly connected</li>
+        <li>1000 words = 1 step!</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fun-fact">
+    <div class="ff-icon">🚀</div>
+    <div class="ff-body">
+      <strong>Scaling Laws ka Jadoo!</strong>
+      <p>Transformers mein ek khaas baat hai — jitna bada model, jitna zyada data, utna better performance! Yeh predictable hai. Isi liye GPT-1 (117M params) se GPT-4 (estimated 1.8T params) tak ka safar possible hua!</p>
+    </div>
+  </div>
+
+  <div class="page-num">— 30 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 6 — LLMs                                              -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch6">
+  <div class="chapter-band cb-green"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">6</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Chhe · Chapter Six</div>
+      <div class="chapter-title">Large Language Models — Baat Karne Wale AI</div>
+      <div class="chapter-title-hi">💬 GPT, Claude, Gemini — Kaise Kaam Karte Hain?</div>
+    </div>
+    <div class="chapter-emoji">💬</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="story-box">
+    <p>Imagine karo — internet pe available saari books, websites, articles — literally petabytes of text — ek model ne pada. Ek baar padhne ke baad, woh model yeh predict karna seekh gaya ki "agar yeh words hain, to aagla word kya hoga?" Isse hi ek powerful chatbot ban jaata hai. Aaj ke ChatGPT, Claude, Gemini — sab isi tarah bane hain!</p>
+  </div>
+
+  <h2 class="section-title">GPT Kaise Text Generate Karta Hai?</h2>
+
+  <div class="flow-container">
+    <div class="flow-title">GPT Text Generation Loop — Autoregressive</div>
+    <div class="flow-steps">
+      <div class="flow-step highlight">
+        <div class="fs-label">Input Prompt</div>
+        <div class="fs-main">"France ki capital hai..."</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step blue">
+        <div class="fs-label">Tokenize</div>
+        <div class="fs-main">[10074, 2980, 900, ...]</div>
+        <div class="fs-sub">Words → Numbers</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step">
+        <div class="fs-label">N× Transformer Blocks</div>
+        <div class="fs-main">Context samajhna</div>
+        <div class="fs-sub">Masked Self-Attention + FFN</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step green">
+        <div class="fs-label">Logits → Softmax</div>
+        <div class="fs-main">Poore vocab pe probability</div>
+        <div class="fs-sub">"Paris" = 94%, "Berlin" = 3%...</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step purple">
+        <div class="fs-label">Sampling</div>
+        <div class="fs-main">Aagla token choose karo → "Paris"</div>
+        <div class="fs-sub">Phir se loop! Jab tak sentence complete na ho.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Sampling Parameters — Output Control Kaise Karein</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Parameter</th><th>Kya Karta Hai</th><th>Kam Value</th><th>Zyada Value</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><td class="td-hl">Temperature</td><td>Randomness control</td><td>Deterministic (0=hamesha same)</td><td>Creative/random</td><td>0.7 chat, 0 code</td></tr>
+        <tr><td class="td-hl">Top-k</td><td>Top K tokens mein se choose</td><td>k=1 = greedy</td><td>Zyada variety</td><td>k=40–50</td></tr>
+        <tr><td class="td-hl">Top-p</td><td>Probability mass tak tokens</td><td>Deterministic</td><td>Creative</td><td>p=0.9–0.95</td></tr>
+        <tr><td class="td-hl">Max Tokens</td><td>Output ki max length</td><td>Chota answer</td><td>Lamba answer</td><td>Task pe depend</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">Prompt Engineering — AI Ko Sahi Bolna</h2>
+
+  <p class="para">LLM se best results lene ke liye sahi tarike se prompt likhna zaroori hai. Yeh ek skill hai!</p>
+
+  <div class="grid2">
+    <div class="mini-card mc-orange">
+      <div class="mc-title">🎯 Zero-Shot Prompting</div>
+      <div class="mc-body">Koi example nahi, seedha kaam bolo.<br/><br/><em>"Yeh sentence positive hai ya negative?<br/>'Yeh product amazing hai!'"</em></div>
+    </div>
+    <div class="mini-card mc-blue">
+      <div class="mc-title">📚 Few-Shot Prompting</div>
+      <div class="mc-body">2-5 examples do, phir kaam bolo. Performance dramatically improve hoti hai!<br/><br/><em>"positive: 'Love it!'<br/>negative: 'Hate it.'<br/>Classify: 'It's okay.'"</em></div>
+    </div>
+    <div class="mini-card mc-green">
+      <div class="mc-title">🧠 Chain-of-Thought (CoT)</div>
+      <div class="mc-body"><strong>"Step by step sochna"</strong><br/>Math problems, reasoning mein bahut helpful.<br/><br/><em>"Is math problem ko step by step solve karo..."</em></div>
+    </div>
+    <div class="mini-card mc-purple">
+      <div class="mc-title">🤖 ReAct Prompting</div>
+      <div class="mc-body">Reasoning + Action. Agent pattern ka base!<br/><br/><em>Thought → Action → Observe → Thought...</em></div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+      <div class="code-lang">Production Prompt Template</div>
+    </div>
+    <div class="code-body"><span class="cm"># Ek production-grade system prompt ka structure</span>
+system_prompt = <span class="str">"""
+ROLE: Tum ek expert [domain] assistant ho.
+
+CONTEXT: [Background information jo zaroori hai]
+
+KAAM (TASK): [Specific instruction — clearly batao kya chahiye]
+
+CONSTRAINTS:
+- Hamesha sources cite karo
+- Galat information mat do
+- JSON format mein jawab do
+
+OUTPUT FORMAT:
+{
+  "jawab": "...",
+  "confidence": 0.0-1.0,
+  "sources": [...]
+}
+
+EXAMPLES:
+Input: [example input]
+Output: [expected output]
+"""</span>
+
+<span class="cm"># Bad Prompt vs Good Prompt</span>
+bad_prompt = <span class="str">"Python batao"</span>
+good_prompt = <span class="str">"Python kya hai? Simple Hindi mein samjhao, ek real-life example ke saath."</span></div>
+  </div>
+
+  <h3 class="sub-title">Famous LLM Models — Ek Nazar</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Model</th><th>Company</th><th>Special Baat</th><th>Open Source?</th></tr></thead>
+      <tbody>
+        <tr><td class="td-hl">GPT-4o</td><td>OpenAI</td><td>Multimodal, 128K context, bahut powerful</td><td>❌ Closed API</td></tr>
+        <tr><td class="td-hl">Claude 3.5</td><td>Anthropic</td><td>200K context, safe AI, bahut honest</td><td>❌ API only</td></tr>
+        <tr><td class="td-hl">Gemini 1.5 Pro</td><td>Google</td><td>1M context window! Multimodal native</td><td>❌ Closed</td></tr>
+        <tr><td class="td-hl" style="color:var(--green)">LLaMA 3 ⭐</td><td>Meta</td><td>Community favorite, fine-tune kar sakte ho</td><td>✅ Open Weights</td></tr>
+        <tr><td class="td-hl" style="color:var(--green)">Mistral/Mixtral ⭐</td><td>Mistral AI</td><td>MoE architecture, efficient, fast</td><td>✅ Open Weights</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="imp-box">
+    <p><strong>Hallucination — LLM ki Sabse Badi Problem:</strong> LLM next token predict karta hai — <em>factual truth nahi</em>. Woh poore confidence ke saath galat information de sakta hai! Example: "Albert Einstein ne radio invent kiya" — confidently bol sakta hai! Mitigation: RAG use karo, temperature=0 factual tasks ke liye, verification karo.</p>
+  </div>
+
+  <div class="page-num">— 38 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 7 — RAG                                               -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch7">
+  <div class="chapter-band cb-purple"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">7</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Saat · Chapter Seven</div>
+      <div class="chapter-title">RAG — AI Ko Apni Memory Dena</div>
+      <div class="chapter-title-hi">🔍 Retrieval-Augmented Generation — Enterprise Ka Best Friend</div>
+    </div>
+    <div class="chapter-emoji">🔍</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="story-box">
+    <p>Socho tumhara teacher hai jo bahut smart hai lekin uske paas tumhari company ki HR policy nahi hai. Tum puchte ho "mujhe kitne leave milte hain?" — woh kuch bata deta hai jo maybe galat hai.<br/><br/>Ab socho usi teacher ko company ka ek folder de diya. Pehle folder padho, phir answer do. Ab answer sahi hoga! Yahi hai RAG — LLM ko real documents se connect karna. 📂</p>
+  </div>
+
+  <div class="def-box">
+    <p><strong>RAG (Retrieval-Augmented Generation)</strong> ek technique hai jisme LLM ko answer generate karne se pehle relevant documents retrieve karke context mein de dete hain. Isse LLM hallucinate nahi karta aur private/updated data bhi use kar sakta hai.</p>
+  </div>
+
+  <h2 class="section-title">RAG Pipeline — Andar Se Kaise Kaam Karta Hai</h2>
+
+  <div class="flow-container">
+    <div class="flow-title">📥 Write Path — Documents Ko Index Karna</div>
+    <div class="flow-row">
+      <div class="flow-step highlight">
+        <div class="fs-label">Documents</div>
+        <div class="fs-main">PDF, Word, URLs</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step blue">
+        <div class="fs-label">Chunking</div>
+        <div class="fs-main">Chhote pieces</div>
+        <div class="fs-sub">512 tokens each</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step green">
+        <div class="fs-label">Embedding</div>
+        <div class="fs-main">Vector banao</div>
+        <div class="fs-sub">[0.2, 0.8, ...]</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step purple">
+        <div class="fs-label">Vector DB</div>
+        <div class="fs-main">Store karo</div>
+        <div class="fs-sub">Milvus/Qdrant</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:8px 0;font-size:22px;color:var(--border)">⇅</div>
+
+  <div class="flow-container">
+    <div class="flow-title">📤 Read Path — User Query ka Answer</div>
+    <div class="flow-row">
+      <div class="flow-step highlight">
+        <div class="fs-label">User Query</div>
+        <div class="fs-main">"Leave policy?"</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step blue">
+        <div class="fs-label">Embed Query</div>
+        <div class="fs-main">Vector</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step green">
+        <div class="fs-label">ANN Search</div>
+        <div class="fs-main">Similar chunks</div>
+        <div class="fs-sub">Top-5 results</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step">
+        <div class="fs-label">Rerank</div>
+        <div class="fs-main">Best chunks</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step purple">
+        <div class="fs-label">LLM Answer</div>
+        <div class="fs-main">Context + Query</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Vector Embedding — Words Ko Numbers Mein Banana</h3>
+
+  <div class="analogy">
+    <p>Socho language ka ek secret map hai. "Cat" aur "Kitten" map pe bahut paas hain. "Cat" aur "Dog" thode door hain. "Cat" aur "Aeroplane" bahut door hain. Yeh map hi <strong>embedding space</strong> hai. Jab hum query embed karte hain, to map pe usi ke aas paas ke documents dhundhte hain! Yahi semantic search hai!</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-name">Cosine Similarity — Kitne Similar Hain Do Vectors?</div>
+    <div class="formula-eq">cos(θ) = (A · B) / (|A| × |B|)</div>
+    <div class="formula-explain">
+      Range: −1 se +1 (1 = same direction = bahut similar, 0 = alag, −1 = opposite)<br/>
+      <strong>King − Man + Woman ≈ Queen</strong> — Yeh Vector Arithmetic hai! 🤯
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+      <div class="code-lang">Python — Complete RAG Pipeline</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> langchain.document_loaders <span class="kw">import</span> PyPDFLoader
+<span class="kw">from</span> langchain.text_splitter <span class="kw">import</span> RecursiveCharacterTextSplitter
+<span class="kw">from</span> langchain_community.vectorstores <span class="kw">import</span> Chroma
+<span class="kw">from</span> langchain_openai <span class="kw">import</span> OpenAIEmbeddings, ChatOpenAI
+<span class="kw">from</span> langchain.chains <span class="kw">import</span> RetrievalQA
+
+<span class="cm"># Step 1: Documents load karo</span>
+loader = <span class="fn">PyPDFLoader</span>(<span class="str">"company_policy.pdf"</span>)
+docs = loader.<span class="fn">load</span>()
+
+<span class="cm"># Step 2: Chunks banao</span>
+splitter = <span class="fn">RecursiveCharacterTextSplitter</span>(
+    chunk_size=<span class="num">512</span>,
+    chunk_overlap=<span class="num">64</span>  <span class="cm"># Overlap taaki context na toote</span>
+)
+chunks = splitter.<span class="fn">split_documents</span>(docs)
+
+<span class="cm"># Step 3: Embed karo aur store karo</span>
+embeddings = <span class="fn">OpenAIEmbeddings</span>()
+vectorstore = Chroma.<span class="fn">from_documents</span>(chunks, embeddings)
+
+<span class="cm"># Step 4: RAG chain banao</span>
+llm = <span class="fn">ChatOpenAI</span>(model=<span class="str">"gpt-4o"</span>, temperature=<span class="num">0</span>)
+qa_chain = RetrievalQA.<span class="fn">from_chain_type</span>(
+    llm=llm,
+    retriever=vectorstore.<span class="fn">as_retriever</span>(search_kwargs={<span class="str">"k"</span>: <span class="num">5</span>})
+)
+
+<span class="cm"># Step 5: Question poocho!</span>
+result = qa_chain.<span class="fn">invoke</span>({<span class="str">"query"</span>: <span class="str">"Mujhe kitne casual leaves milte hain?"</span>})
+<span class="fn">print</span>(result[<span class="str">"result"</span>])</div>
+  </div>
+
+  <h3 class="sub-title">Chunking Strategies — Documents Kaise Todrein?</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Strategy</th><th>Method</th><th>Best For</th><th>Problem</th></tr></thead>
+      <tbody>
+        <tr><td class="td-hl">Fixed Size</td><td>Har 512 characters pe kato</td><td>Quick start</td><td>Beech mein sentence toot sakta hai</td></tr>
+        <tr><td class="td-hl">Sentence-based</td><td>Sentence ya paragraph pe kato</td><td>General documents</td><td>Variable chunk size</td></tr>
+        <tr><td class="td-hl" style="color:var(--orange)">Semantic ⭐</td><td>Topic change hone pe kato</td><td>Complex documents</td><td>Embedding cost at index time</td></tr>
+        <tr><td class="td-hl">Sliding Window</td><td>Overlap ke saath kato</td><td>Context loss rokne ke liye</td><td>Duplicate content</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-num">— 47 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 8 — AI AGENTS                                         -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch8">
+  <div class="chapter-band cb-red"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">8</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Aath · Chapter Eight</div>
+      <div class="chapter-title">AI Agents — Khud Kaam Karne Wale Robots</div>
+      <div class="chapter-title-hi">🤖 Autonomous AI — Goal Do, Rest Woh Sambhalega</div>
+    </div>
+    <div class="chapter-emoji">🕵️</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="story-box">
+    <p>Sochi ek super-intelligent assistant hai. Tum bolte ho "Mumbai se Delhi ka sabse sasta flight book karo next Friday ke liye." Woh khud Google karta hai, prices compare karta hai, seat choose karta hai, aur confirm karta hai — bina tumhare kuch kiye! Yahi hai <strong>AI Agent</strong>. LLM + Tools + Memory + Planning = Agent! 🚀</p>
+  </div>
+
+  <div class="def-box">
+    <p>Ek <strong>AI Agent</strong> ek autonomous system hai jo ek goal achieve karne ke liye: <em>plan banata hai</em>, <em>tools use karta hai</em>, <em>results observe karta hai</em>, aur <em>khud adjust karta hai</em> — jab tak goal complete na ho jaye.</p>
+  </div>
+
+  <h2 class="section-title">ReAct Loop — Agent Ka Dimag</h2>
+
+  <div class="flow-container">
+    <div class="flow-title">Agent ReAct Cycle</div>
+    <div class="flow-steps">
+      <div class="flow-step highlight">
+        <div class="fs-label">User Goal</div>
+        <div class="fs-main">"Mujhe flight book karo"</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step blue">
+        <div class="fs-label">💭 Thought</div>
+        <div class="fs-main">Plan banao</div>
+        <div class="fs-sub">"Pehle flights search karni chahiye, phir compare..."</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step green">
+        <div class="fs-label">⚡ Action</div>
+        <div class="fs-main">Tool Call</div>
+        <div class="fs-sub">search_flights(from="Mumbai", to="Delhi")</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step">
+        <div class="fs-label">👁️ Observation</div>
+        <div class="fs-main">Result dekho</div>
+        <div class="fs-sub">[3 flights found: Rs.4500, Rs.6200, Rs.3800]</div>
+      </div>
+      <div class="flow-arrow-down">↓</div>
+      <div class="flow-step purple">
+        <div class="fs-label">🎯 Done?</div>
+        <div class="fs-main">Goal complete? → Final Answer</div>
+        <div class="fs-sub">Nahi? → Phir Thought se shuru</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Agent Components</h3>
+
+  <div class="grid2">
+    <div class="mini-card mc-orange">
+      <div class="mc-title">🔧 Tools</div>
+      <div class="mc-body">
+        <ul class="bullet-list" style="margin:0">
+          <li>Web Search</li>
+          <li>Code Execute</li>
+          <li>Database Query</li>
+          <li>Email Send</li>
+          <li>File Read/Write</li>
+          <li>API Calls (weather, maps...)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mini-card mc-blue">
+      <div class="mc-title">🧠 Memory Types</div>
+      <div class="mc-body">
+        <ul class="bullet-list bl-blue" style="margin:0">
+          <li><strong>In-Context:</strong> Current conversation</li>
+          <li><strong>Short-term:</strong> Current task state</li>
+          <li><strong>Long-term:</strong> Vector DB (past facts)</li>
+          <li><strong>Episodic:</strong> Past conversations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Multi-Agent Systems</h3>
+
+  <div class="arch-box">
+    <div class="arch-title">👥 Multi-Agent Collaboration</div>
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+      <rect width="700" height="280" fill="white"/>
+      <!-- Orchestrator -->
+      <rect x="250" y="20" width="200" height="56" rx="8" fill="#E8470A" stroke="#C03A08" stroke-width="2"/>
+      <text x="350" y="42" text-anchor="middle" fill="white" font-family="Baloo 2" font-size="13" font-weight="800">🎯 Orchestrator Agent</text>
+      <text x="350" y="58" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono" font-size="9">Task plan karo, assign karo</text>
+
+      <!-- Lines -->
+      <line x1="200" y1="76" x2="130" y2="140" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+      <line x1="300" y1="76" x2="280" y2="140" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+      <line x1="400" y1="76" x2="420" y2="140" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+      <line x1="500" y1="76" x2="570" y2="140" stroke="#D4A574" stroke-width="2" stroke-dasharray="4,3"/>
+
+      <!-- Sub-Agents -->
+      <rect x="40" y="140" width="150" height="56" rx="8" fill="#0047AB" stroke="#003A8C" stroke-width="1.5"/>
+      <text x="115" y="162" text-anchor="middle" fill="white" font-family="Baloo 2" font-size="12" font-weight="700">🔍 Researcher</text>
+      <text x="115" y="178" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono" font-size="9">Web search karo</text>
+
+      <rect x="210" y="140" width="150" height="56" rx="8" fill="#2D7A1F" stroke="#236617" stroke-width="1.5"/>
+      <text x="285" y="162" text-anchor="middle" fill="white" font-family="Baloo 2" font-size="12" font-weight="700">💻 Coder</text>
+      <text x="285" y="178" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono" font-size="9">Code likho</text>
+
+      <rect x="380" y="140" width="150" height="56" rx="8" fill="#6B21A8" stroke="#5B1898" stroke-width="1.5"/>
+      <text x="455" y="162" text-anchor="middle" fill="white" font-family="Baloo 2" font-size="12" font-weight="700">✍️ Writer</text>
+      <text x="455" y="178" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono" font-size="9">Content banao</text>
+
+      <rect x="550" y="140" width="120" height="56" rx="8" fill="#B8860B" stroke="#9A7008" stroke-width="1.5"/>
+      <text x="610" y="162" text-anchor="middle" fill="white" font-family="Baloo 2" font-size="12" font-weight="700">⚖️ Critic</text>
+      <text x="610" y="178" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="JetBrains Mono" font-size="9">Quality check</text>
+
+      <!-- Shared Memory -->
+      <rect x="150" y="225" width="400" height="40" rx="8" fill="#FFF8DC" stroke="#B8860B" stroke-width="2"/>
+      <text x="350" y="250" text-anchor="middle" fill="#B8860B" font-family="Baloo 2" font-size="12" font-weight="800">🧠 Shared Memory / State</text>
+    </svg>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Framework</th><th>Best For</th><th>Special Feature</th></tr></thead>
+      <tbody>
+        <tr><td class="td-hl">LangGraph</td><td>Stateful workflows</td><td>Graph-based state machine</td></tr>
+        <tr><td class="td-hl">AutoGen</td><td>Multi-agent debates</td><td>Agents ek doosre se baat karte hain</td></tr>
+        <tr><td class="td-hl">CrewAI</td><td>Role-based teams</td><td>Easy setup, quick start</td></tr>
+        <tr><td class="td-hl">OpenAI Assistants</td><td>Managed infra</td><td>Code interpreter built-in</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-num">— 55 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  CHAPTER 9 — PRODUCTION / LLMOPS                               -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="ch9">
+  <div class="chapter-band cb-green"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">9</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Adhyay Nau · Chapter Nine</div>
+      <div class="chapter-title">LLMOps — AI Ko Real World Mein Laana</div>
+      <div class="chapter-title-hi">🚀 Production Deployment, Fine-Tuning, Monitoring</div>
+    </div>
+    <div class="chapter-emoji">🏭</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="story-box">
+    <p>Laptop pe AI model banaya — sab kuch theek kaam kar raha hai. Ab duniya ko dena hai. Lekin wait — 1 user alag hai, 10,000 users alag! Server crash na ho, response fast aaye, galat kuch na bole, cost control ho... Yeh sab milke hai <strong>LLMOps</strong> — AI ka production engineering!</p>
+  </div>
+
+  <h2 class="section-title">Fine-Tuning — Model Ko Apna Banana</h2>
+
+  <div class="compare-grid">
+    <div class="cmp-card">
+      <div class="cmp-title ct-o">🎯 RAG (Retrieval)</div>
+      <ul class="pro-list">
+        <li>No training needed</li>
+        <li>Data update karna easy</li>
+        <li>Sources cite kar sakta hai</li>
+        <li>Cheap &amp; fast to setup</li>
+      </ul>
+      <ul class="con-list">
+        <li>Retrieval latency add hoti hai</li>
+        <li>Retrieval fail hone pe galat answer</li>
+      </ul>
+    </div>
+    <div class="cmp-card">
+      <div class="cmp-title ct-b">⚙️ Fine-Tuning</div>
+      <ul class="pro-list">
+        <li>Style/tone change kar sakte ho</li>
+        <li>Domain-specific reasoning</li>
+        <li>No retrieval latency</li>
+      </ul>
+      <ul class="con-list">
+        <li>Training cost &amp; time zyada</li>
+        <li>Data update = retrain</li>
+        <li>Hallucination possible</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub-title">LoRA — Bina Pura Model Train Kiye Fine-Tune Karo</h3>
+
+  <div class="def-box">
+    <p><strong>LoRA (Low-Rank Adaptation)</strong> ek PEFT method hai. Poore 70B model train karne ke bajay, sirf kuch <em>chhoti matrices (A×B)</em> add karo attention layers ke saath. Sirf 0.1% parameters train karo — 99.9% frozen rahein! GPU memory 8× kam lagti hai!</p>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div>
+      <div class="code-lang">LoRA Fine-Tuning with HuggingFace PEFT</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> peft <span class="kw">import</span> LoraConfig, get_peft_model, TaskType
+
+config = <span class="fn">LoraConfig</span>(
+    task_type=TaskType.CAUSAL_LM,
+    r=<span class="num">16</span>,              <span class="cm"># Rank (zyada = zyada capacity, zyada parameters)</span>
+    lora_alpha=<span class="num">32</span>,     <span class="cm"># Scaling factor</span>
+    lora_dropout=<span class="num">0.1</span>,   <span class="cm"># Regularization</span>
+    target_modules=[<span class="str">"q_proj"</span>, <span class="str">"v_proj"</span>]  <span class="cm"># Kin layers ko adapt karein</span>
+)
+
+model = <span class="fn">get_peft_model</span>(base_model, config)
+model.<span class="fn">print_trainable_parameters</span>()
+<span class="cm"># Output: trainable params: 4,194,304 || all: 6,738,415,616 || 0.062%</span>
+<span class="cm"># Sirf 0.06% parameters train ho rahe hain! 🎉</span></div>
+  </div>
+
+  <h2 class="section-title">Production Architecture</h2>
+
+  <div class="flow-container">
+    <div class="flow-title">Enterprise LLMOps Stack</div>
+    <div class="flow-row">
+      <div class="flow-step highlight">
+        <div class="fs-label">Client</div>
+        <div class="fs-main">React/Mobile</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step blue">
+        <div class="fs-label">API Gateway</div>
+        <div class="fs-main">Auth + Rate Limit</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step">
+        <div class="fs-label">Guardrails</div>
+        <div class="fs-main">Safety Check</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step green">
+        <div class="fs-label">LLM Service</div>
+        <div class="fs-main">vLLM / TGI</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step purple">
+        <div class="fs-label">Observability</div>
+        <div class="fs-main">LangSmith</div>
+      </div>
+    </div>
+    <div class="flow-arrow-down">↕</div>
+    <div class="flow-row">
+      <div class="flow-step blue">
+        <div class="fs-label">Vector DB</div>
+        <div class="fs-main">Milvus/Qdrant</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step">
+        <div class="fs-label">Cache</div>
+        <div class="fs-main">Redis</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step green">
+        <div class="fs-label">Database</div>
+        <div class="fs-main">PostgreSQL</div>
+      </div>
+      <div class="flow-row-arrow">→</div>
+      <div class="flow-step purple">
+        <div class="fs-label">Infrastructure</div>
+        <div class="fs-main">K8s + GPU</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:16px">
+    <div class="mini-card mc-green">
+      <div class="mc-title">📊 Evaluation Metrics</div>
+      <div class="mc-body">
+        <ul class="bullet-list bl-green" style="margin:0">
+          <li><strong>Faithfulness:</strong> Answer context se supported hai?</li>
+          <li><strong>Relevance:</strong> Question ka answer hai?</li>
+          <li><strong>BLEU/ROUGE:</strong> Reference se match</li>
+          <li><strong>LLM-as-judge:</strong> GPT score kare</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mini-card mc-red">
+      <div class="mc-title">🛡️ Guardrails</div>
+      <div class="mc-body">
+        <ul class="bullet-list" style="margin:0">
+          <li>Input: Prompt injection detect karo</li>
+          <li>Output: Toxic content filter</li>
+          <li>PII: Personal info nikalo</li>
+          <li>Topic: On-topic rakho</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mini-card mc-gold">
+      <div class="mc-title">📈 Monitoring</div>
+      <div class="mc-body">
+        <ul class="bullet-list" style="margin:0">
+          <li>LangSmith: Har call trace karo</li>
+          <li>MLflow: Experiments track karo</li>
+          <li>Latency p95/p99 monitor</li>
+          <li>Token cost budget</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <ul class="bullet-list">
+      <li><strong>RAG:</strong> Pehle yeh try karo (cheap, fast, updatable)</li>
+      <li><strong>LoRA/QLoRA:</strong> Jab style aur tone change karni ho fine-tuning se</li>
+      <li><strong>vLLM:</strong> Production pe high throughput ke liye</li>
+      <li><strong>LangSmith:</strong> Har LLM call trace karo — debugging ke liye zaroor</li>
+      <li><strong>Guardrails:</strong> Production mein hamesha input/output check karo</li>
+    </ul>
+  </div>
+
+  <div class="page-num">— 63 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  6-MONTH ROADMAP                                               -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="roadmap">
+  <div class="chapter-band cb-orange"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">★</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Seekhne ka Raasta · Learning Path</div>
+      <div class="chapter-title">6-Month GenAI Mastery Roadmap</div>
+      <div class="chapter-title-hi">🗺️ Zero se Production Engineer tak ka Safar</div>
+    </div>
+    <div class="chapter-emoji">🗺️</div>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot d-o">1</div>
+      <div class="tl-content">
+        <div class="tl-title">Month 1 — Math + Python Foundation</div>
+        <div class="tl-body">Linear algebra (vectors, matrices) · Calculus basics (derivatives, chain rule) · Probability & Statistics · NumPy, Pandas · PyTorch tensors · <strong>Project:</strong> Digit classifier scratch se banana</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-b">2</div>
+      <div class="tl-content">
+        <div class="tl-title">Month 2 — Deep Learning Core</div>
+        <div class="tl-body">MLP, CNN, LSTM · Backprop by hand try karo · HuggingFace library · BERT fine-tune karo classification ke liye · <strong>Project:</strong> Image classifier + Sentiment analyzer</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-o">3</div>
+      <div class="tl-content">
+        <div class="tl-title">Month 3 — LLMs + Prompt Engineering</div>
+        <div class="tl-body">Transformer architecture deep dive · OpenAI/Anthropic API use karo · CoT, ReAct prompting · Ollama se local LLMs chalao · <strong>Project:</strong> Custom chatbot + LoRA se LLaMA fine-tune</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-g">4</div>
+      <div class="tl-content">
+        <div class="tl-title">Month 4 — RAG + Vector Databases</div>
+        <div class="tl-body">Complete RAG pipeline · Milvus/Qdrant setup · Hybrid search · Reranking · <strong>Project:</strong> Document Q&A system with RAGAS evaluation</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-p">5</div>
+      <div class="tl-content">
+        <div class="tl-title">Month 5 — Agents + Multimodal</div>
+        <div class="tl-body">Tool calling · LangGraph stateful agents · CrewAI multi-agent · CLIP, Whisper · <strong>Project:</strong> Multi-agent research assistant + Vision document processor</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-o">6</div>
+      <div class="tl-content">
+        <div class="tl-title">Month 6 — LLMOps + Production</div>
+        <div class="tl-body">FastAPI + Docker + Kubernetes · vLLM serving · LangSmith tracing · Guardrails · <strong>Project:</strong> Full production AI system with CI/CD, monitoring, A/B testing</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">— 70 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  INTERVIEW PREPARATION                                          -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="interview">
+  <div class="chapter-band cb-blue"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">Q</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Interview Taiyaari · Interview Prep</div>
+      <div class="chapter-title">Top Interview Questions aur Answers</div>
+      <div class="chapter-title-hi">✅ Job ke liye Bilkul Ready Ho Jao!</div>
+    </div>
+    <div class="chapter-emoji">🎯</div>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="iq-container">
+    <div class="iq-item">
+      <div class="iq-q">Self-Attention aur Cross-Attention mein kya fark hai?</div>
+      <div class="iq-a"><strong>Self-Attention:</strong> Q, K, V teeno ek hi sequence se aate hain — har token apne saath ke doosre tokens ko dekh sakta hai. <strong>Cross-Attention:</strong> Q decoder se aata hai, lekin K aur V encoder output se — decoder ko encoder ka poora context milta hai. Yeh translation mein use hota hai jab decoder ko source language ka context chahiye.</div>
+    </div>
+    <div class="iq-item">
+      <div class="iq-q">Attention mein √dₖ se divide kyun karte hain?</div>
+      <div class="iq-a">Jab dₖ (dimension) bada hota hai, dot products bahut bade ho jaate hain. Bahut badi values mein softmax "peaked" distribution deta hai (near one-hot) — gradients vanish ho jaate hain. √dₖ se divide karne par values balanced rehti hain, softmax stable hota hai.</div>
+    </div>
+    <div class="iq-item">
+      <div class="iq-q">RAG aur Fine-tuning mein kab kya use karein?</div>
+      <div class="iq-a"><strong>RAG:</strong> Private data, frequently updated info, citations zaroori hon, quick setup chahiye. <strong>Fine-tuning:</strong> Style/tone change chahiye, domain-specific reasoning, no retrieval latency budget. <strong>Best practice:</strong> Zyaatar enterprise systems dono use karte hain together!</div>
+    </div>
+    <div class="iq-item">
+      <div class="iq-q">Vanishing Gradient problem kya hai? LSTM kaise solve karta hai?</div>
+      <div class="iq-a">RNN mein gradient har timestep pe same weight matrix se multiply hota hai — 100 steps ke baad near-zero ho jaata hai (vanish). LSTM ek dedicated <strong>cell state (Cₜ)</strong> maintain karta hai additive updates ke saath (multiplicative nahi) — gradient directly flow karta hai bina shrink hue. Forget gate, input gate, output gate — teen gates control karte hain kya store/erase/output hoga.</div>
+    </div>
+    <div class="iq-item">
+      <div class="iq-q">LoRA parameter-efficient kyun hai? Numbers batao.</div>
+      <div class="iq-a">LoRA weight update ΔW ko A(d×r) × B(r×d) mein decompose karta hai jahan r << d. 4096×4096 attention matrix = 16.7M parameters normally. LoRA r=16 ke saath = 2×4096×16 = 131K parameters — <strong>127× fewer!</strong> Total model ka sirf 0.06% train hota hai.</div>
+    </div>
+    <div class="iq-item">
+      <div class="iq-q">Hallucination kya hai? Kaise mitigate karein?</div>
+      <div class="iq-a">LLM statistically likely tokens predict karta hai — factually correct nahi necessarily. Mitigation: <strong>RAG</strong> (real documents se ground karo), <strong>temperature=0</strong> factual tasks ke liye, <strong>citation-required prompting</strong>, <strong>smaller specialized models</strong> (less interpolation), fact-checking pipelines.</div>
+    </div>
+    <div class="iq-item">
+      <div class="iq-q">vLLM ka PagedAttention kya hai? Kyun useful hai?</div>
+      <div class="iq-a">Traditional serving mein KV cache ke liye max length ke liye contiguous memory pre-allocate hoti hai — mostly waste! PagedAttention OS virtual memory se inspired hai: KV cache non-contiguous pages mein store hoti hai, demand pe allocate hoti hai. Result: 2-4× zyada concurrent requests same GPU pe — halved memory fragmentation.</div>
+    </div>
+    <div class="iq-item">
+      <div class="iq-q">BERT aur GPT mein kya fark hai?</div>
+      <div class="iq-a"><strong>BERT:</strong> Encoder-only, bidirectional attention (har token dono directions mein dekh sakta hai). Masked language modeling se pretrain. Best for understanding: classification, NER, QA. <strong>GPT:</strong> Decoder-only, causal (left-to-right) attention with masking. Next-token prediction se pretrain. Best for generation: text, code, conversation.</div>
+    </div>
+  </div>
+
+  <div class="page-num">— 78 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  QUICK REFERENCE                                               -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="quickref">
+  <div class="chapter-band cb-orange"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">⚡</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Jaldi Sandarbh · Quick Reference</div>
+      <div class="chapter-title">GenAI Cheat Sheet — Ek Nazar Mein Sab</div>
+      <div class="chapter-title-hi">⚡ Exam ke din ka best friend!</div>
+    </div>
+    <div class="chapter-emoji">📋</div>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="qref">
+    <div class="qref-head">
+      <div>Sawaal / Question</div>
+      <div>Jawab / Answer</div>
+    </div>
+    <div class="qref-row"><div class="qref-q">Hidden layers ke liye best activation?</div><div class="qref-a">ReLU (Transformers mein GELU)</div></div>
+    <div class="qref-row"><div class="qref-q">Best optimizer generally?</div><div class="qref-a">AdamW + Cosine LR Schedule</div></div>
+    <div class="qref-row"><div class="qref-q">Text similarity metric?</div><div class="qref-a">Cosine Similarity — hamesha</div></div>
+    <div class="qref-row"><div class="qref-q">Default vector index type?</div><div class="qref-a">HNSW (fast, high recall)</div></div>
+    <div class="qref-row"><div class="qref-q">Factual tasks ke liye temperature?</div><div class="qref-a danger">0.0 — Deterministic only!</div></div>
+    <div class="qref-row"><div class="qref-q">LLM results kharaab — pehle kya check karein?</div><div class="qref-a warn">Chunking strategy ya prompt quality</div></div>
+    <div class="qref-row"><div class="qref-q">Private data ke liye RAG ya Fine-tune?</div><div class="qref-a">RAG pehle (cheaper, updatable)</div></div>
+    <div class="qref-row"><div class="qref-q">Resource-constrained fine-tuning?</div><div class="qref-a">QLoRA (4-bit base + LoRA)</div></div>
+    <div class="qref-row"><div class="qref-q">High throughput serving?</div><div class="qref-a">vLLM (PagedAttention)</div></div>
+    <div class="qref-row"><div class="qref-q">Development ke liye local LLM?</div><div class="qref-a">Ollama (one command!)</div></div>
+    <div class="qref-row"><div class="qref-q">RAG evaluate karna ho?</div><div class="qref-a">RAGAS (faithfulness + relevance)</div></div>
+    <div class="qref-row"><div class="qref-q">Prompt injection prevent karna?</div><div class="qref-a warn">NeMo Guardrails + validation</div></div>
+    <div class="qref-row"><div class="qref-q">Classification ke liye best model?</div><div class="qref-a">BERT/RoBERTa (encoder-only)</div></div>
+    <div class="qref-row"><div class="qref-q">Text generation ke liye best model?</div><div class="qref-a">GPT/LLaMA/Mistral (decoder-only)</div></div>
+    <div class="qref-row"><div class="qref-q">CNN images mein kya seekhta hai?</div><div class="qref-a">Layer 1: edges → Layer 2: shapes → Last: objects</div></div>
+    <div class="qref-row"><div class="qref-q">ResNet ka secret kya hai?</div><div class="qref-a">Skip Connections! F(x) + x</div></div>
+    <div class="qref-row"><div class="qref-q">1 token ≈ kitne words?</div><div class="qref-a">~0.75 words (1.33 tokens per word)</div></div>
+    <div class="qref-row"><div class="qref-q">MoE ka faayda?</div><div class="qref-a">Speed of small, quality of large model</div></div>
+  </div>
+
+  <div class="page-num">— 82 —</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  GLOSSARY                                                      -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="chapter-cover" id="glossary">
+  <div class="chapter-band cb-purple"></div>
+  <div class="chapter-header">
+    <div class="chapter-num-big">📖</div>
+    <div class="chapter-meta">
+      <div class="chapter-label">Shabdaavali · Glossary</div>
+      <div class="chapter-title">Important Terms aur Unke Matlab</div>
+      <div class="chapter-title-hi">Dictionary of GenAI — Har Important Word</div>
+    </div>
+    <div class="chapter-emoji">📚</div>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="gloss-grid">
+    <div class="gloss-item"><div class="gloss-term">🧠 Attention Mechanism</div><div class="gloss-def">Har token decide karta hai ki dusre tokens ko kitna "dhyan" de — relationship seekhna</div></div>
+    <div class="gloss-item"><div class="gloss-term">🔄 Autoregressive</div><div class="gloss-def">Ek ek token generate karna, pichle sab tokens ke basis pe</div></div>
+    <div class="gloss-item"><div class="gloss-term">📝 BPE</div><div class="gloss-def">Byte-Pair Encoding — common character pairs ko merge karke tokens banana</div></div>
+    <div class="gloss-item"><div class="gloss-term">⚖️ Constitutional AI</div><div class="gloss-def">Anthropic ka method — model apni outputs ko principles ke base pe self-critique kare</div></div>
+    <div class="gloss-item"><div class="gloss-term">📏 Context Window</div><div class="gloss-def">LLM ek baar mein kitne tokens "dekh" sakta hai — uski short-term memory</div></div>
+    <div class="gloss-item"><div class="gloss-term">📊 Cross-Entropy Loss</div><div class="gloss-def">Classification ka standard loss function — predicted vs actual distribution ka difference</div></div>
+    <div class="gloss-item"><div class="gloss-term">🔢 Embedding</div><div class="gloss-def">Text ya image ko ek dense number vector mein convert karna jo meaning capture kare</div></div>
+    <div class="gloss-item"><div class="gloss-term">⚡ Flash Attention</div><div class="gloss-def">Memory-efficient attention — full matrix materialize nahi karta, chunked computation</div></div>
+    <div class="gloss-item"><div class="gloss-term">🌊 GELU</div><div class="gloss-def">Gaussian Error Linear Unit — smooth activation function, GPT/BERT mein use</div></div>
+    <div class="gloss-item"><div class="gloss-term">👻 Hallucination</div><div class="gloss-def">LLM ka confident tarike se galat information dena</div></div>
+    <div class="gloss-item"><div class="gloss-term">🗄️ KV Cache</div><div class="gloss-def">Pichle tokens ke Key-Value matrices cache karna — recomputation avoid karna</div></div>
+    <div class="gloss-item"><div class="gloss-term">🔧 LoRA</div><div class="gloss-def">Low-Rank Adaptation — frozen weights ke saath chhoti trainable matrices add karna</div></div>
+    <div class="gloss-item"><div class="gloss-term">🤝 MoE</div><div class="gloss-def">Mixture of Experts — har token ke liye sirf kuch "expert" sub-networks activate karna</div></div>
+    <div class="gloss-item"><div class="gloss-term">📉 Perplexity</div><div class="gloss-def">LLM text prediction ka measure — kam = better language model</div></div>
+    <div class="gloss-item"><div class="gloss-term">✂️ PEFT</div><div class="gloss-def">Parameter-Efficient Fine-Tuning — sirf thode parameters train karna</div></div>
+    <div class="gloss-item"><div class="gloss-term">📍 Positional Encoding</div><div class="gloss-def">Token ke position ki information embedding mein add karna</div></div>
+    <div class="gloss-item"><div class="gloss-term">🔍 RAG</div><div class="gloss-def">Retrieval-Augmented Generation — real documents se context lete hue answer generate karna</div></div>
+    <div class="gloss-item"><div class="gloss-term">⚡ ReAct</div><div class="gloss-def">Reasoning + Acting — agents ka core pattern: sochna + karna + dekhna</div></div>
+    <div class="gloss-item"><div class="gloss-term">🏆 RLHF</div><div class="gloss-def">RL from Human Feedback — insani feedback se model ko align karna (ChatGPT aise bana)</div></div>
+    <div class="gloss-item"><div class="gloss-term">📈 Scaling Laws</div><div class="gloss-def">Bigger model + more data = better performance (predictably!)</div></div>
+    <div class="gloss-item"><div class="gloss-term">🌡️ Temperature</div><div class="gloss-def">LLM output ki randomness — 0=deterministic, >1=bahut random/creative</div></div>
+    <div class="gloss-item"><div class="gloss-term">🪙 Token</div><div class="gloss-def">LLM ka smallest processing unit — ~0.75 words. GPT-4 ka vocab: 100K tokens</div></div>
+    <div class="gloss-item"><div class="gloss-term">🚀 vLLM</div><div class="gloss-def">High-throughput LLM serving library — PagedAttention se efficient KV cache management</div></div>
+    <div class="gloss-item"><div class="gloss-term">👻 Vanishing Gradient</div><div class="gloss-def">Deep/recurrent networks mein gradients exponentially shrink ho jaate hain</div></div>
+  </div>
+
+  <div class="page-num">— 88 —</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom:4px;font-size:14px;color:var(--ink2)">GenAI Mastery — Hinglish Edition</p>
+  <p style="margin-bottom:4px">"Samjho, Seekho, Banao — Ye Hain AI Ki Raah" · <strong>Phase 1 to Production</strong></p>
+  <p style="font-size:11px">Sabhi concepts real examples ke saath explain kiye gaye hain · © 2025–26</p>
+</footer>
+
+</div><!-- /book-wrapper -->
+
+<script>
+/* ===== PROGRESS BAR ===== */
+window.addEventListener('scroll', () => {
+  const el = document.documentElement;
+  const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+  document.getElementById('prog').style.width = pct + '%';
+});
+
+/* ===== PDF DOWNLOAD ===== */
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const btn = document.getElementById('dlBtn');
+  const orig = btn.innerHTML;
+  
+  btn.innerHTML = '⏳ PDF Bana Raha Hai... (2-3 min)';
+  btn.disabled = true;
+
+  try {
+    const el = document.getElementById('book');
+    
+    // Hide the button for clean PDF
+    btn.style.display = 'none';
+    document.getElementById('prog').style.display = 'none';
+
+    const canvas = await html2canvas(el, {
+      scale: 1.5,
+      useCORS: true,
+      backgroundColor: '#E8D5B7',
+      windowWidth: 900,
+      logging: false,
+      allowTaint: true,
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    });
+
+    btn.style.display = 'flex';
+    document.getElementById('prog').style.display = 'block';
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.88);
+    const pageW = 210, pageH = 297;
+    const imgW = pageW;
+    const imgH = (canvas.height * pageW) / canvas.width;
+
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+      compress: true
+    });
+
+    let posY = 0;
+    while (posY < imgH) {
+      if (posY > 0) doc.addPage();
+      doc.addImage(imgData, 'JPEG', 0, -posY, imgW, imgH, undefined, 'FAST');
+      posY += pageH;
+    }
+
+    doc.save('GenAI_Mastery_Hinglish_NCERT_Notes.pdf');
+    btn.innerHTML = '✅ Download Ho Gaya!';
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.disabled = false;
+    }, 3000);
+    
+  } catch (e) {
+    alert('PDF generate karne mein problem aayi: ' + e.message);
+    console.error(e);
+    btn.innerHTML = orig;
+    btn.disabled = false;
+    btn.style.display = 'flex';
+    document.getElementById('prog').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
