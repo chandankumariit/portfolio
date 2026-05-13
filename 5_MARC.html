@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Agent AI Orchestration — Zero to Expert Guide</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #F6F2EB;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #1C1C1C;
+    line-height: 1.55;
+  }
+
+  /* main container - book feel */
+  .book {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    position: relative;
+  }
+
+  /* headers & decorative */
+  h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1E3C72, #2A5298);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #FF8C42;
+    display: inline-block;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 1.6rem 0 1rem;
+    color: #1E3C72;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+    color: #B85C1A;
+  }
+
+  .tagline {
+    font-size: 1.2rem;
+    color: #4B5563;
+    margin-bottom: 2rem;
+    border-left: 4px solid #FF8C42;
+    padding-left: 1rem;
+    background: #FFF5EB;
+    border-radius: 0 12px 12px 0;
+  }
+
+  /* cards & boxes */
+  .card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.02);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    transition: all 0.2s;
+    border: 1px solid #E9E0D3;
+  }
+
+  .note {
+    background: #EFF6FF;
+    border-left: 6px solid #2563EB;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    margin: 1rem 0;
+  }
+
+  .warning {
+    background: #FEF3C7;
+    border-left: 6px solid #F59E0B;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .book { padding: 1rem; }
+    h1 { font-size: 2.2rem; }
+  }
+
+  /* diagrams / ascii art container */
+  .diagram {
+    background: #1E2A3A;
+    color: #D6E6F5;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 1.5rem;
+    border-radius: 20px;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 1.2rem 0;
+    line-height: 1.4;
+  }
+
+  .flow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #FF8C42;
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  .code-block {
+    background: #0F172A;
+    color: #E2E8F0;
+    border-radius: 18px;
+    padding: 1rem 1.5rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    margin: 1rem 0;
+  }
+
+  .pill {
+    background: #FF8C4220;
+    color: #B85C1A;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  hr {
+    margin: 2rem 0;
+    border: 1px solid #E2DCD2;
+  }
+
+  footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #5A6874;
+    border-top: 2px solid #E2DCD2;
+    padding-top: 1.5rem;
+  }
+
+  .highlight {
+    background: linear-gradient(120deg, #FFE6D5 0%, #FFE6D5 40%, transparent 80%);
+    padding: 0 0.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="book">
+  <h1>🤖 Multi-Agent AI Orchestration</h1>
+  <div class="tagline">From <strong>Zero → Expert</strong> · NCERT style + Enterprise systems · Hinglish explanation with visuals</div>
+
+  <!-- ============================================ -->
+  <!-- PHASE 1 : AI & AGENT FOUNDATIONS               -->
+  <!-- ============================================ -->
+  <h2>📘 Phase 1 — AI, Agents aur Agentic Systems</h2>
+  <div class="card">
+    <h3>🧠 What is AI / GenAI? <span class="pill">beginner first</span></h3>
+    <p><strong>Artificial Intelligence (AI)</strong> — machine ko insani tareeke se sochna sikhana. <strong>Generative AI (GenAI)</strong> naya content create karta hai: text, image, code. Jaise ChatGPT, Gemini.</p>
+    <div class="note">
+      ⚡ <strong>Simple Hindi:</strong> AI = machine mein dimaag daalna. GenAI = naye ideas / baat / picture banana.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤖 What is an AI Agent? <i class="fas fa-robot"></i></h3>
+    <p><strong>AI Agent = LLM + Tools + Memory + Planning</strong> — Bas ek chatbot nahi, yeh <strong>khud decision leta hai</strong>, tools use karta hai, aur ek goal complete karne ke liye actions karta hai.</p>
+    <div class="diagram">
+      ┌─────────────┐      ┌─────────────┐
+      │   GOAL      │ ──→  │   REASONING │
+      │ "Book a ticket" │   │ (क्या करना है?) │
+      └─────────────┘      └──────┬──────┘
+                                 │
+                                 ▼
+      ┌─────────────┐      ┌─────────────┐
+      │   ACTION    │ ←──  │   PLANNING  │
+      │  (search flight)   │ (step by step) │
+      └─────────────┘      └─────────────┘
+    </div>
+    <p><strong>Chatbot vs Agent:</strong> Chatbot sirf baat kare; agent <strong>kaam kare</strong> — database query kare, email bheje, code execute kare.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h4>✅ Single‑Agent System</h4>
+      <p>Ek agent sab kuch kare: planning + tools + memory. Simple tasks ke liye best. <br> Example: Personal assistant (Alexa + actions).</p>
+    </div>
+    <div class="card">
+      <h4>👥 Multi‑Agent System (MAS)</h4>
+      <p>Multiple agents, har agent specialist. Ek planner, ek coder, ek reviewer. <strong>Collaborate karte hain</strong> complex problem solve karne ke liye.</p>
+    </div>
+  </div>
+
+  <div class="diagram">
+    🌟 MULTI-AGENT ORCHESTRATION FLOW (BASIC)
+    User Query
+        │
+        ▼
+   ┌────────────┐
+   │ Coordinator│ (kis agent ko bhejna hai)
+   └─────┬──────┘
+         │
+    ┌────┴────┬──────────┐
+    ▼         ▼          ▼
+  Planner   Researcher  Coder
+    │         │          │
+    └────┬────┴──────────┘
+         ▼
+    Aggregator → Final Answer
+  </div>
+
+  <!-- Phase 2: LLM for agents -->
+  <h2>⚙️ Phase 2 — LLMs: Agent ka dimaag</h2>
+  <div class="card">
+    <h3>Transformer + Attention intuition</h3>
+    <p>Transformer ek architecture hai jisse LLM (GPT etc.) bane. <strong>Attention mechanism</strong> har word ko doosre words ko "dekhne" ki power deta hai — context samajhne ke liye.</p>
+    <div class="note">
+      💡 "The cat sat on the <strong>mat</strong> because it was soft." → 'it' mat ki baat kar raha hai. Attention se model connect karta hai.
+    </div>
+    <div class="code-block">
+      // PyTorch style pseudo: Attention(Q,K,V) = softmax(QK^T/√d) * V
+      // Q = Query (main token kya dhundh raha)
+      // K = Key (value ka label)
+      // V = Value (actual content)
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔧 Function calling / Tool calling — Agent ki superpower</h3>
+    <p>LLM sirf text nahi generate karta, aaj ke models <strong>function signatures</strong> samajhte hain. Jab agent ko lagta hai "bahar jaana padega" (weather API, calculator), toh woh function call karta hai.</p>
+    <div class="diagram">
+      User: "Delhi ka aaj ka temperature kya hai?"
+        │
+        ▼
+      LLM → decides: tool = get_weather(location="Delhi")
+        │
+        ▼
+      Tool execution → returns "32°C"
+        │
+        ▼
+      LLM: "Delhi mein aaj 32°C hai."
+    </div>
+    <p><strong>Structured output</strong> — JSON ya pydantic object automatically banwana. Agents ke liye zaroori.</p>
+  </div>
+
+  <!-- Phase 3: Agent Architectures -->
+  <h2>🏛️ Phase 3 — Agent Architectures (Single to Multi)</h2>
+  <div class="grid-3">
+    <div class="card"><h4>⚡ Reactive Agent</h4> current state dekhke immediate action. No memory. Fast but limited.</div>
+    <div class="card"><h4>📋 Planner Agent</h4> goal lo, step-by-step plan banao, fir execute karo. <br> <span class="pill">ReAct pattern</span></div>
+    <div class="card"><h4>🪞 Reflection Agent</h4> apna output khud review kare, mistakes correct kare. (self-critic)</div>
+  </div>
+
+  <div class="card">
+    <h3>🌟 Multi-Agent Architectural Patterns</h3>
+    <ul style="margin-left: 1.5rem;">
+      <li><strong>Orchestrator-Workers:</strong> Central boss task assign kare (popular in enterprise).</li>
+      <li><strong>Peer-to-peer:</strong> Agents directly communicate (debate, negotiation).</li>
+      <li><strong>Hierarchical:</strong> Supervisor agents ke upar manager agent.</li>
+      <li><strong>Swarm:</strong> Decentralized, emergent behaviour.</li>
+    </ul>
+    <div class="diagram">
+      HIERARCHICAL AGENT TREE
+                 ┌────────────┐
+                 │  CEO Agent  │ (high-level planning)
+                 └─────┬──────┘
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+      ┌────────┐   ┌────────┐   ┌────────┐
+      │Research│   │  Code  │   │Reviewer│
+      └────────┘   └────────┘   └────────┘
+    </div>
+  </div>
+
+  <!-- Phase 4: Orchestration Systems -->
+  <h2>🎼 Phase 4 — Orchestration: Multi-Agent ka conductor</h2>
+  <div class="card">
+    <p><strong>Orchestration</strong> = multiple agents, tools, memory kaise coordinate ho? Ye engine tasks ko route karta hai, state maintain karta hai, failure handle karta hai.</p>
+    <div class="note">
+      🎯 <strong>Importance:</strong> bina orchestration ke agents randomness me kaam karenge. Orchestrator DAG (directed acyclic graph) banata hai — step1, step2 parallel, etc.
+    </div>
+    <div class="diagram">
+      ┌─────────────────────────────────────────┐
+      │         ORCHESTRATOR ENGINE             │
+      │  (LangGraph / Custom State Machine)     │
+      └─────────────────────────────────────────┘
+                │         │         │
+        ┌───────┼─────────┼─────────┼───────┐
+        ▼       ▼         ▼         ▼       ▼
+     Agent1  Agent2    Tool DB   Memory   Router
+    </div>
+    <h4>Workflow types:</h4>
+    <ul>
+      <li>✅ Sequential (A→B→C)</li>
+      <li>✅ Parallel (A and B simultaneously)</li>
+      <li>✅ Conditional (if-else routing)</li>
+      <li>✅ Loop/Retry (reflection cycles)</li>
+    </ul>
+  </div>
+
+  <!-- Phase 5: Memory Systems -->
+  <h2>🧠 Phase 5 — Memory Systems: Agents ko bhoolna nahi chahiye</h2>
+  <div class="grid-2">
+    <div class="card"><h4>Short‑term memory</h4> current conversation window (context window).</div>
+    <div class="card"><h4>Long‑term memory</h4> vector DB mein past interactions, facts store karo.</div>
+    <div class="card"><h4>Episodic memory</h4> specific past experiences (user ne kal kya kaha).</div>
+    <div class="card"><h4>Semantic memory</h4> knowledge graph / facts.</div>
+  </div>
+  <div class="diagram">
+    MEMORY LAYER for Multi-Agent
+         ┌──────────────────────────┐
+         │       Agent Memory Bus   │
+         └───────────┬──────────────┘
+       ┌─────────────┼──────────────────┐
+       ▼             ▼                  ▼
+   [Chat Buffer] [Vector DB]        [Graph Store]
+   (conversation) (embeddings)     (relationships)
+  </div>
+  <div class="code-block">
+    # conceptual: retrieve relevant memory before agent call
+    query_embedding = embed(user_query)
+    similar_docs = vector_db.search(query_embedding, top_k=5)
+    enhanced_prompt = f"Context: {similar_docs}\nUser: {user_query}"
+  </div>
+
+  <!-- Phase 6: Tool calling -->
+  <h2>🛠️ Phase 6 — Tool calling & External APIs</h2>
+  <div class="card">
+    <p>Agent ko bahar ki duniya se connect karna: Search, Database, Code Interpreter, Email, CRM.</p>
+    <div class="diagram">
+      ┌─────────┐    LLM decides tool    ┌─────────────────┐
+      │ User    │ ──────────────────→   │ tool: search_web │
+      └─────────┘                        └────────┬────────┘
+                                                   │ execution
+                                                   ▼
+                                           ┌─────────────┐
+                                           │ API Response│
+                                           └──────┬──────┘
+                                                  │
+                                                  ▼
+                                           final LLM answer
+    </div>
+    <p><strong>MCP (Model Context Protocol):</strong> open standard jisse agents har tool se baat kar sake — enterprise mein useful.</p>
+  </div>
+
+  <!-- Phase 7: RAG for Agents / Agentic RAG -->
+  <h2>📚 Phase 7 — RAG + Agentic Retrieval</h2>
+  <div class="card">
+    <p>RAG = documents retrieve karo, fir LLM ko context do. <strong>Agentic RAG</strong> matlab: Agent decide karega kab retrieve karna hai, multiple sources se, aur multi-hop reasoning.</p>
+    <div class="diagram">
+      ┌─────────────────────────────────────────────────┐
+      │               Agentic RAG flow                  │
+      │  1. User Question → 2. Agent plans retrieval    │
+      │        3. Vector DB search + Web fallback       │
+      │        4. Rerank → 5. Answer generation         │
+      └─────────────────────────────────────────────────┘
+    </div>
+  </div>
+
+  <!-- Phase 8: Agent Frameworks -->
+  <h2>⚙️ Phase 8 — Popular Agent Frameworks (Deep)</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h4><i class="fab fa-python"></i> LangGraph</h4>
+      <p>Graph-based agent orchestration — cycles, conditional edges, state persistence. <strong>Best for production multi-agent.</strong></p>
+    </div>
+    <div class="card">
+      <h4><i class="fas fa-users"></i> CrewAI</h4>
+      <p>Role-based agents (Researcher, Writer). Simple syntax, collaborative workflows.</p>
+    </div>
+    <div class="card">
+      <h4><i class="fas fa-exchange-alt"></i> AutoGen</h4>
+      <p>Microsoft ka framework — agents conversation karte hain, code execution safe environment mein.</p>
+    </div>
+    <div class="card">
+      <h4><i class="fas fa-brain"></i> Semantic Kernel</h4>
+      <p>Enterprise (Microsoft) — planning, memory, plugins. C# & Python support.</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    # LangGraph simple multi-agent skeleton
+    from langgraph.graph import StateGraph, END
+    class AgentState(TypedDict):
+        messages: list
+        next_agent: str
+    workflow = StateGraph(AgentState)
+    workflow.add_node("planner", planner_node)
+    workflow.add_node("researcher", researcher_node)
+    workflow.add_edge("planner", "researcher")
+    workflow.add_edge("researcher", END)
+  </div>
+
+  <!-- Phase 9: Multi-Agent Communication -->
+  <h2>📡 Phase 9 — Agent Communication & Event Bus</h2>
+  <div class="card">
+    <p><strong>Message passing:</strong> agents ek doosre ko events bhejte hain (RabbitMQ, Kafka, Redis pub/sub).</p>
+    <div class="diagram">
+      [Agent A] --event--> [Message Broker] --deliver--> [Agent B]
+                             (async & scalable)
+    </div>
+    <p>Enterprise scenarios: agent1 job complete hone par agent2 trigger hota hai — loosely coupled systems.</p>
+  </div>
+
+  <!-- Phase 10: Distributed AI Systems -->
+  <h2>🌐 Phase 10 — Distributed Agents & Scaling</h2>
+  <div class="card">
+    <p>Ek server pe 10 agents possible, lekin 1000+ users ke liye distributed architecture.</p>
+    <ul>
+      <li>Load Balancer (NGINX / Traefik)</li>
+      <li>Agent pools (horizontal scaling)</li>
+      <li>State store (Redis / PostgreSQL)</li>
+      <li>Task Queues (Celery / SQS)</li>
+    </ul>
+    <div class="diagram">
+        User Request
+             │
+        ┌────┴─────┐
+        ▼          ▼
+     LB-1        LB-2
+        │          │
+    [Agent Pod] [Agent Pod] → Shared Vector DB & Memory
+    </div>
+  </div>
+
+  <!-- Phase 11: Deployment & DevOps -->
+  <h2>🐳 Phase 11 — Deployment (Docker + K8s)</h2>
+  <div class="code-block">
+    # Dockerfile snippet for agent service
+    FROM python:3.11-slim
+    WORKDIR /app
+    COPY requirements.txt .
+    RUN pip install -r requirements.txt
+    CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+
+    # Kubernetes deployment
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata: name: multi-agent-orch
+    spec:
+      replicas: 3
+      template:
+        spec:
+          containers:
+          - name: agent
+            image: myrepo/agent:latest
+            env:
+            - name: OPENAI_KEY
+              valueFrom: secretRef
+  </div>
+  <div class="note">⚡ Autoscaling based on queue length or CPU — HPA in K8s.</div>
+
+  <!-- Phase 12: LLMOps & Observability -->
+  <h2>🔭 Phase 12 — LLMOps: Monitor, Trace, Evaluate</h2>
+  <div class="grid-2">
+    <div class="card"><h4>LangSmith / LangFuse</h4>Har agent step trace karo: prompt, response, latency, token usage.</div>
+    <div class="card"><h4>Evaluation metrics</h4>Faithfulness, answer relevance, tool call accuracy, hallucination score.</div>
+  </div>
+  <div class="diagram">
+    Agent Call → LangSmith Trace → Feedback → Score Dashboard
+    (cost, latency, failure rate, user feedback)
+  </div>
+  <div class="warning">
+    ⚠️ <strong>Guardrails:</strong> Input / output validation (NeMo Guardrails) — prevent prompt injection, toxic content.
+  </div>
+
+  <!-- Phase 13: Enterprise AI Orchestration -->
+  <h2>🏢 Phase 13 — Enterprise Production Patterns</h2>
+  <div class="card">
+    <p><strong>Human-in-the-loop (HITL):</strong> critical action se pehle agent manager ko puchta hai approval.</p>
+    <p><strong>Multi-tenancy:</strong> Har customer ka alag agent state, vector DB namespace, RBAC.</p>
+    <p><strong>Compliance:</strong> Audit logs of every agent decision + GDPR (data deletion).</p>
+  </div>
+  <div class="grid-3">
+    <div class="card">📦 E-Commerce Orchestration: recommendation + inventory agent + shipping agent</div>
+    <div class="card">🎧 AI Customer Support: triage agent → refund agent → escalation agent</div>
+    <div class="card">🧪 Research copilot: literature search → summarizer → critic agent</div>
+  </div>
+
+  <!-- Phase 14: Advanced Expert Topics -->
+  <h2>🧬 Phase 14 — Advanced (Reflection, GraphRAG, MoE, Constitutional AI)</h2>
+  <div class="card">
+    <h4>🔁 Self‑improving Agents</h4>
+    <p>Agent apne execution ka log maintain kare, 'experience' store kare, future tasks pe improve kare. <strong>Reflexion</strong> pattern: Actor → Evaluator → Self-reflection → Retry.</p>
+    <h4>📈 GraphRAG</h4>
+    <p>Knowledge graph + RAG: entities aur relationships ko retrieve karo. Complex Q&A ke liye powerful.</p>
+    <h4>⚡ Mixture of Experts (MoE)</h4>
+    <p>Agent system mein kuch agents "expert" hain specific domains — router agent decide karega kaun activate karna hai.</p>
+    <div class="note">
+      Constitutional AI: Anthropic ka method jisme agent apne outputs ko constitutional principles se compare kare aur khud reject kare harmful content.
+    </div>
+  </div>
+
+  <!-- Final Project: End-to-End Multi-Agent Code Example -->
+  <h2>🚀 FINAL: Production‑Ready Multi‑Agent Orchestrator Code (Python + LangGraph)</h2>
+  <div class="code-block">
+    <pre style="color:#E2E8F0;">
+# ⚡ Complete Multi-Agent System with Tools + Memory
+# pip install langgraph langchain-openai chromadb
+
+import operator
+from typing import Annotated, List, TypedDict
+from langgraph.graph import StateGraph, END
+from langchain_openai import ChatOpenAI
+from langchain.tools import tool
+from langchain.memory import ConversationBufferMemory
+from langchain_core.messages import HumanMessage, AIMessage
+
+# ---------- TOOLS ----------
+@tool
+def search_web(query: str) -> str:
+    """Real world web search mock"""
+    return f"Search results for '{query}': Latest news about AI agents."
+
+@tool
+def calculate(expression: str) -> str:
+    """Calculator tool"""
+    return str(eval(expression))
+
+tools = [search_web, calculate]
+
+# ---------- AGENT STATE ----------
+class AgentState(TypedDict):
+    messages: Annotated[List, operator.add]
+    next_step: str
+    final_answer: str
+
+llm = ChatOpenAI(model="gpt-4o", temperature=0).bind_tools(tools)
+
+# ---------- NODES ----------
+def planner_node(state: AgentState):
+    """Planning agent: break down goal"""
+    prompt = "You are a planner. Break down user request into steps."
+    response = llm.invoke([HumanMessage(content=prompt + "\n" + state["messages"][-1].content)])
+    return {"messages": [response], "next_step": "executor"}
+
+def executor_node(state: AgentState):
+    """Executor: use tools if needed"""
+    last_msg = state["messages"][-1].content
+    response = llm.invoke([HumanMessage(content=f"User goal: {last_msg}. Use tools if needed.")])
+    # tool calling automatically handled by LLM bind_tools
+    return {"messages": [response], "next_step": "aggregator"}
+
+def aggregator_node(state: AgentState):
+    """Combine all outputs"""
+    final = llm.invoke([HumanMessage(content=f"Summarize final answer: {state['messages']}")])
+    return {"final_answer": final.content, "next_step": END}
+
+# ---------- GRAPH ----------
+builder = StateGraph(AgentState)
+builder.add_node("planner", planner_node)
+builder.add_node("executor", executor_node)
+builder.add_node("aggregator", aggregator_node)
+
+builder.set_entry_point("planner")
+builder.add_edge("planner", "executor")
+builder.add_edge("executor", "aggregator")
+builder.add_edge("aggregator", END)
+
+graph = builder.compile()
+
+# ---------- RUN ----------
+if __name__ == "__main__":
+    initial_state = {"messages": [HumanMessage(content="What is 125 * 9 and also search latest AI news?")], "next_step": "", "final_answer": ""}
+    result = graph.invoke(initial_state)
+    print("🤖 Agent Final Answer:\n", result["final_answer"])
+    </pre>
+  </div>
+
+  <!-- Revision Notes / Summary -->
+  <div class="card" style="background: #F0F7FF;">
+    <h3>📌 Chapter Summary — Ek nazar mein sab</h3>
+    <ul style="columns: 2; column-gap: 2rem;">
+      <li>✅ Agent = LLM + tools + memory + planning</li>
+      <li>✅ Orchestration = workflow manager (LangGraph)</li>
+      <li>✅ Multi-agent: coordinator & workers solve complex tasks</li>
+      <li>✅ Memory: vector DB, conversation buffer, episodic</li>
+      <li>✅ RAG + Agentic retrieval = dynamic knowledge</li>
+      <li>✅ Tool calling = JSON functions execution</li>
+      <li>✅ Production: K8s, tracing, LLMOps, guardrails</li>
+      <li>✅ Expert patterns: Reflexion, GraphRAG, MoE</li>
+    </ul>
+    <p><strong>Interview ready:</strong> Difference between orchestration and choreography? Orchestration = central controller; choreography = agents react to events.</p>
+  </div>
+
+  <footer>
+    <i class="fas fa-chalkboard-user"></i> GenAI Orchestration — Hinglish Expert Guide · NCERT style + Production Architecture<br>
+    “Samjho, design karo, scale karo — ye hai Multi-Agent Mastery”
+  </footer>
+</div>
+</body>
+</html>
