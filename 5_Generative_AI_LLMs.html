@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 5 — Generative AI & LLMs | AI Agent Engineering Masterbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a237e;
+  --primary-light: #3949ab;
+  --accent: #e65100;
+  --accent2: #00695c;
+  --accent3: #6a1b9a;
+  --gold: #f9a825;
+  --teal: #00838f;
+  --red: #c62828;
+  --bg: #f5f5f0;
+  --paper: #ffffff;
+  --text: #1a1a2e;
+  --text-light: #4a4a6a;
+  --border: #ddd8cc;
+  --code-bg: #1e2440;
+  --code-text: #e8eaf6;
+  --highlight: #fff8e1;
+  --note-bg: #e8f5e9;
+  --warn-bg: #fce4ec;
+  --tip-bg: #e3f2fd;
+  --shadow: 0 4px 24px rgba(26,35,126,0.10);
+  --shadow-lg: 0 8px 40px rgba(26,35,126,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Serif 4', 'Noto Sans Devanagari', serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  body { background: white; font-size: 12pt; }
+  .no-print, nav, #toc-sidebar { display: none !important; }
+  .page { box-shadow: none; margin: 0; width: 100%; border-radius: 0; page-break-after: always; }
+  .chapter-hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  pre, .code-block { break-inside: avoid; }
+}
+
+/* ===== NAV ===== */
+nav {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--primary);
+  padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+nav .brand {
+  font-family: 'Playfair Display', serif;
+  color: #fff; font-size: 1.1rem; font-weight: 700;
+  letter-spacing: 0.03em;
+}
+nav .nav-actions { display: flex; gap: 12px; align-items: center; }
+.btn {
+  padding: 8px 20px; border: none; border-radius: 6px;
+  font-family: 'Source Serif 4', serif; font-size: 0.85rem;
+  cursor: pointer; transition: all 0.2s; font-weight: 600;
+}
+.btn-pdf { background: var(--gold); color: #1a1a2e; }
+.btn-pdf:hover { background: #ffc107; transform: translateY(-1px); }
+.btn-toc { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+.btn-toc:hover { background: rgba(255,255,255,0.25); }
+
+/* ===== LAYOUT ===== */
+.main-wrap { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; }
+
+/* ===== A4 PAGE ===== */
+.page {
+  background: var(--paper);
+  border-radius: 4px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+/* ===== HERO ===== */
+.book-hero {
+  background: linear-gradient(135deg, #0d1b6e 0%, #1a237e 40%, #283593 70%, #1565c0 100%);
+  padding: 70px 60px 60px;
+  position: relative; overflow: hidden;
+}
+.book-hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(249,168,37,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.book-hero::after {
+  content: '';
+  position: absolute; bottom: -40px; left: 20%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,105,124,0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--gold); color: #1a1a2e;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 700;
+  padding: 5px 16px; border-radius: 20px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.book-hero h1 {
+  font-family: 'Playfair Display', serif;
+  color: #fff; font-size: 2.8rem; font-weight: 900;
+  line-height: 1.2; margin-bottom: 12px;
+}
+.book-hero .subtitle {
+  color: rgba(255,255,255,0.75); font-size: 1.05rem;
+  margin-bottom: 28px; font-style: italic;
+}
+.hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+.hero-meta-item { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+.hero-meta-item strong { color: var(--gold); display: block; font-size: 1.1rem; }
+
+/* ===== CHAPTER HERO ===== */
+.chapter-hero {
+  padding: 36px 48px 28px;
+  border-bottom: 3px solid var(--border);
+  position: relative;
+}
+.chapter-hero.ch1 { background: linear-gradient(135deg, #e8eaf6 0%, #fce4ec 100%); border-left: 6px solid var(--primary); }
+.chapter-hero.ch2 { background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 100%); border-left: 6px solid var(--teal); }
+.chapter-hero.ch3 { background: linear-gradient(135deg, #fff8e1 0%, #fff3e0 100%); border-left: 6px solid var(--accent); }
+.chapter-hero.ch4 { background: linear-gradient(135deg, #f3e5f5 0%, #ede7f6 100%); border-left: 6px solid var(--accent3); }
+.chapter-hero.ch5 { background: linear-gradient(135deg, #e8f5e9 0%, #e0f7fa 100%); border-left: 6px solid var(--accent2); }
+.chapter-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-light);
+  margin-bottom: 8px;
+}
+.chapter-hero h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem; font-weight: 900; color: var(--primary);
+  margin-bottom: 6px;
+}
+.chapter-hero .tagline { color: var(--text-light); font-size: 0.95rem; font-style: italic; }
+
+/* ===== CONTENT ===== */
+.content-body { padding: 40px 48px; }
+.content-body p { margin-bottom: 16px; color: var(--text); }
+.content-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; color: var(--primary);
+  margin: 32px 0 12px; padding-bottom: 6px;
+  border-bottom: 2px solid var(--border);
+}
+.content-body h4 {
+  font-size: 1.05rem; color: var(--accent);
+  margin: 24px 0 8px; font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+.content-body h5 {
+  font-size: 0.95rem; color: var(--accent2);
+  margin: 18px 0 6px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 36px 0 24px;
+}
+.section-divider::before, .section-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.section-divider span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--text-light);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+/* ===== CALLOUT BOXES ===== */
+.callout {
+  border-radius: 8px; padding: 18px 22px;
+  margin: 20px 0; border-left: 4px solid;
+  position: relative;
+}
+.callout-icon {
+  font-size: 1.1rem; margin-right: 8px;
+}
+.callout-title {
+  font-weight: 700; font-size: 0.85rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 6px; display: flex; align-items: center;
+}
+.note { background: var(--note-bg); border-color: var(--accent2); }
+.note .callout-title { color: var(--accent2); }
+.warning { background: var(--warn-bg); border-color: var(--red); }
+.warning .callout-title { color: var(--red); }
+.tip { background: var(--tip-bg); border-color: var(--teal); }
+.tip .callout-title { color: var(--teal); }
+.remember { background: #fff8e1; border-color: var(--gold); }
+.remember .callout-title { color: #e65100; }
+.interview { background: #e8eaf6; border-color: var(--primary); }
+.interview .callout-title { color: var(--primary); }
+
+/* ===== CODE ===== */
+.code-block {
+  background: var(--code-bg);
+  border-radius: 10px; margin: 20px 0;
+  overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.code-header {
+  background: rgba(255,255,255,0.06);
+  padding: 10px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.code-lang {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots span {
+  width: 11px; height: 11px; border-radius: 50%;
+}
+.d1{background:#ff5f56;} .d2{background:#ffbd2e;} .d3{background:#27c93f;}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; line-height: 1.7;
+  padding: 20px 22px; overflow-x: auto;
+  color: var(--code-text);
+}
+.kw { color: #c792ea; font-weight: 600; }
+.fn { color: #82aaff; }
+.str { color: #c3e88d; }
+.cm { color: #546e7a; font-style: italic; }
+.num { color: #f78c6c; }
+.cls { color: #ffcb6b; }
+.op { color: #89ddff; }
+.var { color: #eeffff; }
+.dec { color: #f07178; }
+
+/* ===== TABLES ===== */
+.table-wrap { overflow-x: auto; margin: 20px 0; }
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.88rem;
+}
+th {
+  background: var(--primary); color: #fff;
+  padding: 11px 16px; text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+}
+td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+tr:nth-child(even) td { background: #f8f8fc; }
+tr:hover td { background: #eef0fb; }
+
+/* ===== DIAGRAMS ===== */
+.diagram-box {
+  background: #f8faff;
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 24px;
+  margin: 24px 0; overflow-x: auto;
+}
+.diagram-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--text-light);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 16px; text-align: center;
+}
+svg text { font-family: 'Source Serif 4', serif; }
+
+/* ===== TOPIC CARDS ===== */
+.topic-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 16px; margin: 20px 0;
+}
+.topic-card {
+  background: #f8faff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px;
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.topic-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.topic-card .tc-icon { font-size: 1.6rem; margin-bottom: 8px; }
+.topic-card h5 { color: var(--primary); font-size: 0.88rem; margin-bottom: 4px; }
+.topic-card p { font-size: 0.8rem; color: var(--text-light); margin: 0; }
+
+/* ===== STEPS ===== */
+.steps { margin: 20px 0; }
+.step {
+  display: flex; gap: 16px; margin-bottom: 18px;
+  align-items: flex-start;
+}
+.step-num {
+  min-width: 36px; height: 36px;
+  background: var(--primary); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700;
+  flex-shrink: 0; margin-top: 2px;
+}
+.step-content h5 { color: var(--primary); margin: 0 0 4px; font-size: 0.9rem; }
+.step-content p { margin: 0; font-size: 0.88rem; color: var(--text-light); }
+
+/* ===== FORMULA BOX ===== */
+.formula-box {
+  background: linear-gradient(135deg, #e8eaf6, #fce4ec);
+  border: 2px solid var(--primary-light);
+  border-radius: 10px; padding: 20px 28px;
+  margin: 20px 0; text-align: center;
+}
+.formula-box .formula {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem; color: var(--primary);
+  font-weight: 600;
+}
+.formula-box .formula-label {
+  font-size: 0.8rem; color: var(--text-light);
+  margin-top: 6px;
+}
+
+/* ===== COMPARISON ===== */
+.compare-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin: 20px 0;
+}
+@media(max-width:600px) { .compare-grid { grid-template-columns: 1fr; } }
+.compare-card {
+  border-radius: 8px; padding: 18px;
+  border: 1px solid var(--border);
+}
+.compare-card.good { background: #e8f5e9; border-color: #a5d6a7; }
+.compare-card.bad { background: #fce4ec; border-color: #f48fb1; }
+.compare-card h5 { margin-bottom: 10px; font-size: 0.88rem; }
+
+/* ===== GLOSSARY ===== */
+.glossary-item {
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  display: flex; gap: 16px; align-items: baseline;
+}
+.glossary-term {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; color: var(--primary);
+  font-size: 0.88rem; min-width: 160px;
+}
+.glossary-def { font-size: 0.88rem; color: var(--text-light); }
+
+/* ===== HIGHLIGHT ===== */
+mark { background: #fff9c4; padding: 1px 4px; border-radius: 3px; }
+strong { color: var(--primary); }
+em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* ===== TOC ===== */
+.toc-page { padding: 48px; }
+.toc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; color: var(--primary);
+  margin-bottom: 32px; padding-bottom: 12px;
+  border-bottom: 3px solid var(--primary);
+}
+.toc-chapter {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  padding: 14px 0 10px;
+  border-bottom: 1px dashed var(--border);
+  gap: 8px;
+}
+.toc-chapter-title {
+  font-weight: 700; font-size: 1rem; color: var(--primary);
+  font-family: 'Playfair Display', serif;
+}
+.toc-chapter-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--text-light);
+  white-space: nowrap;
+}
+.toc-sub {
+  padding: 5px 0 5px 20px;
+  display: flex; justify-content: space-between;
+  font-size: 0.87rem; color: var(--text-light);
+}
+
+/* ===== EXERCISE ===== */
+.exercise-box {
+  background: linear-gradient(135deg, #f3e5f5, #ede7f6);
+  border: 1px solid #ce93d8; border-radius: 10px;
+  padding: 22px; margin: 24px 0;
+}
+.exercise-box h5 {
+  color: var(--accent3); margin-bottom: 12px;
+  font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.exercise-box ol { padding-left: 20px; }
+.exercise-box li { margin-bottom: 8px; font-size: 0.88rem; }
+
+/* ===== SUMMARY BOX ===== */
+.summary-box {
+  background: linear-gradient(135deg, #e8eaf6, #e3f2fd);
+  border: 1px solid #90caf9; border-radius: 10px;
+  padding: 22px; margin: 24px 0;
+}
+.summary-box h5 { color: var(--primary); margin-bottom: 12px; }
+.summary-box ul { padding-left: 20px; }
+.summary-box li { margin-bottom: 6px; font-size: 0.88rem; }
+
+/* ===== PAGE FOOTER ===== */
+.page-footer {
+  background: var(--primary);
+  color: rgba(255,255,255,0.6);
+  padding: 14px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+}
+.page-footer .pf-right { color: var(--gold); }
+
+/* ===== TAGS ===== */
+.tag {
+  display: inline-block;
+  padding: 3px 10px; border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 600;
+  margin: 2px; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.tag-blue { background: #e8eaf6; color: var(--primary); }
+.tag-green { background: #e8f5e9; color: var(--accent2); }
+.tag-orange { background: #fff3e0; color: var(--accent); }
+.tag-purple { background: #f3e5f5; color: var(--accent3); }
+
+/* ===== FLOW ARROW ===== */
+.flow-row {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 6px; margin: 16px 0;
+}
+.flow-box {
+  background: var(--primary); color: #fff;
+  padding: 8px 16px; border-radius: 6px;
+  font-size: 0.82rem; font-weight: 600; text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+}
+.flow-box.teal { background: var(--teal); }
+.flow-box.orange { background: var(--accent); }
+.flow-box.purple { background: var(--accent3); }
+.flow-box.gold { background: var(--gold); color: #1a1a2e; }
+.flow-box.green { background: var(--accent2); }
+.flow-arrow {
+  font-size: 1.2rem; color: var(--text-light);
+}
+
+/* ===== TOKEN VIZ ===== */
+.token-viz {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0;
+}
+.token {
+  padding: 4px 12px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; font-weight: 600;
+  border: 2px solid;
+}
+.t1{background:#e8eaf6;border-color:#3949ab;color:#1a237e;}
+.t2{background:#e8f5e9;border-color:#43a047;color:#1b5e20;}
+.t3{background:#fff3e0;border-color:#fb8c00;color:#e65100;}
+.t4{background:#fce4ec;border-color:#e91e63;color:#880e4f;}
+.t5{background:#f3e5f5;border-color:#9c27b0;color:#6a1b9a;}
+.t6{background:#e0f7fa;border-color:#00acc1;color:#006064;}
+
+/* ===== MODEL CARDS ===== */
+.model-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  gap: 18px; margin: 20px 0;
+}
+.model-card {
+  border-radius: 10px; padding: 20px;
+  border: 1px solid var(--border);
+  transition: transform 0.2s; position: relative; overflow: hidden;
+}
+.model-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+}
+.mc-openai::before { background: linear-gradient(90deg,#10a37f,#1a7f64); }
+.mc-meta::before { background: linear-gradient(90deg,#0668e1,#1877f2); }
+.mc-google::before { background: linear-gradient(90deg,#4285f4,#34a853); }
+.mc-anthropic::before { background: linear-gradient(90deg,#cc785c,#e8946a); }
+.mc-mistral::before { background: linear-gradient(90deg,#7c3aed,#a855f7); }
+.model-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.model-logo { font-size: 1.8rem; margin-bottom: 8px; }
+.model-name { font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 4px; }
+.model-maker { font-size: 0.78rem; color: var(--text-light); margin-bottom: 10px; font-family:'JetBrains Mono',monospace; }
+.model-desc { font-size: 0.83rem; color: var(--text); line-height: 1.5; }
+
+/* ===== INTERVIEW QS ===== */
+.iq-list { list-style: none; padding: 0; margin: 12px 0; }
+.iq-list li {
+  padding: 10px 14px; margin-bottom: 8px;
+  background: #f0f0f8; border-radius: 6px;
+  border-left: 3px solid var(--primary);
+  font-size: 0.88rem;
+}
+.iq-list li::before { content: "Q. "; font-weight: 700; color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="no-print">
+  <div class="brand">📚 AI Agent Engineering Masterbook</div>
+  <div class="nav-actions">
+    <button class="btn btn-toc" onclick="document.getElementById('toc-anchor').scrollIntoView({behavior:'smooth'})">📋 Contents</button>
+    <button class="btn btn-pdf" onclick="window.print()">⬇ Download PDF</button>
+  </div>
+</nav>
+
+<div class="main-wrap">
+
+<!-- ===== HERO PAGE ===== -->
+<div class="page">
+  <div class="book-hero">
+    <div class="hero-badge">Part 5 of 15 — AI Agent Engineering Masterbook</div>
+    <h1>Generative AI<br>&amp; Large Language Models</h1>
+    <p class="subtitle">"Jo model khud content create kare — woh hai Generative AI ka jadoo"</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>5</strong>Chapters</div>
+      <div class="hero-meta-item"><strong>50+</strong>Topics</div>
+      <div class="hero-meta-item"><strong>20+</strong>Code Examples</div>
+      <div class="hero-meta-item"><strong>Hinglish</strong>Language</div>
+      <div class="hero-meta-item"><strong>Beginner→Pro</strong>Level</div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div id="toc-anchor" class="toc-page">
+    <div class="toc-title">📖 Table of Contents</div>
+
+    <div class="toc-chapter">
+      <span class="toc-chapter-title">Chapter 1 — NLP Foundations</span>
+      <span class="toc-chapter-num">NLP · Text Processing</span>
+    </div>
+    <div class="toc-sub"><span>1.1 Tokenization</span></div>
+    <div class="toc-sub"><span>1.2 Stemming</span></div>
+    <div class="toc-sub"><span>1.3 Lemmatization</span></div>
+    <div class="toc-sub"><span>1.4 POS Tagging</span></div>
+    <div class="toc-sub"><span>1.5 Named Entity Recognition (NER)</span></div>
+
+    <div class="toc-chapter">
+      <span class="toc-chapter-title">Chapter 2 — Transformers</span>
+      <span class="toc-chapter-num">Architecture · Attention</span>
+    </div>
+    <div class="toc-sub"><span>2.1 Attention Mechanism</span></div>
+    <div class="toc-sub"><span>2.2 Self-Attention</span></div>
+    <div class="toc-sub"><span>2.3 Multi-Head Attention</span></div>
+    <div class="toc-sub"><span>2.4 Encoder &amp; Decoder</span></div>
+    <div class="toc-sub"><span>2.5 Positional Encoding</span></div>
+
+    <div class="toc-chapter">
+      <span class="toc-chapter-title">Chapter 3 — LLM Concepts</span>
+      <span class="toc-chapter-num">Tokens · Embeddings · Sampling</span>
+    </div>
+    <div class="toc-sub"><span>3.1 Tokens &amp; Tokenization</span></div>
+    <div class="toc-sub"><span>3.2 Embeddings</span></div>
+    <div class="toc-sub"><span>3.3 Context Window</span></div>
+    <div class="toc-sub"><span>3.4 Hallucinations</span></div>
+    <div class="toc-sub"><span>3.5 Temperature, Top-k, Top-p &amp; Sampling</span></div>
+
+    <div class="toc-chapter">
+      <span class="toc-chapter-title">Chapter 4 — Advanced LLM Topics</span>
+      <span class="toc-chapter-num">Fine-tuning · RLHF · LoRA</span>
+    </div>
+    <div class="toc-sub"><span>4.1 MoE (Mixture of Experts)</span></div>
+    <div class="toc-sub"><span>4.2 Quantization</span></div>
+    <div class="toc-sub"><span>4.3 Fine-tuning &amp; Instruction Tuning</span></div>
+    <div class="toc-sub"><span>4.4 RLHF</span></div>
+    <div class="toc-sub"><span>4.5 Distillation</span></div>
+    <div class="toc-sub"><span>4.6 LoRA &amp; PEFT</span></div>
+
+    <div class="toc-chapter">
+      <span class="toc-chapter-title">Chapter 5 — Popular Models</span>
+      <span class="toc-chapter-num">GPT · Llama · Gemini · Claude · Mistral</span>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>AI Agent Engineering Masterbook — Part 5</span>
+    <span class="pf-right">Generative AI &amp; LLMs</span>
+  </div>
+</div>
+
+
+<!-- ====================================================
+     CHAPTER 1: NLP FOUNDATIONS
+     ==================================================== -->
+<div class="page">
+  <div class="chapter-hero ch1">
+    <div class="chapter-num">Chapter 1 · NLP Foundations</div>
+    <h2>🗣️ Natural Language Processing ke Fundamentals</h2>
+    <p class="tagline">Text ko machine-readable banane ki journey — raw words se meaning tak</p>
+  </div>
+  <div class="content-body">
+
+    <p>Jab bhi hum LLMs ke baare mein baat karte hain, toh ek sawaal aata hai: <em>Machine text ko kaise samajhti hai?</em> Humans ke liye language natural hai, lekin computer ke liye toh sab kuch numbers hota hai! Yahan NLP (Natural Language Processing) ka role aata hai.</p>
+
+    <div class="callout note">
+      <div class="callout-title"><span class="callout-icon">📌</span>NLP Kya Hai?</div>
+      <p>Natural Language Processing (NLP) AI ki woh branch hai jo computers ko human language — text ya speech — ko <strong>samajhne, process karne, aur generate karne</strong> ki ability deti hai. Jaise Google Translate, ChatGPT, Siri — sab NLP use karte hain.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">NLP Pipeline — Raw Text se Meaning Tak</div>
+      <svg viewBox="0 0 760 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#546e7a"/>
+          </marker>
+        </defs>
+        <!-- boxes -->
+        <rect x="10" y="35" width="100" height="44" rx="8" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
+        <text x="60" y="58" text-anchor="middle" font-size="11" fill="#1a237e" font-weight="bold">Raw Text</text>
+        <text x="60" y="72" text-anchor="middle" font-size="9" fill="#3949ab">"Hello World"</text>
+        <line x1="112" y1="57" x2="138" y2="57" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="140" y="35" width="100" height="44" rx="8" fill="#e0f7fa" stroke="#00838f" stroke-width="1.5"/>
+        <text x="190" y="58" text-anchor="middle" font-size="11" fill="#006064" font-weight="bold">Tokenize</text>
+        <text x="190" y="72" text-anchor="middle" font-size="9" fill="#00838f">["Hello","World"]</text>
+        <line x1="242" y1="57" x2="268" y2="57" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="270" y="35" width="100" height="44" rx="8" fill="#fff3e0" stroke="#fb8c00" stroke-width="1.5"/>
+        <text x="320" y="58" text-anchor="middle" font-size="11" fill="#e65100" font-weight="bold">Normalize</text>
+        <text x="320" y="72" text-anchor="middle" font-size="9" fill="#fb8c00">Stem/Lemma</text>
+        <line x1="372" y1="57" x2="398" y2="57" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="400" y="35" width="100" height="44" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+        <text x="450" y="58" text-anchor="middle" font-size="11" fill="#6a1b9a" font-weight="bold">Tag/Parse</text>
+        <text x="450" y="72" text-anchor="middle" font-size="9" fill="#9c27b0">POS / NER</text>
+        <line x1="502" y1="57" x2="528" y2="57" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="530" y="35" width="100" height="44" rx="8" fill="#e8f5e9" stroke="#43a047" stroke-width="1.5"/>
+        <text x="580" y="58" text-anchor="middle" font-size="11" fill="#1b5e20" font-weight="bold">Embed</text>
+        <text x="580" y="72" text-anchor="middle" font-size="9" fill="#43a047">[0.2, 0.8, ...]</text>
+        <line x1="632" y1="57" x2="658" y2="57" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="660" y="35" width="90" height="44" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+        <text x="705" y="58" text-anchor="middle" font-size="11" fill="#880e4f" font-weight="bold">Model</text>
+        <text x="705" y="72" text-anchor="middle" font-size="9" fill="#e91e63">LLM / Task</text>
+      </svg>
+    </div>
+
+    <div class="section-divider"><span>1.1 Tokenization</span></div>
+    <h3>🔤 Tokenization — Text ko Todna</h3>
+
+    <h4>Kya hai Tokenization?</h4>
+    <p>Tokenization ek aisi process hai jisme hum ek bade text string ko <strong>chhote meaningful pieces</strong> (tokens) mein todte hain. Ye tokens words, subwords, characters, ya phir punctuation marks ho sakte hain.</p>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>Beginner Intuition</div>
+      <p>Soch — jaise hum ek sentence ko bol rahe hain "Main school jaata hoon" — toh yeh sentence ke <strong>4 words</strong> hain. Ye 4 words hi basically tokens hain! Machine bhi text ko aise hi chhote pieces mein todti hai process karne ke liye.</p>
+    </div>
+
+    <h4>Tokenization ke Types</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Type</th><th>Kya Karta Hai</th><th>Example</th><th>Use Case</th></tr>
+        <tr><td><strong>Word Tokenization</strong></td><td>Text ko words par split karta hai</td><td>"Hello World" → ["Hello", "World"]</td><td>Basic NLP tasks</td></tr>
+        <tr><td><strong>Sentence Tokenization</strong></td><td>Text ko sentences mein todta hai</td><td>Para → ["Sent1.", "Sent2."]</td><td>Summarization</td></tr>
+        <tr><td><strong>Subword Tokenization</strong></td><td>Rare words ko subwords mein todta hai</td><td>"playing" → ["play", "##ing"]</td><td>BERT, GPT models</td></tr>
+        <tr><td><strong>Character Tokenization</strong></td><td>Har character alag token</td><td>"Hi" → ["H","i"]</td><td>Language modeling</td></tr>
+        <tr><td><strong>BPE (Byte Pair Encoding)</strong></td><td>Common pairs ko merge karta hai</td><td>GPT-style tokenization</td><td>LLMs</td></tr>
+      </table>
+    </div>
+
+    <h4>BPE (Byte Pair Encoding) — GPT ka Secret</h4>
+    <p>Modern LLMs jaise GPT, Claude, Llama sab <strong>BPE tokenization</strong> use karte hain. Iska idea simple hai:</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h5>Start with characters</h5><p>Pehle har character alag token hota hai: "l", "o", "w" etc.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h5>Find common pairs</h5><p>Sabse zyada baar aane wali character pairs dhundho: "l"+"o" = "lo"</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h5>Merge them</h5><p>Pair ko merge karo aur vocabulary mein add karo.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h5>Repeat</h5><p>Desired vocabulary size tak repeat karo (e.g., 50,000 tokens).</p></div></div>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Token Visualization — "Unbelievable" ko kaise tokenize karte hain</div>
+      <div class="token-viz">
+        <span class="token t1">Un</span>
+        <span class="token t2">believ</span>
+        <span class="token t3">able</span>
+        <span style="margin:0 10px;color:#546e7a;align-self:center;">→ 3 tokens</span>
+      </div>
+      <div class="token-viz" style="margin-top:12px;">
+        <span class="token t4">I</span>
+        <span class="token t5">love</span>
+        <span class="token t6">eating</span>
+        <span class="token t1">biryani</span>
+        <span class="token t2">!</span>
+        <span style="margin:0 10px;color:#546e7a;align-self:center;">→ 5 tokens</span>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Tokenization Example</span>
+      </div>
+      <pre><span class="cm"># Basic Word Tokenization using NLTK</span>
+<span class="kw">import</span> <span class="cls">nltk</span>
+<span class="kw">from</span> <span class="cls">nltk.tokenize</span> <span class="kw">import</span> <span class="fn">word_tokenize</span>, <span class="fn">sent_tokenize</span>
+
+<span class="var">text</span> <span class="op">=</span> <span class="str">"Main ek AI engineer hoon. Mujhe Python bahut pasand hai!"</span>
+
+<span class="cm"># Word tokenization</span>
+<span class="var">words</span> <span class="op">=</span> <span class="fn">word_tokenize</span>(<span class="var">text</span>)
+<span class="fn">print</span>(<span class="str">"Words:"</span>, <span class="var">words</span>)
+<span class="cm"># Output: ['Main', 'ek', 'AI', 'engineer', 'hoon', '.', 'Mujhe', 'Python', ...]</span>
+
+<span class="cm"># Sentence tokenization</span>
+<span class="var">sents</span> <span class="op">=</span> <span class="fn">sent_tokenize</span>(<span class="var">text</span>)
+<span class="fn">print</span>(<span class="str">"Sentences:"</span>, <span class="var">sents</span>)
+<span class="cm"># Output: ['Main ek AI engineer hoon.', 'Mujhe Python bahut pasand hai!']</span>
+
+<span class="cm"># ---- GPT-style BPE Tokenization (tiktoken) ----</span>
+<span class="kw">import</span> <span class="cls">tiktoken</span>
+
+<span class="var">enc</span> <span class="op">=</span> <span class="cls">tiktoken</span>.<span class="fn">encoding_for_model</span>(<span class="str">"gpt-4"</span>)
+<span class="var">text2</span> <span class="op">=</span> <span class="str">"Artificial Intelligence is amazing!"</span>
+
+<span class="var">tokens</span> <span class="op">=</span> <span class="var">enc</span>.<span class="fn">encode</span>(<span class="var">text2</span>)
+<span class="fn">print</span>(<span class="str">"Token IDs:"</span>, <span class="var">tokens</span>)
+<span class="cm"># Output: [9470, 35915, 11, 1002, 374, 8056, 0]</span>
+
+<span class="fn">print</span>(<span class="str">"Total tokens:"</span>, <span class="fn">len</span>(<span class="var">tokens</span>))
+<span class="cm"># Output: 7</span>
+
+<span class="cm"># Token wapas text mein convert karo</span>
+<span class="kw">for</span> <span class="var">token</span> <span class="kw">in</span> <span class="var">tokens</span>:
+    <span class="fn">print</span>(<span class="fn">repr</span>(<span class="var">enc</span>.<span class="fn">decode</span>([<span class="var">token</span>])), <span class="str">"→ ID:"</span>, <span class="var">token</span>)</span></pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title"><span class="callout-icon">⚠️</span>Common Mistake</div>
+      <p>Bahut log sochte hain ki 1 word = 1 token. Yeh <strong>GALAT hai!</strong> "unbelievable" = 3 tokens ho sakta hai. Iska directly asar padta hai LLM ke <strong>cost aur context window</strong> par. Always token count check karo, word count nahi!</p>
+    </div>
+
+    <div class="section-divider"><span>1.2 Stemming</span></div>
+    <h3>✂️ Stemming — Root Word Dhundho</h3>
+
+    <p>Stemming ek aise process hai jisme hum kisi word ke ending (suffix) ko <strong>hataate hain</strong> taaki us word ka root (stem) mile. Yeh process thodi rough hoti hai — exact root nahi, sirf approximate stem milta hai.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card good">
+        <h5>✅ Stemming kab kaam aata hai</h5>
+        <ul style="padding-left:16px;font-size:0.85rem;">
+          <li>Search engines mein (fast retrieval)</li>
+          <li>Jab speed important ho accuracy se zyada</li>
+          <li>Information retrieval tasks</li>
+          <li>Simple text classification</li>
+        </ul>
+      </div>
+      <div class="compare-card bad">
+        <h5>❌ Stemming ki limitations</h5>
+        <ul style="padding-left:16px;font-size:0.85rem;">
+          <li>"studies" → "studi" (galat English word)</li>
+          <li>"better" → "better" (no change, missed)</li>
+          <li>Context ko samajhta nahi</li>
+          <li>Over-stemming (words galat ban jaate hain)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Stemming</span>
+      </div>
+      <pre><span class="kw">from</span> <span class="cls">nltk.stem</span> <span class="kw">import</span> <span class="cls">PorterStemmer</span>, <span class="cls">SnowballStemmer</span>
+
+<span class="var">porter</span> <span class="op">=</span> <span class="cls">PorterStemmer</span>()
+<span class="var">snowball</span> <span class="op">=</span> <span class="cls">SnowballStemmer</span>(<span class="str">"english"</span>)
+
+<span class="var">words</span> <span class="op">=</span> [<span class="str">"running"</span>, <span class="str">"studies"</span>, <span class="str">"happily"</span>, <span class="str">"better"</span>, <span class="str">"eating"</span>]
+
+<span class="fn">print</span>(<span class="str">"Word         Porter      Snowball"</span>)
+<span class="fn">print</span>(<span class="str">"-"</span><span class="op">*</span><span class="num">40</span>)
+<span class="kw">for</span> <span class="var">w</span> <span class="kw">in</span> <span class="var">words</span>:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{w:<span class="op">13</span>} {porter.stem(w):<span class="op">12</span>} {snowball.stem(w)}"</span>)
+
+<span class="cm"># Output:
+# Word         Porter      Snowball
+# ----------------------------------------
+# running      run         run
+# studies      studi       studi    ← Thoda rough!
+# happily      happili     happili
+# better       better      better   ← Kuch nahi hua
+# eating       eat         eat</span></pre>
+    </div>
+
+    <div class="section-divider"><span>1.3 Lemmatization</span></div>
+    <h3>📚 Lemmatization — Sahi Root Word</h3>
+
+    <p>Lemmatization bhi stemming ki tarah root form dhundti hai, lekin yeh <strong>grammatically correct</strong> root word return karti hai — jo dictionary mein milta hai (lemma). Yeh stemming se zyada smart hai kyunki yeh word ka <strong>context (POS) bhi consider</strong> karti hai.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Word</th><th>Stemming Result</th><th>Lemmatization Result</th><th>Sahi?</th></tr>
+        <tr><td>studies</td><td>studi ❌</td><td>study ✅</td><td>Lemma wins</td></tr>
+        <tr><td>running</td><td>run ✅</td><td>run ✅</td><td>Dono sahi</td></tr>
+        <tr><td>better</td><td>better ❌</td><td>good ✅</td><td>Lemma wins</td></tr>
+        <tr><td>ate</td><td>ate ❌</td><td>eat ✅</td><td>Lemma wins</td></tr>
+        <tr><td>caring</td><td>car ❌❌</td><td>care ✅</td><td>Lemma sirf winner</td></tr>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Lemmatization with SpaCy</span>
+      </div>
+      <pre><span class="kw">import</span> <span class="cls">spacy</span>
+
+<span class="cm"># SpaCy ka English model load karo</span>
+<span class="var">nlp</span> <span class="op">=</span> <span class="cls">spacy</span>.<span class="fn">load</span>(<span class="str">"en_core_web_sm"</span>)
+
+<span class="var">text</span> <span class="op">=</span> <span class="str">"The children are running and eating their studies better"</span>
+<span class="var">doc</span> <span class="op">=</span> <span class="var">nlp</span>(<span class="var">text</span>)
+
+<span class="fn">print</span>(<span class="str">"Word       → Lemma"</span>)
+<span class="fn">print</span>(<span class="str">"-"</span><span class="op">*</span><span class="num">25</span>)
+<span class="kw">for</span> <span class="var">token</span> <span class="kw">in</span> <span class="var">doc</span>:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{token.text:<span class="op">10</span>} → {token.lemma_}"</span>)
+
+<span class="cm"># Output:
+# Word       → Lemma
+# -------------------------
+# The        → the
+# children   → child
+# are        → be
+# running    → run
+# eating     → eat
+# studies    → study
+# better     → well</span></pre>
+    </div>
+
+    <div class="section-divider"><span>1.4 POS Tagging</span></div>
+    <h3>🏷️ POS Tagging — Parts of Speech</h3>
+
+    <p>POS (Part-of-Speech) Tagging ek aisi technique hai jisme hum har word ko uski <strong>grammatical category</strong> assign karte hain — jaise Noun, Verb, Adjective, Adverb, etc. Yeh NLP ki fundamental step hai.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>POS Tag</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td>NN</td><td>Noun (singular)</td><td>dog, computer, India</td></tr>
+        <tr><td>NNS</td><td>Noun (plural)</td><td>dogs, computers</td></tr>
+        <tr><td>VB</td><td>Verb (base form)</td><td>run, eat, code</td></tr>
+        <tr><td>VBG</td><td>Verb (gerund)</td><td>running, eating</td></tr>
+        <tr><td>JJ</td><td>Adjective</td><td>beautiful, fast, smart</td></tr>
+        <tr><td>RB</td><td>Adverb</td><td>quickly, happily</td></tr>
+        <tr><td>PRP</td><td>Personal pronoun</td><td>I, he, she, they</td></tr>
+        <tr><td>IN</td><td>Preposition</td><td>in, on, at, for</td></tr>
+        <tr><td>DT</td><td>Determiner</td><td>the, a, an</td></tr>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — POS Tagging</span>
+      </div>
+      <pre><span class="kw">import</span> <span class="cls">spacy</span>
+
+<span class="var">nlp</span> <span class="op">=</span> <span class="cls">spacy</span>.<span class="fn">load</span>(<span class="str">"en_core_web_sm"</span>)
+<span class="var">doc</span> <span class="op">=</span> <span class="var">nlp</span>(<span class="str">"The smart AI engineer coded a brilliant solution."</span>)
+
+<span class="fn">print</span>(<span class="fn">f</span><span class="str">"{'Token':<span class="op">12</span>} {'POS':<span class="op">8</span>} {'Tag':<span class="op">6</span>} Description"</span>)
+<span class="fn">print</span>(<span class="str">"-"</span><span class="op">*</span><span class="num">55</span>)
+<span class="kw">for</span> <span class="var">token</span> <span class="kw">in</span> <span class="var">doc</span>:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{token.text:<span class="op">12</span>} {token.pos_:<span class="op">8</span>} {token.tag_:<span class="op">6</span>} {spacy.explain(token.tag_)}"</span>)
+
+<span class="cm"># Output:
+# Token        POS      Tag    Description
+# -------------------------------------------------------
+# The          DET      DT     determiner
+# smart        ADJ      JJ     adjective, nominal
+# AI           PROPN    NNP    noun, proper, singular
+# engineer     NOUN     NN     noun, singular or mass
+# coded        VERB     VBD    verb, past tense
+# a            DET      DT     determiner
+# brilliant    ADJ      JJ     adjective
+# solution     NOUN     NN     noun, singular</span></pre>
+    </div>
+
+    <div class="section-divider"><span>1.5 Named Entity Recognition (NER)</span></div>
+    <h3>🔍 NER — Important Names Pakdo</h3>
+
+    <p>Named Entity Recognition (NER) ek aisi technique hai jo text mein se <strong>important real-world entities</strong> identify karti hai — jaise persons ke naam, organizations, locations, dates, amounts etc.</p>
+
+    <div class="topic-grid">
+      <div class="topic-card"><div class="tc-icon">👤</div><h5>PERSON</h5><p>Elon Musk, Narendra Modi, Sundar Pichai</p></div>
+      <div class="topic-card"><div class="tc-icon">🏢</div><h5>ORG</h5><p>Google, OpenAI, ISRO, Microsoft</p></div>
+      <div class="topic-card"><div class="tc-icon">📍</div><h5>GPE</h5><p>India, Mumbai, Silicon Valley</p></div>
+      <div class="topic-card"><div class="tc-icon">📅</div><h5>DATE</h5><p>2024, Monday, March 15th</p></div>
+      <div class="topic-card"><div class="tc-icon">💰</div><h5>MONEY</h5><p>₹50 crore, $100 million</p></div>
+      <div class="topic-card"><div class="tc-icon">📊</div><h5>PERCENT</h5><p>85%, nearly 30%</p></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Named Entity Recognition</span>
+      </div>
+      <pre><span class="kw">import</span> <span class="cls">spacy</span>
+
+<span class="var">nlp</span> <span class="op">=</span> <span class="cls">spacy</span>.<span class="fn">load</span>(<span class="str">"en_core_web_sm"</span>)
+
+<span class="var">text</span> <span class="op">=</span> <span class="str">"""
+    Elon Musk, the CEO of Tesla, announced on Monday that 
+    the company invested $3 billion in India in 2024.
+    The factory will be built in Maharashtra.
+"""</span>
+
+<span class="var">doc</span> <span class="op">=</span> <span class="var">nlp</span>(<span class="var">text</span>)
+
+<span class="fn">print</span>(<span class="str">"Entities Found:"</span>)
+<span class="fn">print</span>(<span class="str">"-"</span><span class="op">*</span><span class="num">45</span>)
+<span class="kw">for</span> <span class="var">ent</span> <span class="kw">in</span> <span class="var">doc</span>.<span class="var">ents</span>:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"{ent.text:<span class="op">20</span>} → {ent.label_:<span class="op">10</span>} ({spacy.explain(ent.label_)})"</span>)
+
+<span class="cm"># Output:
+# Entities Found:
+# ---------------------------------------------
+# Elon Musk            → PERSON     (People, including fictional)
+# Tesla                → ORG        (Companies, agencies, institutions)
+# Monday               → DATE       (Absolute or relative dates or periods)
+# $3 billion           → MONEY      (Monetary values, including unit)
+# India                → GPE        (Countries, cities, states)
+# 2024                 → DATE       (Absolute or relative dates or periods)
+# Maharashtra          → GPE        (Countries, cities, states)</span></pre>
+    </div>
+
+    <div class="callout interview">
+      <div class="callout-title"><span class="callout-icon">🎯</span>Interview Questions — NLP Foundations</div>
+      <ul class="iq-list">
+        <li>Stemming aur Lemmatization mein kya difference hai? Kab kaunsa use karein?</li>
+        <li>BPE (Byte Pair Encoding) tokenization kaise kaam karta hai? GPT mein kyun use hota hai?</li>
+        <li>NER ke real-world applications kya hain? Financial news mein kaise use hoga?</li>
+        <li>POS tagging ka use LLM training mein kya hai?</li>
+        <li>Ek 100-word paragraph mein approximately kitne tokens honge GPT-4 mein?</li>
+      </ul>
+    </div>
+
+    <div class="summary-box">
+      <h5>📝 Chapter 1 Summary — NLP Foundations</h5>
+      <ul>
+        <li><strong>Tokenization:</strong> Text ko tokens (words/subwords) mein todna — BPE modern LLMs ka standard hai</li>
+        <li><strong>Stemming:</strong> Fast lekin rough — root word approximately milta hai (Porter, Snowball)</li>
+        <li><strong>Lemmatization:</strong> Slow but accurate — dictionary-correct lemma milta hai (SpaCy use karo)</li>
+        <li><strong>POS Tagging:</strong> Har word ka grammatical role identify karna — Noun, Verb, Adj etc.</li>
+        <li><strong>NER:</strong> Text mein real-world entities (Person, Org, Location) detect karna</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>AI Agent Engineering Masterbook — Part 5 | Chapter 1</span>
+    <span class="pf-right">NLP Foundations</span>
+  </div>
+</div>
+
+
+<!-- ====================================================
+     CHAPTER 2: TRANSFORMERS
+     ==================================================== -->
+<div class="page">
+  <div class="chapter-hero ch2">
+    <div class="chapter-num">Chapter 2 · Transformers</div>
+    <h2>⚡ Transformer Architecture — AI ka Dil</h2>
+    <p class="tagline">"Attention Is All You Need" — 2017 ka woh paper jisne AI ki duniya badal di</p>
+  </div>
+  <div class="content-body">
+
+    <p>2017 mein Google ke researchers ne ek paper publish kiya: <em>"Attention Is All You Need"</em>. Isme ek naya architecture propose kiya gaya — <strong>Transformer</strong>. Aaj duniya ke sabse powerful AI models (GPT-4, Claude, Gemini) sab Transformer architecture par based hain.</p>
+
+    <div class="callout note">
+      <div class="callout-title"><span class="callout-icon">📌</span>Transformer Kyun Important Hai?</div>
+      <p>Pehle NLP mein RNN (Recurrent Neural Networks) use hote the, jo text ko <strong>sequentially</strong> (ek-ek word) process karte the. Transformer ne yeh sab badal diya — ab <strong>parallel processing</strong> possible ho gayi jisme ek baar mein pura text process ho sakta hai. Isi liye training bahut fast ho gayi!</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Transformer Architecture Overview</div>
+      <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;">
+        <!-- Encoder side -->
+        <rect x="30" y="20" width="270" height="380" rx="12" fill="#e8eaf6" stroke="#3949ab" stroke-width="2"/>
+        <text x="165" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a237e">ENCODER</text>
+
+        <!-- Input Embedding -->
+        <rect x="55" y="60" width="220" height="40" rx="6" fill="#3949ab" />
+        <text x="165" y="85" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Input Embedding</text>
+
+        <!-- Positional Enc -->
+        <rect x="55" y="112" width="220" height="40" rx="6" fill="#5c6bc0"/>
+        <text x="165" y="137" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Positional Encoding</text>
+
+        <!-- Multi-head attention encoder -->
+        <rect x="55" y="164" width="220" height="50" rx="6" fill="#7986cb"/>
+        <text x="165" y="186" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Multi-Head</text>
+        <text x="165" y="202" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Self-Attention</text>
+
+        <!-- Add & Norm -->
+        <rect x="55" y="226" width="220" height="32" rx="6" fill="#9fa8da"/>
+        <text x="165" y="247" text-anchor="middle" font-size="11" fill="white">Add &amp; Normalize</text>
+
+        <!-- Feed Forward -->
+        <rect x="55" y="270" width="220" height="40" rx="6" fill="#7986cb"/>
+        <text x="165" y="295" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Feed Forward Network</text>
+
+        <!-- Add & Norm 2 -->
+        <rect x="55" y="322" width="220" height="32" rx="6" fill="#9fa8da"/>
+        <text x="165" y="342" text-anchor="middle" font-size="11" fill="white">Add &amp; Normalize</text>
+
+        <text x="165" y="378" text-anchor="middle" font-size="10" fill="#3949ab">× N layers</text>
+
+        <!-- Decoder side -->
+        <rect x="400" y="20" width="270" height="380" rx="12" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+        <text x="535" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#006064">DECODER</text>
+
+        <rect x="425" y="60" width="220" height="40" rx="6" fill="#00838f"/>
+        <text x="535" y="85" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Output Embedding</text>
+
+        <rect x="425" y="112" width="220" height="40" rx="6" fill="#00897b"/>
+        <text x="535" y="137" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Positional Encoding</text>
+
+        <rect x="425" y="164" width="220" height="50" rx="6" fill="#26a69a"/>
+        <text x="535" y="186" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Masked Multi-Head</text>
+        <text x="535" y="202" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Self-Attention</text>
+
+        <rect x="425" y="226" width="220" height="32" rx="6" fill="#4db6ac"/>
+        <text x="535" y="247" text-anchor="middle" font-size="11" fill="white">Cross-Attention (Enc-Dec)</text>
+
+        <rect x="425" y="270" width="220" height="40" rx="6" fill="#26a69a"/>
+        <text x="535" y="295" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Feed Forward Network</text>
+
+        <rect x="425" y="322" width="220" height="32" rx="6" fill="#4db6ac"/>
+        <text x="535" y="342" text-anchor="middle" font-size="11" fill="white">Linear + Softmax</text>
+
+        <text x="535" y="378" text-anchor="middle" font-size="10" fill="#006064">× N layers</text>
+
+        <!-- Arrow between encoder and decoder -->
+        <line x1="302" y1="210" x2="398" y2="240" stroke="#f9a825" stroke-width="2.5" stroke-dasharray="5,3"/>
+        <text x="340" y="228" text-anchor="middle" font-size="10" fill="#e65100" font-weight="bold">Keys+Values</text>
+      </svg>
+    </div>
+
+    <div class="section-divider"><span>2.1 Attention Mechanism</span></div>
+    <h3>👁️ Attention Mechanism — Dhyan Kaha Lagayen?</h3>
+
+    <p>Attention mechanism ka core idea yeh hai: <em>Jab hum ek word ko process karte hain, toh hume sentence ke baaqi words ka kitna importance dena chahiye?</em></p>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>Real-World Analogy — Exam Mein Padhna</div>
+      <p>Socho tum ek question padh rahe ho: <strong>"The bank near the <em>river</em> was closed."</strong> Yahan "bank" ka matlab hai <em>nadi ka kinara</em>, na ki <em>paisa wali bank</em>. Tumhara brain automatically "river" word ko zyada attention deta hai "bank" ke context ko samajhne ke liye. Yahi kaam Attention Mechanism karta hai!</p>
+    </div>
+
+    <h4>Attention Ka Mathematical Formula</h4>
+    <div class="formula-box">
+      <div class="formula">Attention(Q, K, V) = softmax( Q·Kᵀ / √dₖ ) · V</div>
+      <div class="formula-label">Jahan Q = Query, K = Key, V = Value, dₖ = Key dimension</div>
+    </div>
+
+    <h4>Q, K, V Kya Hain? (Intuition)</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Component</th><th>Analogy</th><th>Role</th></tr>
+        <tr><td><strong>Query (Q)</strong></td><td>Librarian se question: "Mujhe AI books chahiye"</td><td>Current word kya dhundh raha hai</td></tr>
+        <tr><td><strong>Key (K)</strong></td><td>Har book ka label: "AI", "Science", "History"</td><td>Dusre words ki identity/tag</td></tr>
+        <tr><td><strong>Value (V)</strong></td><td>Book ka actual content</td><td>Jo information actually pass hogi</td></tr>
+      </table>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h5>Q, K, V matrices compute karo</h5><p>Input embedding ko 3 alag weight matrices se multiply karo → Q, K, V matrices milti hain.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h5>Attention scores compute karo</h5><p>Q aur K ka dot product lo → similarity scores milte hain. √dₖ se divide karo (scale).</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h5>Softmax apply karo</h5><p>Scores ko probabilities mein convert karo (0 to 1) — ye attention weights hain.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h5>Value se multiply karo</h5><p>Attention weights ko V se multiply karo → final context-aware representation milti hai.</p></div></div>
+    </div>
+
+    <div class="section-divider"><span>2.2 Self-Attention</span></div>
+    <h3>🔄 Self-Attention — Apne Aap Se Baat</h3>
+
+    <p>Self-attention mein ek sentence ke words <strong>apne hi sentence ke dusre words par attention</strong> dete hain. Yahan Q, K, V — teeno ek hi sequence se aate hain (isliye "self").</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Self-Attention Visualization — "I love eating biryani"</div>
+      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;">
+        <!-- Words -->
+        <rect x="30" y="20" width="70" height="35" rx="6" fill="#3949ab"/>
+        <text x="65" y="42" text-anchor="middle" font-size="13" fill="white" font-weight="bold">I</text>
+
+        <rect x="130" y="20" width="70" height="35" rx="6" fill="#3949ab"/>
+        <text x="165" y="42" text-anchor="middle" font-size="13" fill="white" font-weight="bold">love</text>
+
+        <rect x="230" y="20" width="70" height="35" rx="6" fill="#3949ab"/>
+        <text x="265" y="42" text-anchor="middle" font-size="13" fill="white" font-weight="bold">eating</text>
+
+        <rect x="330" y="20" width="80" height="35" rx="6" fill="#3949ab"/>
+        <text x="370" y="42" text-anchor="middle" font-size="13" fill="white" font-weight="bold">biryani</text>
+
+        <!-- Attention lines from "eating" to others -->
+        <line x1="265" y1="55" x2="65" y2="120" stroke="#e65100" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="4,2"/>
+        <line x1="265" y1="55" x2="165" y2="120" stroke="#e65100" stroke-width="2" stroke-opacity="0.7" stroke-dasharray="4,2"/>
+        <line x1="265" y1="55" x2="265" y2="120" stroke="#e65100" stroke-width="4" stroke-opacity="1"/>
+        <line x1="265" y1="55" x2="370" y2="120" stroke="#e65100" stroke-width="3" stroke-opacity="0.85" stroke-dasharray="4,2"/>
+
+        <!-- Attention labels -->
+        <text x="100" y="95" font-size="10" fill="#546e7a">0.05</text>
+        <text x="190" y="90" font-size="10" fill="#546e7a">0.20</text>
+        <text x="255" y="92" font-size="10" fill="#e65100" font-weight="bold">0.65 ←self</text>
+        <text x="310" y="90" font-size="10" fill="#546e7a">0.10</text>
+
+        <!-- Attention output boxes -->
+        <rect x="30" y="120" width="70" height="35" rx="6" fill="#e8eaf6" stroke="#9fa8da"/>
+        <text x="65" y="142" text-anchor="middle" font-size="11" fill="#1a237e">0.05</text>
+
+        <rect x="130" y="120" width="70" height="35" rx="6" fill="#e8eaf6" stroke="#9fa8da"/>
+        <text x="165" y="142" text-anchor="middle" font-size="11" fill="#1a237e">0.20</text>
+
+        <rect x="230" y="120" width="70" height="35" rx="6" fill="#3949ab" stroke="#1a237e"/>
+        <text x="265" y="142" text-anchor="middle" font-size="11" fill="white" font-weight="bold">0.65</text>
+
+        <rect x="330" y="120" width="80" height="35" rx="6" fill="#e8eaf6" stroke="#9fa8da"/>
+        <text x="370" y="142" text-anchor="middle" font-size="11" fill="#1a237e">0.10</text>
+
+        <text x="320" y="185" text-anchor="middle" font-size="11" fill="#546e7a">"eating" word ne sabse zyada attention apne aap par lagaya (self-attention)</text>
+        <text x="320" y="205" text-anchor="middle" font-size="11" fill="#546e7a">aur "biryani" par bhi — kyunki context related hai</text>
+
+        <!-- Legend -->
+        <rect x="430" y="30" width="180" height="80" rx="8" fill="#fff8e1" stroke="#f9a825"/>
+        <text x="520" y="50" text-anchor="middle" font-size="11" fill="#e65100" font-weight="bold">Attention Weight</text>
+        <line x1="445" y1="65" x2="475" y2="65" stroke="#e65100" stroke-width="4"/>
+        <text x="490" y="69" font-size="10" fill="#546e7a">High (0.6+)</text>
+        <line x1="445" y1="80" x2="475" y2="80" stroke="#e65100" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="490" y="84" font-size="10" fill="#546e7a">Medium (0.2)</text>
+        <line x1="445" y1="95" x2="475" y2="95" stroke="#e65100" stroke-width="1" stroke-dasharray="3,2" stroke-opacity="0.4"/>
+        <text x="490" y="99" font-size="10" fill="#546e7a">Low (0.05)</text>
+      </svg>
+    </div>
+
+    <div class="section-divider"><span>2.3 Multi-Head Attention</span></div>
+    <h3>🎭 Multi-Head Attention — Ek Saath Kaafi Nazariye</h3>
+
+    <p>Ek single attention head ek hi type ka relationship pakad sakta hai. Lekin language mein bahut tarah ke relationships hote hain — grammatical, semantic, coreference etc. <strong>Multi-Head Attention</strong> ek baar mein <em>multiple attention heads</em> parallel mein chalata hai.</p>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>Analogy — Multiple Experts</div>
+      <p>Socho ek doctor, ek lawyer, aur ek engineer ek hi problem dekh rahe hain — teeno alag-alag angle se analyze karte hain. Multi-Head Attention bhi aisa karta hai — har head ek alag "perspective" se text ko analyze karta hai, phir sab combine hote hain!</p>
+    </div>
+
+    <div class="flow-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="flow-box">Input</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box teal">Head 1<br><small>Syntax</small></div>
+        <div class="flow-box orange">Head 2<br><small>Semantics</small></div>
+        <div class="flow-box purple">Head 3<br><small>Coreference</small></div>
+        <div class="flow-box gold">Head 4<br><small>Position</small></div>
+        <span style="font-size:0.8rem;color:#546e7a;">... (8 or 16 heads)</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div class="flow-box green">Concatenate All Heads</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">Linear Projection</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box teal">Output</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Multi-Head Attention (PyTorch)</span>
+      </div>
+      <pre><span class="kw">import</span> <span class="cls">torch</span>
+<span class="kw">import</span> <span class="cls">torch.nn</span> <span class="kw">as</span> <span class="cls">nn</span>
+
+<span class="kw">class</span> <span class="cls">MultiHeadAttention</span>(<span class="cls">nn.Module</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="var">self</span>, <span class="var">d_model</span><span class="op">=</span><span class="num">512</span>, <span class="var">num_heads</span><span class="op">=</span><span class="num">8</span>):
+        <span class="fn">super</span>().<span class="fn">__init__</span>()
+        <span class="var">self</span>.<span class="var">d_model</span> <span class="op">=</span> <span class="var">d_model</span>
+        <span class="var">self</span>.<span class="var">num_heads</span> <span class="op">=</span> <span class="var">num_heads</span>
+        <span class="var">self</span>.<span class="var">d_k</span> <span class="op">=</span> <span class="var">d_model</span> <span class="op">//</span> <span class="var">num_heads</span>  <span class="cm"># 512/8 = 64</span>
+        
+        <span class="cm"># Query, Key, Value weight matrices</span>
+        <span class="var">self</span>.<span class="var">W_q</span> <span class="op">=</span> <span class="cls">nn</span>.<span class="cls">Linear</span>(<span class="var">d_model</span>, <span class="var">d_model</span>)
+        <span class="var">self</span>.<span class="var">W_k</span> <span class="op">=</span> <span class="cls">nn</span>.<span class="cls">Linear</span>(<span class="var">d_model</span>, <span class="var">d_model</span>)
+        <span class="var">self</span>.<span class="var">W_v</span> <span class="op">=</span> <span class="cls">nn</span>.<span class="cls">Linear</span>(<span class="var">d_model</span>, <span class="var">d_model</span>)
+        <span class="var">self</span>.<span class="var">W_o</span> <span class="op">=</span> <span class="cls">nn</span>.<span class="cls">Linear</span>(<span class="var">d_model</span>, <span class="var">d_model</span>)
+    
+    <span class="kw">def</span> <span class="fn">scaled_dot_product_attention</span>(<span class="var">self</span>, <span class="var">Q</span>, <span class="var">K</span>, <span class="var">V</span>):
+        <span class="cm"># Attention Score = softmax(Q·Kᵀ / √dₖ) · V</span>
+        <span class="var">scores</span> <span class="op">=</span> <span class="cls">torch</span>.<span class="fn">matmul</span>(<span class="var">Q</span>, <span class="var">K</span>.<span class="fn">transpose</span>(<span class="op">-</span><span class="num">2</span>, <span class="op">-</span><span class="num">1</span>)) <span class="op">/</span> (<span class="var">self</span>.<span class="var">d_k</span> <span class="op">**</span> <span class="num">0.5</span>)
+        <span class="var">weights</span> <span class="op">=</span> <span class="cls">torch</span>.<span class="fn">softmax</span>(<span class="var">scores</span>, <span class="var">dim</span><span class="op">=-</span><span class="num">1</span>)
+        <span class="kw">return</span> <span class="cls">torch</span>.<span class="fn">matmul</span>(<span class="var">weights</span>, <span class="var">V</span>)
+    
+    <span class="kw">def</span> <span class="fn">forward</span>(<span class="var">self</span>, <span class="var">x</span>):
+        <span class="var">batch_size</span> <span class="op">=</span> <span class="var">x</span>.<span class="fn">size</span>(<span class="num">0</span>)
+        <span class="cm"># Project aur heads mein split karo</span>
+        <span class="var">Q</span> <span class="op">=</span> <span class="var">self</span>.<span class="var">W_q</span>(<span class="var">x</span>).<span class="fn">view</span>(<span class="var">batch_size</span>, <span class="op">-</span><span class="num">1</span>, <span class="var">self</span>.<span class="var">num_heads</span>, <span class="var">self</span>.<span class="var">d_k</span>).<span class="fn">transpose</span>(<span class="num">1</span>,<span class="num">2</span>)
+        <span class="var">K</span> <span class="op">=</span> <span class="var">self</span>.<span class="var">W_k</span>(<span class="var">x</span>).<span class="fn">view</span>(<span class="var">batch_size</span>, <span class="op">-</span><span class="num">1</span>, <span class="var">self</span>.<span class="var">num_heads</span>, <span class="var">self</span>.<span class="var">d_k</span>).<span class="fn">transpose</span>(<span class="num">1</span>,<span class="num">2</span>)
+        <span class="var">V</span> <span class="op">=</span> <span class="var">self</span>.<span class="var">W_v</span>(<span class="var">x</span>).<span class="fn">view</span>(<span class="var">batch_size</span>, <span class="op">-</span><span class="num">1</span>, <span class="var">self</span>.<span class="var">num_heads</span>, <span class="var">self</span>.<span class="var">d_k</span>).<span class="fn">transpose</span>(<span class="num">1</span>,<span class="num">2</span>)
+        
+        <span class="var">attn</span> <span class="op">=</span> <span class="var">self</span>.<span class="fn">scaled_dot_product_attention</span>(<span class="var">Q</span>, <span class="var">K</span>, <span class="var">V</span>)
+        <span class="var">attn</span> <span class="op">=</span> <span class="var">attn</span>.<span class="fn">transpose</span>(<span class="num">1</span>,<span class="num">2</span>).<span class="fn">contiguous</span>().<span class="fn">view</span>(<span class="var">batch_size</span>, <span class="op">-</span><span class="num">1</span>, <span class="var">self</span>.<span class="var">d_model</span>)
+        <span class="kw">return</span> <span class="var">self</span>.<span class="var">W_o</span>(<span class="var">attn</span>)
+
+<span class="cm"># Usage</span>
+<span class="var">mha</span> <span class="op">=</span> <span class="cls">MultiHeadAttention</span>(<span class="var">d_model</span><span class="op">=</span><span class="num">512</span>, <span class="var">num_heads</span><span class="op">=</span><span class="num">8</span>)
+<span class="var">x</span> <span class="op">=</span> <span class="cls">torch</span>.<span class="fn">randn</span>(<span class="num">2</span>, <span class="num">10</span>, <span class="num">512</span>)  <span class="cm"># batch=2, seq_len=10, d_model=512</span>
+<span class="var">output</span> <span class="op">=</span> <span class="var">mha</span>(<span class="var">x</span>)
+<span class="fn">print</span>(<span class="str">"Output shape:"</span>, <span class="var">output</span>.<span class="var">shape</span>)  <span class="cm"># torch.Size([2, 10, 512])</span></pre>
+    </div>
+
+    <div class="section-divider"><span>2.4 Encoder & Decoder</span></div>
+    <h3>🏗️ Encoder aur Decoder — Yin aur Yang</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Feature</th><th>Encoder</th><th>Decoder</th></tr>
+        <tr><td><strong>Kaam</strong></td><td>Input ko samjhna (understanding)</td><td>Output generate karna (generation)</td></tr>
+        <tr><td><strong>Attention Type</strong></td><td>Bidirectional Self-Attention</td><td>Masked Self-Attention + Cross-Attention</td></tr>
+        <tr><td><strong>Context</strong></td><td>Poora sequence ek saath dekh sakta hai</td><td>Sirf past tokens dekh sakta hai</td></tr>
+        <tr><td><strong>Models</strong></td><td>BERT, RoBERTa</td><td>GPT family</td></tr>
+        <tr><td><strong>Use Cases</strong></td><td>Classification, NER, Q&A</td><td>Text generation, Chat</td></tr>
+        <tr><td><strong>Encoder+Decoder</strong></td><td colspan="2" style="text-align:center;">T5, BART — Translation, Summarization</td></tr>
+      </table>
+    </div>
+
+    <div class="section-divider"><span>2.5 Positional Encoding</span></div>
+    <h3>📍 Positional Encoding — Order Batao!</h3>
+
+    <p>Transformer mein words parallel process hote hain — isliye usse nahi pata ki kaun sa word <strong>pehle hai aur kaun baad mein</strong>! Positional Encoding is problem ko solve karta hai. Har position ko ek unique mathematical signal assign kiya jaata hai.</p>
+
+    <div class="formula-box">
+      <div class="formula">PE(pos, 2i) = sin(pos / 10000^(2i/d_model))</div>
+      <div class="formula" style="margin-top:6px;">PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</div>
+      <div class="formula-label">Jahan pos = position, i = dimension index, d_model = model dimension</div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>Analogy — GPS Coordinates</div>
+      <p>Positional encoding bilkul GPS coordinates ki tarah hai. Jaise GPS bata deta hai ki "Main Mumbai ke is specific point par hoon", waise Positional Encoding bata deta hai ki "Main sentence ka 3rd word hoon." Model in coordinates ko word embeddings mein add karke position information encode karta hai.</p>
+    </div>
+
+    <div class="callout interview">
+      <div class="callout-title"><span class="callout-icon">🎯</span>Interview Questions — Transformers</div>
+      <ul class="iq-list">
+        <li>"Attention Is All You Need" paper 2017 mein kya propose kiya? RNN se kaise better hai?</li>
+        <li>Q, K, V matrices ka intuitive explanation do. √dₖ se kyun divide karte hain?</li>
+        <li>Multi-head attention single head se better kyun hai?</li>
+        <li>Encoder-only vs Decoder-only models mein kya difference hai? Examples do.</li>
+        <li>Masked self-attention kya hai aur GPT mein kyun zaroori hai?</li>
+        <li>Positional encoding ke bina kya problem hogi?</li>
+      </ul>
+    </div>
+
+    <div class="summary-box">
+      <h5>📝 Chapter 2 Summary — Transformers</h5>
+      <ul>
+        <li><strong>Transformer:</strong> 2017 ka revolutionary architecture — parallel processing, no RNN</li>
+        <li><strong>Attention:</strong> Q·Kᵀ/√dₖ softmax × V — context-aware word representations</li>
+        <li><strong>Self-Attention:</strong> Same sequence ke words apas mein attend karte hain</li>
+        <li><strong>Multi-Head:</strong> 8-16 parallel attention heads — different types of relationships</li>
+        <li><strong>Encoder:</strong> Bidirectional understanding (BERT) | <strong>Decoder:</strong> Causal generation (GPT)</li>
+        <li><strong>Positional Encoding:</strong> Sin/Cos signals jo word order batate hain</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>AI Agent Engineering Masterbook — Part 5 | Chapter 2</span>
+    <span class="pf-right">Transformer Architecture</span>
+  </div>
+</div>
+
+
+<!-- ====================================================
+     CHAPTER 3: LLM CONCEPTS
+     ==================================================== -->
+<div class="page">
+  <div class="chapter-hero ch3">
+    <div class="chapter-num">Chapter 3 · LLM Concepts</div>
+    <h2>🧠 Large Language Model Concepts</h2>
+    <p class="tagline">Tokens se lekar Temperature tak — LLM ke har ek gear ko samjho</p>
+  </div>
+  <div class="content-body">
+
+    <p>LLMs samajhne ke liye kuch fundamental concepts hain jo har AI engineer ko pata hone chahiye. Ye concepts directly affect karte hain aapke model ki <strong>quality, cost, speed aur reliability</strong>.</p>
+
+    <div class="section-divider"><span>3.1 Tokens & Tokenization in LLMs</span></div>
+    <h3>🎫 Tokens — LLM ki Currency</h3>
+
+    <p>LLMs ke liye <strong>token</strong> wo basic unit hai jis par sab kuch depend karta hai — pricing, speed, context window, sab kuch! Ek rough rule hai: <mark>1 token ≈ 0.75 words (English mein)</mark>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Text</th><th>Approximate Tokens</th><th>Note</th></tr>
+        <tr><td>"Hello"</td><td>1 token</td><td>Common short words = 1 token</td></tr>
+        <tr><td>"unbelievable"</td><td>3 tokens</td><td>Long/uncommon words = multiple tokens</td></tr>
+        <tr><td>1 paragraph (100 words)</td><td>~130 tokens</td><td>English text average</td></tr>
+        <tr><td>1 page (500 words)</td><td>~650 tokens</td><td>Standard document page</td></tr>
+        <tr><td>1 book (300 pages)</td><td>~200,000 tokens</td><td>Approximately</td></tr>
+        <tr><td>Hindi/Urdu text</td><td>3-4x more tokens</td><td>Non-English costs more!</td></tr>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title"><span class="callout-icon">⚠️</span>Hindi/Hinglish Tokenization Warning</div>
+      <p>Hindi ya Devanagari text mein <strong>zyada tokens</strong> lagte hain! Ek Hindi word ke liye 3-5 tokens chhoot sakte hain, jabki English mein 1-2 hote hain. Iska matlab hai: Hindi chatbot banane par <strong>3-4x zyada API cost!</strong> Isliye production mein always token count monitor karo.</p>
+    </div>
+
+    <div class="section-divider"><span>3.2 Embeddings</span></div>
+    <h3>🌐 Embeddings — Meaning ko Numbers Mein Convert Karo</h3>
+
+    <p>Embedding ek aisi technique hai jo words ya sentences ko <strong>high-dimensional numerical vectors</strong> mein convert karti hai. In vectors mein words ke semantic relationships encode hote hain.</p>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>Famous Analogy</div>
+      <p>Word2Vec ke famous result: <strong>King - Man + Woman ≈ Queen</strong><br>Yeh isliye possible hua kyunki embeddings space mein relationships preserve hote hain. "King" aur "Queen" ke vectors mein jo difference hai, wahi "Man" aur "Woman" ke beech bhi hai!</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Word Embeddings 2D Visualization (simplified)</div>
+      <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;">
+        <!-- Axes -->
+        <line x1="60" y1="260" x2="540" y2="260" stroke="#ccc" stroke-width="1.5"/>
+        <line x1="60" y1="260" x2="60" y2="30" stroke="#ccc" stroke-width="1.5"/>
+        <text x="540" y="275" font-size="11" fill="#999">Semantic axis</text>
+        <text x="20" y="100" font-size="11" fill="#999" transform="rotate(-90,30,150)">Gender axis</text>
+
+        <!-- Royalty cluster -->
+        <circle cx="350" cy="80" r="7" fill="#3949ab"/>
+        <text x="360" y="76" font-size="12" fill="#1a237e" font-weight="bold">King</text>
+        <circle cx="430" cy="120" r="7" fill="#3949ab"/>
+        <text x="440" y="116" font-size="12" fill="#1a237e" font-weight="bold">Queen</text>
+        <line x1="350" y1="80" x2="430" y2="120" stroke="#3949ab" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+        <!-- Person cluster -->
+        <circle cx="180" cy="90" r="7" fill="#e65100"/>
+        <text x="190" y="86" font-size="12" fill="#e65100" font-weight="bold">Man</text>
+        <circle cx="260" cy="130" r="7" fill="#e65100"/>
+        <text x="270" y="126" font-size="12" fill="#e65100" font-weight="bold">Woman</text>
+        <line x1="180" y1="90" x2="260" y2="130" stroke="#e65100" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+        <!-- Gender arrows -->
+        <line x1="180" y1="90" x2="350" y2="80" stroke="#43a047" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="250" y="75" font-size="10" fill="#43a047">royalty offset →</text>
+        <line x1="260" y1="130" x2="430" y2="120" stroke="#43a047" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="330" y="135" font-size="10" fill="#43a047">royalty offset →</text>
+
+        <!-- Food cluster -->
+        <circle cx="160" cy="200" r="7" fill="#00838f"/>
+        <text x="170" y="196" font-size="12" fill="#006064" font-weight="bold">Biryani</text>
+        <circle cx="230" cy="220" r="7" fill="#00838f"/>
+        <text x="240" y="216" font-size="12" fill="#006064" font-weight="bold">Pizza</text>
+        <circle cx="180" cy="240" r="7" fill="#00838f"/>
+        <text x="190" y="236" font-size="12" fill="#006064" font-weight="bold">Sushi</text>
+
+        <!-- Tech cluster -->
+        <circle cx="430" cy="210" r="7" fill="#9c27b0"/>
+        <text x="440" y="206" font-size="12" fill="#6a1b9a" font-weight="bold">Python</text>
+        <circle cx="480" cy="230" r="7" fill="#9c27b0"/>
+        <text x="445" y="245" font-size="12" fill="#6a1b9a" font-weight="bold">JavaScript</text>
+        <circle cx="460" cy="195" r="7" fill="#9c27b0"/>
+        <text x="470" y="191" font-size="12" fill="#6a1b9a" font-weight="bold">AI</text>
+
+        <!-- Legend -->
+        <circle cx="80" cy="285" r="5" fill="#3949ab"/>
+        <text x="90" y="289" font-size="10" fill="#546e7a">Royalty</text>
+        <circle cx="155" cy="285" r="5" fill="#e65100"/>
+        <text x="165" y="289" font-size="10" fill="#546e7a">Person</text>
+        <circle cx="220" cy="285" r="5" fill="#00838f"/>
+        <text x="230" y="289" font-size="10" fill="#546e7a">Food</text>
+        <circle cx="280" cy="285" r="5" fill="#9c27b0"/>
+        <text x="290" y="289" font-size="10" fill="#546e7a">Technology</text>
+        <text x="370" y="289" font-size="10" fill="#546e7a">Similar meaning = closer vectors</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — OpenAI Embeddings API</span>
+      </div>
+      <pre><span class="kw">from</span> <span class="cls">openai</span> <span class="kw">import</span> <span class="cls">OpenAI</span>
+<span class="kw">import</span> <span class="cls">numpy</span> <span class="kw">as</span> <span class="cls">np</span>
+
+<span class="var">client</span> <span class="op">=</span> <span class="cls">OpenAI</span>()
+
+<span class="kw">def</span> <span class="fn">get_embedding</span>(<span class="var">text</span>):
+    <span class="kw">return</span> <span class="var">client</span>.<span class="var">embeddings</span>.<span class="fn">create</span>(
+        <span class="var">input</span><span class="op">=</span><span class="var">text</span>,
+        <span class="var">model</span><span class="op">=</span><span class="str">"text-embedding-3-small"</span>
+    ).<span class="var">data</span>[<span class="num">0</span>].<span class="var">embedding</span>
+
+<span class="kw">def</span> <span class="fn">cosine_similarity</span>(<span class="var">v1</span>, <span class="var">v2</span>):
+    <span class="cm"># Cosine similarity: dot product / (magnitudes ka product)</span>
+    <span class="kw">return</span> <span class="cls">np</span>.<span class="fn">dot</span>(<span class="var">v1</span>, <span class="var">v2</span>) <span class="op">/</span> (<span class="cls">np</span>.<span class="fn">linalg</span>.<span class="fn">norm</span>(<span class="var">v1</span>) <span class="op">*</span> <span class="cls">np</span>.<span class="fn">linalg</span>.<span class="fn">norm</span>(<span class="var">v2</span>))
+
+<span class="cm"># Test sentences</span>
+<span class="var">s1</span> <span class="op">=</span> <span class="str">"I love machine learning"</span>
+<span class="var">s2</span> <span class="op">=</span> <span class="str">"AI aur deep learning mujhe bahut pasand hai"</span>  
+<span class="var">s3</span> <span class="op">=</span> <span class="str">"I enjoy cooking biryani"</span>
+
+<span class="var">e1</span>, <span class="var">e2</span>, <span class="var">e3</span> <span class="op">=</span> <span class="fn">get_embedding</span>(<span class="var">s1</span>), <span class="fn">get_embedding</span>(<span class="var">s2</span>), <span class="fn">get_embedding</span>(<span class="var">s3</span>)
+
+<span class="fn">print</span>(<span class="str">f"s1 vs s2 (similar topic): {cosine_similarity(e1,e2):.4f}"</span>)
+<span class="cm"># Output: 0.8234 (high — dono AI ke baare mein hain)</span>
+
+<span class="fn">print</span>(<span class="str">f"s1 vs s3 (different topic): {cosine_similarity(e1,e3):.4f}"</span>)
+<span class="cm"># Output: 0.2156 (low — ek AI hai, doosra cooking)</span>
+
+<span class="fn">print</span>(<span class="str">f"Embedding dimension: {len(e1)}"</span>)
+<span class="cm"># Output: 1536</span></pre>
+    </div>
+
+    <div class="section-divider"><span>3.3 Context Window</span></div>
+    <h3>🪟 Context Window — LLM ki Memory</h3>
+
+    <p>Context Window wo maximum number of tokens hai jo ek LLM <strong>ek baar mein "dekh" sakta hai</strong> — yaani process kar sakta hai. Iske baad woh bhool jaata hai!</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Context Window — Different Models Comparison</div>
+      <svg viewBox="0 0 660 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;">
+        <!-- Models comparison bars -->
+        <text x="10" y="25" font-size="12" fill="#546e7a" font-weight="bold">Context Window Size (Tokens)</text>
+
+        <!-- GPT-3.5 -->
+        <text x="10" y="55" font-size="11" fill="#1a237e">GPT-3.5</text>
+        <rect x="110" y="42" width="26" height="20" rx="3" fill="#3949ab"/>
+        <text x="140" y="56" font-size="10" fill="#546e7a">16K</text>
+
+        <!-- GPT-4 -->
+        <text x="10" y="85" font-size="11" fill="#1a237e">GPT-4</text>
+        <rect x="110" y="72" width="53" height="20" rx="3" fill="#3949ab"/>
+        <text x="167" y="86" font-size="10" fill="#546e7a">128K</text>
+
+        <!-- Claude 3 -->
+        <text x="10" y="115" font-size="11" fill="#e65100">Claude 3</text>
+        <rect x="110" y="102" width="83" height="20" rx="3" fill="#e65100"/>
+        <text x="197" y="116" font-size="10" fill="#546e7a">200K</text>
+
+        <!-- Gemini 1.5 -->
+        <text x="10" y="145" font-size="11" fill="#43a047">Gemini 1.5</text>
+        <rect x="110" y="132" width="416" height="20" rx="3" fill="#43a047"/>
+        <text x="530" y="146" font-size="10" fill="#546e7a">1M</text>
+
+        <!-- Llama 3 -->
+        <text x="10" y="175" font-size="11" fill="#9c27b0">Llama 3.1</text>
+        <rect x="110" y="162" width="52" height="20" rx="3" fill="#9c27b0"/>
+        <text x="166" y="176" font-size="10" fill="#546e7a">128K</text>
+
+        <!-- Scale indicator -->
+        <line x1="110" y1="195" x2="640" y2="195" stroke="#ddd" stroke-width="1"/>
+        <text x="110" y="210" font-size="9" fill="#999">0</text>
+        <text x="220" y="210" font-size="9" fill="#999">250K</text>
+        <text x="380" y="210" font-size="9" fill="#999">500K</text>
+        <text x="530" y="210" font-size="9" fill="#999">1M tokens</text>
+      </svg>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-title"><span class="callout-icon">📌</span>Context Window ka Practical Use</div>
+      <p><strong>System prompt + Chat history + User query + Expected response</strong> — yeh sab context window mein fit hone chahiye. Agar context window full ho jaaye, toh model purani baatein "bhool" jaata hai ya error deta hai. Isliye <strong>context management</strong> production mein ek major challenge hai!</p>
+    </div>
+
+    <div class="section-divider"><span>3.4 Hallucinations</span></div>
+    <h3>👻 Hallucinations — Jhootha Yakeen se Bachna</h3>
+
+    <p>LLM Hallucination tab hoti hai jab model <strong>confident tone mein galat ya made-up information</strong> present karta hai. Yeh LLMs ki sabse badi problem hai!</p>
+
+    <h4>Hallucination ke Types</h4>
+    <div class="topic-grid">
+      <div class="topic-card"><div class="tc-icon">📚</div><h5>Factual Hallucination</h5><p>Galat facts: "Eiffel Tower 1920 mein bana" (actually 1889)</p></div>
+      <div class="topic-card"><div class="tc-icon">🔗</div><h5>Source Hallucination</h5><p>Fake references: Non-existent papers ya books cite karna</p></div>
+      <div class="topic-card"><div class="tc-icon">🧮</div><h5>Math Hallucination</h5><p>Galat calculations: "17×23 = 401" (actually 391)</p></div>
+      <div class="topic-card"><div class="tc-icon">🏥</div><h5>Medical Hallucination</h5><p>Dangerous — galat doses ya treatments suggest karna</p></div>
+    </div>
+
+    <h4>Hallucination Kyun Hoti Hai?</h4>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h5>Training data ka pattern completion</h5><p>LLM actually "predict next token" karta hai — isse kabhi kabhi plausible-sounding lekin galat patterns generate ho jaate hain.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h5>Knowledge cutoff</h5><p>Model ke training data ke baad ki events ke baare mein model ko kuch pata nahi — phir bhi guess karta hai.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h5>Rare knowledge</h5><p>Jo topics training mein kam baar aaye the, unpe model zyada hallucinate karta hai.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h5>Overconfidence</h5><p>Model ki training mein "I don't know" jaisi responses ko penalize kiya gaya hoga.</p></div></div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>Hallucination Reduce Karne ke Tips</div>
+      <p><strong>1. RAG use karo</strong> — factual data provide karo context mein<br>
+      <strong>2. Grounding instructions</strong> — "Answer only from given context"<br>
+      <strong>3. Temperature kam karo</strong> — creativity reduce, factual accuracy increase<br>
+      <strong>4. Chain-of-Thought</strong> — step by step sochne se logical errors kam hote hain<br>
+      <strong>5. Self-verification</strong> — model se apna answer verify karwao</p>
+    </div>
+
+    <div class="section-divider"><span>3.5 Temperature, Top-k, Top-p, Sampling</span></div>
+    <h3>🌡️ Temperature aur Sampling — Creativity Control</h3>
+
+    <p>Jab LLM next token predict karta hai, toh usse probability distribution milta hai — har possible next token ki probability. <strong>Temperature, Top-k, Top-p</strong> — ye parameters decide karte hain ki us distribution se <em>kaisa token sample karein</em>.</p>
+
+    <h4>Temperature — Creativity Knob</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Temperature</th><th>Effect</th><th>Use Case</th><th>Example</th></tr>
+        <tr><td><strong>0.0</strong></td><td>Always most likely token (deterministic)</td><td>Factual Q&A, Code</td><td>"1+1 = 2" always</td></tr>
+        <tr><td><strong>0.3-0.5</strong></td><td>Slightly creative, mostly focused</td><td>Summaries, Data extraction</td><td>Consistent but varied</td></tr>
+        <tr><td><strong>0.7-0.9</strong></td><td>Balanced creativity</td><td>Chat, Content writing</td><td>Natural conversation</td></tr>
+        <tr><td><strong>1.0+</strong></td><td>Highly creative, sometimes random</td><td>Poetry, Creative writing</td><td>Unexpected metaphors</td></tr>
+        <tr><td><strong>2.0+</strong></td><td>Near-random, incoherent</td><td>Not recommended</td><td>Gibberish possible</td></tr>
+      </table>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Temperature Effect on Token Probability Distribution</div>
+      <svg viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;">
+        <!-- Low Temperature (sharp) -->
+        <text x="90" y="20" text-anchor="middle" font-size="12" fill="#3949ab" font-weight="bold">Temperature = 0.2 (Focused)</text>
+        <text x="90" y="35" text-anchor="middle" font-size="10" fill="#546e7a">Ek token dominate karta hai</text>
+
+        <rect x="25" y="50" width="25" height="130" rx="3" fill="#3949ab" fill-opacity="0.95"/>
+        <rect x="60" y="155" width="25" height="25" rx="3" fill="#3949ab" fill-opacity="0.4"/>
+        <rect x="95" y="168" width="25" height="12" rx="3" fill="#3949ab" fill-opacity="0.3"/>
+        <rect x="130" y="172" width="25" height="8" rx="3" fill="#3949ab" fill-opacity="0.2"/>
+
+        <text x="37" y="197" text-anchor="middle" font-size="9" fill="#3949ab">the</text>
+        <text x="72" y="197" text-anchor="middle" font-size="9" fill="#546e7a">a</text>
+        <text x="107" y="197" text-anchor="middle" font-size="9" fill="#546e7a">an</text>
+        <text x="142" y="197" text-anchor="middle" font-size="9" fill="#546e7a">this</text>
+        <text x="90" y="210" text-anchor="middle" font-size="9" fill="#546e7a">Almost always "the"</text>
+
+        <!-- Line separator -->
+        <line x1="200" y1="30" x2="200" y2="210" stroke="#ddd" stroke-width="1.5"/>
+
+        <!-- Medium Temperature -->
+        <text x="400" y="20" text-anchor="middle" font-size="12" fill="#e65100" font-weight="bold">Temperature = 1.0 (Creative)</text>
+        <text x="400" y="35" text-anchor="middle" font-size="10" fill="#546e7a">Multiple tokens reasonable lagte hain</text>
+
+        <rect x="240" y="70" width="25" height="110" rx="3" fill="#e65100" fill-opacity="0.9"/>
+        <rect x="275" y="90" width="25" height="90" rx="3" fill="#e65100" fill-opacity="0.7"/>
+        <rect x="310" y="110" width="25" height="70" rx="3" fill="#e65100" fill-opacity="0.6"/>
+        <rect x="345" y="120" width="25" height="60" rx="3" fill="#e65100" fill-opacity="0.5"/>
+        <rect x="380" y="130" width="25" height="50" rx="3" fill="#e65100" fill-opacity="0.4"/>
+        <rect x="415" y="145" width="25" height="35" rx="3" fill="#e65100" fill-opacity="0.3"/>
+        <rect x="450" y="155" width="25" height="25" rx="3" fill="#e65100" fill-opacity="0.25"/>
+        <rect x="485" y="162" width="25" height="18" rx="3" fill="#e65100" fill-opacity="0.2"/>
+
+        <text x="252" y="197" text-anchor="middle" font-size="9" fill="#e65100">the</text>
+        <text x="287" y="197" text-anchor="middle" font-size="9" fill="#546e7a">a</text>
+        <text x="322" y="197" text-anchor="middle" font-size="9" fill="#546e7a">an</text>
+        <text x="357" y="197" text-anchor="middle" font-size="9" fill="#546e7a">this</text>
+        <text x="392" y="197" text-anchor="middle" font-size="9" fill="#546e7a">my</text>
+        <text x="427" y="197" text-anchor="middle" font-size="9" fill="#546e7a">her</text>
+        <text x="462" y="197" text-anchor="middle" font-size="9" fill="#546e7a">one</text>
+        <text x="497" y="197" text-anchor="middle" font-size="9" fill="#546e7a">...</text>
+        <text x="370" y="210" text-anchor="middle" font-size="9" fill="#546e7a">Many tokens possible — varied output</text>
+      </svg>
+    </div>
+
+    <h4>Top-k Sampling</h4>
+    <p>Top-k sampling mein sirf <strong>top k most probable tokens</strong> ko consider kiya jaata hai, baaki sab ignore. Jaise k=50 means: sirf 50 most likely next words mein se sample karo.</p>
+
+    <h4>Top-p (Nucleus) Sampling</h4>
+    <p>Top-p mein <strong>cumulative probability threshold p</strong> use hota hai. Jab tak top tokens ki cumulative probability ≤ p ho, unhe consider karo. Yeh zyada adaptive hai Top-k se.</p>
+
+    <div class="formula-box">
+      <div class="formula">Top-p: Sum tokens until Σ P(token) ≥ p (e.g., 0.9)</div>
+      <div class="formula-label">p=0.9 means: Top tokens jo milke 90% probability cover karte hain, unhi mein se sample karo</div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Temperature & Sampling Parameters with OpenAI</span>
+      </div>
+      <pre><span class="kw">from</span> <span class="cls">openai</span> <span class="kw">import</span> <span class="cls">OpenAI</span>
+
+<span class="var">client</span> <span class="op">=</span> <span class="cls">OpenAI</span>()
+
+<span class="kw">def</span> <span class="fn">generate_text</span>(<span class="var">prompt</span>, <span class="var">temperature</span><span class="op">=</span><span class="num">0.7</span>, <span class="var">top_p</span><span class="op">=</span><span class="num">1.0</span>):
+    <span class="var">response</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">chat</span>.<span class="var">completions</span>.<span class="fn">create</span>(
+        <span class="var">model</span><span class="op">=</span><span class="str">"gpt-4o-mini"</span>,
+        <span class="var">messages</span><span class="op">=</span>[{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="var">prompt</span>}],
+        <span class="var">temperature</span><span class="op">=</span><span class="var">temperature</span>,  <span class="cm"># 0.0 - 2.0</span>
+        <span class="var">top_p</span><span class="op">=</span><span class="var">top_p</span>,            <span class="cm"># 0.1 - 1.0</span>
+        <span class="var">max_tokens</span><span class="op">=</span><span class="num">100</span>
+    )
+    <span class="kw">return</span> <span class="var">response</span>.<span class="var">choices</span>[<span class="num">0</span>].<span class="var">message</span>.<span class="var">content</span>
+
+<span class="var">prompt</span> <span class="op">=</span> <span class="str">"Write a one-line story about AI"</span>
+
+<span class="cm"># Low temperature — consistent, focused</span>
+<span class="fn">print</span>(<span class="str">"Temp 0.1:"</span>, <span class="fn">generate_text</span>(<span class="var">prompt</span>, <span class="var">temperature</span><span class="op">=</span><span class="num">0.1</span>))
+<span class="cm"># Output: "An AI learned to understand human emotions."</span>
+<span class="cm"># (Almost same output every run)</span>
+
+<span class="cm"># High temperature — creative, varied</span>
+<span class="fn">print</span>(<span class="str">"Temp 1.5:"</span>, <span class="fn">generate_text</span>(<span class="var">prompt</span>, <span class="var">temperature</span><span class="op">=</span><span class="num">1.5</span>))
+<span class="cm"># Output: "The last algorithm dreamed in electric verse."</span>
+<span class="cm"># (Different every run — more creative!)</span>
+
+<span class="cm"># Top-p sampling</span>
+<span class="fn">print</span>(<span class="str">"Top-p 0.5:"</span>, <span class="fn">generate_text</span>(<span class="var">prompt</span>, <span class="var">temperature</span><span class="op">=</span><span class="num">1.0</span>, <span class="var">top_p</span><span class="op">=</span><span class="num">0.5</span>))
+<span class="cm"># More focused — only top 50% probable tokens considered</span>
+
+<span class="cm"># BEST PRACTICE: Ek baar mein temperature YA top_p change karo, dono ek saath nahi!</span></pre>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>Range</th><th>Low Value Effect</th><th>High Value Effect</th><th>Recommended</th></tr>
+        <tr><td><strong>temperature</strong></td><td>0.0 - 2.0</td><td>Deterministic, focused</td><td>Creative, random</td><td>0.7 for chat</td></tr>
+        <tr><td><strong>top_p</strong></td><td>0.0 - 1.0</td><td>Very focused nucleus</td><td>Full vocab possible</td><td>0.9 default</td></tr>
+        <tr><td><strong>top_k</strong></td><td>1 - vocab size</td><td>Only top 1 (greedy)</td><td>More diversity</td><td>40-50 typical</td></tr>
+        <tr><td><strong>max_tokens</strong></td><td>1 - context_max</td><td>Short responses</td><td>Longer responses</td><td>Task dependent</td></tr>
+      </table>
+    </div>
+
+    <div class="callout interview">
+      <div class="callout-title"><span class="callout-icon">🎯</span>Interview Questions — LLM Concepts</div>
+      <ul class="iq-list">
+        <li>Temperature aur Top-p mein kya difference hai? Dono ek saath change karna kyun avoid karna chahiye?</li>
+        <li>Context window limits kya hain aur production mein inhe kaise handle karte hain?</li>
+        <li>LLM hallucination kyun hoti hai? Top 3 mitigation strategies kya hain?</li>
+        <li>Word embeddings aur token embeddings mein kya difference hai?</li>
+        <li>"1 token ≈ 4 characters" — yeh estimate kab valid hai aur kab nahi?</li>
+      </ul>
+    </div>
+
+    <div class="summary-box">
+      <h5>📝 Chapter 3 Summary — LLM Concepts</h5>
+      <ul>
+        <li><strong>Tokens:</strong> LLM ki basic currency — 1 word ≈ 1.3 tokens (English) | Hindi mein 3-4x zyada</li>
+        <li><strong>Embeddings:</strong> Semantic meaning ko vectors mein encode karna — similar meaning = close vectors</li>
+        <li><strong>Context Window:</strong> LLM ek time mein kitna "dekh" sakta hai — 16K se 1M tokens range</li>
+        <li><strong>Hallucinations:</strong> Confident but wrong answers — RAG aur grounding se reduce karo</li>
+        <li><strong>Temperature:</strong> 0 = deterministic, 1+ = creative | Top-p = nucleus sampling</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>AI Agent Engineering Masterbook — Part 5 | Chapter 3</span>
+    <span class="pf-right">LLM Concepts</span>
+  </div>
+</div>
+
+
+<!-- ====================================================
+     CHAPTER 4: ADVANCED LLM TOPICS
+     ==================================================== -->
+<div class="page">
+  <div class="chapter-hero ch4">
+    <div class="chapter-num">Chapter 4 · Advanced LLM Topics</div>
+    <h2>🚀 Advanced LLM Techniques</h2>
+    <p class="tagline">MoE, LoRA, RLHF — wo techniques jo LLMs ko aur powerful banati hain</p>
+  </div>
+  <div class="content-body">
+
+    <div class="section-divider"><span>4.1 MoE — Mixture of Experts</span></div>
+    <h3>🎪 Mixture of Experts (MoE) — Specialization ka Jadoo</h3>
+
+    <p>MoE ek aisi architecture hai jisme ek bade model ke andar <strong>multiple "expert" networks</strong> hote hain. Har input ke liye, ek <strong>router</strong> decide karta hai ki kaun se experts use karne hain. Sab experts ek saath nahi chalte — sirf kuch selected experts activate hote hain!</p>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>Real World Analogy — Hospital</div>
+      <p>Ek hospital mein alag-alag doctors hote hain — Cardiologist, Neurologist, Orthopedist etc. Jab patient aata hai, toh <strong>receptionist (router)</strong> decide karta hai ki konse doctor se milna hai. Har patient ke liye sab doctors kaam nahi karte — sirf relevant doctor. MoE bhi aisa hi kaam karta hai!</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Mixture of Experts Architecture</div>
+      <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+        <!-- Input -->
+        <rect x="270" y="15" width="120" height="38" rx="8" fill="#3949ab"/>
+        <text x="330" y="39" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Input Token</text>
+
+        <!-- Router -->
+        <rect x="255" y="80" width="150" height="38" rx="8" fill="#e65100"/>
+        <text x="330" y="104" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Router / Gating Network</text>
+
+        <!-- Arrow input to router -->
+        <line x1="330" y1="53" x2="330" y2="78" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Experts -->
+        <rect x="20" y="155" width="80" height="38" rx="8" fill="#4db6ac"/>
+        <text x="60" y="174" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Expert 1</text>
+        <text x="60" y="187" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">Math/Logic</text>
+
+        <rect x="125" y="155" width="80" height="38" rx="8" fill="#4db6ac"/>
+        <text x="165" y="174" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Expert 2</text>
+        <text x="165" y="187" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">Code</text>
+
+        <rect x="230" y="155" width="80" height="38" rx="8" fill="#9fa8da" stroke="#3949ab" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="270" y="174" text-anchor="middle" font-size="10" fill="#1a237e" font-weight="bold">Expert 3</text>
+        <text x="270" y="187" text-anchor="middle" font-size="9" fill="#546e7a">Inactive</text>
+
+        <rect x="335" y="155" width="80" height="38" rx="8" fill="#4db6ac"/>
+        <text x="375" y="174" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Expert 4</text>
+        <text x="375" y="187" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">Language</text>
+
+        <rect x="440" y="155" width="80" height="38" rx="8" fill="#9fa8da" stroke="#3949ab" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="480" y="174" text-anchor="middle" font-size="10" fill="#1a237e" font-weight="bold">Expert 5</text>
+        <text x="480" y="187" text-anchor="middle" font-size="9" fill="#546e7a">Inactive</text>
+
+        <rect x="545" y="155" width="80" height="38" rx="8" fill="#4db6ac"/>
+        <text x="585" y="174" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Expert 6</text>
+        <text x="585" y="187" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">Reasoning</text>
+
+        <!-- Router arrows to active experts -->
+        <line x1="300" y1="118" x2="60" y2="153" stroke="#e65100" stroke-width="2"/>
+        <line x1="310" y1="118" x2="165" y2="153" stroke="#e65100" stroke-width="2"/>
+        <line x1="330" y1="118" x2="270" y2="153" stroke="#ddd" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="350" y1="118" x2="375" y2="153" stroke="#e65100" stroke-width="2"/>
+        <line x1="360" y1="118" x2="480" y2="153" stroke="#ddd" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="360" y1="118" x2="585" y2="153" stroke="#e65100" stroke-width="2"/>
+
+        <!-- Output -->
+        <rect x="255" y="230" width="150" height="38" rx="8" fill="#43a047"/>
+        <text x="330" y="254" text-anchor="middle" font-size="12" fill="white" font-weight="bold">Combined Output</text>
+
+        <!-- Legend -->
+        <rect x="180" y="10" width="12" height="12" rx="2" fill="#4db6ac"/>
+        <text x="196" y="21" font-size="10" fill="#546e7a">Active Expert</text>
+        <rect x="180" y="28" width="12" height="12" rx="2" fill="#9fa8da" stroke="#3949ab" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="196" y="39" font-size="10" fill="#546e7a">Inactive Expert</text>
+
+        <!-- Active arrows to output -->
+        <line x1="100" y1="193" x2="290" y2="228" stroke="#43a047" stroke-width="1.5"/>
+        <line x1="205" y1="193" x2="310" y2="228" stroke="#43a047" stroke-width="1.5"/>
+        <line x1="415" y1="193" x2="350" y2="228" stroke="#43a047" stroke-width="1.5"/>
+        <line x1="585" y1="193" x2="380" y2="228" stroke="#43a047" stroke-width="1.5"/>
+
+        <text x="330" y="275" text-anchor="middle" font-size="10" fill="#546e7a">Sirf 4 of 6 experts activate hue → Sparse computation</text>
+      </svg>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Property</th><th>Dense Model (e.g., GPT-3)</th><th>MoE Model (e.g., Mixtral)</th></tr>
+        <tr><td>Parameters</td><td>175B — sab active</td><td>~46B active, 141B total</td></tr>
+        <tr><td>Computation</td><td>Full model har token pe</td><td>Sirf selected experts</td></tr>
+        <tr><td>Speed</td><td>Slower (per token)</td><td>3-4x faster inference</td></tr>
+        <tr><td>Training</td><td>Expensive but simple</td><td>Complex but efficient</td></tr>
+        <tr><td>Quality</td><td>High</td><td>Similar or better!</td></tr>
+      </table>
+    </div>
+
+    <div class="section-divider"><span>4.2 Quantization</span></div>
+    <h3>📦 Quantization — Size Chhota Karo, Speed Badhao</h3>
+
+    <p>LLMs mein billions of parameters hote hain, jo originally <strong>FP32 (32-bit floating point)</strong> mein store hote hain. Quantization in parameters ko <strong>lower precision</strong> (8-bit, 4-bit, even 2-bit) mein convert karta hai — size aur memory dramatically reduce ho jaati hai!</p>
+
+    <div class="compare-grid">
+      <div class="compare-card good">
+        <h5>✅ Quantization ke Fayde</h5>
+        <ul style="padding-left:16px;font-size:0.85rem;">
+          <li>Model size 4-8x chhota hota hai</li>
+          <li>Inference speed 2-4x faster</li>
+          <li>GPU memory kam chahiye</li>
+          <li>Consumer hardware par bhi run ho sakta hai</li>
+          <li>Cloud costs significantly kam</li>
+        </ul>
+      </div>
+      <div class="compare-card bad">
+        <h5>❌ Quantization ke Nuksan</h5>
+        <ul style="padding-left:16px;font-size:0.85rem;">
+          <li>Thodi accuracy loss (usually minimal)</li>
+          <li>Complex tasks mein quality thodi drop</li>
+          <li>Integer overflow edge cases</li>
+          <li>2-bit jaise extreme cases degrade karte hain</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Precision</th><th>Bits</th><th>Size (7B model)</th><th>RAM Required</th><th>Quality</th></tr>
+        <tr><td>FP32</td><td>32-bit</td><td>~28 GB</td><td>32+ GB</td><td>Baseline (100%)</td></tr>
+        <tr><td>FP16 / BF16</td><td>16-bit</td><td>~14 GB</td><td>16+ GB</td><td>~99%</td></tr>
+        <tr><td>INT8 (Q8)</td><td>8-bit</td><td>~7 GB</td><td>8+ GB</td><td>~98%</td></tr>
+        <tr><td>INT4 (Q4)</td><td>4-bit</td><td>~3.5 GB</td><td>6+ GB</td><td>~95%</td></tr>
+        <tr><td>INT2 (Q2)</td><td>2-bit</td><td>~1.8 GB</td><td>4+ GB</td><td>~85% ⚠️</td></tr>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Quantized Model Loading (bitsandbytes + HuggingFace)</span>
+      </div>
+      <pre><span class="kw">from</span> <span class="cls">transformers</span> <span class="kw">import</span> <span class="cls">AutoModelForCausalLM</span>, <span class="cls">AutoTokenizer</span>, <span class="cls">BitsAndBytesConfig</span>
+<span class="kw">import</span> <span class="cls">torch</span>
+
+<span class="cm"># 4-bit quantization config define karo</span>
+<span class="var">bnb_config</span> <span class="op">=</span> <span class="cls">BitsAndBytesConfig</span>(
+    <span class="var">load_in_4bit</span><span class="op">=</span><span class="kw">True</span>,                    <span class="cm"># 4-bit quantization</span>
+    <span class="var">bnb_4bit_quant_type</span><span class="op">=</span><span class="str">"nf4"</span>,              <span class="cm"># NormalFloat4 (better quality)</span>
+    <span class="var">bnb_4bit_compute_dtype</span><span class="op">=</span><span class="cls">torch</span>.<span class="var">bfloat16</span>,  <span class="cm"># BF16 for computation</span>
+    <span class="var">bnb_4bit_use_double_quant</span><span class="op">=</span><span class="kw">True</span>          <span class="cm"># Double quantization for extra compression</span>
+)
+
+<span class="var">model_id</span> <span class="op">=</span> <span class="str">"meta-llama/Llama-3-8B-Instruct"</span>
+
+<span class="cm"># Quantized model load karo</span>
+<span class="var">model</span> <span class="op">=</span> <span class="cls">AutoModelForCausalLM</span>.<span class="fn">from_pretrained</span>(
+    <span class="var">model_id</span>,
+    <span class="var">quantization_config</span><span class="op">=</span><span class="var">bnb_config</span>,
+    <span class="var">device_map</span><span class="op">=</span><span class="str">"auto"</span>  <span class="cm"># Automatically GPU/CPU split</span>
+)
+
+<span class="var">tokenizer</span> <span class="op">=</span> <span class="cls">AutoTokenizer</span>.<span class="fn">from_pretrained</span>(<span class="var">model_id</span>)
+
+<span class="cm"># Memory check karo</span>
+<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Model footprint: {model.get_memory_footprint() / 1e9:.2f} GB"</span>)
+<span class="cm"># Normal: ~16GB (BF16) → Quantized: ~4GB (4-bit) — 4x reduction!</span></pre>
+    </div>
+
+    <div class="section-divider"><span>4.3 Fine-tuning & Instruction Tuning</span></div>
+    <h3>🎯 Fine-tuning — LLM ko Apna Karo</h3>
+
+    <p><strong>Pre-training</strong> mein LLM internet ki vast data par train hota hai. <strong>Fine-tuning</strong> mein hum uss pre-trained model ko apne <em>specific task ya domain</em> ke liye further train karte hain.</p>
+
+    <div class="flow-row" style="flex-direction:column;gap:12px;align-items:flex-start;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="flow-box" style="min-width:140px;">Pre-trained LLM<br><small style="font-weight:normal;">(GPT, Llama, Mistral)</small></div>
+        <span class="flow-arrow">+</span>
+        <div class="flow-box teal" style="min-width:140px;">Task-specific<br>Dataset</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box orange" style="min-width:140px;">Fine-tuning<br>Process</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box green" style="min-width:140px;">Fine-tuned<br>Model</div>
+      </div>
+    </div>
+
+    <h4>Instruction Tuning — Commands Sikhana</h4>
+    <p>Base LLMs ko instructions follow karne mein problem hoti hai — woh text complete karte hain, instructions follow nahi karte. <strong>Instruction Tuning</strong> model ko sikhata hai ki <em>"jab user instruction de, toh accordingly respond karo."</em></p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Type</th><th>Kya Hai</th><th>Example</th><th>Models</th></tr>
+        <tr><td>Domain Fine-tuning</td><td>Specific domain data par train</td><td>Medical LLM, Legal LLM</td><td>BioGPT, LegalBERT</td></tr>
+        <tr><td>Instruction Tuning</td><td>Instruction-following sikhana</td><td>"Summarize this article"</td><td>GPT-3.5, Llama-instruct</td></tr>
+        <tr><td>Task Fine-tuning</td><td>Ek specific task</td><td>Sentiment Analysis only</td><td>BERT fine-tuned</td></tr>
+        <tr><td>Chat Fine-tuning</td><td>Conversational style sikhana</td><td>ChatGPT-style responses</td><td>OpenChat, Zephyr</td></tr>
+      </table>
+    </div>
+
+    <div class="section-divider"><span>4.4 RLHF — Reinforcement Learning from Human Feedback</span></div>
+    <h3>👥 RLHF — Human se Seekhna</h3>
+
+    <p>RLHF woh technique hai jisne ChatGPT ko <em>"actually helpful"</em> banaya! Isme human feedback use karke LLM ko train kiya jaata hai taaki woh human preferences ke according behave kare.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">RLHF Pipeline — Teen Steps</div>
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;">
+        <!-- Step 1 -->
+        <rect x="10" y="20" width="190" height="140" rx="10" fill="#e8eaf6" stroke="#3949ab" stroke-width="2"/>
+        <text x="105" y="45" text-anchor="middle" font-size="12" fill="#1a237e" font-weight="bold">Step 1</text>
+        <text x="105" y="62" text-anchor="middle" font-size="11" fill="#3949ab" font-weight="bold">Supervised Fine-tuning</text>
+        <text x="105" y="82" text-anchor="middle" font-size="10" fill="#546e7a">Human demonstrators</text>
+        <text x="105" y="97" text-anchor="middle" font-size="10" fill="#546e7a">ideal responses likhte hain</text>
+        <text x="105" y="117" text-anchor="middle" font-size="10" fill="#546e7a">LLM in responses par</text>
+        <text x="105" y="132" text-anchor="middle" font-size="10" fill="#546e7a">fine-tune hota hai</text>
+        <text x="105" y="150" text-anchor="middle" font-size="9" fill="#e65100">(Base → Instruction model)</text>
+
+        <line x1="202" y1="90" x2="248" y2="90" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Step 2 -->
+        <rect x="250" y="20" width="190" height="140" rx="10" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+        <text x="345" y="45" text-anchor="middle" font-size="12" fill="#006064" font-weight="bold">Step 2</text>
+        <text x="345" y="62" text-anchor="middle" font-size="11" fill="#00838f" font-weight="bold">Reward Model Training</text>
+        <text x="345" y="82" text-anchor="middle" font-size="10" fill="#546e7a">Model multiple responses</text>
+        <text x="345" y="97" text-anchor="middle" font-size="10" fill="#546e7a">generate karta hai</text>
+        <text x="345" y="117" text-anchor="middle" font-size="10" fill="#546e7a">Humans best response</text>
+        <text x="345" y="132" text-anchor="middle" font-size="10" fill="#546e7a">rank karte hain</text>
+        <text x="345" y="150" text-anchor="middle" font-size="9" fill="#e65100">(Train Reward Model)</text>
+
+        <line x1="442" y1="90" x2="488" y2="90" stroke="#546e7a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Step 3 -->
+        <rect x="490" y="20" width="190" height="140" rx="10" fill="#fff3e0" stroke="#fb8c00" stroke-width="2"/>
+        <text x="585" y="45" text-anchor="middle" font-size="12" fill="#e65100" font-weight="bold">Step 3</text>
+        <text x="585" y="62" text-anchor="middle" font-size="11" fill="#fb8c00" font-weight="bold">RL Fine-tuning (PPO)</text>
+        <text x="585" y="82" text-anchor="middle" font-size="10" fill="#546e7a">Reward model se LLM</text>
+        <text x="585" y="97" text-anchor="middle" font-size="10" fill="#546e7a">ko reward milta hai</text>
+        <text x="585" y="117" text-anchor="middle" font-size="10" fill="#546e7a">PPO algorithm se</text>
+        <text x="585" y="132" text-anchor="middle" font-size="10" fill="#546e7a">policy optimize hoti hai</text>
+        <text x="585" y="150" text-anchor="middle" font-size="9" fill="#e65100">(ChatGPT-level output)</text>
+      </svg>
+    </div>
+
+    <div class="section-divider"><span>4.5 Knowledge Distillation</span></div>
+    <h3>🧪 Knowledge Distillation — Bade se Chhote Mein</h3>
+
+    <p>Distillation mein ek <strong>large "teacher" model</strong> ki knowledge ek <strong>small "student" model</strong> mein transfer ki jaati hai. Student model teacher ki <em>soft outputs (probability distributions)</em> se seekhta hai, na sirf hard labels se.</p>
+
+    <div class="flow-row">
+      <div class="flow-box" style="min-width:130px;">Large Teacher Model<br><small>(GPT-4, 175B params)</small></div>
+      <span class="flow-arrow">→ soft labels →</span>
+      <div class="flow-box teal" style="min-width:130px;">Training Process<br><small>(KL Divergence Loss)</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box orange" style="min-width:130px;">Small Student Model<br><small>(DistilBERT, 66M params)</small></div>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-title"><span class="callout-icon">📌</span>Famous Distillation Examples</div>
+      <p><strong>DistilBERT</strong> = BERT (110M params) → 66M params, 60% faster, 97% performance<br>
+      <strong>TinyLlama</strong> = Llama-2 (7B) → 1.1B params<br>
+      <strong>Phi series</strong> (Microsoft) = Distilled small but capable models<br>
+      <strong>Gemini Nano</strong> = Gemini ka mobile-optimized version</p>
+    </div>
+
+    <div class="section-divider"><span>4.6 LoRA & PEFT</span></div>
+    <h3>🔧 LoRA aur PEFT — Smart Fine-tuning</h3>
+
+    <p>Full fine-tuning mein problem ye hai ki millions of GPU memory chahiye aur sab parameters update hote hain — <strong>bahut expensive!</strong> PEFT (Parameter Efficient Fine-Tuning) methods sirf <em>kuch parameters update</em> karte hain baaki frozen rakhte hain.</p>
+
+    <h4>LoRA (Low-Rank Adaptation) — Smart Mathematics</h4>
+    <div class="formula-box">
+      <div class="formula">W' = W + ΔW = W + BA</div>
+      <div class="formula-label">W = original frozen weight matrix (large) | B, A = low-rank matrices (tiny, trainable)</div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title"><span class="callout-icon">💡</span>LoRA Intuition</div>
+      <p>Socho ek 1000×1000 matrix ko update karna padta hai = 1,000,000 parameters.<br>
+      LoRA kehta hai: <strong>Ise 1000×r aur r×1000 matrices se represent karo</strong> (jahan r=8 ya 16).<br>
+      Ab sirf 2×1000×8 = 16,000 parameters train karne padenge — <strong>62x less!</strong><br>
+      Full model quality ka 95%+ quality milti hai, cost fraction mein!</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">LoRA — Weight Update Visualization</div>
+      <svg viewBox="0 0 620 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;">
+        <!-- Full weight matrix -->
+        <rect x="20" y="20" width="100" height="120" rx="6" fill="#3949ab" fill-opacity="0.8"/>
+        <text x="70" y="72" text-anchor="middle" font-size="12" fill="white" font-weight="bold">W</text>
+        <text x="70" y="88" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">d×d</text>
+        <text x="70" y="158" text-anchor="middle" font-size="10" fill="#3949ab">Original Weight</text>
+        <text x="70" y="170" text-anchor="middle" font-size="9" fill="#546e7a">(Frozen)</text>
+
+        <text x="145" y="85" text-anchor="middle" font-size="20" fill="#546e7a">+</text>
+
+        <!-- LoRA low-rank matrices -->
+        <rect x="165" y="20" width="30" height="120" rx="6" fill="#e65100" fill-opacity="0.85"/>
+        <text x="180" y="72" text-anchor="middle" font-size="10" fill="white" font-weight="bold">B</text>
+        <text x="180" y="87" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">d×r</text>
+
+        <rect x="205" y="50" width="90" height="40" rx="6" fill="#e65100" fill-opacity="0.7"/>
+        <text x="250" y="72" text-anchor="middle" font-size="10" fill="white" font-weight="bold">A</text>
+        <text x="250" y="87" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">r×d</text>
+
+        <text x="180" y="158" text-anchor="middle" font-size="10" fill="#e65100">LoRA Matrices</text>
+        <text x="180" y="170" text-anchor="middle" font-size="9" fill="#546e7a">(Trainable! Very small)</text>
+
+        <text x="330" y="85" text-anchor="middle" font-size="20" fill="#546e7a">=</text>
+
+        <!-- Effective weight -->
+        <rect x="360" y="20" width="100" height="120" rx="6" fill="#43a047" fill-opacity="0.8"/>
+        <text x="410" y="67" text-anchor="middle" font-size="12" fill="white" font-weight="bold">W'</text>
+        <text x="410" y="82" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.8)">= W + BA</text>
+        <text x="410" y="97" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">(no extra storage</text>
+        <text x="410" y="110" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">at inference)</text>
+        <text x="410" y="158" text-anchor="middle" font-size="10" fill="#43a047">Effective Weight</text>
+
+        <!-- Stats comparison -->
+        <rect x="490" y="10" width="120" height="155" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5"/>
+        <text x="550" y="30" text-anchor="middle" font-size="11" fill="#e65100" font-weight="bold">Savings</text>
+        <text x="550" y="52" text-anchor="middle" font-size="10" fill="#546e7a">Full Fine-tune:</text>
+        <text x="550" y="67" text-anchor="middle" font-size="11" fill="#c62828" font-weight="bold">7B params</text>
+        <line x1="500" y1="80" x2="600" y2="80" stroke="#ddd" stroke-width="1"/>
+        <text x="550" y="98" text-anchor="middle" font-size="10" fill="#546e7a">LoRA (r=16):</text>
+        <text x="550" y="113" text-anchor="middle" font-size="11" fill="#43a047" font-weight="bold">~4M params</text>
+        <line x1="500" y1="126" x2="600" y2="126" stroke="#ddd" stroke-width="1"/>
+        <text x="550" y="144" text-anchor="middle" font-size="10" fill="#e65100" font-weight="bold">1750x less!</text>
+        <text x="550" y="159" text-anchor="middle" font-size="9" fill="#546e7a">trainable params</text>
+      </svg>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — LoRA Fine-tuning with PEFT + TRL</span>
+      </div>
+      <pre><span class="kw">from</span> <span class="cls">transformers</span> <span class="kw">import</span> <span class="cls">AutoModelForCausalLM</span>, <span class="cls">AutoTokenizer</span>
+<span class="kw">from</span> <span class="cls">peft</span> <span class="kw">import</span> <span class="cls">LoraConfig</span>, <span class="fn">get_peft_model</span>, <span class="cls">TaskType</span>
+<span class="kw">from</span> <span class="cls">trl</span> <span class="kw">import</span> <span class="cls">SFTTrainer</span>
+<span class="kw">from</span> <span class="cls">datasets</span> <span class="kw">import</span> <span class="fn">load_dataset</span>
+
+<span class="cm"># 1. Base model load karo</span>
+<span class="var">model_id</span> <span class="op">=</span> <span class="str">"mistralai/Mistral-7B-v0.1"</span>
+<span class="var">model</span> <span class="op">=</span> <span class="cls">AutoModelForCausalLM</span>.<span class="fn">from_pretrained</span>(<span class="var">model_id</span>)
+<span class="var">tokenizer</span> <span class="op">=</span> <span class="cls">AutoTokenizer</span>.<span class="fn">from_pretrained</span>(<span class="var">model_id</span>)
+
+<span class="cm"># 2. LoRA configuration define karo</span>
+<span class="var">lora_config</span> <span class="op">=</span> <span class="cls">LoraConfig</span>(
+    <span class="var">r</span><span class="op">=</span><span class="num">16</span>,                    <span class="cm"># Rank — small = less params, fast</span>
+    <span class="var">lora_alpha</span><span class="op">=</span><span class="num">32</span>,             <span class="cm"># Scaling factor (2*r is common)</span>
+    <span class="var">target_modules</span><span class="op">=</span>[<span class="str">"q_proj"</span>, <span class="str">"v_proj"</span>],  <span class="cm"># Attention layers</span>
+    <span class="var">lora_dropout</span><span class="op">=</span><span class="num">0.05</span>,
+    <span class="var">bias</span><span class="op">=</span><span class="str">"none"</span>,
+    <span class="var">task_type</span><span class="op">=</span><span class="cls">TaskType</span>.<span class="var">CAUSAL_LM</span>
+)
+
+<span class="cm"># 3. LoRA apply karo</span>
+<span class="var">peft_model</span> <span class="op">=</span> <span class="fn">get_peft_model</span>(<span class="var">model</span>, <span class="var">lora_config</span>)
+
+<span class="cm"># Trainable parameters check karo</span>
+<span class="var">peft_model</span>.<span class="fn">print_trainable_parameters</span>()
+<span class="cm"># Output: trainable params: 4,194,304 || all params: 7,246,419,968 (0.06% trainable!)</span>
+
+<span class="cm"># 4. Dataset aur Trainer setup</span>
+<span class="var">dataset</span> <span class="op">=</span> <span class="fn">load_dataset</span>(<span class="str">"your_custom_dataset"</span>, <span class="var">split</span><span class="op">=</span><span class="str">"train"</span>)
+
+<span class="var">trainer</span> <span class="op">=</span> <span class="cls">SFTTrainer</span>(
+    <span class="var">model</span><span class="op">=</span><span class="var">peft_model</span>,
+    <span class="var">train_dataset</span><span class="op">=</span><span class="var">dataset</span>,
+    <span class="var">dataset_text_field</span><span class="op">=</span><span class="str">"text"</span>,
+    <span class="var">tokenizer</span><span class="op">=</span><span class="var">tokenizer</span>,
+    <span class="var">max_seq_length</span><span class="op">=</span><span class="num">512</span>
+)
+
+<span class="var">trainer</span>.<span class="fn">train</span>()
+<span class="var">peft_model</span>.<span class="fn">save_pretrained</span>(<span class="str">"./my-fine-tuned-lora"</span>)</pre>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>PEFT Method</th><th>How it Works</th><th>Best For</th><th>Trainable Params</th></tr>
+        <tr><td><strong>LoRA</strong></td><td>Low-rank matrices add karo attention layers mein</td><td>General fine-tuning</td><td>0.1-1%</td></tr>
+        <tr><td><strong>QLoRA</strong></td><td>LoRA + 4-bit quantized base model</td><td>Limited GPU memory</td><td>0.06%</td></tr>
+        <tr><td><strong>Prefix Tuning</strong></td><td>Trainable prefix tokens add karo</td><td>Generation tasks</td><td>&lt;0.1%</td></tr>
+        <tr><td><strong>Prompt Tuning</strong></td><td>Soft prompt tokens sikhao</td><td>Instruction tuning</td><td>&lt;0.01%</td></tr>
+        <tr><td><strong>Adapter</strong></td><td>Small networks layers ke beech add karo</td><td>Multiple tasks</td><td>1-3%</td></tr>
+      </table>
+    </div>
+
+    <div class="callout interview">
+      <div class="callout-title"><span class="callout-icon">🎯</span>Interview Questions — Advanced LLM Topics</div>
+      <ul class="iq-list">
+        <li>MoE architecture kaise kaam karta hai? Sparse aur dense models mein kya tradeoffs hain?</li>
+        <li>INT4 quantization mein exactly kya hota hai? Quality loss kyun hoti hai?</li>
+        <li>RLHF ke 3 steps explain karo. PPO algorithm ka role kya hai?</li>
+        <li>LoRA mathematically kaise kaam karta hai? r (rank) ki value kaise decide karte hain?</li>
+        <li>Full fine-tuning vs LoRA vs QLoRA — kab kaunsa choose karo?</li>
+        <li>Knowledge distillation mein "soft labels" kya hote hain? Hard labels se better kyun hain?</li>
+      </ul>
+    </div>
+
+    <div class="exercise-box">
+      <h5>💪 Mini Exercises — Chapter 4</h5>
+      <ol>
+        <li>Ek 7B model ko 4-bit quantize karo aur original size se compare karo. Inference speed ka difference measure karo.</li>
+        <li>LoRA rank r=4, r=8, r=16, r=32 ke saath fine-tune karo aur quality vs training time compare karo.</li>
+        <li>Ek simple reward model banao jo helpful vs unhelpful responses classify kare.</li>
+        <li>MoE concept implement karo: 3 "expert" MLPs banao + ek router network jo top-2 experts select kare.</li>
+        <li>DistilBERT aur BERT-base ka performance compare karo sentiment analysis task par.</li>
+      </ol>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>AI Agent Engineering Masterbook — Part 5 | Chapter 4</span>
+    <span class="pf-right">Advanced LLM Topics</span>
+  </div>
+</div>
+
+
+<!-- ====================================================
+     CHAPTER 5: POPULAR MODELS
+     ==================================================== -->
+<div class="page">
+  <div class="chapter-hero ch5">
+    <div class="chapter-num">Chapter 5 · Popular Models</div>
+    <h2>🌍 Popular AI Models — Battlefield of Giants</h2>
+    <p class="tagline">GPT, Llama, Gemini, Claude, Mistral — AI duniya ke superhero models</p>
+  </div>
+  <div class="content-body">
+
+    <p>Aaj AI mein kaafi saari companies apne powerful language models release kar rahi hain. Har ek ke apne strengths, weaknesses, aur unique approaches hain. Ek AI engineer ko inke baare mein deeply pata hona chahiye — <em>kyunki projects mein sahi model choose karna ek critical decision hai!</em></p>
+
+    <div class="model-grid">
+      <div class="model-card mc-openai">
+        <div class="model-logo">🤖</div>
+        <div class="model-name">GPT-4 / GPT-4o</div>
+        <div class="model-maker">by OpenAI</div>
+        <div class="model-desc">Sabse popular commercial model. Multimodal (text + image + audio). 128K context. Best for enterprise applications.</div>
+        <div style="margin-top:10px;">
+          <span class="tag tag-blue">GPT-4o</span>
+          <span class="tag tag-green">Multimodal</span>
+          <span class="tag tag-orange">API</span>
+        </div>
+      </div>
+      <div class="model-card mc-meta">
+        <div class="model-logo">🦙</div>
+        <div class="model-name">Llama 3.1 / 3.3</div>
+        <div class="model-maker">by Meta AI</div>
+        <div class="model-desc">Open-source ka king. 8B se 405B tak. Commercial use allowed. Fine-tuning ke liye best choice. Self-hosting possible.</div>
+        <div style="margin-top:10px;">
+          <span class="tag tag-green">Open Source</span>
+          <span class="tag tag-purple">Self-host</span>
+          <span class="tag tag-blue">128K ctx</span>
+        </div>
+      </div>
+      <div class="model-card mc-google">
+        <div class="model-logo">💎</div>
+        <div class="model-name">Gemini 1.5 / 2.0</div>
+        <div class="model-maker">by Google DeepMind</div>
+        <div class="model-desc">World's largest context window — 1M+ tokens. Natively multimodal from ground up. Best for long document analysis.</div>
+        <div style="margin-top:10px;">
+          <span class="tag tag-green">1M Context</span>
+          <span class="tag tag-blue">Multimodal</span>
+          <span class="tag tag-orange">Google APIs</span>
+        </div>
+      </div>
+      <div class="model-card mc-anthropic">
+        <div class="model-logo">🎭</div>
+        <div class="model-name">Claude 3.5 / 3.7</div>
+        <div class="model-maker">by Anthropic</div>
+        <div class="model-desc">Safety-focused model. Constitutional AI training. Excellent at coding, analysis, nuanced writing. 200K context window.</div>
+        <div style="margin-top:10px;">
+          <span class="tag tag-orange">Safety First</span>
+          <span class="tag tag-blue">200K ctx</span>
+          <span class="tag tag-purple">Coding</span>
+        </div>
+      </div>
+      <div class="model-card mc-mistral">
+        <div class="model-logo">🌪️</div>
+        <div class="model-name">Mistral / Mixtral</div>
+        <div class="model-maker">by Mistral AI</div>
+        <div class="model-desc">European efficiency champion. Small size, big performance. Mixtral 8x7B uses MoE. Best performance-per-dollar ratio.</div>
+        <div style="margin-top:10px;">
+          <span class="tag tag-green">Efficient</span>
+          <span class="tag tag-purple">MoE</span>
+          <span class="tag tag-orange">Open Weights</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"><span>OpenAI GPT Series</span></div>
+    <h3>🤖 OpenAI GPT — The Pioneer</h3>
+
+    <p>OpenAI ne 2018 mein pehla GPT (Generative Pre-trained Transformer) launch kiya. Tab se yeh series continuously evolve ho rahi hai. <strong>ChatGPT</strong> ne November 2022 mein world mein AI revolution la diya — sirf 5 dinon mein 1 million users!</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Model</th><th>Year</th><th>Params</th><th>Context</th><th>Key Innovation</th></tr>
+        <tr><td>GPT-1</td><td>2018</td><td>117M</td><td>512 tokens</td><td>Pehla large pre-trained transformer</td></tr>
+        <tr><td>GPT-2</td><td>2019</td><td>1.5B</td><td>1K tokens</td><td>"Too dangerous to release" — coherent text</td></tr>
+        <tr><td>GPT-3</td><td>2020</td><td>175B</td><td>4K tokens</td><td>Few-shot learning, InstructGPT</td></tr>
+        <tr><td>ChatGPT</td><td>2022</td><td>~175B</td><td>4-16K</td><td>RLHF — conversational AI</td></tr>
+        <tr><td>GPT-4</td><td>2023</td><td>~1.7T (est)</td><td>128K</td><td>Multimodal, MoE architecture</td></tr>
+        <tr><td>GPT-4o</td><td>2024</td><td>Unknown</td><td>128K</td><td>Omni — text+vision+audio native</td></tr>
+        <tr><td>o1 / o3</td><td>2024-25</td><td>Unknown</td><td>200K</td><td>Chain-of-thought reasoning model</td></tr>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — OpenAI GPT-4o API</span>
+      </div>
+      <pre><span class="kw">from</span> <span class="cls">openai</span> <span class="kw">import</span> <span class="cls">OpenAI</span>
+<span class="kw">import</span> <span class="cls">base64</span>
+
+<span class="var">client</span> <span class="op">=</span> <span class="cls">OpenAI</span>()
+
+<span class="cm"># ---- Basic Text Generation ----</span>
+<span class="var">response</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">chat</span>.<span class="var">completions</span>.<span class="fn">create</span>(
+    <span class="var">model</span><span class="op">=</span><span class="str">"gpt-4o"</span>,
+    <span class="var">messages</span><span class="op">=</span>[
+        {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="str">"You are a helpful Hindi tutor."</span>},
+        {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Machine Learning kya hota hai? Simple mein explain karo"</span>}
+    ],
+    <span class="var">temperature</span><span class="op">=</span><span class="num">0.7</span>,
+    <span class="var">max_tokens</span><span class="op">=</span><span class="num">500</span>
+)
+
+<span class="fn">print</span>(<span class="var">response</span>.<span class="var">choices</span>[<span class="num">0</span>].<span class="var">message</span>.<span class="var">content</span>)
+<span class="fn">print</span>(<span class="str">"\n--- Token Usage ---"</span>)
+<span class="fn">print</span>(<span class="str">"Input tokens:"</span>, <span class="var">response</span>.<span class="var">usage</span>.<span class="var">prompt_tokens</span>)
+<span class="fn">print</span>(<span class="str">"Output tokens:"</span>, <span class="var">response</span>.<span class="var">usage</span>.<span class="var">completion_tokens</span>)
+
+<span class="cm"># ---- Vision (Image Analysis) ----</span>
+<span class="var">response_vision</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">chat</span>.<span class="var">completions</span>.<span class="fn">create</span>(
+    <span class="var">model</span><span class="op">=</span><span class="str">"gpt-4o"</span>,
+    <span class="var">messages</span><span class="op">=</span>[{
+        <span class="str">"role"</span>: <span class="str">"user"</span>,
+        <span class="str">"content"</span>: [
+            {<span class="str">"type"</span>: <span class="str">"text"</span>, <span class="str">"text"</span>: <span class="str">"Is image mein kya ho raha hai?"</span>},
+            {<span class="str">"type"</span>: <span class="str">"image_url"</span>, <span class="str">"image_url"</span>: {<span class="str">"url"</span>: <span class="str">"https://example.com/image.jpg"</span>}}
+        ]
+    }]
+)
+<span class="fn">print</span>(<span class="var">response_vision</span>.<span class="var">choices</span>[<span class="num">0</span>].<span class="var">message</span>.<span class="var">content</span>)</pre>
+    </div>
+
+    <div class="section-divider"><span>Meta Llama</span></div>
+    <h3>🦙 Meta Llama — Open-Source ka Badshah</h3>
+
+    <p>Meta ne Llama (Large Language Model Meta AI) series ke through <strong>open-source AI democratization</strong> ki. Llama 3 release ke baad, yeh GPT-4 level performance open-source mein available ho gaya. <mark>Llama 3.1 405B GPT-4 se comparable performance deta hai!</mark></p>
+
+    <div class="callout note">
+      <div class="callout-title"><span class="callout-icon">📌</span>Llama kyun Special Hai?</div>
+      <p><strong>Open weights:</strong> Download karke apne server par chala sako<br>
+      <strong>Fine-tuning:</strong> Apne data par customize karo<br>
+      <strong>Privacy:</strong> Data bahar nahi jaata<br>
+      <strong>Cost:</strong> Ek baar GPU invest karo, unlimited inference!<br>
+      <strong>Commercial:</strong> Llama 3 commercial use allowed (upto certain scale)</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Llama 3 with Ollama (Local)</span>
+      </div>
+      <pre><span class="cm"># Pehle install: pip install ollama</span>
+<span class="cm"># Aur Ollama CLI: ollama pull llama3.1</span>
+<span class="kw">import</span> <span class="cls">ollama</span>
+
+<span class="cm"># Simple generation</span>
+<span class="var">response</span> <span class="op">=</span> <span class="cls">ollama</span>.<span class="fn">chat</span>(
+    <span class="var">model</span><span class="op">=</span><span class="str">"llama3.1"</span>,
+    <span class="var">messages</span><span class="op">=</span>[{
+        <span class="str">"role"</span>: <span class="str">"user"</span>,
+        <span class="str">"content"</span>: <span class="str">"Python mein fibonacci sequence likho"</span>
+    }]
+)
+<span class="fn">print</span>(<span class="var">response</span>[<span class="str">"message"</span>][<span class="str">"content"</span>])
+
+<span class="cm"># ---- HuggingFace se directly ----</span>
+<span class="kw">from</span> <span class="cls">transformers</span> <span class="kw">import</span> <span class="cls">pipeline</span>
+
+<span class="var">pipe</span> <span class="op">=</span> <span class="fn">pipeline</span>(
+    <span class="str">"text-generation"</span>,
+    <span class="var">model</span><span class="op">=</span><span class="str">"meta-llama/Meta-Llama-3.1-8B-Instruct"</span>,
+    <span class="var">device_map</span><span class="op">=</span><span class="str">"auto"</span>
+)
+
+<span class="var">messages</span> <span class="op">=</span> [
+    {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="str">"Tum ek expert Python developer ho."</span>},
+    {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Binary search algorithm explain karo."</span>}
+]
+
+<span class="var">output</span> <span class="op">=</span> <span class="var">pipe</span>(<span class="var">messages</span>, <span class="var">max_new_tokens</span><span class="op">=</span><span class="num">512</span>)
+<span class="fn">print</span>(<span class="var">output</span>[<span class="num">0</span>][<span class="str">"generated_text"</span>][<span class="op">-</span><span class="num">1</span>][<span class="str">"content"</span>])</pre>
+    </div>
+
+    <div class="section-divider"><span>Google Gemini</span></div>
+    <h3>💎 Google Gemini — Multimodal Native</h3>
+
+    <p>Google DeepMind ka Gemini pehla model hai jo scratch se <strong>truly multimodal design</strong> ke saath banaya gaya — text, image, audio, video, code sab kuch natively handle karta hai. Gemini 1.5 ka <strong>1 million token context window</strong> industry mein sabse bada hai!</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Google Gemini API</span>
+      </div>
+      <pre><span class="kw">import</span> <span class="cls">google.generativeai</span> <span class="kw">as</span> <span class="cls">genai</span>
+<span class="kw">from</span> <span class="cls">PIL</span> <span class="kw">import</span> <span class="cls">Image</span>
+
+<span class="cm"># API setup</span>
+<span class="cls">genai</span>.<span class="fn">configure</span>(<span class="var">api_key</span><span class="op">=</span><span class="str">"YOUR_GEMINI_API_KEY"</span>)
+
+<span class="cm"># Text generation</span>
+<span class="var">model</span> <span class="op">=</span> <span class="cls">genai</span>.<span class="cls">GenerativeModel</span>(<span class="str">"gemini-1.5-pro"</span>)
+<span class="var">response</span> <span class="op">=</span> <span class="var">model</span>.<span class="fn">generate_content</span>(<span class="str">"AI ka bhavishya kya hai? Hinglish mein batao"</span>)
+<span class="fn">print</span>(<span class="var">response</span>.<span class="var">text</span>)
+
+<span class="cm"># Multimodal — image + text</span>
+<span class="var">img</span> <span class="op">=</span> <span class="cls">Image</span>.<span class="fn">open</span>(<span class="str">"chart.png"</span>)
+<span class="var">response</span> <span class="op">=</span> <span class="var">model</span>.<span class="fn">generate_content</span>([
+    <span class="str">"Is chart ko analyze karo aur trends batao"</span>,
+    <span class="var">img</span>
+])
+<span class="fn">print</span>(<span class="var">response</span>.<span class="var">text</span>)
+
+<span class="cm"># Long context — 1 million tokens!</span>
+<span class="var">long_model</span> <span class="op">=</span> <span class="cls">genai</span>.<span class="cls">GenerativeModel</span>(<span class="str">"gemini-1.5-pro-002"</span>)
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"massive_document.txt"</span>, <span class="str">"r"</span>) <span class="kw">as</span> <span class="var">f</span>:
+    <span class="var">massive_doc</span> <span class="op">=</span> <span class="var">f</span>.<span class="fn">read</span>()  <span class="cm"># 500+ pages OK!</span>
+
+<span class="var">response</span> <span class="op">=</span> <span class="var">long_model</span>.<span class="fn">generate_content</span>(
+    <span class="fn">f</span><span class="str">"{massive_doc}\n\nIs document mein key themes kya hain?"</span>
+)
+<span class="fn">print</span>(<span class="var">response</span>.<span class="var">text</span>)</pre>
+    </div>
+
+    <div class="section-divider"><span>Anthropic Claude</span></div>
+    <h3>🎭 Anthropic Claude — Safety aur Intelligence</h3>
+
+    <p>Anthropic ek AI safety company hai jisne Claude create kiya. Claude <strong>Constitutional AI (CAI)</strong> technique se train kiya gaya hai — model ke andar ek "constitution" hota hai jo define karta hai ki model ko kaise behave karna chahiye.</p>
+
+    <div class="callout note">
+      <div class="callout-title"><span class="callout-icon">📌</span>Constitutional AI Kya Hai?</div>
+      <p>Normal RLHF mein human raters directly feedback dete hain. CAI mein:<br>
+      <strong>1.</strong> Model ek response generate karta hai<br>
+      <strong>2.</strong> Model khud apne response ko pre-defined principles ke basis par critique karta hai<br>
+      <strong>3.</strong> Model revised response likhta hai<br>
+      <strong>4.</strong> Is revised response se model train hota hai<br>
+      Result: Safer, more helpful, honest model!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Anthropic Claude API</span>
+      </div>
+      <pre><span class="kw">import</span> <span class="cls">anthropic</span>
+
+<span class="var">client</span> <span class="op">=</span> <span class="cls">anthropic</span>.<span class="cls">Anthropic</span>(<span class="var">api_key</span><span class="op">=</span><span class="str">"YOUR_KEY"</span>)
+
+<span class="cm"># Basic message</span>
+<span class="var">message</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">messages</span>.<span class="fn">create</span>(
+    <span class="var">model</span><span class="op">=</span><span class="str">"claude-3-5-sonnet-20241022"</span>,
+    <span class="var">max_tokens</span><span class="op">=</span><span class="num">1024</span>,
+    <span class="var">system</span><span class="op">=</span><span class="str">"Tum ek expert AI engineer ho. Hinglish mein helpful responses do."</span>,
+    <span class="var">messages</span><span class="op">=</span>[
+        {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Mujhe RAG architecture samjhao"</span>}
+    ]
+)
+<span class="fn">print</span>(<span class="var">message</span>.<span class="var">content</span>[<span class="num">0</span>].<span class="var">text</span>)
+
+<span class="cm"># Vision - Image analysis</span>
+<span class="kw">import</span> <span class="cls">base64</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"diagram.png"</span>, <span class="str">"rb"</span>) <span class="kw">as</span> <span class="var">f</span>:
+    <span class="var">img_data</span> <span class="op">=</span> <span class="cls">base64</span>.<span class="fn">b64encode</span>(<span class="var">f</span>.<span class="fn">read</span>()).<span class="fn">decode</span>(<span class="str">"utf-8"</span>)
+
+<span class="var">response</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">messages</span>.<span class="fn">create</span>(
+    <span class="var">model</span><span class="op">=</span><span class="str">"claude-3-5-sonnet-20241022"</span>,
+    <span class="var">max_tokens</span><span class="op">=</span><span class="num">500</span>,
+    <span class="var">messages</span><span class="op">=</span>[{
+        <span class="str">"role"</span>: <span class="str">"user"</span>,
+        <span class="str">"content"</span>: [
+            {<span class="str">"type"</span>: <span class="str">"image"</span>, <span class="str">"source"</span>: {
+                <span class="str">"type"</span>: <span class="str">"base64"</span>,
+                <span class="str">"media_type"</span>: <span class="str">"image/png"</span>,
+                <span class="str">"data"</span>: <span class="var">img_data</span>
+            }},
+            {<span class="str">"type"</span>: <span class="str">"text"</span>, <span class="str">"text"</span>: <span class="str">"Is architecture diagram ko explain karo"</span>}
+        ]
+    }]
+)
+<span class="fn">print</span>(<span class="var">response</span>.<span class="var">content</span>[<span class="num">0</span>].<span class="var">text</span>)</pre>
+    </div>
+
+    <div class="section-divider"><span>Mistral AI</span></div>
+    <h3>🌪️ Mistral — European Efficiency Champion</h3>
+
+    <p>Mistral AI ek French startup hai jo 2023 mein banai gayi. Inke models <strong>small size mein bada punch</strong> deliver karte hain. Mixtral 8x7B ne MoE architecture use karke GPT-3.5 level performance achieve ki sirf 47B total parameters mein!</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+        <span class="code-lang">Python — Mistral API</span>
+      </div>
+      <pre><span class="kw">from</span> <span class="cls">mistralai</span> <span class="kw">import</span> <span class="cls">Mistral</span>
+
+<span class="var">client</span> <span class="op">=</span> <span class="cls">Mistral</span>(<span class="var">api_key</span><span class="op">=</span><span class="str">"YOUR_MISTRAL_KEY"</span>)
+
+<span class="cm"># Mixtral 8x7B — cost-effective powerhouse</span>
+<span class="var">response</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">chat</span>.<span class="fn">complete</span>(
+    <span class="var">model</span><span class="op">=</span><span class="str">"mixtral-8x7b-instruct"</span>,
+    <span class="var">messages</span><span class="op">=</span>[
+        {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Code review karo is Python function ka"</span>}
+    ]
+)
+<span class="fn">print</span>(<span class="var">response</span>.<span class="var">choices</span>[<span class="num">0</span>].<span class="var">message</span>.<span class="var">content</span>)
+
+<span class="cm"># Codestral — code-specific model</span>
+<span class="var">code_response</span> <span class="op">=</span> <span class="var">client</span>.<span class="var">chat</span>.<span class="fn">complete</span>(
+    <span class="var">model</span><span class="op">=</span><span class="str">"codestral-latest"</span>,
+    <span class="var">messages</span><span class="op">=</span>[{
+        <span class="str">"role"</span>: <span class="str">"user"</span>,
+        <span class="str">"content"</span>: <span class="str">"FastAPI mein JWT authentication implement karo"</span>
+    }]
+)
+<span class="fn">print</span>(<span class="var">code_response</span>.<span class="var">choices</span>[<span class="num">0</span>].<span class="var">message</span>.<span class="var">content</span>)</pre>
+    </div>
+
+    <div class="section-divider"><span>Model Comparison</span></div>
+    <h3>⚖️ Model Comparison — Kab Kaun?</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Use Case</th><th>Recommended Model</th><th>Why?</th></tr>
+        <tr><td>General chat application</td><td>GPT-4o / Claude 3.5</td><td>Best quality, reliable API</td></tr>
+        <tr><td>Cost-sensitive production</td><td>Mixtral 8x7B / GPT-3.5</td><td>High quality, low cost</td></tr>
+        <tr><td>Long document processing</td><td>Gemini 1.5 Pro</td><td>1M token context</td></tr>
+        <tr><td>Privacy / self-hosting</td><td>Llama 3.1 / Mistral 7B</td><td>Open weights, on-premise</td></tr>
+        <tr><td>Code generation</td><td>Claude 3.5 / Codestral</td><td>Strong coding ability</td></tr>
+        <tr><td>Fine-tuning project</td><td>Llama 3.1 8B / Mistral 7B</td><td>Open weights + efficient</td></tr>
+        <tr><td>Multimodal (image/audio)</td><td>Gemini 1.5 / GPT-4o</td><td>Native multimodal</td></tr>
+        <tr><td>Safety-critical apps</td><td>Claude 3.5 Sonnet</td><td>Constitutional AI training</td></tr>
+        <tr><td>Research/experimentation</td><td>Any open-source (HuggingFace)</td><td>Full control, no cost</td></tr>
+      </table>
+    </div>
+
+    <div class="callout interview">
+      <div class="callout-title"><span class="callout-icon">🎯</span>Interview Questions — Popular Models</div>
+      <ul class="iq-list">
+        <li>GPT-4 aur GPT-4o mein kya fark hai? "o" ka kya matlab hai?</li>
+        <li>Llama 3 ki licensing kaise hai? Kab commercial use allowed hai?</li>
+        <li>Gemini 1.5 ka 1M context window practically kaise use karte hain?</li>
+        <li>Constitutional AI kya hai aur RLHF se kaise different hai?</li>
+        <li>Ek startup ke liye GPT-4 vs Llama 3 — kaunsa choose karoge aur kyun?</li>
+        <li>Mixtral 8x7B, GPT-3.5 se kaisi compare karta hai cost-quality tradeoff mein?</li>
+      </ul>
+    </div>
+
+    <div class="exercise-box">
+      <h5>💪 Mini Exercises — Chapter 5</h5>
+      <ol>
+        <li>Ek Python script banao jo ek hi prompt ko GPT-4o, Claude 3.5, aur Gemini 1.5 par run kare aur responses compare kare.</li>
+        <li>Llama 3.1 ko Ollama se locally run karo aur latency measure karo. GPT-4o API se compare karo.</li>
+        <li>Gemini 1.5 ka 100K+ token context test karo: ek long PDF pass karo aur specific facts query karo.</li>
+        <li>Mistral 7B ko HuggingFace se load karo aur 4-bit quantized version se compare karo speed/quality mein.</li>
+        <li>Ek simple chatbot banao jo user ke query ke basis par automatically sahi model choose kare (routing).</li>
+      </ol>
+    </div>
+
+    <div class="section-divider"><span>Glossary</span></div>
+    <h3>📖 Glossary — Part 5 ke Key Terms</h3>
+
+    <div class="glossary-item"><span class="glossary-term">Tokenization</span><span class="glossary-def">Text ko chhote units (tokens) mein todna — BPE modern LLMs ka standard method</span></div>
+    <div class="glossary-item"><span class="glossary-term">Stemming</span><span class="glossary-def">Word ka approximate root form nikalna — fast but rough (Porter, Snowball algorithms)</span></div>
+    <div class="glossary-item"><span class="glossary-term">Lemmatization</span><span class="glossary-def">Grammar-correct dictionary root form — stems se zyada accurate (SpaCy use karo)</span></div>
+    <div class="glossary-item"><span class="glossary-term">POS Tagging</span><span class="glossary-def">Parts of Speech assign karna — Noun/Verb/Adj/etc. har word ko</span></div>
+    <div class="glossary-item"><span class="glossary-term">NER</span><span class="glossary-def">Named Entity Recognition — text mein Person, Org, Location detect karna</span></div>
+    <div class="glossary-item"><span class="glossary-term">Transformer</span><span class="glossary-def">2017 "Attention Is All You Need" paper ka architecture — modern LLMs ka base</span></div>
+    <div class="glossary-item"><span class="glossary-term">Self-Attention</span><span class="glossary-def">Ek sequence ke words apne hi sequence ke dusre words par attention dete hain</span></div>
+    <div class="glossary-item"><span class="glossary-term">Multi-Head Attention</span><span class="glossary-def">Multiple parallel attention heads — alag-alag relationships capture karte hain</span></div>
+    <div class="glossary-item"><span class="glossary-term">Embedding</span><span class="glossary-def">Words/sentences ko dense numerical vectors mein convert karna</span></div>
+    <div class="glossary-item"><span class="glossary-term">Context Window</span><span class="glossary-def">LLM ek baar mein maximum kitne tokens process kar sakta hai</span></div>
+    <div class="glossary-item"><span class="glossary-term">Hallucination</span><span class="glossary-def">LLM ka confident lekin galat information generate karna</span></div>
+    <div class="glossary-item"><span class="glossary-term">Temperature</span><span class="glossary-def">Output randomness control — 0=deterministic, 1+=creative</span></div>
+    <div class="glossary-item"><span class="glossary-term">Top-p (Nucleus)</span><span class="glossary-def">Cumulative probability threshold sampling — adaptive token selection</span></div>
+    <div class="glossary-item"><span class="glossary-term">MoE</span><span class="glossary-def">Mixture of Experts — sparse activation se efficient large models</span></div>
+    <div class="glossary-item"><span class="glossary-term">Quantization</span><span class="glossary-def">Model weights ko lower precision mein convert karna (FP32→INT4)</span></div>
+    <div class="glossary-item"><span class="glossary-term">Fine-tuning</span><span class="glossary-def">Pre-trained model ko specific task/domain par further train karna</span></div>
+    <div class="glossary-item"><span class="glossary-term">RLHF</span><span class="glossary-def">Reinforcement Learning from Human Feedback — ChatGPT-level helpfulness ki key</span></div>
+    <div class="glossary-item"><span class="glossary-term">Distillation</span><span class="glossary-def">Large teacher model ki knowledge small student model mein transfer karna</span></div>
+    <div class="glossary-item"><span class="glossary-term">LoRA</span><span class="glossary-def">Low-Rank Adaptation — efficient fine-tuning (0.06% params train karo)</span></div>
+    <div class="glossary-item"><span class="glossary-term">PEFT</span><span class="glossary-def">Parameter Efficient Fine-Tuning — LoRA, QLoRA, Adapters etc. ka umbrella term</span></div>
+    <div class="glossary-item"><span class="glossary-term">BPE</span><span class="glossary-def">Byte Pair Encoding — GPT-style subword tokenization algorithm</span></div>
+    <div class="glossary-item"><span class="glossary-term">Positional Encoding</span><span class="glossary-def">Sin/Cos signals jo transformer ko word order batate hain</span></div>
+
+    <div class="summary-box">
+      <h5>📝 Part 5 — Complete Summary</h5>
+      <ul>
+        <li><strong>NLP Foundation:</strong> Tokenization (BPE), Stemming/Lemmatization, POS Tagging, NER — ye sab raw text ko processable banate hain</li>
+        <li><strong>Transformer Revolution:</strong> 2017 mein Q,K,V attention ne sab kuch badla — parallel processing, no more RNN</li>
+        <li><strong>LLM Concepts:</strong> Tokens (currency), Embeddings (meaning in vectors), Context Window (memory limit), Temperature (creativity)</li>
+        <li><strong>Hallucinations:</strong> LLMs confident but wrong ho sakte hain — RAG + grounding se mitigate karo</li>
+        <li><strong>Advanced Techniques:</strong> MoE (sparse activation), Quantization (size reduction), RLHF (human alignment), LoRA (efficient fine-tuning)</li>
+        <li><strong>Model Landscape:</strong> GPT (commercial), Llama (open-source), Gemini (multimodal+long context), Claude (safety), Mistral (efficient)</li>
+        <li><strong>Production Choice:</strong> Use case ke hisaab se model choose karo — cost, privacy, context, quality sab factors hain</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>AI Agent Engineering Masterbook — Part 5 | Chapter 5</span>
+    <span class="pf-right">Popular Models & Final Summary</span>
+  </div>
+</div>
+
+
+<!-- ===== REVISION PAGE ===== -->
+<div class="page">
+  <div class="content-body">
+    <h3 style="text-align:center;font-size:1.6rem;margin-bottom:32px;">🔁 Quick Revision — Part 5 ke Saare Important Points</h3>
+
+    <div class="topic-grid">
+      <div class="topic-card"><div class="tc-icon">🔤</div><h5>Tokenization</h5><p>BPE = modern standard. 1 token ≈ 0.75 words (English). Hindi mein 3-4x zyada tokens!</p></div>
+      <div class="topic-card"><div class="tc-icon">✂️</div><h5>Stemming vs Lemma</h5><p>Stemming = fast but rough. Lemmatization = accurate, grammar-correct. SpaCy for lemma.</p></div>
+      <div class="topic-card"><div class="tc-icon">👁️</div><h5>Attention Formula</h5><p>Attention(Q,K,V) = softmax(Q·Kᵀ/√dₖ)·V. Q=query, K=key, V=value.</p></div>
+      <div class="topic-card"><div class="tc-icon">🎭</div><h5>Multi-Head</h5><p>8-16 parallel heads. Har head alag relationship pakadta hai. Concatenate + project.</p></div>
+      <div class="topic-card"><div class="tc-icon">🔄</div><h5>Encoder vs Decoder</h5><p>Encoder=understanding (BERT). Decoder=generation (GPT). Both=translation (T5).</p></div>
+      <div class="topic-card"><div class="tc-icon">📍</div><h5>Positional Encoding</h5><p>Sin/Cos signals. Without this, model ko word order pata nahi. Input embedding mein add.</p></div>
+      <div class="topic-card"><div class="tc-icon">🌐</div><h5>Embeddings</h5><p>King - Man + Woman ≈ Queen. Similar meaning = close vectors. 1536 dims for OpenAI.</p></div>
+      <div class="topic-card"><div class="tc-icon">🪟</div><h5>Context Window</h5><p>GPT-4=128K, Claude=200K, Gemini=1M. Full hone par model bhool jaata hai!</p></div>
+      <div class="topic-card"><div class="tc-icon">👻</div><h5>Hallucinations</h5><p>Confident but wrong. RAG + grounding + low temperature se reduce karo.</p></div>
+      <div class="topic-card"><div class="tc-icon">🌡️</div><h5>Temperature</h5><p>0=same always. 0.7=balanced. 1.5+=creative. Top-p=nucleus sampling.</p></div>
+      <div class="topic-card"><div class="tc-icon">🎪</div><h5>MoE</h5><p>Router selects top-2 experts. Sparse activation. Mixtral = MoE based. 3-4x faster.</p></div>
+      <div class="topic-card"><div class="tc-icon">📦</div><h5>Quantization</h5><p>FP32→INT4 = 8x smaller. Q4 ≈ 95% quality. bitsandbytes library use karo.</p></div>
+      <div class="topic-card"><div class="tc-icon">👥</div><h5>RLHF</h5><p>3 steps: SFT → Reward Model → PPO. Human feedback se alignment. ChatGPT ka secret.</p></div>
+      <div class="topic-card"><div class="tc-icon">🔧</div><h5>LoRA</h5><p>W' = W + BA. r=16 = 0.06% trainable params. 1750x less than full fine-tuning!</p></div>
+      <div class="topic-card"><div class="tc-icon">🧪</div><h5>Distillation</h5><p>Teacher → Student. DistilBERT = 60% faster, 97% quality. Soft labels better hain.</p></div>
+    </div>
+
+    <div class="callout remember" style="margin-top:32px;">
+      <div class="callout-title"><span class="callout-icon">🌟</span>Remember This — Part 5 Core Mantra</div>
+      <p style="font-size:1rem;line-height:1.9;">
+        <strong>NLP → Transformer → LLM → Fine-tune → Deploy</strong><br>
+        Yahi journey hai ek simple text processing se world's most powerful AI tak.<br><br>
+        Text ko tokens mein toro, tokens ko embeddings mein convert karo, Transformer se context samjho, RLHF se helpful banao, LoRA se customize karo — aur duniya badal do! 🚀
+      </p>
+    </div>
+
+    <div style="text-align:center;margin-top:40px;padding:32px;background:linear-gradient(135deg,#e8eaf6,#e3f2fd);border-radius:12px;">
+      <div style="font-size:2rem;margin-bottom:12px;">🎓</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--primary);font-weight:700;margin-bottom:8px;">Part 5 Complete!</div>
+      <div style="color:var(--text-light);font-size:0.95rem;">Next: Part 6 — Prompt Engineering</div>
+      <div style="margin-top:12px;font-size:0.85rem;color:var(--text-light);">
+        <em>"Har LLM ek talented student hai — tumhara kaam hai usse sahi prompt dena!"</em>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>AI Agent Engineering Masterbook — Part 5 | Revision</span>
+    <span class="pf-right">Generative AI &amp; LLMs — Complete</span>
+  </div>
+</div>
+
+</div><!-- /.main-wrap -->
+
+<script>
+// Print/PDF export
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+    window.print();
+  }
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// Add page numbers dynamically
+document.querySelectorAll('.page-footer').forEach((footer, index) => {
+  const pageNum = document.createElement('span');
+  pageNum.style.cssText = 'color:rgba(255,255,255,0.4);font-size:0.7rem;';
+  pageNum.textContent = `Page ${index + 1}`;
+  footer.appendChild(pageNum);
+});
+</script>
+</body>
+</html>
