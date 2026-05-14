@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Vector Databases — NCERT Hinglish Complete Guide</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
+:root{
+  --saffron:#FF6600;--saffron2:#FF8C00;--saffron3:#FFF3E0;
+  --navy:#003366;--navy2:#1A4480;--navy3:#E8EFF8;
+  --green:#1A6B2B;--green2:#228B22;--green3:#E8F5E9;
+  --purple:#5B2C8D;--purple3:#F0E8FA;
+  --teal:#00695C;--teal3:#E0F5F2;
+  --red:#C0392B;--red3:#FDEDEB;
+  --yellow:#E67E22;--yellow3:#FEF9E7;
+  --pink:#AD1457;--pink3:#FCE4EC;
+  --text:#1A1A2E;--text2:#2C3E50;--text3:#5D6D7E;
+  --page:#F2EFE9;--white:#FFFFFF;--border:#D5D8DC;
+  --font-h:'Baloo 2',cursive;
+  --font-b:'Noto Sans',sans-serif;
+  --font-m:'Source Code Pro',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--page);color:var(--text);font-size:13.5px;line-height:1.8}
+
+/* ── FAB ── */
+.fab{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.fab-btn{
+  display:flex;align-items:center;gap:9px;padding:12px 22px;
+  background:linear-gradient(135deg,var(--navy),var(--saffron));
+  color:#fff;border:none;border-radius:50px;cursor:pointer;
+  font-family:var(--font-h);font-size:13px;font-weight:700;
+  box-shadow:0 6px 20px rgba(0,51,102,.35);transition:all .25s;
+}
+.fab-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,51,102,.45)}
+.fab-btn:disabled{background:#9E9E9E;box-shadow:none;transform:none;cursor:not-allowed}
+#prog{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--saffron),#FFD700,var(--green));z-index:9998;width:0%;transition:width .08s}
+
+/* ── BOOK ── */
+.book{max-width:840px;margin:0 auto;padding:20px 14px 100px}
+
+/* ── A4 PAGE ── */
+.page{
+  background:var(--white);max-width:794px;width:100%;
+  margin:0 auto 24px;padding:28px 36px 30px;
+  box-shadow:0 3px 14px rgba(0,0,0,.13),0 1px 4px rgba(0,0,0,.07);
+  border-radius:3px;position:relative;
+  border-top:5px solid var(--navy);
+}
+.page.cover-page{border-top:none;padding:0;overflow:hidden;border-radius:6px}
+.page.unit-page{border-top:none;padding:0;overflow:hidden}
+.page-num{position:absolute;bottom:10px;right:18px;font-family:var(--font-h);font-size:11px;color:#AAA}
+
+/* ── COVER ── */
+.cover-bg{
+  background:linear-gradient(150deg,#003366 0%,#0D2B5C 45%,#1A0A3D 100%);
+  min-height:520px;position:relative;overflow:hidden;
+}
+.tri-color{height:8px;background:linear-gradient(90deg,var(--saffron) 33.3%,#fff 33.3% 66.6%,var(--green) 66.6%)}
+.cover-body{padding:44px 44px 36px;color:#fff;position:relative;z-index:2}
+.cover-deco{position:absolute;border-radius:50%;opacity:.05}
+.cover-deco.d1{width:420px;height:420px;background:#fff;top:-80px;right:-80px}
+.cover-deco.d2{width:280px;height:280px;background:var(--saffron);bottom:-60px;left:-50px}
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);
+  border-radius:50px;padding:6px 18px;font-family:var(--font-h);
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.75);margin-bottom:22px;
+}
+.cover-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--saffron);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.cover-lang-tag{
+  display:inline-block;background:var(--saffron);color:#fff;
+  font-family:var(--font-h);font-size:12px;font-weight:800;
+  padding:5px 16px;border-radius:4px;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:18px;
+}
+.cover-title{
+  font-family:var(--font-h);font-size:clamp(32px,6vw,52px);
+  font-weight:800;line-height:1.05;margin-bottom:14px;color:#fff;
+}
+.cover-title .hl{color:var(--saffron)}
+.cover-subtitle{
+  font-family:var(--font-h);font-size:15px;font-weight:500;
+  color:rgba(255,255,255,.72);margin-bottom:28px;line-height:1.7;
+}
+.cover-levels{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
+.level-pill{
+  font-family:var(--font-h);font-size:12px;font-weight:700;
+  padding:6px 16px;border-radius:50px;border:1.5px solid rgba(255,255,255,.25);
+  color:rgba(255,255,255,.75);
+}
+.level-pill.now{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.cover-contents{border-top:1px solid rgba(255,255,255,.15);padding-top:24px}
+.cover-contents-title{font-family:var(--font-h);font-size:11px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:12px;text-transform:uppercase}
+.cover-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:5px}
+.cover-item{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-h);font-size:12px;color:rgba(255,255,255,.65);
+  padding:4px 0;
+}
+.cover-item::before{content:'▸';color:var(--saffron);font-size:10px}
+
+/* ── UNIT OPENER ── */
+.unit-inner{padding:40px 44px;position:relative;overflow:hidden;min-height:180px}
+.unit-bg-num{
+  position:absolute;right:-15px;top:-15px;
+  font-family:var(--font-h);font-size:220px;font-weight:900;
+  color:rgba(255,255,255,.04);line-height:1;pointer-events:none;
+}
+.unit-eyebrow{font-family:var(--font-h);font-size:11px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:10px}
+.unit-title{font-family:var(--font-h);font-size:clamp(20px,4vw,30px);font-weight:900;color:#fff;margin-bottom:12px;line-height:1.2}
+.unit-desc{font-family:var(--font-h);font-size:13px;color:rgba(255,255,255,.68);max-width:540px;line-height:1.7}
+.unit-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.unit-tag{font-family:var(--font-h);font-size:11px;font-weight:700;padding:5px 14px;background:rgba(255,255,255,.12);border-radius:50px;color:rgba(255,255,255,.8)}
+.u1{background:linear-gradient(135deg,#003380,#001A60)}
+.u2{background:linear-gradient(135deg,#1A6B2B,#0D4A1A)}
+.u3{background:linear-gradient(135deg,#5B2C8D,#350A6B)}
+.u4{background:linear-gradient(135deg,#C0392B,#8B0000)}
+.u5{background:linear-gradient(135deg,#00695C,#003D35)}
+.u6{background:linear-gradient(135deg,#E67E22,#A04000)}
+.u7{background:linear-gradient(135deg,#AD1457,#6A0030)}
+
+/* ── CHAPTER HEADER ── */
+.ch-hdr{
+  margin:-28px -36px 24px;padding:20px 36px 16px;
+  background:linear-gradient(135deg,var(--navy3),rgba(26,68,128,.05));
+  border-bottom:2px solid var(--navy3);position:relative;
+}
+.ch-hdr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--navy)}
+.ch-num{font-family:var(--font-h);font-size:11px;font-weight:800;color:var(--navy2);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
+.ch-title{font-family:var(--font-h);font-size:clamp(16px,3vw,21px);font-weight:900;color:var(--navy);line-height:1.2}
+.ch-tagline{margin-top:8px;font-family:var(--font-h);font-size:13px;color:var(--text3);font-style:italic;line-height:1.6}
+
+/* ── PROGRESS LADDER ── */
+.ladder{display:flex;gap:3px;margin:14px 0 20px;flex-wrap:wrap}
+.rung{flex:1;min-width:70px;padding:7px 8px;text-align:center;font-family:var(--font-h);font-size:11px;font-weight:700;border-radius:5px;line-height:1.3}
+.rung.done{background:var(--navy);color:#fff}
+.rung.now{background:var(--saffron);color:#fff}
+.rung.next{background:#E8EFF8;color:var(--navy2)}
+.rung.future{background:#F0F0F0;color:#AAA}
+
+/* ── HEADINGS ── */
+.h2{font-family:var(--font-h);font-size:16px;font-weight:800;color:var(--navy);margin:22px 0 10px;display:flex;align-items:center;gap:10px}
+.h2::after{content:'';flex:1;height:1.5px;background:linear-gradient(90deg,var(--navy3),transparent)}
+.h3{font-family:var(--font-h);font-size:14.5px;font-weight:800;color:var(--saffron);margin:16px 0 8px}
+.h4{font-family:var(--font-h);font-size:13.5px;font-weight:700;color:var(--text);margin:12px 0 6px}
+
+/* ── BODY TEXT ── */
+p.bt{font-family:var(--font-b);font-size:13.5px;color:var(--text2);line-height:1.88;margin-bottom:12px;text-align:justify}
+p.bt:last-child{margin-bottom:0}
+.hl{color:var(--navy);font-weight:700}
+.hl-s{color:var(--saffron);font-weight:700}
+.hl-g{color:var(--green2);font-weight:700}
+.hl-r{color:var(--red);font-weight:700}
+em.term{font-style:normal;font-weight:700;background:rgba(0,51,102,.09);color:var(--navy);padding:1px 6px;border-radius:3px;font-family:var(--font-h);font-size:13px}
+
+/* ── SPECIAL BOXES ── */
+.box{padding:15px 18px;margin:14px 0;border-radius:0 10px 10px 0;border-left:4px solid}
+.box .bl{font-family:var(--font-h);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:7px}
+.box .bd{font-family:var(--font-h);font-size:13.5px;line-height:1.75}
+
+.box-def{background:var(--navy3);border-color:var(--navy2)}
+.box-def .bl{color:var(--navy)} .box-def .bd{color:var(--navy)}
+
+.box-ex{background:var(--green3);border:1px solid #A5D6A7;border-left:4px solid var(--green2)}
+.box-ex .bl{color:var(--green2)} .box-ex .bd{color:#1B4020}
+
+.box-analogy{background:var(--saffron3);border:1px solid #FFCC80;border-left:4px solid var(--saffron)}
+.box-analogy .bl{color:var(--saffron)} .box-analogy .bd{color:#4E2000}
+
+.box-know{background:var(--purple3);border:1px solid #CE93D8;border-left:4px solid var(--purple)}
+.box-know .bl{color:var(--purple)} .box-know .bd{color:#2D0A4E}
+
+.box-warn{background:var(--red3);border:1px solid #EF9A9A;border-left:4px solid var(--red)}
+.box-warn .bl{color:var(--red)} .box-warn .bd{color:#4A0000}
+
+.box-tip{background:var(--teal3);border:1px solid #80CBC4;border-left:4px solid var(--teal)}
+.box-tip .bl{color:var(--teal)} .box-tip .bd{color:#00251A}
+
+.box-think{background:var(--yellow3);border:1.5px dashed var(--yellow);border-radius:10px}
+.box-think .bl{color:var(--yellow)} .box-think .bd{color:#3E2000}
+
+.box-summary{background:var(--teal3);border:1.5px solid #80CBC4;border-radius:10px;padding:18px 20px;margin:18px 0}
+.box-summary .bl{font-family:var(--font-h);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:10px}
+.box-summary ul{list-style:none;padding:0}
+.box-summary ul li{font-family:var(--font-h);font-size:13.5px;color:#00251A;padding:4px 0;display:flex;gap:10px;align-items:flex-start;line-height:1.6;border-bottom:1px solid rgba(0,105,92,.1)}
+.box-summary ul li:last-child{border-bottom:none}
+.box-summary ul li::before{content:'✓';color:var(--teal);font-weight:800;flex-shrink:0}
+
+/* ── STEPS ── */
+.steps{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+.step{display:flex;gap:14px;background:#FAFBFF;border:1px solid var(--border);border-radius:10px;padding:14px 16px;align-items:flex-start}
+.step-n{width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--font-h);font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-title{font-family:var(--font-h);font-size:14px;font-weight:800;color:var(--navy);margin-bottom:5px}
+.step-desc{font-family:var(--font-h);font-size:13px;color:var(--text2);line-height:1.65}
+.step-code{font-family:var(--font-m);font-size:11.5px;color:var(--navy2);background:var(--navy3);padding:4px 10px;border-radius:4px;margin-top:7px;display:block;line-height:1.6}
+.step-result{font-family:var(--font-h);font-size:12px;color:var(--green2);background:var(--green3);padding:4px 10px;border-radius:4px;margin-top:6px;display:block}
+.step-warn{font-family:var(--font-h);font-size:12px;color:var(--red);background:var(--red3);padding:4px 10px;border-radius:4px;margin-top:6px;display:block}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr}}
+.card{border-radius:10px;padding:15px;border:1.5px solid}
+.c-navy{background:var(--navy3);border-color:#90CAF9}
+.c-saffron{background:var(--saffron3);border-color:#FFCC80}
+.c-green{background:var(--green3);border-color:#A5D6A7}
+.c-purple{background:var(--purple3);border-color:#CE93D8}
+.c-teal{background:var(--teal3);border-color:#80CBC4}
+.c-red{background:var(--red3);border-color:#EF9A9A}
+.c-pink{background:var(--pink3);border-color:#F48FB1}
+.card .c-head{font-family:var(--font-h);font-size:13px;font-weight:800;margin-bottom:8px}
+.c-navy .c-head{color:var(--navy)}
+.c-saffron .c-head{color:var(--saffron)}
+.c-green .c-head{color:var(--green2)}
+.c-purple .c-head{color:var(--purple)}
+.c-teal .c-head{color:var(--teal)}
+.c-red .c-head{color:var(--red)}
+.c-pink .c-head{color:var(--pink)}
+.card .c-body{font-family:var(--font-h);font-size:12.5px;color:var(--text2);line-height:1.65}
+
+/* ── TABLE ── */
+.tw{overflow-x:auto;margin:14px 0;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-family:var(--font-h);font-size:12.5px}
+thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-weight:700;font-size:12px}
+tbody tr:nth-child(even){background:#F8F9FF}
+tbody tr:nth-child(odd){background:#fff}
+tbody tr:hover{background:#EEF2FF}
+tbody td{padding:10px 14px;color:var(--text2);vertical-align:top;border-bottom:1px solid var(--border);line-height:1.6}
+tbody tr:last-child td{border-bottom:none}
+td.tk{font-weight:700;color:var(--navy)}
+td.tg{color:var(--green2);font-weight:600}
+td.tr{color:var(--red);font-weight:600}
+
+/* ── CODE ── */
+.code{background:#1A1A2E;border-radius:8px;padding:16px 18px;margin:12px 0;font-family:var(--font-m);font-size:12.5px;line-height:1.85;overflow-x:auto;border:1px solid #2D2D44}
+.code .cm{color:#636FA4;font-style:italic} .code .kw{color:#BD93F9}
+.code .str{color:#50FA7B} .code .fn{color:#8BE9FD}
+.code .num{color:#FFB86C} .code .var{color:#F8F8F2}
+.code .out{color:#A0A0A0}
+
+/* ── FORMULA ── */
+.formula{background:linear-gradient(135deg,var(--navy3),#BBDEFB);border:1.5px solid #90CAF9;border-radius:10px;padding:16px 18px;margin:12px 0;text-align:center}
+.formula-eq{font-family:var(--font-m);font-size:14px;color:var(--navy);font-weight:600;letter-spacing:.5px}
+.formula-cap{font-family:var(--font-h);font-size:12px;color:var(--navy2);margin-top:5px}
+
+/* ── FIGURE ── */
+.fig{text-align:center;margin:18px 0;padding:16px;background:#FAFBFF;border:1px solid var(--border);border-radius:10px}
+.fig-title{font-family:var(--font-h);font-size:13px;font-weight:800;color:var(--navy);margin-bottom:10px}
+.fig-cap{font-family:var(--font-h);font-size:12px;color:var(--text3);margin-top:10px;font-style:italic}
+
+/* ── LISTS ── */
+ul.nl{list-style:none;padding:0;margin:10px 0}
+ul.nl li{font-family:var(--font-h);font-size:13.5px;color:var(--text2);padding:5px 0 5px 22px;position:relative;line-height:1.6;border-bottom:1px solid #F0F0F0}
+ul.nl li:last-child{border-bottom:none}
+ul.nl li::before{content:'›';position:absolute;left:4px;top:4px;color:var(--saffron);font-weight:800;font-size:16px}
+ul.nl.check li::before{content:'✓';color:var(--green2);font-size:13px;top:7px}
+ul.nl.cross li::before{content:'✗';color:var(--red);font-size:13px;top:7px}
+ol.nl{padding-left:20px;margin:10px 0}
+ol.nl li{font-family:var(--font-h);font-size:13.5px;color:var(--text2);padding:5px 0;line-height:1.65}
+ol.nl li::marker{color:var(--navy);font-weight:700}
+
+/* ── CONVERSATION BOX (teacher-student dialogue) ── */
+.convo{background:#F8F9FF;border:1px solid var(--border);border-radius:12px;padding:16px;margin:14px 0}
+.convo-title{font-family:var(--font-h);font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.msg{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.msg:last-child{margin-bottom:0}
+.msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
+.msg-avatar.teacher{background:var(--navy);font-size:14px}
+.msg-avatar.student{background:var(--saffron);font-size:14px}
+.msg-bubble{flex:1;padding:10px 14px;border-radius:10px;font-family:var(--font-h);font-size:13px;line-height:1.65}
+.msg-bubble.teacher{background:var(--navy3);color:var(--navy)}
+.msg-bubble.student{background:var(--saffron3);color:#4E2000}
+.msg-name{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.msg-bubble.teacher .msg-name{color:var(--navy2)}
+.msg-bubble.student .msg-name{color:var(--saffron)}
+
+/* ── GLOSSARY ── */
+.glos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:600px){.glos{grid-template-columns:1fr}}
+.glos-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px}
+.glos-word{font-family:var(--font-m);font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.glos-def{font-family:var(--font-h);font-size:12px;color:var(--text3);line-height:1.5}
+
+/* ── DIVIDER ── */
+hr.ndiv{border:none;border-top:1.5px solid var(--border);margin:20px 0}
+.ch-end{text-align:center;padding:12px;background:#F8F9FF;border-top:2px solid var(--navy3);margin:-30px -36px 0;font-family:var(--font-h);font-size:11px;color:var(--text3);letter-spacing:.5px}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div class="fab">
+  <button class="fab-btn" id="dlBtn" onclick="downloadPDF()">
+    <i class="fas fa-file-pdf"></i> PDF Download Karo
+  </button>
+</div>
+
+<div class="book" id="bookContent">
+
+<!-- ████ COVER ████ -->
+<div class="page cover-page">
+<div class="cover-bg">
+  <div class="tri-color"></div>
+  <div class="cover-deco d1"></div><div class="cover-deco d2"></div>
+  <div class="cover-body">
+    <div class="cover-badge"><span class="dot"></span>Complete Learning Guide — Hinglish Edition</div>
+    <div class="cover-lang-tag">🇮🇳 Hinglish — Simple &amp; Detailed</div>
+    <h1 class="cover-title">Vector<br/><span class="hl">Databases</span></h1>
+    <p class="cover-subtitle">Bilkul Zero se Expert tak — Step by Step<br/>Kya? Kyun? Kaise? — Sab kuch Real Examples ke saath</p>
+    <div class="cover-levels">
+      <span class="level-pill now">Absolute Beginner 👈</span>
+      <span class="level-pill">Intermediate</span>
+      <span class="level-pill">Advanced</span>
+      <span class="level-pill">Production Expert</span>
+    </div>
+    <div class="cover-contents">
+      <div class="cover-contents-title">Is book mein kya hai</div>
+      <div class="cover-grid">
+        <div class="cover-item">Data aur Database kya hota hai</div>
+        <div class="cover-item">Traditional DB ki limitations</div>
+        <div class="cover-item">Vector kya hota hai — basics se</div>
+        <div class="cover-item">Embedding ka jadoo</div>
+        <div class="cover-item">Full Pipeline — Write se Query tak</div>
+        <div class="cover-item">Similarity Metrics — Math samjho</div>
+        <div class="cover-item">HNSW, IVF, PQ — Index types</div>
+        <div class="cover-item">ANN Trade-off Triangle</div>
+        <div class="cover-item">Hybrid Search aur RAG</div>
+        <div class="cover-item">Kaun sa Database choose karein</div>
+        <div class="cover-item">Production ke common mistakes</div>
+        <div class="cover-item">Kab use NAHI karna chahiye</div>
+      </div>
+    </div>
+  </div>
+  <div class="tri-color"></div>
+</div>
+</div>
+
+<!-- ████ UNIT 1 ████ -->
+<div class="page unit-page">
+<div class="unit-inner u1">
+  <div class="unit-bg-num">1</div>
+  <div class="unit-eyebrow">Unit Ek — Nींव डालो</div>
+  <h2 class="unit-title">Shuruat Karo Bilkul Zero Se<br/>Data, Databases aur Unki Limitations</h2>
+  <p class="unit-desc">Vector Databases samajhne se pehle, hame ye samajhna hoga ki databases kya hote hain, kyu exist karte hain, aur traditional databases AI ke liye kyun sufficient nahi hain. Bilkul zero se shuru karte hain — koi prior knowledge nahi chahiye.</p>
+  <div class="unit-tags">
+    <span class="unit-tag">Adhyay 1: Data kya hai?</span>
+    <span class="unit-tag">Adhyay 2: Traditional Databases</span>
+    <span class="unit-tag">Adhyay 3: Traditional DB ki Problems</span>
+    <span class="unit-tag">Adhyay 4: Kya Computer Meaning Samajh sakta hai?</span>
+  </div>
+</div>
+</div>
+
+<!-- ████ CHAPTER 1 ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 1</div>
+  <h2 class="ch-title">Data kya hota hai? Database kya hota hai?</h2>
+  <p class="ch-tagline">Hum roz data use karte hain without realising. Chalte hain bilkul basic se — ek dum simple language mein.</p>
+</div>
+<div class="ladder">
+  <div class="rung now">Adhyay 1 👈</div>
+  <div class="rung next">Adhyay 2</div><div class="rung future">Adhyay 3</div>
+  <div class="rung future">Vector</div><div class="rung future">Embedding</div>
+  <div class="rung future">Expert 🎯</div>
+</div>
+
+<h2 class="h2">1.1 Data kya hota hai?</h2>
+
+<div class="convo">
+  <div class="convo-title">💬 Teacher-Student Conversation — Samajhte hain aise</div>
+  <div class="msg">
+    <div class="msg-avatar student">🧑</div>
+    <div class="msg-bubble student"><div class="msg-name">Student</div>Sir, "Data" matlab kya hota hai? Yeh word bahut sunते hain.</div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar teacher">👨‍🏫</div>
+    <div class="msg-bubble teacher"><div class="msg-name">Teacher</div>Dekho yaar — tumhara naam "Rahul" hai — yeh data hai. Tumhari age "19 saal" hai — yeh bhi data hai. Tumhara phone number — data. Tumhari photo — data. Basically, koi bhi information jo store, process, ya transmit ki ja sake — woh data hai!</div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar student">🧑</div>
+    <div class="msg-bubble student"><div class="msg-name">Student</div>Aacha, toh school ka attendance register bhi data hai?</div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar teacher">👨‍🏫</div>
+    <div class="msg-bubble teacher"><div class="msg-name">Teacher</div>Bilkul sahi! Attendance register ek chota sa database hai jisme data stored hai. Ab zeher mein zahar — data types bhi hote hain: text (words/sentences), numbers (42, 3.14), images (photos), audio (songs), video — sab data hai!</div>
+  </div>
+</div>
+
+<div class="box box-def">
+  <div class="bl">📘 Definition — Data</div>
+  <div class="bd"><strong>Data</strong> = Koi bhi information jo store, process, ya transmit ki ja sake.<br/>Types: Text, Numbers, Images, Audio, Video, ya inका combination.<br/><br/>
+  Examples:<br/>
+  • "Rohit Sharma" → Text data<br/>
+  • 96.4 → Numeric data (temperature)<br/>
+  • Aapki selfie → Image data<br/>
+  • "Kesariya" song → Audio data</div>
+</div>
+
+<h2 class="h2">1.2 Database kya hota hai?</h2>
+<p class="bt">Socho ek school mein 30 students hain — register mein manage ho sakta hai. Lekin agar 50,000 students hain? Agar aapko quickly dhundhna ho ki Rahul ki attendance March mein kitni thi? Tab hame ek better system chahiye — ek <em class="term">database</em>.</p>
+
+<div class="box box-def">
+  <div class="bl">📘 Definition — Database</div>
+  <div class="bd"><strong>Database</strong> = Ek organized electronic collection of data jise easily add, retrieve, update, aur delete kiya ja sake. Database software (DBMS) is data ko manage karta hai.</div>
+</div>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Real-Life Analogy</div>
+  <div class="bd"><strong>Library analogy:</strong> Imagine ek library mein 1 lakh books hain. Agar sab books random pile mein rakhein, toh koi specific book dhundhna bahut mushkil hoga. Database ek <strong>organized library</strong> hai jahan har book ka catalog hai — author, title, shelf number sab recorded hai — toh koi bhi book seconds mein mil jati hai.</div>
+</div>
+
+<p class="bt">Aaj database everywhere use hota hai:</p>
+<ul class="nl">
+  <li><strong>Instagram</strong> — Aapka account, photos, followers sab ek database mein hai</li>
+  <li><strong>Zomato</strong> — Sab restaurants, menus, aur aapke order history database mein hain</li>
+  <li><strong>IRCTC</strong> — Train schedules, seat availability, passenger info — sab database</li>
+  <li><strong>Aadhar</strong> — 1.4 billion Indians ka biometric data — ek massive database</li>
+  <li><strong>Google</strong> — Poori internet ka index — world ka sabse bada database</li>
+</ul>
+
+<h2 class="h2">1.3 Traditional Databases ke Do Main Types</h2>
+<div class="g2">
+  <div class="card c-navy">
+    <div class="c-head">📊 SQL / Relational Database</div>
+    <div class="c-body">Data ko <strong>tables</strong> (rows aur columns) mein store karta hai — bilkul Excel spreadsheet jaisa. SQL language se query karte hain.<br/><br/>
+    <strong>Examples:</strong> MySQL, PostgreSQL, Oracle<br/>
+    <strong>Best for:</strong> Structured data — users, orders, products<br/>
+    <strong>Query:</strong> <code style="font-family:var(--font-m)">SELECT * FROM users WHERE id=42</code></div>
+  </div>
+  <div class="card c-saffron">
+    <div class="c-head">🗝️ NoSQL / Key-Value Database</div>
+    <div class="c-body">Data ko key→value pairs mein store karta hai — dictionary jaisa. Flexible structure, bahut fast simple lookups.<br/><br/>
+    <strong>Examples:</strong> Redis, MongoDB, DynamoDB<br/>
+    <strong>Best for:</strong> Caching, flexible schema, fast reads<br/>
+    <strong>Query:</strong> <code style="font-family:var(--font-m)">GET user:42</code></div>
+  </div>
+</div>
+
+<h2 class="h2">1.4 Traditional DB kaise Answer karta hai?</h2>
+<p class="bt">Traditional databases <em class="term">exact</em> questions ka jawab dene mein mahir hain:</p>
+<div class="tw">
+  <table>
+    <thead><tr><th>Sawaal</th><th>SQL Query</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>"User 42 ka data do"</td><td><code style="font-family:var(--font-m)">WHERE id = 42</code></td><td class="tg">✓ Exact row milega</td></tr>
+      <tr><td>"2024 ke sare orders"</td><td><code style="font-family:var(--font-m)">WHERE year = 2024</code></td><td class="tg">✓ Sab matching rows</td></tr>
+      <tr><td>"Mumbai ke users ki count"</td><td><code style="font-family:var(--font-m)">WHERE city='Mumbai'</code></td><td class="tg">✓ Exact number</td></tr>
+      <tr><td>"Is song se milte-julte songs do"</td><td>❌ Koi SQL nahi hai!</td><td class="tr">✗ Traditional DB ye nahi kar sakta</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="box box-think">
+  <div class="bl">🤔 Sochke Dekho — Think &amp; Discuss</div>
+  <div class="bd">
+  <ol class="nl">
+    <li>Jab aap Spotify par "romantic songs" search karte ho, toh kya woh sirf "romantic" word dhundhta hai titles mein? Ya woh <em>meaning</em> samajhta hai? Kaise?</li>
+    <li>Google Maps par "Connaught Place ke paas khaane ki jagah" search karo — Google ko kaise pata chalta hai kya "paas" hai?</li>
+    <li>Amazon par ek product dekho, tab "Similar products" section dekho — machine ne ye similar kaise decide kiya?</li>
+  </ol>
+  </div>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Adhyay 1 ka Summary</div>
+  <ul>
+    <li>Data = koi bhi information — text, numbers, images, audio, video</li>
+    <li>Database = organized electronic collection of data</li>
+    <li>Traditional DB (SQL/NoSQL) exact-match queries mein excellent hain</li>
+    <li>Traditional DB "find something SIMILAR to this" nahi kar sakta — is problem ko solve karne ke liye ek naya type of database chahiye</li>
+  </ul>
+</div>
+<div class="page-num">1</div>
+</div>
+
+<!-- ████ CHAPTER 2 ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 2</div>
+  <h2 class="ch-title">Problem kya hai? Traditional DB kya nahi kar sakta?</h2>
+  <p class="ch-tagline">Traditional databases powerful hain, lekin AI applications ke liye ek fundamental cheez missing hai — meaning aur similarity samajhne ki ability.</p>
+</div>
+
+<h2 class="h2">2.1 Meaning ki Problem — Ek Real Example</h2>
+<p class="bt">Socho tum ek customer support chatbot bana rahe ho apni company ke liye. Ek customer type karta hai:</p>
+<div class="code"><span class="str">"Mera phone on nahi ho raha hai"</span></div>
+<p class="bt">Tumhare database mein ek FAQ article hai titled:</p>
+<div class="code"><span class="str">"Device power up karne mein problem"</span></div>
+<p class="bt">Traditional database kya karega? <span class="hl-r">No match found!</span> — kyunki words bilkul alag hain. Lekin ek insaan dono sentences padhe toh immediately samajhta hai — <strong>dono ka matlab ek hi hai!</strong></p>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Analogy — Literal Robot</div>
+  <div class="bd">Traditional database ek <strong>bahut literal robot</strong> ki tarah hai jo sirf exact words dhundhta hai. Agar aap "Bhookh lagi hai" kehte ho aur uske database mein sirf "Khana chahiye" hai, toh woh kehta hai — "Sorry, koi result nahi mila!"<br/><br/>
+  Lekin ek insaan dono sunte hi samajhta hai — yeh same baat hai. Traditional DB insaan ki tarah meaning nahi samajhta.</div>
+</div>
+
+<h2 class="h2">2.2 Teen Real Problems — Jo Traditional DB Solve Nahi Kar Sakta</h2>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-n">1</div>
+    <div>
+      <div class="step-title">🔍 Semantic Search — Meaning se Search karna</div>
+      <div class="step-desc">Jab user "Delhi mein sasta ghar" search karta hai, traditional DB sirf in exact words ko dhundhta hai. Lekin user ko shayad "budget-friendly accommodation in NCR" ya "affordable housing near capital" bhi chahiye — same meaning, different words. Traditional DB ye saare results miss kar deta hai.</div>
+      <span class="step-warn">Traditional DB: Exact words nahi mile → No results (even though meaning same tha!)</span>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n">2</div>
+    <div>
+      <div class="step-title">🎬 Recommendation Systems — Similar Items Dhundhna</div>
+      <div class="step-desc">Netflix chahta hai "Interstellar se milti-julti movies" dhundhna. SQL mein similarity express karna impossible hai — aap nahi likh sakte <code style="font-family:var(--font-m)">WHERE movie SIMILAR TO 'Interstellar'</code>. Yeh SQL syntax hi exist nahi karta.</div>
+      <span class="step-warn">Traditional DB: Similarity ka concept hi nahi hai SQL mein</span>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n">3</div>
+    <div>
+      <div class="step-title">📸 Image/Audio Search — Non-text Data Search</div>
+      <div class="step-desc">Myntra par ek shoe ki photo upload karo aur "similar shoes dhundho" kaho — traditional DB images compare hi nahi kar sakta. Woh sirf text aur numbers samajhta hai, raw pixels ya audio signals nahi.</div>
+      <span class="step-warn">Traditional DB: Text ke alaawa kuch nahi samajh sakta</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="h2">2.3 AI Era mein Yeh Problems kyun Important Hain?</h2>
+<p class="bt">Aaj ke AI systems — ChatGPT, Gemini, Claude — <em>meaning</em> samajhte hain. Lekin unhe effectively use karne ke liye aapko aise databases chahiye jo bhi meaning ke saath kaam kar sakein. Yahi gap <em class="term">Vector Databases</em> fill karte hain.</p>
+
+<div class="box box-know">
+  <div class="bl">💡 Kya Tum Jaante Ho?</div>
+  <div class="bd">Google har din <strong>8.5 billion searches</strong> process karta hai. Agar Google traditional exact-match database use karta, toh most searches "no results" return karti — kyunki users kabhi woh exact words nahi likhte jo web pages mein hote hain.<br/><br/>
+  Google ki yeh ability ki woh samjhe tum kya <em>sochna</em> chahte ho (na sirf kya <em>likha</em> hai) — yeh vector-based technology se powered hai.</div>
+</div>
+
+<h2 class="h2">2.4 Solution kya hai? — Vector Database!</h2>
+<p class="bt">Vector Database ek aisa database hai jo data ko <em class="term">vectors</em> (numbers ki lists) mein store karta hai, aur <em class="term">similarity</em> ke basis par search karta hai. Yeh exact match nahi dhundhta — yeh <em>closest meaning</em> dhundhta hai.</p>
+
+<div class="box box-tip">
+  <div class="bl">✅ Seedha Point</div>
+  <div class="bd">
+  <strong>Traditional DB poochta hai:</strong> "Exact match kahan hai?"<br/>
+  <strong>Vector DB poochta hai:</strong> "Sabse <em>similar</em> cheez kahan hai?"<br/><br/>
+  Yahi fundamental difference hai. Aur yahi difference Google, Netflix, Spotify, aur Amazon ke recommendations ko possible banata hai.
+  </div>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Adhyay 2 ka Summary</div>
+  <ul>
+    <li>Traditional DB sirf exact match karta hai — meaning nahi samajhta</li>
+    <li>Semantic search, recommendations, image search — traditional DB ke liye impossible</li>
+    <li>AI era mein hame aisi databases chahiye jo meaning store aur compare kar sakein</li>
+    <li>Yeh gap Vector Databases fill karte hain — yahi is poori course ka topic hai</li>
+  </ul>
+</div>
+<div class="page-num">2</div>
+</div>
+
+<!-- ████ UNIT 2 ████ -->
+<div class="page unit-page">
+<div class="unit-inner u2">
+  <div class="unit-bg-num">2</div>
+  <div class="unit-eyebrow">Unit Do — Building Blocks</div>
+  <h2 class="unit-title">Vectors, Embeddings aur Dimensions<br/>The Magic Foundation</h2>
+  <p class="unit-desc">Vector Databases samajhne ke liye pehle <em>vectors</em> samajhna zaroori hai — yeh kya hain, kahan se aate hain, aur kya represent karte hain. Basic math se shuru karte hain jo tum pehle se jaante ho.</p>
+  <div class="unit-tags">
+    <span class="unit-tag">Adhyay 3: Vector kya hai?</span>
+    <span class="unit-tag">Adhyay 4: Dimensions</span>
+    <span class="unit-tag">Adhyay 5: Embedding — Jadoo ki Translation</span>
+    <span class="unit-tag">Adhyay 6: Embedding Meaning kyun Capture karta hai?</span>
+  </div>
+</div>
+</div>
+
+<!-- ████ CHAPTER 3 ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 3</div>
+  <h2 class="ch-title">Vector kya hota hai? — Bilkul Seedha Explanation</h2>
+  <p class="ch-tagline">Physics class mein "vector" suna hoga — direction aur magnitude wala. AI mein vectors different tarike se use hote hain, lekin foundation same hai.</p>
+</div>
+
+<h2 class="h2">3.1 Sabse Pehle: Number Line se Shuru Karo</h2>
+<p class="bt">Tum pehle se number line jaante ho. Har point number line par ek number se describe hota hai. Number 5 → position 5 par. Number -3 → position -3 par. Isse kehte hain <em class="term">1-dimensional space</em> — kyunki ek number se describe hota hai.</p>
+
+<div class="fig">
+  <div class="fig-title">Figure 3.1 — 1D Space (Number Line) — Ek number se ek point</div>
+  <svg viewBox="0 0 500 80" style="max-width:500px">
+    <line x1="30" y1="40" x2="470" y2="40" stroke="#003366" stroke-width="2.5"/>
+    <polygon points="470,35 482,40 470,45" fill="#003366"/>
+    <g font-family="Baloo 2,sans-serif" font-size="12" fill="#003366">
+      <line x1="80" y1="33" x2="80" y2="47" stroke="#003366" stroke-width="2"/>
+      <text x="78" y="62" text-anchor="middle" font-size="13">-3</text>
+      <line x1="160" y1="33" x2="160" y2="47" stroke="#003366" stroke-width="2"/>
+      <text x="158" y="62" text-anchor="middle" font-size="13">0</text>
+      <line x1="240" y1="33" x2="240" y2="47" stroke="#003366" stroke-width="2"/>
+      <text x="238" y="62" text-anchor="middle" font-size="13">3</text>
+      <line x1="320" y1="33" x2="320" y2="47" stroke="#003366" stroke-width="2"/>
+      <text x="318" y="62" text-anchor="middle" font-size="13">6</text>
+      <line x1="400" y1="33" x2="400" y2="47" stroke="#003366" stroke-width="2"/>
+      <text x="398" y="62" text-anchor="middle" font-size="13">9</text>
+    </g>
+    <circle cx="240" cy="40" r="7" fill="#FF6600"/>
+    <text x="240" y="24" text-anchor="middle" font-family="Baloo 2,sans-serif" font-size="11" fill="#FF6600" font-weight="700">Point: [3] ← Yeh ek 1D vector hai!</text>
+  </svg>
+  <div class="fig-cap">1D space mein har point ek number ki list [x] se describe hota hai — yeh 1D vector hai</div>
+</div>
+
+<h2 class="h2">3.2 2D Space — Map ki Tarah</h2>
+<p class="bt">Ab ek map imagine karo. Har location ko <strong>do numbers</strong> chahiye: latitude aur longitude. Delhi ≈ [28.6, 77.2]. Mumbai ≈ [19.0, 72.8]. Yeh <em class="term">2-dimensional space</em> hai, aur har location ek <em class="term">2-number ka vector</em> hai.</p>
+
+<div class="box box-ex">
+  <div class="bl">✅ Concrete Example — Cities as Vectors</div>
+  <div class="bd">
+  Delhi:  [28.6, 77.2]  ← 2D vector (latitude, longitude)<br/>
+  Noida:  [28.5, 77.4]  ← 2D vector — Delhi ke bahut paas!<br/>
+  Mumbai: [19.0, 72.8]  ← 2D vector — bahut door!<br/><br/>
+  <strong>Key insight:</strong> Jo cities geographically close hain, unke vectors bhi numerically close hain!<br/>
+  Delhi-Noida difference: [0.1, 0.2] — small numbers<br/>
+  Delhi-Mumbai difference: [9.6, 4.4] — large numbers
+  </div>
+</div>
+
+<h2 class="h2">3.3 Vector ki Formal Definition</h2>
+<div class="box box-def">
+  <div class="bl">📘 Definition — Vector</div>
+  <div class="bd"><strong>Vector = Numbers ki ek ordered list</strong><br/><br/>
+  1D vector: [5]  → sirf ek number<br/>
+  2D vector: [28.6, 77.2]  → do numbers (Delhi ki location)<br/>
+  3D vector: [128, 0.9, 0.7]  → teen numbers (song: tempo, energy, mood)<br/>
+  1536D vector: [0.12, -0.45, 0.88, …]  → 1536 numbers (AI text embedding)<br/><br/>
+  <strong>Itna hi simple hai!</strong> "Vector" ek fancy word hai — sirf numbers ki list ka.</div>
+</div>
+
+<h2 class="h2">3.4 Sabse Important Insight — Poore Chapter ka Core</h2>
+<p class="bt">Yeh point padho, dobara padho, aur yaad rakh lo:</p>
+
+<div class="box box-warn">
+  <div class="bl">⭐ Core Principle — MUST REMEMBER</div>
+  <div class="bd">Agar hum cheezein numbers mein describe kar sakein (vectors), toh:<br/><br/>
+  → <strong>Similar cheezein = Similar vectors</strong> (numbers close hote hain)<br/>
+  → <strong>Different cheezein = Different vectors</strong> (numbers far hote hain)<br/><br/>
+  Yahi poore Vector Database ka foundation hai. Ye sab usi principle par kaam karta hai.</div>
+</div>
+
+<div class="fig">
+  <div class="fig-title">Figure 3.2 — Ek Example: Cities ko Vectors ki tarah dikhana</div>
+  <svg viewBox="0 0 500 280" style="max-width:500px">
+    <defs>
+      <marker id="ax" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+        <polygon points="0,0 9,3 0,6" fill="#003366"/>
+      </marker>
+    </defs>
+    <rect width="500" height="280" fill="#F8F9FF" rx="8"/>
+    <line x1="55" y1="235" x2="460" y2="235" stroke="#003366" stroke-width="2" marker-end="url(#ax)"/>
+    <line x1="55" y1="235" x2="55" y2="25" stroke="#003366" stroke-width="2" marker-end="url(#ax)"/>
+    <text x="465" y="240" font-family="Baloo 2,sans-serif" font-size="12" fill="#003366">Longitude →</text>
+    <text x="15" y="18" font-family="Baloo 2,sans-serif" font-size="11" fill="#003366">Lat ↑</text>
+    <!-- Grid -->
+    <g stroke="#E8EFF8" stroke-width="1">
+      <line x1="55" y1="185" x2="445" y2="185"/>
+      <line x1="55" y1="135" x2="445" y2="135"/>
+      <line x1="55" y1="85" x2="445" y2="85"/>
+      <line x1="145" y1="25" x2="145" y2="235"/>
+      <line x1="235" y1="25" x2="235" y2="235"/>
+      <line x1="325" y1="25" x2="325" y2="235"/>
+      <line x1="415" y1="25" x2="415" y2="235"/>
+    </g>
+    <!-- Delhi [28.6, 77.2] -->
+    <circle cx="310" cy="95" r="9" fill="#003366"/>
+    <text x="322" y="90" font-family="Baloo 2,sans-serif" font-size="12" fill="#003366" font-weight="700">Delhi</text>
+    <text x="322" y="103" font-family="Baloo 2,sans-serif" font-size="10" fill="#666">[28.6, 77.2]</text>
+    <!-- Noida [28.5, 77.4] close to Delhi -->
+    <circle cx="328" cy="105" r="8" fill="#1A4480"/>
+    <text x="340" y="115" font-family="Baloo 2,sans-serif" font-size="11" fill="#1A4480" font-weight="700">Noida</text>
+    <text x="340" y="126" font-family="Baloo 2,sans-serif" font-size="10" fill="#666">[28.5, 77.4]</text>
+    <!-- Close line -->
+    <line x1="310" y1="95" x2="328" y2="105" stroke="#FF6600" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="270" y="130" font-family="Baloo 2,sans-serif" font-size="10" fill="#FF6600">Paas = Close vectors</text>
+    <!-- Mumbai [19.0, 72.8] far -->
+    <circle cx="252" cy="190" r="9" fill="#C0392B"/>
+    <text x="264" y="185" font-family="Baloo 2,sans-serif" font-size="12" fill="#C0392B" font-weight="700">Mumbai</text>
+    <text x="264" y="198" font-family="Baloo 2,sans-serif" font-size="10" fill="#666">[19.0, 72.8]</text>
+    <!-- Far line -->
+    <line x1="310" y1="95" x2="252" y2="190" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="260" y="145" font-family="Baloo 2,sans-serif" font-size="10" fill="#9E9E9E">Door = Far vectors</text>
+    <!-- Axis labels -->
+    <g font-family="Baloo 2,sans-serif" font-size="10" fill="#9E9E9E">
+      <text x="47" y="192" text-anchor="end">18°N</text>
+      <text x="47" y="142" text-anchor="end">23°N</text>
+      <text x="47" y="92" text-anchor="end">28°N</text>
+      <text x="145" y="250">68°E</text><text x="235" y="250">72°E</text>
+      <text x="325" y="250">77°E</text><text x="415" y="250">82°E</text>
+    </g>
+  </svg>
+  <div class="fig-cap">Similar cities (Delhi-Noida) ke vectors close hain. Different city (Mumbai) ka vector door hai. Mathematics reality ko encode karta hai!</div>
+</div>
+
+<h2 class="h2">3.5 3D aur usse Aage — N-Dimensional Space</h2>
+<p class="bt">Abhi tak hum 1D aur 2D samjhe. 3D mein ek point ke liye 3 numbers chahiye — jaise ek room mein (x, y, z) coordinates. Lekin AI vectors 768, 1536, ya 3072 dimensions hote hain! Inhe visualize karna impossible hai — lekin mathematics bilkul same kaam karta hai.</p>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Analogy — 3D se aage</div>
+  <div class="bd">Socho ek song ko describe karna hai:<br/>
+  Dimension 1: Tempo (BPM) = 128<br/>
+  Dimension 2: Energy level = 0.9<br/>
+  Dimension 3: Danceability = 0.85<br/>
+  Dimension 4: Valence (khushi) = 0.7<br/>
+  Dimension 5: Acousticness = 0.02<br/>
+  … aur 763 more dimensions<br/><br/>
+  Ye sab ek 768-dimensional vector hai: [128, 0.9, 0.85, 0.7, 0.02, …]<br/>
+  Do songs jo sunne mein similar lagte hain, unke ye sab numbers similar honge!</div>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Adhyay 3 ka Summary</div>
+  <ul>
+    <li>Vector = sirf numbers ki ek ordered list — bas itna!</li>
+    <li>1D = 1 number, 2D = 2 numbers, AI uses 384 to 3072 numbers</li>
+    <li>Similar cheezein → similar (close) vectors | Different cheezein → far vectors</li>
+    <li>Yeh simple principle poore Vector Database ka foundation hai</li>
+  </ul>
+</div>
+<div class="page-num">3</div>
+</div>
+
+<!-- ████ CHAPTER 4 — Embeddings ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 4 &amp; 5</div>
+  <h2 class="ch-title">Embedding kya hota hai? — Jadoo ki Translation</h2>
+  <p class="ch-tagline">Vectors samajh liye. Ab sawaal yeh hai: ek sentence, photo, ya song ko numbers ki list mein kaise convert karein? Answer hai: Embeddings!</p>
+</div>
+
+<h2 class="h2">4.1 Problem — Computer Numbers Hi Samajhta Hai</h2>
+<p class="bt">Computer fundamentally sirf numbers samajhta hai. Woh text, images, ya audio directly nahi samajhta. Inhe numbers mein convert karna padta hai — lekin ordinary numbers nahi, aisi numbers jo <em>meaning</em> capture karein.</p>
+
+<div class="convo">
+  <div class="convo-title">💬 Teacher-Student — Embedding ka Concept</div>
+  <div class="msg">
+    <div class="msg-avatar student">🧑</div>
+    <div class="msg-bubble student"><div class="msg-name">Student</div>Sir, text ko numbers mein kaise convert karein? Aur ye numbers meaning kyun capture karenge?</div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar teacher">👨‍🏫</div>
+    <div class="msg-bubble teacher"><div class="msg-name">Teacher</div>Socho tumhare paas ek magic translator hai. Yeh translator kisi bhi word ya sentence ko ek special code mein convert karta hai. But iska special property yeh hai: jo words same meaning rakhte hain, unhe similar codes milte hain! "Dog" aur "Puppy" ko similar codes. "Dog" aur "Car" ko bahut different codes. <strong>Embedding model yahi magic translator hai!</strong></div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar student">🧑</div>
+    <div class="msg-bubble student"><div class="msg-name">Student</div>Aur yeh "code" hi vector hai?</div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar teacher">👨‍🏫</div>
+    <div class="msg-bubble teacher"><div class="msg-name">Teacher</div>Bilkul sahi! Woh "code" hi embedding hai — jo actually ek vector (numbers ki list) hai. "Dog" → [0.23, -0.11, 0.87, …] (768 numbers). "Puppy" → [0.22, -0.09, 0.86, …] (almost same!). "Car" → [0.71, 0.45, -0.23, …] (bahut different!).</div>
+  </div>
+</div>
+
+<div class="box box-def">
+  <div class="bl">📘 Definition — Embedding</div>
+  <div class="bd"><strong>Embedding</strong> = ek vector (numbers ki list) jo kisi data (text, image, audio) ka <em>meaning</em> represent karta hai.<br/><br/>
+  Yeh ek special AI model (called <strong>Embedding Model</strong>) produce karta hai.<br/><br/>
+  <strong>Golden Rule:</strong> Semantically similar inputs → Numerically similar output vectors<br/><br/>
+  Matlab: Same meaning wali cheezein → Close numbers (vectors close in space)</div>
+</div>
+
+<h2 class="h2">4.2 Step-by-Step — Kya Hota Hai Jab Hum Embed Karte Hain?</h2>
+<div class="steps">
+  <div class="step">
+    <div class="step-n" style="background:var(--saffron)">1</div>
+    <div>
+      <div class="step-title">Apna Text Input Do</div>
+      <div class="step-desc">Koi bhi sentence, paragraph, ya document embedding model ko dete ho.</div>
+      <span class="step-code">sentence = "Mera password reset karna hai"</span>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:var(--purple)">2</div>
+    <div>
+      <div class="step-title">Model Usse Process Karta Hai</div>
+      <div class="step-desc">Embedding model (ek trained neural network) is text ko leke bahut complex mathematics karta hai — words ke relationships, context, meaning sab consider karta hai.</div>
+      <span class="step-code">vector = embedding_model.encode("Mera password reset karna hai")</span>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:var(--green2)">3</div>
+    <div>
+      <div class="step-title">Output: Numbers ki List Milti Hai</div>
+      <div class="step-desc">Result ek list of floating-point numbers hoti hai — usually 384, 768, 1536, ya 3072 numbers. Ye numbers text ka mathematical representation hain.</div>
+      <span class="step-code">→ [0.12, -0.45, 0.88, 0.03, -0.21, 0.67, ...] # 1536 numbers total</span>
+      <span class="step-result">✓ Yeh vector tumhare sentence ka meaning encode karta hai!</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="h2">4.3 Concrete Proof — Similar Meaning = Similar Vector</h2>
+<p class="bt">Yeh dekho — teen sentences hain, do ka meaning same hai, ek alag topic se hai:</p>
+
+<div class="code">
+<span class="cm"># Teen sentences — do ka meaning same, ek alag topic se hai</span>
+sentence_A = <span class="str">"Password reset karna hai"</span>
+sentence_B = <span class="str">"Login credentials bhool gaya hoon"</span>  <span class="cm"># Similar meaning!</span>
+sentence_C = <span class="str">"Mumbai mein aaj ka mausam kaisa hai?"</span> <span class="cm"># Bilkul alag topic</span>
+
+<span class="cm"># Embedding model se process karne ke baad:</span>
+vector_A = [<span class="num">0.12</span>, <span class="num">-0.45</span>, <span class="num">0.88</span>, <span class="num">0.03</span>, <span class="num">-0.21</span>, ...] <span class="cm"># 1536 numbers</span>
+vector_B = [<span class="num">0.11</span>, <span class="num">-0.43</span>, <span class="num">0.87</span>, <span class="num">0.05</span>, <span class="num">-0.20</span>, ...] <span class="cm"># Almost SAME as A!</span>
+vector_C = [<span class="num">0.72</span>,  <span class="num">0.38</span>, <span class="num">-0.15</span>, <span class="num">0.91</span>,  <span class="num">0.64</span>, ...] <span class="cm"># Bahut ALAG A aur B se</span>
+
+<span class="cm"># Numbers tell karte hain:</span>
+<span class="cm"># A aur B ka meaning same hai → unke vectors close hain ✓</span>
+<span class="cm"># A aur C different topics hain → unke vectors far hain ✓</span>
+</div>
+
+<div class="box box-know">
+  <div class="bl">💡 Amazing Historical Fact</div>
+  <div class="bd">Word2Vec (2013, Google) ne discover kiya:<br/><br/>
+  <strong>vector("King") − vector("Man") + vector("Woman") ≈ vector("Queen")</strong><br/><br/>
+  Matlab vectors se word analogies solve ki ja sakti hain! Machine ne yeh rule khud seekha — kisi ne explicitly nahi bataya. Yeh AI history ka ek landmark moment tha. Iss discovery ne dikhaya ki words ka mathematical meaning possible hai.</div>
+</div>
+
+<h2 class="h2">4.4 Popular Embedding Models — Kaunsa Use Karein?</h2>
+<div class="tw">
+  <table>
+    <thead><tr><th>Model</th><th>Banaya kisne?</th><th>Dimensions</th><th>Cost</th><th>Best For</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">text-embedding-3-small</td><td>OpenAI</td><td>1,536</td><td>Paid (cheap)</td><td>Production text search, RAG</td></tr>
+      <tr><td class="tk">text-embedding-3-large</td><td>OpenAI</td><td>3,072</td><td>Paid</td><td>High-accuracy tasks</td></tr>
+      <tr><td class="tk">all-MiniLM-L6-v2</td><td>Sentence-Transformers</td><td>384</td><td class="tg">FREE!</td><td>Learning, prototyping, small projects</td></tr>
+      <tr><td class="tk">BGE-M3</td><td>BAAI</td><td>1,024</td><td class="tg">FREE!</td><td>Multi-language (Hindi bhi!), production</td></tr>
+      <tr><td class="tk">CLIP</td><td>OpenAI</td><td>512</td><td class="tg">FREE!</td><td>Text + Images dono (multi-modal)</td></tr>
+      <tr><td class="tk">Embeddings API</td><td>Google Vertex AI</td><td>768</td><td>Paid</td><td>Google Cloud users</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="box box-warn">
+  <div class="bl">⚠️ CRITICAL RULE — Kabhi Mat Bhoolna</div>
+  <div class="bd">Tumhe <strong>hamesha same embedding model</strong> use karna hai — data store karte waqt BHI aur search karte waqt BHI.<br/><br/>
+  Agar Model A se store kiya aur Model B se search kiya → Vectors bilkul alag mathematical space mein hain → Results completely wrong hain.<br/><br/>
+  <strong>Analogy:</strong> Ek cheez ko Hindi mein describe karo aur doosre ko French mein — phir dono ko compare karo. Meaningless! Same model = same language.</div>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Adhyay 4-5 ka Summary</div>
+  <ul>
+    <li>Embedding = ek vector jo data ka meaning represent karta hai</li>
+    <li>Embedding Model ek AI model hai jo text/image/audio → vector convert karta hai</li>
+    <li>Similar meaning wala input → similar (close) output vector</li>
+    <li>Modern embeddings 384 se 3,072 dimensions ke hote hain</li>
+    <li>Write aur query dono mein SAME model use karo — yeh non-negotiable hai</li>
+  </ul>
+</div>
+<div class="page-num">4</div>
+</div>
+
+<!-- ████ UNIT 3 ████ -->
+<div class="page unit-page">
+<div class="unit-inner u3">
+  <div class="unit-bg-num">3</div>
+  <div class="unit-eyebrow">Unit Teen — Pipeline Samjho</div>
+  <h2 class="unit-title">Vector DB Kaise Kaam Karta Hai<br/>Write se Query tak — Poora Process</h2>
+  <p class="unit-desc">Ab vectors aur embeddings samajh liye. Ab seekhenge ki exactly kaise data ek vector database mein store hota hai (write pipeline) aur kaise search hota hai (query pipeline). Har ek step detail mein.</p>
+  <div class="unit-tags">
+    <span class="unit-tag">Adhyay 6: Vector DB kya hai?</span>
+    <span class="unit-tag">Adhyay 7: Write Pipeline</span>
+    <span class="unit-tag">Adhyay 8: Query Pipeline</span>
+    <span class="unit-tag">Adhyay 9: Complete System Diagram</span>
+  </div>
+</div>
+</div>
+
+<!-- ████ CHAPTER 6 ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 6</div>
+  <h2 class="ch-title">Vector Database kya hota hai? — Formal Samajhte Hain</h2>
+</div>
+
+<div class="box box-def">
+  <div class="bl">📘 Definition — Vector Database</div>
+  <div class="bd"><strong>Vector Database</strong> ek specialised database system hai jo:<br/>
+  1. High-dimensional vectors (embeddings) store karta hai<br/>
+  2. Unhe efficiently index karta hai<br/>
+  3. Similarity search karta hai — exact match nahi, <em>closest meaning</em> dhundhta hai<br/><br/>
+  Traditional DB poochta hai: "id=42 wala row kahan hai?"<br/>
+  <strong>Vector DB poochta hai: "Mera query vector ke sabse close 5 vectors kaunse hain?"</strong></div>
+</div>
+
+<h2 class="h2">6.1 Teen Types ki Databases — Full Comparison</h2>
+<div class="tw">
+  <table>
+    <thead><tr><th>Feature</th><th>SQL Database</th><th>Key-Value Store</th><th>Vector Database</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">Query type</td><td>Exact match</td><td>Exact key lookup</td><td class="tg">Similarity search ★</td></tr>
+      <tr><td class="tk">Kya store karta hai?</td><td>Rows &amp; columns</td><td>Key → Value</td><td class="tg">Vectors + metadata</td></tr>
+      <tr><td class="tk">Meaning samajhta hai?</td><td class="tr">❌ Nahi</td><td class="tr">❌ Nahi</td><td class="tg">✅ Haan (via embeddings)</td></tr>
+      <tr><td class="tk">Images/Audio search?</td><td class="tr">❌ Nahi</td><td class="tr">❌ Nahi</td><td class="tg">✅ Haan</td></tr>
+      <tr><td class="tk">Use case</td><td>Bank transactions, user accounts</td><td>Caching, sessions</td><td class="tg">Semantic search, RAG, recommendations</td></tr>
+      <tr><td class="tk">Examples</td><td>PostgreSQL, MySQL</td><td>Redis, DynamoDB</td><td class="tg">Pinecone, Qdrant, Weaviate</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="h2">6.2 Real-World Use Cases — Jo Tum Daily Use Karte Ho</h2>
+<div class="steps">
+  <div class="step">
+    <div class="step-n" style="background:#1DB954;font-size:14px">🎵</div>
+    <div>
+      <div class="step-title">Spotify / YouTube Music — "Songs You Might Like"</div>
+      <div class="step-desc">Har song ek vector ban jaata hai — tempo, energy, mood, genre, sab numbers mein. Jab tum ek song sunte ho, Spotify vector space mein nearest-neighbour songs dhundhta hai. Woh recommendations bante hain!</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:#FF9900;font-size:14px">🛒</div>
+    <div>
+      <div class="step-title">Amazon — "Customers Also Bought"</div>
+      <div class="step-desc">Products ke descriptions, categories, aur purchase patterns se vectors bante hain. "Similar products" = vector space mein nearest neighbours. Itna simple!</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:#10A37F;font-size:14px">🤖</div>
+    <div>
+      <div class="step-title">ChatGPT / Claude with Company Data (RAG)</div>
+      <div class="step-desc">Company documents vector DB mein store hote hain. User ka question vector ban ke DB mein search hota hai. Relevant documents LLM ko context dete hain. Result: AI jo aapke private data ke baare mein answer de sake!</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:#E91E63;font-size:14px">📸</div>
+    <div>
+      <div class="step-title">Google Lens / Pinterest — Visual Search</div>
+      <div class="step-desc">Photo → Vision model → Image vector → Nearest image vectors dhundho → Similar photos return karo. Ek photo upload karo, same jaisi photos milein!</div>
+    </div>
+  </div>
+</div>
+<div class="page-num">5</div>
+</div>
+
+<!-- ████ CHAPTER 7 — Write Pipeline ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 7</div>
+  <h2 class="ch-title">Write Pipeline — Data Vector DB mein Kaise Store Hota Hai?</h2>
+  <p class="ch-tagline">Search karne se pehle, data store karna padta hai. Yeh process — Write Pipeline ya Indexing Pipeline — mein samajhna zaroori hai ki exactly kya hota hai.</p>
+</div>
+
+<h2 class="h2">7.1 Write Pipeline ke 4 Steps — Ek Ek Karke</h2>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-n">1</div>
+    <div>
+      <div class="step-title">Step 1: Raw Data Input</div>
+      <div class="step-desc">Tumhara raw data — ho sakta hai koi PDF document, product description, customer review, image, ya audio file. Yahi starting point hai.</div>
+      <span class="step-code">Input: "iPhone 15 Pro mein titanium frame aur 48MP camera hai"</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n">2</div>
+    <div>
+      <div class="step-title">Step 2: Chunking — Long Documents ke liye</div>
+      <div class="step-desc">Agar document bahut lamba hai (jaise 50-page PDF), toh use chhote pieces mein todna padta hai — inhe <em class="term">chunks</em> kehte hain. Har chunk separately embed hota hai. Common size: 512 tokens (~400 words), 10–20% overlap ke saath.</div>
+      <span class="step-code">Chunk 1: "iPhone 15 Pro mein titanium frame..."</span>
+      <span class="step-code">Chunk 2: "...titanium frame aur 48MP camera system..."</span>
+      <span class="step-result">✓ Overlap important hai — context border par kata nahi</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n">3</div>
+    <div>
+      <div class="step-title">Step 3: Embedding — Chunk → Vector</div>
+      <div class="step-desc">Har chunk ko embedding model mein daalte hain. Model floating-point numbers ki ek list return karta hai — yeh chunk ka meaning represent karta hai.</div>
+      <span class="step-code">vector = model.encode("iPhone 15 Pro mein titanium frame...")</span>
+      <span class="step-code">→ [0.23, -0.11, 0.87, 0.04, ...] # 1536 numbers</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n">4</div>
+    <div>
+      <div class="step-title">Step 4: Store — Vector + Metadata Database mein</div>
+      <div class="step-desc">Vector ke saath <em class="term">metadata</em> bhi store hota hai — original text, document ID, source URL, date, category, etc. Metadata ki zaroorat hoti hai meaningful results dikhane ke liye user ko.</div>
+      <span class="step-code">db.insert(id="doc_001", vector=[0.23,-0.11,...], metadata={"text":"iPhone 15 Pro...", "category":"phones", "price":134900})</span>
+      <span class="step-result">✓ Vector + Metadata = Complete stored entry!</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="h2">7.2 Chunking — Sabse Important aur Sabse Ignored Step</h2>
+<p class="bt">Chunking ek ऐसा step hai jo beginners mostly ignore karte hain — lekin expert kehte hain yeh sabse important hai. Chalte hain samajhte hain kyun.</p>
+
+<div class="g2">
+  <div class="card c-green">
+    <div class="c-head">✅ Achha Chunking</div>
+    <div class="c-body">
+    <strong>Strategy:</strong><br/>
+    • Paragraph boundaries respect karo<br/>
+    • 15–20% overlap rakh do<br/>
+    • Document title har chunk mein include karo<br/>
+    • 400–800 words per chunk<br/><br/>
+    <strong>Result:</strong> Har chunk ek complete meaningful unit hai. Retrieve hone par clearly helpful hai.
+    </div>
+  </div>
+  <div class="card c-red">
+    <div class="c-head">❌ Bura Chunking</div>
+    <div class="c-body">
+    <strong>Strategy:</strong><br/>
+    • Har 500 characters par tod do<br/>
+    • No overlap<br/>
+    • Sentence beech mein kata<br/>
+    • Koi context nahi<br/><br/>
+    <strong>Result:</strong> Chunks jaise: "...result tha 42%. Agle quarter mein revenue..." — No context, meaningless!
+    </div>
+  </div>
+</div>
+
+<div class="box box-warn">
+  <div class="bl">⚠️ RAG Systems ki Sabse Badi Problem</div>
+  <div class="bd">Agar tumhara RAG chatbot galat answers de raha hai, <strong>pehle chunking check karo</strong>. 80% cases mein problem chunking strategy mein hoti hai, vector database mein nahi.<br/><br/>
+  Bahut se teams database change karte hain, models change karte hain — lekin chunking fix karne se hi problem solve ho jaati hai. <strong>Pehle chunking fix karo!</strong></div>
+</div>
+
+<h2 class="h2">7.3 Complete Python Example — Write Pipeline</h2>
+<div class="code">
+<span class="cm"># Step 1: Library install karo (free model)</span>
+<span class="cm"># pip install sentence-transformers chromadb</span>
+
+<span class="kw">from</span> <span class="var">sentence_transformers</span> <span class="kw">import</span> <span class="fn">SentenceTransformer</span>
+<span class="kw">import</span> <span class="var">chromadb</span>
+
+<span class="cm"># Step 2: Free embedding model load karo</span>
+<span class="var">model</span> = <span class="fn">SentenceTransformer</span>(<span class="str">'all-MiniLM-L6-v2'</span>)  <span class="cm"># Free! 384 dims</span>
+
+<span class="cm"># Step 3: Tumhare documents</span>
+<span class="var">documents</span> = [
+    <span class="str">"iPhone 15 Pro mein titanium frame aur 48MP camera hai"</span>,
+    <span class="str">"Samsung S24 mein Snapdragon 8 Gen 3 processor hai"</span>,
+    <span class="str">"Achha pasta fresh ingredients aur olive oil se banta hai"</span>,
+]
+
+<span class="cm"># Step 4: Embeddings banao</span>
+<span class="var">embeddings</span> = <span class="var">model</span>.<span class="fn">encode</span>(<span class="var">documents</span>)  <span class="cm"># Shape: (3, 384)</span>
+
+<span class="cm"># Step 5: Vector DB mein store karo</span>
+<span class="var">client</span> = <span class="var">chromadb</span>.<span class="fn">Client</span>()
+<span class="var">collection</span> = <span class="var">client</span>.<span class="fn">create_collection</span>(<span class="str">"meri_products"</span>)
+<span class="var">collection</span>.<span class="fn">add</span>(
+    ids=[<span class="str">"doc_0"</span>, <span class="str">"doc_1"</span>, <span class="str">"doc_2"</span>],
+    embeddings=<span class="var">embeddings</span>.<span class="fn">tolist</span>(),
+    documents=<span class="var">documents</span>
+)
+<span class="out">print("✓ 3 documents store ho gaye!")</span>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Adhyay 7 ka Summary</div>
+  <ul>
+    <li>Write Pipeline: Raw Data → (Chunk) → Embed → Store with Metadata</li>
+    <li>Long documents ko pehle chunks mein todna padta hai</li>
+    <li>Achha chunking meaning preserve karta hai, bura chunking destroy karta hai</li>
+    <li>Vector ke saath original text hamesha metadata mein store karo</li>
+    <li>Same embedding model use karo jo query ke waqt bhi use karoge</li>
+  </ul>
+</div>
+<div class="page-num">6</div>
+</div>
+
+<!-- ████ CHAPTER 8 — Query Pipeline ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 8</div>
+  <h2 class="ch-title">Query Pipeline — Vector DB mein Kaise Search Hota Hai?</h2>
+  <p class="ch-tagline">Data store ho gaya — ab user search karta hai toh exactly kya process hota hai? Har step detail mein samajhte hain.</p>
+</div>
+
+<h2 class="h2">8.1 Query Pipeline ke 4 Steps</h2>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-n" style="background:var(--saffron)">1</div>
+    <div>
+      <div class="step-title">Step 1: User Query Deta Hai</div>
+      <div class="step-desc">User kuch type karta hai — text, image upload, ya koi input. Yeh query hai jo woh search karna chahta hai.</div>
+      <span class="step-code">user_query = "best camera phone 50000 rupees se kam mein"</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n" style="background:var(--red)">2</div>
+    <div>
+      <div class="step-title">Step 2: Query → Vector (SAME Model se!)</div>
+      <div class="step-desc">Query ko <strong>same embedding model</strong> se vector mein convert karte hain jo write pipeline mein use kiya tha. Yeh non-negotiable hai — different model = different mathematical space = wrong results.</div>
+      <span class="step-code">query_vector = model.encode("best camera phone 50000 se kam")</span>
+      <span class="step-code">→ [0.31, -0.08, 0.74, ...] # Same 384 dims as stored vectors</span>
+      <span class="step-warn">⚠️ Different model use kiya → Sab galat! Hamesha same model.</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n" style="background:var(--purple)">3</div>
+    <div>
+      <div class="step-title">Step 3: Similarity Search — Index mein Dhundho</div>
+      <div class="step-desc">Database apne index mein query vector ke sabse <em>similar</em> vectors dhundhta hai. Ye <em class="term">k-Nearest Neighbour (kNN)</em> search hai. Production mein <em class="term">ANN (Approximate Nearest Neighbour)</em> use hota hai — thoda approximate lekin bahut fast.</div>
+      <span class="step-code">results = collection.query(query_embeddings=[query_vector], n_results=3)</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-n" style="background:var(--green2)">4</div>
+    <div>
+      <div class="step-title">Step 4: Top-K Results Return Karo</div>
+      <div class="step-desc">Database K most similar vectors return karta hai unke metadata ke saath — original text, similarity score, ID sab. Sorted by similarity — most similar pehle.</div>
+      <span class="step-code">→ [{"text": "iPhone 15 Pro mein 48MP camera...", "score": 0.92},</span>
+      <span class="step-code">   {"text": "Samsung S24 mein Snapdragon...", "score": 0.85},</span>
+      <span class="step-code">   {"text": "Achha pasta fresh ingredients...", "score": 0.12}]</span>
+      <span class="step-result">✓ iPhone aur Samsung phone-related hain → high score. Pasta alag topic → low score!</span>
+    </div>
+  </div>
+</div>
+
+<h2 class="h2">8.2 Complete Python Example — Query Pipeline</h2>
+<div class="code">
+<span class="cm"># Chapter 7 se continue kar rahe hain — wahi collection use karo</span>
+
+<span class="var">user_query</span> = <span class="str">"achha camera wala smartphone"</span>
+
+<span class="cm"># SAME model use karo jo write mein use kiya tha!</span>
+<span class="var">query_embedding</span> = <span class="var">model</span>.<span class="fn">encode</span>([<span class="var">user_query</span>])
+
+<span class="cm"># Top 3 similar documents dhundho</span>
+<span class="var">results</span> = <span class="var">collection</span>.<span class="fn">query</span>(
+    query_embeddings=<span class="var">query_embedding</span>.<span class="fn">tolist</span>(),
+    n_results=<span class="num">3</span>
+)
+
+<span class="kw">for</span> i, doc <span class="kw">in</span> <span class="fn">enumerate</span>(<span class="var">results</span>[<span class="str">'documents'</span>][<span class="num">0</span>]):
+    score = <span class="num">1</span> - <span class="var">results</span>[<span class="str">'distances'</span>][<span class="num">0</span>][i]
+    <span class="fn">print</span>(<span class="str">f"Rank {i+1} (score: {score:.2f}): {doc[:60]}..."</span>)
+
+<span class="out"># Output:
+# Rank 1 (score: 0.91): iPhone 15 Pro mein titanium frame aur 48MP...
+# Rank 2 (score: 0.85): Samsung S24 mein Snapdragon 8 Gen 3...
+# Rank 3 (score: 0.12): Achha pasta fresh ingredients aur olive oil...</span>
+</div>
+
+<h2 class="h2">8.3 Complete Pipeline Diagram — Write + Query ek saath</h2>
+<div class="fig">
+  <div class="fig-title">Figure 8.1 — Complete Vector Database System</div>
+  <svg viewBox="0 0 720 400" style="max-width:720px">
+    <defs>
+      <marker id="na" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><polygon points="0,0 9,3 0,6" fill="#003366"/></marker>
+      <marker id="oa" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><polygon points="0,0 9,3 0,6" fill="#FF6600"/></marker>
+    </defs>
+    <rect width="720" height="400" fill="#F8F9FF" rx="12"/>
+    <!-- WRITE PATH -->
+    <rect x="10" y="12" width="100" height="22" rx="4" fill="#003366"/>
+    <text x="60" y="27" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-size="11" font-weight="700">WRITE PATH</text>
+    <!-- Write nodes -->
+    <g font-family="Baloo 2,sans-serif">
+      <rect x="10" y="44" width="112" height="60" rx="8" fill="#fff" stroke="#90CAF9" stroke-width="2"/>
+      <rect x="10" y="44" width="112" height="7" rx="8" fill="#003366"/>
+      <text x="66" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#003366">Raw Input</text>
+      <text x="66" y="87" text-anchor="middle" font-size="10" fill="#666">Text/Image</text>
+      <text x="66" y="99" text-anchor="middle" font-size="9" fill="#999">W-Step 1</text>
+      <line x1="122" y1="74" x2="150" y2="74" stroke="#003366" stroke-width="2" marker-end="url(#na)"/>
+
+      <rect x="150" y="44" width="112" height="60" rx="8" fill="#fff" stroke="#90CAF9" stroke-width="2"/>
+      <rect x="150" y="44" width="112" height="7" rx="8" fill="#1A4480"/>
+      <text x="206" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#1A4480">Chunking</text>
+      <text x="206" y="87" text-anchor="middle" font-size="10" fill="#666">Pieces mein todo</text>
+      <text x="206" y="99" text-anchor="middle" font-size="9" fill="#999">W-Step 2</text>
+      <line x1="262" y1="74" x2="290" y2="74" stroke="#003366" stroke-width="2" marker-end="url(#na)"/>
+
+      <rect x="290" y="44" width="112" height="60" rx="8" fill="#fff" stroke="#90CAF9" stroke-width="2"/>
+      <rect x="290" y="44" width="112" height="7" rx="8" fill="#5B2C8D"/>
+      <text x="346" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#5B2C8D">Embed Model</text>
+      <text x="346" y="87" text-anchor="middle" font-size="10" fill="#666">Chunk → Vector</text>
+      <text x="346" y="99" text-anchor="middle" font-size="9" fill="#999">W-Step 3</text>
+      <line x1="402" y1="74" x2="430" y2="74" stroke="#003366" stroke-width="2" marker-end="url(#na)"/>
+
+      <rect x="430" y="44" width="118" height="60" rx="8" fill="#fff" stroke="#003366" stroke-width="2.5"/>
+      <rect x="430" y="44" width="118" height="7" rx="8" fill="#003366"/>
+      <text x="489" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#003366">Index + Store</text>
+      <text x="489" y="87" text-anchor="middle" font-size="10" fill="#666">Vector + Metadata</text>
+      <text x="489" y="99" text-anchor="middle" font-size="9" fill="#003366" font-weight="700">W-Step 4 ✓</text>
+
+      <!-- Big DB -->
+      <ellipse cx="620" cy="160" rx="82" ry="68" fill="#E8EFF8" stroke="#003366" stroke-width="2.5" stroke-dasharray="7,3"/>
+      <text x="620" y="144" text-anchor="middle" font-size="24">🗄️</text>
+      <text x="620" y="165" text-anchor="middle" font-size="14" font-weight="900" fill="#003366">Vector DB</text>
+      <text x="620" y="182" text-anchor="middle" font-size="11" fill="#666">HNSW Index</text>
+      <text x="620" y="196" text-anchor="middle" font-size="10" fill="#666">+ Metadata</text>
+      <line x1="548" y1="74" x2="570" y2="115" stroke="#003366" stroke-width="2" marker-end="url(#na)"/>
+
+      <!-- QUERY PATH -->
+      <rect x="10" y="215" width="110" height="22" rx="4" fill="#FF6600"/>
+      <text x="65" y="230" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">QUERY PATH</text>
+
+      <rect x="10" y="248" width="112" height="65" rx="8" fill="#fff" stroke="#FFCC80" stroke-width="2"/>
+      <rect x="10" y="248" width="112" height="7" rx="8" fill="#FF6600"/>
+      <text x="66" y="275" text-anchor="middle" font-size="12" font-weight="700" fill="#FF6600">User Query</text>
+      <text x="66" y="290" text-anchor="middle" font-size="10" fill="#666">"search karo..."</text>
+      <text x="66" y="308" text-anchor="middle" font-size="9" fill="#999">Q-Step 1</text>
+      <line x1="122" y1="280" x2="150" y2="280" stroke="#FF6600" stroke-width="2" marker-end="url(#oa)"/>
+
+      <rect x="150" y="248" width="112" height="65" rx="8" fill="#fff" stroke="#FFCC80" stroke-width="2"/>
+      <rect x="150" y="248" width="112" height="7" rx="8" fill="#AD1457"/>
+      <text x="206" y="272" text-anchor="middle" font-size="12" font-weight="700" fill="#AD1457">SAME Model</text>
+      <text x="206" y="287" text-anchor="middle" font-size="10" fill="#666">Query → Vector</text>
+      <text x="206" y="298" text-anchor="middle" font-size="9" fill="#AD1457" font-weight="700">⚠️ Same model!</text>
+      <text x="206" y="310" text-anchor="middle" font-size="9" fill="#999">Q-Step 2</text>
+      <line x1="262" y1="280" x2="290" y2="280" stroke="#FF6600" stroke-width="2" marker-end="url(#oa)"/>
+
+      <rect x="290" y="248" width="112" height="65" rx="8" fill="#fff" stroke="#FFCC80" stroke-width="2"/>
+      <rect x="290" y="248" width="112" height="7" rx="8" fill="#FF6600"/>
+      <text x="346" y="272" text-anchor="middle" font-size="12" font-weight="700" fill="#FF6600">ANN Search</text>
+      <text x="346" y="287" text-anchor="middle" font-size="10" fill="#666">Nearest vectors</text>
+      <text x="346" y="299" text-anchor="middle" font-size="10" fill="#666">dhundho index mein</text>
+      <text x="346" y="310" text-anchor="middle" font-size="9" fill="#999">Q-Step 3</text>
+      <line x1="402" y1="280" x2="430" y2="280" stroke="#FF6600" stroke-width="2" marker-end="url(#oa)"/>
+
+      <rect x="430" y="248" width="118" height="65" rx="8" fill="#fff" stroke="#FF6600" stroke-width="2.5"/>
+      <rect x="430" y="248" width="118" height="7" rx="8" fill="#FF6600"/>
+      <text x="489" y="272" text-anchor="middle" font-size="12" font-weight="700" fill="#FF6600">Top-K Results</text>
+      <text x="489" y="287" text-anchor="middle" font-size="10" fill="#666">5 most similar</text>
+      <text x="489" y="299" text-anchor="middle" font-size="10" fill="#666">+ similarity score</text>
+      <text x="489" y="310" text-anchor="middle" font-size="9" fill="#FF6600" font-weight="700">Q-Step 4 ✓ DONE!</text>
+
+      <!-- DB ↔ Query connection -->
+      <line x1="548" y1="280" x2="568" y2="248" stroke="#FF6600" stroke-width="1.5" marker-end="url(#oa)"/>
+      <text x="556" y="268" font-size="9" fill="#FF6600">reads</text>
+
+      <!-- Divider -->
+      <line x1="8" y1="208" x2="712" y2="208" stroke="#E0E0E0" stroke-width="1.5" stroke-dasharray="8,4"/>
+
+      <!-- Warning box -->
+      <rect x="10" y="330" width="580" height="58" rx="8" fill="#FFF3E0" stroke="#FFCC80" stroke-width="1.5"/>
+      <text x="22" y="350" font-size="11" font-weight="700" fill="#FF6600">⚠️ Sabse Important Rule:</text>
+      <text x="22" y="366" font-size="11" fill="#4E2000">W-Step 3 mein jo embedding model use kiya, Q-Step 2 mein wahi SAME model use karo.</text>
+      <text x="22" y="382" font-size="11" fill="#4E2000">Different model = alag mathematical space = bilkul galat results!</text>
+    </g>
+  </svg>
+  <div class="fig-cap">Write Path (blue/upar): Raw Data → Chunk → Embed → Store | Query Path (orange/neeche): User Query → Embed → Search → Results</div>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Adhyay 7-8 ka Summary</div>
+  <ul>
+    <li>Write Pipeline: Raw Data → Chunk → Embed (model A) → Store with Metadata</li>
+    <li>Query Pipeline: User Query → Embed (SAME model A!) → ANN Search → Top-K Results</li>
+    <li>Dono pipelines mein SAME embedding model hona zaroori hai — most critical rule</li>
+    <li>Metadata (original text) hamesha vector ke saath store karo — results meaningful banata hai</li>
+    <li>Top-K matlab K most similar results — K aap choose karte ho (e.g., 5 ya 10)</li>
+  </ul>
+</div>
+<div class="page-num">7</div>
+</div>
+
+<!-- ████ UNIT 4 ████ -->
+<div class="page unit-page">
+<div class="unit-inner u4">
+  <div class="unit-bg-num">4</div>
+  <div class="unit-eyebrow">Unit Chaar — Math Samjho</div>
+  <h2 class="unit-title">Similarity Kaise Measure Hoti Hai?<br/>Teen Distance Metrics — Math se Dil tak</h2>
+  <p class="unit-desc">Jab vectors store ho jaate hain, database kaise decide karta hai kaun sa "closest" hai query ke? Yeh kaam karte hain mathematical distance metrics. Teen main types hain — har ek ka apna use case hai.</p>
+  <div class="unit-tags">
+    <span class="unit-tag">Adhyay 9: Distance Metric kyun?</span>
+    <span class="unit-tag">Adhyay 10: Cosine Similarity</span>
+    <span class="unit-tag">Adhyay 11: Euclidean Distance</span>
+    <span class="unit-tag">Adhyay 12: Dot Product</span>
+    <span class="unit-tag">Adhyay 13: Kaunsa Choose Karein?</span>
+  </div>
+</div>
+</div>
+
+<!-- ████ CHAPTERS 9-13 — Similarity Metrics ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 9–13</div>
+  <h2 class="ch-title">Similarity Metrics — "Similar" ka Matlab Mathematically Kya hai?</h2>
+</div>
+
+<h2 class="h2">9.1 Distance Metric Kyun Chahiye?</h2>
+
+<div class="convo">
+  <div class="convo-title">💬 Teacher-Student — Distance Metrics ka Concept</div>
+  <div class="msg">
+    <div class="msg-avatar student">🧑</div>
+    <div class="msg-bubble student"><div class="msg-name">Student</div>Sir, 1 million vectors hain. Query aaya. Database ko kaise pata chalega kaunsa "closest" hai?</div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar teacher">👨‍🏫</div>
+    <div class="msg-bubble teacher"><div class="msg-name">Teacher</div>Bilkul sahi sawaal! Socho aap ek city mein khade ho. Tumhe 5 nearest restaurants dhundhne hain. "Nearest" ka matlab kya hai? Seedhi line ka distance? Walking distance? Ya jo tumhari taste se milte-julte hain? Har definition ek alag "distance metric" hai. Vector databases mein bhi yahi choice hai!</div>
+  </div>
+</div>
+
+<h2 class="h2">10.1 Cosine Similarity — Angle Measure Karo</h2>
+
+<div class="box box-def">
+  <div class="bl">📘 Definition — Cosine Similarity</div>
+  <div class="bd"><strong>Cosine Similarity</strong> do vectors ke beech ka <em>angle (θ)</em> measure karta hai — unki length (magnitude) ko bilkul ignore karte hue.<br/><br/>
+  Range: 1 (bilkul same direction — identical) se -1 (opposite direction). 0 = perpendicular (unrelated)<br/>
+  Distance ke roop mein: Distance = 1 − cosine → range 0 (identical) to 2 (opposite)</div>
+</div>
+
+<div class="formula">
+  <div class="formula-eq">cosine(A, B) = (A · B) / (|A| × |B|) = Σ(Aᵢ × Bᵢ) / [√Σ(Aᵢ²) × √Σ(Bᵢ²)]</div>
+  <div class="formula-cap">Jahan A·B dot product hai, |A| vector A ki magnitude (length) hai</div>
+</div>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Physical Analogy — Arrows</div>
+  <div class="bd">Do arrows (teer) imagine karo. Ek chota (1 meter) aur ek lamba (10 meter) — lekin dono same direction mein point kar rahe hain. Cosine similarity = 1 (perfect)! Length nahi dekha — sirf direction dekha.<br/><br/>
+  <strong>Text ke liye kyun perfect hai?</strong> Ek chota tweet aur ek lamba article — dono same topic par — same direction mein point karenge despite different length. Cosine length ignore karta hai!<br/><br/>
+  "Password reset karna hai" (5 words) aur "Mujhe apna account access karne mein problem ho rahi hai, password bhool gaya hoon" (17 words) — dono ka cosine similarity bahut high hoga.</div>
+</div>
+
+<div class="box box-ex">
+  <div class="bl">✅ Worked Example — Step by Step</div>
+  <div class="bd">
+  Maanlo A = [1, 2] aur B = [2, 4] (B sirf A se 2 guna lamba hai, same direction)<br/><br/>
+  A · B = (1×2) + (2×4) = 2 + 8 = <strong>10</strong><br/>
+  |A| = √(1² + 2²) = √5 ≈ 2.236<br/>
+  |B| = √(2² + 4²) = √20 ≈ 4.472<br/>
+  cosine(A,B) = 10 / (2.236 × 4.472) = 10/10 = <strong>1.0 — Perfect similarity!</strong><br/><br/>
+  Sirf direction same tha, length alag thi — cosine ne 1.0 diya! ✓
+  </div>
+</div>
+
+<div class="fig">
+  <div class="fig-title">Figure 10.1 — Cosine Similarity Visualized</div>
+  <svg viewBox="0 0 500 240" style="max-width:500px">
+    <rect width="500" height="240" fill="#F8F9FF" rx="8"/>
+    <defs>
+      <marker id="va" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><polygon points="0,0 9,3 0,6" fill="#003366"/></marker>
+      <marker id="va2" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><polygon points="0,0 9,3 0,6" fill="#1A4480"/></marker>
+      <marker id="va3" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><polygon points="0,0 9,3 0,6" fill="#C0392B"/></marker>
+    </defs>
+    <!-- Axes -->
+    <line x1="55" y1="200" x2="450" y2="200" stroke="#9E9E9E" stroke-width="1.5"/>
+    <line x1="55" y1="200" x2="55" y2="25" stroke="#9E9E9E" stroke-width="1.5"/>
+    <!-- Vector A: "Password reset" -->
+    <line x1="55" y1="200" x2="240" y2="85" stroke="#003366" stroke-width="3" marker-end="url(#va)"/>
+    <text x="248" y="78" font-family="Baloo 2,sans-serif" font-size="11" fill="#003366" font-weight="700">A = "Password reset"</text>
+    <!-- Vector B: "Login bhool gaya" — close direction -->
+    <line x1="55" y1="200" x2="265" y2="55" stroke="#1A4480" stroke-width="2.5" marker-end="url(#va2)"/>
+    <text x="273" y="48" font-family="Baloo 2,sans-serif" font-size="11" fill="#1A4480" font-weight="700">B = "Login bhool gaya"</text>
+    <!-- Angle between A and B -->
+    <path d="M 100,162 A 55,55 0 0,1 114,146" stroke="#FF6600" stroke-width="2.5" fill="none"/>
+    <text x="120" y="157" font-family="Baloo 2,sans-serif" font-size="10" fill="#FF6600">θ bahut chhota</text>
+    <text x="108" y="172" font-family="Baloo 2,sans-serif" font-size="10" fill="#FF6600">→ cos(θ) ≈ 1</text>
+    <text x="108" y="185" font-family="Baloo 2,sans-serif" font-size="10" fill="#003366" font-weight="700">→ Very Similar! ✓</text>
+    <!-- Vector C: "Aaj ka mausam" — very different direction -->
+    <line x1="55" y1="200" x2="380" y2="170" stroke="#C0392B" stroke-width="2.5" stroke-dasharray="7,3" marker-end="url(#va3)"/>
+    <text x="385" y="165" font-family="Baloo 2,sans-serif" font-size="11" fill="#C0392B" font-weight="700">C = "Aaj ka mausam"</text>
+    <text x="320" y="205" font-family="Baloo 2,sans-serif" font-size="10" fill="#C0392B">θ bahut bada → cos(θ) ≈ 0 → Different topic!</text>
+  </svg>
+  <div class="fig-cap">Chhota angle (A-B) → High cosine → Similar meaning. Bada angle (A-C) → Low cosine → Different topic.</div>
+</div>
+
+<h2 class="h2">11.1 Euclidean Distance — Seedha Line Distance</h2>
+
+<div class="box box-def">
+  <div class="bl">📘 Definition — Euclidean Distance</div>
+  <div class="bd"><strong>Euclidean Distance</strong> do points ke beech ki <em>seedha line distance</em> hai N-dimensional space mein — Pythagorean theorem ka extension.<br/>
+  Range: 0 (identical) se infinity. Chhota = more similar.</div>
+</div>
+
+<div class="formula">
+  <div class="formula-eq">d(A, B) = √[ (A₁−B₁)² + (A₂−B₂)² + … + (Aₙ−Bₙ)² ]</div>
+  <div class="formula-cap">Yeh Pythagoras theorem hai N dimensions mein extended! a²+b²=c² yaad hai?</div>
+</div>
+
+<div class="box box-ex">
+  <div class="bl">✅ Example — Simple 2D</div>
+  <div class="bd">
+  A = [1, 2], B = [4, 6]<br/>
+  d(A,B) = √[(4−1)² + (6−2)²] = √[9 + 16] = √25 = <strong>5</strong><br/><br/>
+  A = [1, 2], C = [1.1, 2.1]<br/>
+  d(A,C) = √[(1.1−1)² + (2.1−2)²] = √[0.01 + 0.01] = √0.02 ≈ <strong>0.14</strong><br/><br/>
+  C bahut closer hai A ke — 0.14 vs 5!
+  </div>
+</div>
+
+<h2 class="h2">12.1 Dot Product — Angle + Length Dono</h2>
+<div class="box box-def">
+  <div class="bl">📘 Definition — Dot Product</div>
+  <div class="bd"><strong>Dot Product</strong> direction AUR magnitude (length) dono consider karta hai.<br/>
+  <strong>Formula:</strong> A · B = Σ(Aᵢ × Bᵢ) = |A| × |B| × cos(θ)</div>
+</div>
+<div class="box box-analogy">
+  <div class="bl">🔎 Analogy</div>
+  <div class="bd">Jaise ek lamba shadow kisi lambe cheez se banta hai — lamba arrow apna projection zyada deta hai. Agar ek vector longer hai (matlab us item ki "strength" zyada hai), dot product usse higher score deta hai. Recommendation systems mein useful jab popular items ko naturally boost chahiye.</div>
+</div>
+
+<h2 class="h2">13.1 Kaunsa Metric Kab Use Karein?</h2>
+<div class="tw">
+  <table>
+    <thead><tr><th>Metric</th><th>Kya Measure Karta Hai</th><th>Kab Use Karein</th><th>Kab Avoid Karein</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">Cosine Similarity</td><td>Sirf angle (length ignore)</td><td class="tg">Text/NLP tasks mein — hamesha! Short vs long document comparison.</td><td>Spatial data jahan length matter kare</td></tr>
+      <tr><td class="tk">Euclidean Distance</td><td>Seedhi line distance (length use)</td><td class="tg">Images, geographic coords, sensor readings, dense spatial data</td><td>Text (word frequency artificially large vectors banata hai)</td></tr>
+      <tr><td class="tk">Dot Product</td><td>Angle + magnitude dono</td><td class="tg">Normalized vectors ke saath cosine ke barabar. Popularity-weighted recommendations.</td><td>Unnormalized text embeddings</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="box box-warn">
+  <div class="bl">⭐ Golden Rule — Yaad Rakhna</div>
+  <div class="bd"><strong>Koi bhi text/language task</strong> ke liye (search, RAG, Q&amp;A, chatbot): <strong>Cosine Similarity use karo</strong>.<br/><br/>
+  Ye industry default hai. 95% production NLP systems cosine use karte hain. Doubt ho toh cosine use karo — galat nahi hoga.</div>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Unit 4 ka Summary</div>
+  <ul>
+    <li>Distance metrics mathematically define karte hain "similar" ka matlab</li>
+    <li>Cosine: angle measure karta hai, length ignore karta hai — text ke liye default</li>
+    <li>Euclidean: seedhi line distance — spatial/physical data ke liye</li>
+    <li>Dot Product: angle + length dono — popularity-weighted tasks ke liye</li>
+    <li>Text tasks ke liye: Cosine Similarity — hamesha, bilkul!</li>
+  </ul>
+</div>
+<div class="page-num">8</div>
+</div>
+
+<!-- ████ UNIT 5 ████ -->
+<div class="page unit-page">
+<div class="unit-inner u5">
+  <div class="unit-bg-num">5</div>
+  <div class="unit-eyebrow">Unit Paanch — Speed ka Raaz</div>
+  <h2 class="unit-title">Search Fast Kaise Banate Hain?<br/>Index Types aur ANN Algorithms</h2>
+  <p class="unit-desc">Millions ya billions vectors ke saath, har query par sab compare karna impossible hai. Yeh unit cover karta hai woh index structures jo vector search ko fast banate hain — aur unavoidable trade-offs jo saath aate hain.</p>
+  <div class="unit-tags">
+    <span class="unit-tag">Adhyay 14: Speed Problem</span>
+    <span class="unit-tag">Adhyay 15: Brute Force</span>
+    <span class="unit-tag">Adhyay 16: HNSW</span>
+    <span class="unit-tag">Adhyay 17: IVF</span>
+    <span class="unit-tag">Adhyay 18: PQ Compression</span>
+    <span class="unit-tag">Adhyay 19: ANN Triangle</span>
+  </div>
+</div>
+</div>
+
+<!-- ████ CHAPTERS 14-19 — Indexes ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 14–19</div>
+  <h2 class="ch-title">Index Types — Vector Search ko Fast Banane ka Secret</h2>
+</div>
+
+<h2 class="h2">14.1 Speed Problem — Kyun Zaroori Hai Index?</h2>
+
+<div class="convo">
+  <div class="convo-title">💬 Speed Problem — Realistically Samajhte Hain</div>
+  <div class="msg">
+    <div class="msg-avatar student">🧑</div>
+    <div class="msg-bubble student"><div class="msg-name">Student</div>Sir, 1 crore vectors hain. Ek query aaya. Kya sab se compare karte hain?</div>
+  </div>
+  <div class="msg">
+    <div class="msg-avatar teacher">👨‍🏫</div>
+    <div class="msg-bubble teacher"><div class="msg-name">Teacher</div>Haan! Yahi Brute Force hai. 1 crore comparisons × 1 nanosecond = 10ms per query. Theek lag raha hai? Lekin agar 1000 users ek saath query karein? → 10,000ms simultaneously → servers crash! Aur production mein 10 crore, 100 crore vectors hote hain — tab toh aur bhi slow. Isliye <strong>Index</strong> chahiye — ek data structure jo search smart banata hai bina sab check kiye!</div>
+  </div>
+</div>
+
+<div class="g2">
+  <div class="card c-red">
+    <div class="c-head">❌ Index ke bina (Brute Force) — Scale par</div>
+    <div class="c-body">1 Billion vectors × 1ns = <strong>1,000ms per query!</strong><br/>1,000 concurrent users = <strong>1,000 servers chahiye</strong><br/>Cost: ₹10 crore+ monthly infrastructure<br/>Real users ka experience: Bahut slow, timeouts</div>
+  </div>
+  <div class="card c-green">
+    <div class="c-head">✅ HNSW Index ke saath</div>
+    <div class="c-body">1 Billion vectors: <strong>5–50ms per query</strong><br/>Same 1,000 users = <strong>~50 servers</strong><br/>Cost: ₹50 lakh monthly<br/>Real users: Fast, responsive, production-ready</div>
+  </div>
+</div>
+
+<h2 class="h2">15.1 Brute Force (Flat Index) — Baseline</h2>
+
+<div class="box box-def">
+  <div class="bl">📘 Definition — Brute Force</div>
+  <div class="bd"><strong>Brute Force</strong> = har stored vector se query vector compare karo. Sabse simple approach.<br/>
+  <strong>Time complexity: O(N)</strong> — data double hone par time bhi double.<br/>
+  <strong>Accuracy: 100% EXACT</strong> — koi approximation nahi.</div>
+</div>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Analogy</div>
+  <div class="bd">Sabse nazdiki restaurant dhundh rahe ho — har gali mein jaake har restaurant ki distance maap karo. <strong>Perfect accurate lekin impossibly slow badi city mein.</strong></div>
+</div>
+
+<div class="g2">
+  <div class="card c-green">
+    <div class="c-head">✅ Kab Use Karein</div>
+    <div class="c-body">• Dataset &lt; 10,000 vectors<br/>• 100% exact accuracy chahiye<br/>• Prototyping/testing<br/>• GPU ke saath (FAISS flat+GPU fast hai)</div>
+  </div>
+  <div class="card c-red">
+    <div class="c-head">❌ Kab Nahi Karein</div>
+    <div class="c-body">• 100,000+ vectors<br/>• Low latency requirement<br/>• Production systems<br/>• Multiple concurrent users</div>
+  </div>
+</div>
+
+<h2 class="h2">16.1 HNSW — Hierarchical Navigable Small World</h2>
+<p class="bt">HNSW aaj production mein sabse popular vector index hai. Yeh ek <em class="term">multi-layer graph</em> build karta hai jahan har node ek vector hai aur edges nearby vectors ko connect karte hain.</p>
+
+<div class="box box-def">
+  <div class="bl">📘 HNSW Kaise Kaam Karta Hai — Step by Step</div>
+  <div class="bd">
+  <strong>Index Build karte waqt:</strong><br/>
+  1. Naya vector aaya → Use randomly ek layer assign kiya jaata hai (Layer 0 = sabhi, Layer 1 = ~30%, Layer 2 = ~9%)<br/>
+  2. Har assigned layer mein, vector ko M nearest neighbours se connect karo<br/>
+  3. Multi-layer structure = "Highway system" — top layers = highways (few nodes, long jumps), bottom = local roads (all nodes, short steps)<br/><br/>
+  <strong>Search karte waqt:</strong><br/>
+  1. Top layer ke fixed entry point se shuru karo<br/>
+  2. Greedily nearest neighbour ki taraf move karo<br/>
+  3. Stuck ho jao → next (lower) layer mein descend karo<br/>
+  4. Layer 0 tak pahuncho → K nearest neighbours return karo<br/><br/>
+  <strong>Time: O(log N)</strong> — Data 10x ho, search time sirf log(10) ≈ 2.3x badhta hai!
+  </div>
+</div>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Analogy — Multi-Level Map</div>
+  <div class="bd">Mumbai mein ek restaurant dhundh rahe ho:<br/>
+  1. Pehle India ka map dekho (Layer 2) — Maharashtra identify karo<br/>
+  2. Maharashtra map dekho (Layer 1) — Mumbai South area<br/>
+  3. Street map dekho (Layer 0) — exact restaurant<br/><br/>
+  Har level pe detail badhti hai. Seedha street-by-street scan karne se 100x faster! Yahi HNSW karta hai.</div>
+</div>
+
+<div class="fig">
+  <div class="fig-title">Figure 16.1 — HNSW Multi-Layer Graph Structure</div>
+  <svg viewBox="0 0 660 290" style="max-width:660px">
+    <rect width="660" height="290" fill="#F8F9FF" rx="8"/>
+    <!-- Layer labels -->
+    <text x="12" y="56" font-family="Baloo 2,sans-serif" font-size="12" fill="#003366" font-weight="700">Layer 2</text>
+    <text x="12" y="68" font-family="Baloo 2,sans-serif" font-size="9" fill="#9E9E9E">(coarse)</text>
+    <text x="12" y="140" font-family="Baloo 2,sans-serif" font-size="12" fill="#1A4480" font-weight="700">Layer 1</text>
+    <text x="12" y="215" font-family="Baloo 2,sans-serif" font-size="12" fill="#5B2C8D" font-weight="700">Layer 0</text>
+    <text x="12" y="227" font-family="Baloo 2,sans-serif" font-size="9" fill="#9E9E9E">(all vectors)</text>
+    <!-- Layer 2 nodes: 3 nodes -->
+    <g stroke="#BBDEFB" stroke-width="1.5" fill="none">
+      <line x1="170" y1="52" x2="340" y2="52"/><line x1="340" y1="52" x2="520" y2="52"/>
+    </g>
+    <circle cx="170" cy="52" r="13" fill="#003366"/>
+    <circle cx="340" cy="52" r="15" fill="#FF6600"/> <!-- Entry point -->
+    <circle cx="520" cy="52" r="13" fill="#003366"/>
+    <text x="340" y="28" text-anchor="middle" font-family="Baloo 2,sans-serif" font-size="10" fill="#FF6600">Entry Point (start here)</text>
+    <line x1="340" y1="30" x2="340" y2="37" stroke="#FF6600" stroke-width="1.5"/>
+    <!-- Layer 1: 5 nodes -->
+    <g stroke="#C5CAE9" stroke-width="1.2" fill="none">
+      <line x1="110" y1="135" x2="230" y2="135"/>
+      <line x1="230" y1="135" x2="360" y2="135"/>
+      <line x1="360" y1="135" x2="460" y2="135"/>
+      <line x1="460" y1="135" x2="578" y2="135"/>
+      <line x1="110" y1="135" x2="360" y2="135"/>
+    </g>
+    <g fill="#1A4480">
+      <circle cx="110" cy="135" r="11"/><circle cx="230" cy="135" r="11"/>
+      <circle cx="360" cy="135" r="11"/><circle cx="460" cy="135" r="11"/>
+      <circle cx="578" cy="135" r="11"/>
+    </g>
+    <!-- Layer 0: many nodes -->
+    <g stroke="#EDE7F6" stroke-width="1" fill="none">
+      <line x1="80" y1="215" x2="155" y2="215"/>
+      <line x1="155" y1="215" x2="215" y2="215"/>
+      <line x1="215" y1="215" x2="275" y2="215"/>
+      <line x1="275" y1="215" x2="330" y2="215"/>
+      <line x1="330" y1="215" x2="395" y2="215"/>
+      <line x1="395" y1="215" x2="450" y2="215"/>
+      <line x1="450" y1="215" x2="510" y2="215"/>
+      <line x1="510" y1="215" x2="568" y2="215"/>
+      <line x1="80" y1="215" x2="215" y2="215"/>
+      <line x1="275" y1="215" x2="450" y2="215"/>
+    </g>
+    <g fill="#5B2C8D">
+      <circle cx="80" cy="215" r="8"/><circle cx="155" cy="215" r="8"/>
+      <circle cx="215" cy="215" r="8"/><circle cx="275" cy="215" r="8"/>
+      <circle cx="330" cy="215" r="8"/><circle cx="395" cy="215" r="8"/>
+      <circle cx="450" cy="215" r="8"/><circle cx="510" cy="215" r="8"/>
+      <circle cx="568" cy="215" r="8"/><circle cx="628" cy="215" r="8"/>
+    </g>
+    <!-- Search path (orange dashed) -->
+    <g stroke="#FF6600" stroke-width="3" stroke-dasharray="7,3" fill="none">
+      <line x1="340" y1="52" x2="520" y2="52"/>
+      <line x1="520" y1="52" x2="460" y2="135"/>
+      <line x1="460" y1="135" x2="510" y2="215"/>
+    </g>
+    <circle cx="510" cy="215" r="12" fill="none" stroke="#FF6600" stroke-width="3"/>
+    <text x="525" y="245" font-family="Baloo 2,sans-serif" font-size="11" fill="#FF6600" font-weight="700">← Nearest found!</text>
+    <!-- Layer connections -->
+    <g stroke="#BDBDBD" stroke-width="1" stroke-dasharray="3,2">
+      <line x1="170" y1="65" x2="110" y2="122"/>
+      <line x1="340" y1="67" x2="360" y2="122"/>
+      <line x1="520" y1="65" x2="460" y2="122"/>
+      <line x1="230" y1="147" x2="215" y2="205"/>
+      <line x1="360" y1="147" x2="330" y2="205"/>
+      <line x1="460" y1="147" x2="510" y2="205"/>
+    </g>
+    <text x="355" y="172" font-family="Baloo 2,sans-serif" font-size="10" fill="#FF6600">Search path</text>
+  </svg>
+  <div class="fig-cap">Orange line = search path. Entry se start, top-to-bottom navigate, each level mein refine. Result: Accurate aur fast!</div>
+</div>
+
+<div class="tw">
+  <table>
+    <thead><tr><th>HNSW Parameter</th><th>Default</th><th>Effect of Increasing</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">M (connections/node)</td><td>16</td><td>Better recall lekin zyada RAM aur slow build</td></tr>
+      <tr><td class="tk">ef (query breadth)</td><td>50–200</td><td class="tg">Better recall lekin slow query — Tunable at runtime!</td></tr>
+      <tr><td class="tk">ef_construction</td><td>200</td><td>Better index quality lekin slow build time</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="page-num">9</div>
+</div>
+
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Continued — Index Types</div>
+  <h2 class="ch-title">IVF, PQ Compression, aur ANN Trade-off Triangle</h2>
+</div>
+
+<h2 class="h2">17.1 IVF — Inverted File Index</h2>
+<p class="bt">IVF HNSW se alag approach leti hai. Saare vectors ko <em class="term">clusters</em> mein group karti hai, phir query time par sirf relevant clusters search karti hai.</p>
+
+<div class="box box-def">
+  <div class="bl">📘 IVF Kaise Kaam Karta Hai</div>
+  <div class="bd">
+  <strong>Training (ek baar, build time par):</strong><br/>
+  1. Sab vectors par k-means clustering run karo → K clusters banao (e.g., 1M vectors ke liye K=1000)<br/>
+  2. Har vector ko uske nearest cluster centroid par assign karo<br/>
+  3. "Inverted file" banao = cluster list, har cluster mein uske vectors<br/><br/>
+  <strong>Query time par:</strong><br/>
+  1. Query se sab cluster centroids ka distance calculate karo (K comparisons, fast!)<br/>
+  2. nprobe nearest clusters select karo (e.g., nprobe=10)<br/>
+  3. Sirf in nprobe clusters ke andar exhaustively search karo<br/>
+  4. Best results return karo
+  </div>
+</div>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Analogy — Filing Cabinet</div>
+  <div class="bd">Socho 1 lakh documents hain, 1000 labelled folders mein sort kiye. Jab dhundhna ho, pehle har folder ka label check karo (fast!) — phir sirf 10 most relevant folders kholke andar search karo. 990 folders completely skip ho jate hain — 99% kaam bachta hai!</div>
+</div>
+
+<h2 class="h2">18.1 PQ — Product Quantization (Compression)</h2>
+<p class="bt">PQ ek search algorithm nahi, balki ek <em class="term">compression technique</em> hai jo vectors ki memory dramatically reduce karta hai.</p>
+
+<div class="box box-def">
+  <div class="bl">📘 PQ Kaise Kaam Karta Hai</div>
+  <div class="bd">
+  1. Har 1536-dim vector ko M sub-vectors mein todo (e.g., M=8, har ek 192-dim)<br/>
+  2. Har sub-vector position ke liye 256 centroids ka "codebook" banao (k-means se)<br/>
+  3. Har sub-vector ko uske nearest centroid ka ID se replace karo (sirf 1 byte!)<br/>
+  4. Result: 1536-dim float vector (6,144 bytes) → compressed to 8 bytes!<br/><br/>
+  <strong>768x memory savings!</strong> Lekin accuracy thodi kam hoti hai (lossy).
+  </div>
+</div>
+
+<div class="box box-analogy">
+  <div class="bl">🔎 Analogy — JPEG Compression</div>
+  <div class="bd">JPEG image compression ki tarah. Ek 10MB photo → 200KB JPEG — quality thodi kam, lekin 50x storage savings. PQ bhi yahi karta hai vectors ke saath — accuracy thodi kam, memory bahut kam!</div>
+</div>
+
+<div class="box box-know">
+  <div class="bl">💡 Real-World Use</div>
+  <div class="bd">Facebook ki billion-scale image search system <strong>IVF-PQ</strong> use karti hai — IVF ka fast cluster search + PQ ka memory compression. Isse billions of vectors ko reasonable RAM mein store karna possible ho jaata hai.</div>
+</div>
+
+<h2 class="h2">19.1 ANN Trade-off Triangle — Sabse Important Concept</h2>
+<p class="bt"><em class="term">ANN (Approximate Nearest Neighbour)</em> vector search ka fundamental trade-off hai. Production mein mostly exact nearest neighbour nahi milta — ek very good approximation milti hai, bahut fast.</p>
+
+<div class="box box-def">
+  <div class="bl">📘 ANN Iron Triangle — Sirf Do Choose Kar Sakte Ho</div>
+  <div class="bd">
+  <strong>🎯 Recall (Accuracy):</strong> True nearest neighbours kitne fraction milte hain? 1.0 = perfect, 0.95 = industry target<br/>
+  <strong>⚡ Latency (Speed):</strong> Query kitni fast return hoti hai? Low = real-time apps ke liye zaroori<br/>
+  <strong>💾 Memory (Cost):</strong> Index kitna RAM use karta hai? Low = cheap infrastructure<br/><br/>
+  <strong>Rule: Teen mein se teeno simultaneously maximize nahi kar sakte. Trade-off zaroori hai.</strong>
+  </div>
+</div>
+
+<div class="fig">
+  <div class="fig-title">Figure 19.1 — ANN Iron Triangle</div>
+  <svg viewBox="0 0 520 320" style="max-width:520px">
+    <rect width="520" height="320" fill="#F8F9FF" rx="8"/>
+    <polygon points="260,38 80,280 440,280" fill="none" stroke="#003366" stroke-width="2.5"/>
+    <polygon points="260,38 170,158 350,158" fill="rgba(0,51,102,.05)"/>
+    <!-- Vertices -->
+    <circle cx="260" cy="38" r="28" fill="#003366"/>
+    <text x="260" y="34" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">RECALL</text>
+    <text x="260" y="50" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-size="10">(Accuracy)</text>
+    <circle cx="80" cy="280" r="28" fill="#FF6600"/>
+    <text x="80" y="276" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">LATENCY</text>
+    <text x="80" y="292" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-size="10">(Speed)</text>
+    <circle cx="440" cy="280" r="28" fill="#1A6B2B"/>
+    <text x="440" y="276" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-size="13" font-weight="800">MEMORY</text>
+    <text x="440" y="292" text-anchor="middle" fill="#fff" font-family="Baloo 2,sans-serif" font-size="10">(Cost)</text>
+    <text x="260" y="162" text-anchor="middle" fill="#C0392B" font-family="Baloo 2,sans-serif" font-size="22" font-weight="900">SIRF DO</text>
+    <text x="260" y="182" text-anchor="middle" fill="#C0392B" font-family="Baloo 2,sans-serif" font-size="14">CHOOSE KARO!</text>
+    <!-- Edge labels -->
+    <text x="155" y="148" text-anchor="middle" fill="#555" font-family="Baloo 2,sans-serif" font-size="11">Accurate + Fast</text>
+    <text x="155" y="162" text-anchor="middle" fill="#C0392B" font-family="Baloo 2,sans-serif" font-size="10">→ Expensive RAM</text>
+    <text x="362" y="148" text-anchor="middle" fill="#555" font-family="Baloo 2,sans-serif" font-size="11">Accurate + Cheap</text>
+    <text x="362" y="162" text-anchor="middle" fill="#C0392B" font-family="Baloo 2,sans-serif" font-size="10">→ Slow queries</text>
+    <text x="260" y="305" text-anchor="middle" fill="#555" font-family="Baloo 2,sans-serif" font-size="11">Fast + Cheap</text>
+    <text x="260" y="317" text-anchor="middle" fill="#C0392B" font-family="Baloo 2,sans-serif" font-size="10">→ Lower recall</text>
+  </svg>
+  <div class="fig-cap">Teen mein se sirf do choose kar sakte ho. Yeh ek engineering fundamental constraint hai.</div>
+</div>
+
+<div class="tw">
+  <table>
+    <thead><tr><th>Index</th><th>Speed</th><th>Recall</th><th>Memory</th><th>Best Situation</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">Brute Force</td><td class="tr">🔴 O(N) — slow</td><td class="tg">🟢 100% exact</td><td class="tg">🟢 Low</td><td>10K vectors, prototyping</td></tr>
+      <tr><td class="tk">HNSW</td><td class="tg">🟢 O(log N) — fast</td><td class="tg">🟢 95–99%</td><td class="tr">🔴 High RAM</td><td>Most production systems</td></tr>
+      <tr><td class="tk">IVF</td><td>🟡 O(√N) — medium</td><td>🟡 Tunable</td><td class="tg">🟢 Medium</td><td>Large datasets, disk-based</td></tr>
+      <tr><td class="tk">IVF-PQ</td><td>🟡 Medium</td><td>🟡 Moderate</td><td class="tg">🟢 Very low</td><td>Billion-scale, RAM-constrained</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="box box-tip">
+  <div class="bl">✅ Practical Advice — Kahan Se Shuru Karein</div>
+  <div class="bd">HNSW se shuru karo aur <code style="font-family:var(--font-m)">ef</code> parameter tune karo. ef badhane se recall improve hoti hai (latency thodi badhti hai). Production target: <strong>≥95% recall at &lt;50ms latency</strong>. Zyada bada dataset ho toh IVF-PQ consider karo.</div>
+</div>
+<div class="page-num">10</div>
+</div>
+
+<!-- ████ UNIT 6 ████ -->
+<div class="page unit-page">
+<div class="unit-inner u6">
+  <div class="unit-bg-num">6</div>
+  <div class="unit-eyebrow">Unit Chhe — Advanced Features</div>
+  <h2 class="unit-title">Filtering, Hybrid Search aur RAG<br/>Real-World Production Features</h2>
+  <p class="unit-desc">Pure vector search powerful hai lekin incomplete. Real applications mein filters chahiye, keyword search combine karna padta hai, aur AI models se integrate karna hota hai. Yeh unit yahi cover karta hai.</p>
+  <div class="unit-tags">
+    <span class="unit-tag">Adhyay 20: Filtering</span>
+    <span class="unit-tag">Adhyay 21: Hybrid Search</span>
+    <span class="unit-tag">Adhyay 22: RAG — AI ko Data Do</span>
+  </div>
+</div>
+</div>
+
+<!-- ████ CHAPTERS 20-22 ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 20–22</div>
+  <h2 class="ch-title">Filtering, Hybrid Search aur RAG — Advanced Production Features</h2>
+</div>
+
+<h2 class="h2">20.1 Metadata Filtering — Vector Search + Traditional Filters</h2>
+<p class="bt">Real users sirf "similar dhundho" nahi kehte — woh kehte hain: <strong>"2024 ki English movies dhundho, rating 8+ wali, thriller genre."</strong> Yeh filtering + vector search ka combination hai.</p>
+
+<div class="box box-ex">
+  <div class="bl">✅ Example — Job Search with Filters</div>
+  <div class="bd">
+  User search karta hai: "senior data science position"<br/>
+  Filter: location = "Bengaluru", salary ≥ ₹25LPA<br/><br/>
+  <strong>Bina filter ke:</strong> Top 5 similar jobs globally — US mein bhi ho sakti hain!<br/>
+  <strong>Filter ke saath:</strong> Pehle Bengaluru + ₹25L+ filter apply → phir us subset mein vector search<br/><br/>
+<pre style="font-family:var(--font-m);font-size:11.5px;color:#1B4020;line-height:1.7">
+results = collection.query(
+    query_embeddings=[query_vector],
+    where={"location": "Bengaluru", "salary_lpa": {"$gte": 25}},
+    n_results=5
+)
+</pre>
+  </div>
+</div>
+
+<h2 class="h3">Pre-filter vs Post-filter</h2>
+<div class="g2">
+  <div class="card c-navy">
+    <div class="c-head">Pre-filter (Pehle Filter karo)</div>
+    <div class="c-body"><strong>Process:</strong> Filter lagao → Subset lo → Us par vector search<br/><br/>
+    ✅ Achha jab: Filter broad hai (bahut results bachte hain)<br/>
+    ❌ Problem: Filter bahut tight ho → subset bahut chhota → poor recall</div>
+  </div>
+  <div class="card c-saffron">
+    <div class="c-head">Post-filter (Pehle Search karo)</div>
+    <div class="c-body"><strong>Process:</strong> Vector search → Top-K lo → Phir filter apply karo<br/><br/>
+    ✅ Achha jab: Filter loose hai<br/>
+    ❌ Problem: Agar 10 mein se 8 filter ho gaye → sirf 2 results mile!</div>
+  </div>
+</div>
+
+<h2 class="h2">21.1 Hybrid Search — BM25 + Vector = Best of Both Worlds</h2>
+
+<div class="tw">
+  <table>
+    <thead><tr><th>Cheez</th><th>Keyword Search (BM25)</th><th>Vector Search (Dense)</th><th>Hybrid ★</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">Synonyms dhundhta hai?</td><td class="tr">❌ Nahi</td><td class="tg">✅ Haan</td><td class="tg">✅ Haan</td></tr>
+      <tr><td class="tk">Exact codes ("INV-2024-001")?</td><td class="tg">✅ Perfectly</td><td class="tr">❌ Miss karta hai</td><td class="tg">✅ Haan</td></tr>
+      <tr><td class="tk">Hindi + English dono?</td><td class="tr">❌ Alag index chahiye</td><td class="tg">✅ Often built-in</td><td class="tg">✅ Haan</td></tr>
+      <tr><td class="tk">Typos handle karta hai?</td><td>Partial</td><td class="tg">✅ Haan</td><td class="tg">✅ Haan</td></tr>
+      <tr><td class="tk">Setup complexity</td><td>Simple</td><td>Medium</td><td>Thodi zyada</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="h3">RRF — Reciprocal Rank Fusion se Combine Karo</h2>
+<p class="bt">Hybrid search ki challenge: BM25 score (range 0–20) aur cosine score (range -1 to 1) ko combine kaise karein? Scale bilkul alag hai! <em class="term">RRF</em> solve karta hai — raw score nahi, sirf <em>rank position</em> use karta hai.</p>
+
+<div class="formula">
+  <div class="formula-eq">RRF_score(doc d) = Σ_r 1 / (k + rank_r(d))</div>
+  <div class="formula-cap">k = 60 (standard constant), rank_r(d) = doc d ki rank result list r mein. Dono lists (BM25 + vector) par sum.</div>
+</div>
+
+<div class="box box-ex">
+  <div class="bl">✅ RRF Example — Step by Step</div>
+  <div class="bd">
+  Document A: BM25 mein rank #2, Vector search mein rank #1<br/>
+  Document B: BM25 mein rank #1, Vector search mein rank #5<br/>
+  k = 60<br/><br/>
+  RRF(A) = 1/(60+2) + 1/(60+1) = 1/62 + 1/61 ≈ <strong>0.0325</strong><br/>
+  RRF(B) = 1/(60+1) + 1/(60+5) = 1/61 + 1/65 ≈ <strong>0.0318</strong><br/><br/>
+  Final ranking: A (0.0325) > B (0.0318) → A wins!<br/>
+  A dono systems mein acha rank kiya → high combined score.
+  </div>
+</div>
+
+<h2 class="h2">22.1 RAG — Retrieval-Augmented Generation</h2>
+<p class="bt"><em class="term">RAG</em> AI era mein vector databases ka sabse important application hai. Problem: GPT-4 aur Claude ko aapke private company data ke baare mein kuch nahi pata. Solution: RAG!</p>
+
+<div class="box box-def">
+  <div class="bl">📘 RAG kya hai?</div>
+  <div class="bd">RAG = Retrieval-Augmented Generation.<br/><br/>
+  1. Tumhare documents vector DB mein store hote hain<br/>
+  2. User ek sawaal poochta hai<br/>
+  3. Sawaal → vector → DB search → relevant chunks milte hain<br/>
+  4. Woh chunks + sawaal → LLM ko dete hain<br/>
+  5. LLM answer generate karta hai tumhare actual documents ke basis par<br/><br/>
+  Result: <strong>AI jo tumhare private data ke baare mein accurate answers de sake!</strong></div>
+</div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-n" style="background:var(--purple);font-size:12px">OFF</div>
+    <div>
+      <div class="step-title">Offline: Documents Index Karo (ek baar)</div>
+      <div class="step-desc">Company ke PDFs, HR policies, product docs → chunk → embed → vector DB mein store. Yeh ek baar hota hai (ya jab nayi docs aayein).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n">1</div>
+    <div>
+      <div class="step-title">User Sawaal Poochta Hai</div>
+      <div class="step-desc">"Hamare company mein maternity leave policy kya hai?"</div>
+      <span class="step-code">user_q = "maternity leave policy kya hai hamare company mein?"</span>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n">2</div>
+    <div>
+      <div class="step-title">Vector DB se Relevant Chunks Retrieve Karo</div>
+      <div class="step-desc">Sawaal embed hota hai → DB search → top 3–5 relevant chunks milte hain.</div>
+      <span class="step-result">Retrieved: ["Maternity Leave Policy: Female employees ko...", "Policy Section 4.2:...", "Benefits include..."]</span>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n">3</div>
+    <div>
+      <div class="step-title">LLM Grounded Answer Generate Karta Hai</div>
+      <div class="step-desc">Retrieved chunks + user sawaal → GPT-4/Claude ko bhejo → Natural language answer milta hai jo actual policy se grounded hai.</div>
+      <span class="step-result">Answer: "Hamare company mein, female employees ko delivery ke baad 26 hafton ki paid maternity leave milti hai. Policy section 4.2 ke according..."</span>
+    </div>
+  </div>
+</div>
+
+<div class="box box-warn">
+  <div class="bl">⚠️ RAG mein Sabse Badi Galti</div>
+  <div class="bd">RAG se galat answers aa rahe hain? <strong>Pehle chunking fix karo</strong> — database change karne se pehle.<br/><br/>
+  Bahut chhote chunks → context kho jaata hai. Bahut bade chunks → relevant info bury ho jaati hai.<br/>
+  <strong>Chunking strategy fix karna = #1 improvement jo tum kar sakte ho RAG mein.</strong></div>
+</div>
+
+<div class="box-summary">
+  <div class="bl">📝 Unit 6 ka Summary</div>
+  <ul>
+    <li>Metadata filtering vector search ko additional constraints ke saath combine karta hai</li>
+    <li>Pre-filter vs post-filter — har ek ka apna trade-off hai</li>
+    <li>Hybrid search = BM25 (keywords) + Dense (vectors) = dono ke fayde</li>
+    <li>RRF rank positions se results merge karta hai — scores nahi — robust hai</li>
+    <li>RAG = apne private documents par vector search + LLM generation</li>
+    <li>RAG mein kharaab results = chunking fix karo pehle!</li>
+  </ul>
+</div>
+<div class="page-num">11</div>
+</div>
+
+<!-- ████ UNIT 7 ████ -->
+<div class="page unit-page">
+<div class="unit-inner u7">
+  <div class="unit-bg-num">7</div>
+  <div class="unit-eyebrow">Unit Saat — Real World</div>
+  <h2 class="unit-title">Databases, Production Mistakes<br/>aur Expert Decision Framework</h2>
+  <p class="unit-desc">Theory se production tak ka safar. Sab major vector databases compare karenge, common mistakes study karenge, kab use NAHI karna — yeh bhi seekhenge, aur end mein expert decision framework.</p>
+  <div class="unit-tags">
+    <span class="unit-tag">Adhyay 23: Database Comparison</span>
+    <span class="unit-tag">Adhyay 24: Production Pitfalls</span>
+    <span class="unit-tag">Adhyay 25: Kab Use Nahi Karein</span>
+    <span class="unit-tag">Adhyay 26: Expert Decision Framework</span>
+  </div>
+</div>
+</div>
+
+<!-- ████ CHAPTER 23 — Database Comparison ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 23</div>
+  <h2 class="ch-title">Vector Database Landscape — Sahi Tool Kaise Choose Karein?</h2>
+  <p class="ch-tagline">Galat database choose karna = months of wasted migration work. Is chapter se pehli baar sahi choose karo.</p>
+</div>
+
+<h2 class="h2">23.1 Detailed Comparison — Sab Major Databases</h2>
+<div class="tw">
+  <table>
+    <thead><tr><th>Database</th><th>Type</th><th>Hybrid Search?</th><th>Scale</th><th>Best For</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">🔵 Pinecone</td><td>Managed SaaS</td><td class="tg">Haan</td><td>Billions</td><td>Zero DevOps chahiye, MVP, startup</td></tr>
+      <tr><td class="tk">🟢 Weaviate</td><td>Open-source + Cloud</td><td class="tg">Best-in-class</td><td>100M+</td><td>Hybrid search, RAG, multi-modal</td></tr>
+      <tr><td class="tk">🟣 Qdrant</td><td>Open-source + Cloud (Rust)</td><td class="tg">Haan</td><td>100M+</td><td>Maximum speed + complex filtering</td></tr>
+      <tr><td class="tk">🟡 Milvus</td><td>Open-source</td><td>Partial</td><td class="tg">Billions+</td><td>Billion-scale enterprise, GPU support</td></tr>
+      <tr><td class="tk">🔷 pgvector</td><td>PostgreSQL Extension</td><td>Manual</td><td>10M+</td><td>Already PostgreSQL use karte ho</td></tr>
+      <tr><td class="tk">🟤 Chroma</td><td>Open-source (Local)</td><td class="tr">Nahi</td><td>Local only</td><td>Seekhna, prototyping, development</td></tr>
+      <tr><td class="tk">🔶 LanceDB</td><td>Embedded/Serverless</td><td class="tg">Haan</td><td>Billions</td><td>ML engineers, embedded, cost-conscious</td></tr>
+      <tr><td class="tk">🔴 Redis</td><td>In-memory</td><td>Partial</td><td>RAM-limited</td><td>Sub-millisecond latency + caching</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="h2">23.2 Step-by-Step Decision Guide — Kaunsa Choose Karein?</h2>
+<div class="steps">
+  <div class="step">
+    <div class="step-n" style="background:var(--purple);font-size:13px">Q1</div>
+    <div>
+      <div class="step-title">Kya tum sirf seekh rahe ya prototype bana rahe ho?</div>
+      <div class="step-desc"><span class="hl-g">HAA →</span> <strong>Chroma</strong> use karo. Local, free, Python-native, zero setup, 5 lines of code mein kaam karta hai.<br/><span class="hl-s">NAA →</span> Q2 pe jao.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:var(--purple);font-size:13px">Q2</div>
+    <div>
+      <div class="step-title">Kya tum already PostgreSQL use kar rahe ho?</div>
+      <div class="step-desc"><span class="hl-g">HAA →</span> <strong>pgvector</strong> extension install karo. Koi migration nahi, koi new infrastructure nahi, SQL queries bhi kaam karti hain.<br/><span class="hl-s">NAA →</span> Q3 pe jao.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:var(--purple);font-size:13px">Q3</div>
+    <div>
+      <div class="step-title">Sub-millisecond latency chahiye?</div>
+      <div class="step-desc"><span class="hl-g">HAA →</span> <strong>Redis</strong> (sab RAM mein, &lt;1ms possible).<br/><span class="hl-s">NAA →</span> Q4 pe jao.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:var(--purple);font-size:13px">Q4</div>
+    <div>
+      <div class="step-title">Managed service chahiye (no DevOps overhead)?</div>
+      <div class="step-desc"><span class="hl-g">HAA →</span> <strong>Pinecone</strong> (sabse managed, easiest, production-ready).<br/><span class="hl-s">NAA →</span> Q5 pe jao.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:var(--purple);font-size:13px">Q5</div>
+    <div>
+      <div class="step-title">Billions of vectors hain?</div>
+      <div class="step-desc"><span class="hl-g">HAA →</span> <strong>Milvus</strong> (purpose-built for billion-scale, GPU support).<br/><span class="hl-s">NAA →</span> Q6 pe jao.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-n" style="background:var(--purple);font-size:13px">Q6</div>
+    <div>
+      <div class="step-title">Hybrid search (keyword + semantic) important hai?</div>
+      <div class="step-desc"><span class="hl-g">HAA →</span> <strong>Weaviate</strong> (best-in-class hybrid search, built-in).<br/><span class="hl-s">NAA →</span> <strong>Qdrant</strong> (fastest, best filtering, excellent documentation — default best choice!)</div>
+    </div>
+  </div>
+</div>
+<div class="page-num">12</div>
+</div>
+
+<!-- ████ CHAPTER 24 — Production Pitfalls ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 24</div>
+  <h2 class="ch-title">Production Pitfalls — Kya Cheez Real Systems Todti Hai?</h2>
+  <p class="ch-tagline">Demo banana easy hai. 24×7 production mein reliable rakhna alag baat hai. Yeh mistakes padho — in par surprise mat ho production mein!</p>
+</div>
+
+<h2 class="h2">Pitfall 1: Model Version Lock-in</h2>
+<div class="card c-red" style="border-radius:0 10px 0 0;border-bottom:none;margin-bottom:0">
+  <div class="c-head">🔴 Problem kya hai</div>
+  <div class="c-body">Tumne 10 lakh documents OpenAI ke <code style="font-family:var(--font-m)">text-embedding-ada-002</code> se store kiye. 6 mahine baad OpenAI ne <code style="font-family:var(--font-m)">text-embedding-3-large</code> release kiya — significantly better. Upgrade karne ke liye tumhe <strong>10 lakh documents sab re-embed karne padenge</strong>. Average 500 tokens × 10L docs × $0.00013/1K tokens = <strong>~$650 aur kaafi din ka processing time</strong>. Migration ke dauran DB down ya slow hoga.</div>
+</div>
+<div class="card c-green" style="border-radius:0 0 10px 10px;border-top:none;margin-top:0">
+  <div class="c-head">✅ Solution kya hai</div>
+  <div class="c-body">1. Model version explicitly pin karo: <code style="font-family:var(--font-m)">model="text-embedding-ada-002"</code> — "latest" kabhi mat likho<br/>2. Har vector ke saath model version metadata mein store karo<br/>3. Open-source models consider karo (Sentence-Transformers, BGE) — vendor lock-in nahi<br/>4. Upgrade se pehle re-embedding cost budget karo, dono models parallel chalao phir switch karo</div>
+</div>
+
+<h2 class="h2" style="margin-top:22px">Pitfall 2: Dimension Mismatch Errors</h2>
+<div class="card c-red" style="border-radius:0 10px 0 0;border-bottom:none;margin-bottom:0">
+  <div class="c-head">🔴 Problem kya hai</div>
+  <div class="c-body">Tumne 1536-dim collection configure kiya (OpenAI model). Ek naye developer ne 768-dim model use karke code likha. Har INSERT fail hogi cryptic error ke saath. Worst case: testing mein nahi pakda gaya aur raat 3 baje production mein hota hai!</div>
+</div>
+<div class="card c-green" style="border-radius:0 0 10px 10px;border-top:none;margin-top:0">
+  <div class="c-head">✅ Solution</div>
+  <div class="c-body">1. Single shared <code style="font-family:var(--font-m)">config.py</code> mein model name rakho — kabhi hardcode mat karo alag jagah<br/>2. Startup validation: model load karo, test string encode karo, assert karo dimension expected hai<br/>3. CI/CD mein expected dimension environment variable — change pe build fail karo</div>
+</div>
+
+<h2 class="h2" style="margin-top:22px">Pitfall 3: Index Rebuild Cost</h2>
+<div class="card c-red" style="border-radius:0 10px 0 0;border-bottom:none;margin-bottom:0">
+  <div class="c-head">🔴 Problem kya hai</div>
+  <div class="c-body">Tumhare e-commerce site par 5 crore products hain. Sale season mein 50 lakh nayi products 2 ghante mein upload karte ho. HNSW index har batch insert par partially rebuild hota hai. Query latency 20ms se 800ms ho jaati hai — lakho shoppers ka experience kharab!</div>
+</div>
+<div class="card c-green" style="border-radius:0 0 10px 10px;border-top:none;margin-top:0">
+  <div class="c-head">✅ Solution</div>
+  <div class="c-body">1. Incremental HNSW updates support karne wali DB use karo (Qdrant, Weaviate)<br/>2. Large imports low-traffic time par schedule karo<br/>3. Two collections: ek live (traffic serve karo) + ek update ho raha — atomic switch karo<br/>4. Import ke waqt query latency monitor karo — threshold breach hone par auto-pause</div>
+</div>
+
+<h2 class="h2" style="margin-top:22px">Pitfall 4: Multi-tenancy Data Leakage</h2>
+<div class="card c-red" style="border-radius:0 10px 0 0;border-bottom:none;margin-bottom:0">
+  <div class="c-head">🔴 Problem kya hai (CRITICAL!)</div>
+  <div class="c-body">Tum SaaS RAG chatbot banate ho. Company A aur Company B ke documents ek hi collection mein hain. Tumhare metadata filter mein ek bug — Company A ke users Company B ke private documents access kar lete hain. Yeh <strong>catastrophic data breach</strong> hai — legal liability, customer trust khatam!</div>
+</div>
+<div class="card c-green" style="border-radius:0 0 10px 10px;border-top:none;margin-top:0">
+  <div class="c-head">✅ Solution</div>
+  <div class="c-body">&lt;100 customers: <strong>Alag collection per customer</strong> (safest, koi leakage possible nahi)<br/>100+ customers: Shared collection + mandatory <code style="font-family:var(--font-m)">tenant_id</code> filter — <strong>launch se pehle adversarial queries se isolation test karo</strong>. Weaviate ka built-in multi-tenancy ya Pinecone namespaces consider karo.</div>
+</div>
+
+<h2 class="h2" style="margin-top:22px">Pitfall 5: Cold Start Problem</h2>
+<div class="card c-red" style="border-radius:0 10px 0 0;border-bottom:none;margin-bottom:0">
+  <div class="c-head">🔴 Problem kya hai</div>
+  <div class="c-body">Startup ne "AI-powered product search" launch kiya sirf 200 products ke saath. Users ko kharab recommendations milte hain — technology ka blame karte hain. Lekin asli problem hai: 200 vectors mein meaningful similarity search nahi ho sakti — itna diversity hi nahi hai!</div>
+</div>
+<div class="card c-green" style="border-radius:0 0 10px 10px;border-top:none;margin-top:0">
+  <div class="c-head">✅ Solution</div>
+  <div class="c-body">1. 1,000 items se kam hain → vector search use mat karo — simple text search karo<br/>2. Minimum threshold set karo: 10,000+ items ke baad hi vector search switch on karo<br/>3. Sparse categories mein BM25 keyword search pe fallback karo jab vector confidence low ho</div>
+</div>
+<div class="page-num">13</div>
+</div>
+
+<!-- ████ CHAPTER 25 — When NOT to Use ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 25</div>
+  <h2 class="ch-title">Kab Vector Database Use NAHI Karna Chahiye?</h2>
+  <p class="ch-tagline">Yeh jaanna ki technology kab use NAHI karni — yeh expertise ki nishaani hai. Vector databases powerful hain lekin often over-apply hote hain.</p>
+</div>
+
+<div class="box box-know">
+  <div class="bl">💡 Expert Ki Soch</div>
+  <div class="bd">Expert engineer pehla sawaal nahi poochte "Technology X kaise use karein?" — woh poochte hain "Is problem ko solve karne ka <strong>simplest</strong> tool kaunsa hai?"<br/><br/>
+  Agar simple SQL query se kaam ho sakta hai toh vector DB use karna = extra cost + extra complexity + extra bugs. <strong>Right tool for right job!</strong></div>
+</div>
+
+<h2 class="h2">Case 1: 10,000 se Kam Vectors → In-Memory Use Karo</h2>
+<div class="g2">
+  <div class="card c-red">
+    <div class="c-head">❌ Galat Approach</div>
+    <div class="c-body">Pinecone setup karo, ₹5000/month pay karo, API calls manage karo, connection pooling… sirf 500 product descriptions ke liye. Infrastructure cost + complexity 100× zyada hai actual need se.</div>
+  </div>
+  <div class="card c-green">
+    <div class="c-head">✅ Sahi Approach</div>
+    <div class="c-body">NumPy ya FAISS locally use karo. 500 vectors ka RAM sirf 1–3MB. Brute-force cosine search 500 vectors par = &lt;1ms. Zero infrastructure, zero cost, perfect accuracy.</div>
+  </div>
+</div>
+
+<h2 class="h2">Case 2: Exact Match Chahiye → PostgreSQL Use Karo</h2>
+<p class="bt">Agar tumhare queries hain: "Bengaluru ke sab users dhundho", "15 March ke orders show karo", "Electronics category mein ₹5000 se kam products" — yeh sab exact-match aur range queries hain. Vector DB wrong tool hai. PostgreSQL in queries ko 100× zyada efficiently handle karta hai.</p>
+
+<h2 class="h2">Case 3: Filtering 90% Hai, Similarity 10% → Traditional DB Kaafi Hai</h2>
+<p class="bt">Agar tumhara zyaadatar kaam metadata filtering hai aur thoda sa semantic similarity hai, toh Elasticsearch ya proper database + light re-ranking zyada sense banata hai. Vector DB unnecessarily expensive aur complex hoga.</p>
+
+<h2 class="h2">Case 4: Chunking Abhi Fix Nahi Hua → Pehle Woh Karo</h2>
+<p class="bt">RAG se galat answers aa rahe hain aur soch rahe ho "shayad better vector DB chahiye"? Ruko. Pehle chunking strategy fix karo. 80% cases mein better chunking (boundaries respect karo, overlap badhao, metadata include karo) se problem solve ho jaati hai — bina DB change kiye!</p>
+
+<h2 class="h2">Case 5: Real-Time Data (Har Second Update) → Streaming DB Use Karo</h2>
+<p class="bt">Agar data har second change hota hai (stock prices, live chat, IoT sensors) toh vector DB ka re-embedding + re-indexing overhead impractical hai. Streaming databases (Kafka, Redis Streams) use karo, vector index periodically batch-update karo.</p>
+
+<div class="box box-def">
+  <div class="bl">📘 Expert Ka Rule — Kab Vector DB Use Karein</div>
+  <div class="bd">
+  Vector DB use karo sirf jab <strong>SAB yeh conditions true hain:</strong><br/><br/>
+  1. ✅ 10,000+ items hain<br/>
+  2. ✅ Users ko <em>similar</em> cheezein dhundhni hain — exact match nahi<br/>
+  3. ✅ Semantic understanding matter karta hai (synonyms, meaning)<br/>
+  4. ✅ Chunking/embedding pipeline sahi hai<br/>
+  5. ✅ Traditional database yeh solve nahi kar sakta<br/><br/>
+  Agar ek bhi false hai → pehle simpler tool try karo.
+  </div>
+</div>
+<div class="page-num">14</div>
+</div>
+
+<!-- ████ CHAPTER 26 — Expert Reference ████ -->
+<div class="page">
+<div class="ch-hdr">
+  <div class="ch-num">Adhyay 26 — Appendix</div>
+  <h2 class="ch-title">Expert Quick Reference aur Complete Glossary</h2>
+  <p class="ch-tagline">Real systems banate waqt is page ko reference ki tarah use karo. Saari important decisions ek jagah.</p>
+</div>
+
+<h2 class="h2">26.1 Expert Cheat Sheet — Ek Page Mein Sab</h2>
+<div class="tw">
+  <table>
+    <thead><tr><th>Sawaal / Situation</th><th>Expert Answer</th></tr></thead>
+    <tbody>
+      <tr><td class="tk">Text ke liye similarity metric?</td><td class="tg">Cosine Similarity — hamesha. Koi exception nahi NLP tasks mein.</td></tr>
+      <tr><td class="tk">Default index type?</td><td class="tg">HNSW. Memory-constrained hoon toh IVF-PQ consider karo.</td></tr>
+      <tr><td class="tk">Write aur query mein alag model?</td><td class="tr">NAHI! Same model — non-negotiable. Alag = wrong results.</td></tr>
+      <tr><td class="tk">10K se kam vectors hain?</td><td>NumPy/FAISS in-memory. Vector DB ki zaroorat nahi.</td></tr>
+      <tr><td class="tk">Exact match queries chahiye?</td><td>PostgreSQL/MySQL. Vector DB exact match ke liye nahi hai.</td></tr>
+      <tr><td class="tk">Keyword + semantic search dono?</td><td class="tg">Hybrid search: BM25 + dense vectors, RRF se merge karo.</td></tr>
+      <tr><td class="tk">Easiest production start?</td><td class="tg">Pinecone (managed, zero DevOps, production-ready).</td></tr>
+      <tr><td class="tk">Already PostgreSQL pe ho?</td><td class="tg">pgvector extension — no migration, SQL bhi kaam karega.</td></tr>
+      <tr><td class="tk">Sirf seekhna/prototyping?</td><td class="tg">Chroma (local, Python, zero setup, free).</td></tr>
+      <tr><td class="tk">Maximum speed + filtering?</td><td class="tg">Qdrant (Rust, bahut fast, best filtering, great docs).</td></tr>
+      <tr><td class="tk">Billion-scale vectors?</td><td class="tg">Milvus ya Pinecone Enterprise.</td></tr>
+      <tr><td class="tk">Sub-millisecond latency?</td><td class="tg">Redis vector support.</td></tr>
+      <tr><td class="tk">RAG results kharab hain?</td><td class="tr">Pehle chunking fix karo — almost hamesha yahi problem hai!</td></tr>
+      <tr><td class="tk">Model upgrade karna hai?</td><td>Sab stored vectors re-embed karne ka budget rakho.</td></tr>
+      <tr><td class="tk">Production recall target?</td><td class="tg">≥95% recall at &lt;50ms p99 latency.</td></tr>
+      <tr><td class="tk">HNSW ef parameter?</td><td>Default 50–200. Badhao → better recall, slow query. Tunable!</td></tr>
+      <tr><td class="tk">Chunk size kitna rakhen?</td><td class="tg">512–1024 tokens, 15–20% overlap, paragraph boundaries respect karo.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="h2">26.2 Complete Glossary — Sabhi Key Terms</h2>
+<div class="glos">
+  <div class="glos-item"><div class="glos-word">ANN</div><div class="glos-def">Approximate Nearest Neighbour — fast lekin approximate similarity search</div></div>
+  <div class="glos-item"><div class="glos-word">BM25</div><div class="glos-def">Best Match 25 — standard keyword ranking algorithm (Elasticsearch mein)</div></div>
+  <div class="glos-item"><div class="glos-word">Chunk</div><div class="glos-def">Bade document ka ek chhota piece — embedding se pehle create hota hai</div></div>
+  <div class="glos-item"><div class="glos-word">Cosine Similarity</div><div class="glos-def">Angle measure karta hai do vectors ke beech — text ke liye default metric</div></div>
+  <div class="glos-item"><div class="glos-word">Dense Vector</div><div class="glos-def">Vector jisme zyaadatar values non-zero hain — neural embedding models produce karte hain</div></div>
+  <div class="glos-item"><div class="glos-word">Dimension</div><div class="glos-def">Vector mein ek number — modern embeddings 384–3072 dimensions ke hote hain</div></div>
+  <div class="glos-item"><div class="glos-word">Dot Product</div><div class="glos-def">Angle + magnitude dono consider karta hai — popularity-weighted tasks ke liye</div></div>
+  <div class="glos-item"><div class="glos-word">Embedding</div><div class="glos-def">Data (text/image/audio) ka vector representation jo meaning capture karta hai</div></div>
+  <div class="glos-item"><div class="glos-word">Euclidean Distance</div><div class="glos-def">Seedha line distance do vectors ke beech — Pythagoras extended to N dims</div></div>
+  <div class="glos-item"><div class="glos-word">HNSW</div><div class="glos-def">Hierarchical Navigable Small World — multi-layer graph index, production default</div></div>
+  <div class="glos-item"><div class="glos-word">Hybrid Search</div><div class="glos-def">BM25 (keywords) + dense (vectors) combine karna, RRF se merge karo</div></div>
+  <div class="glos-item"><div class="glos-word">IVF</div><div class="glos-def">Inverted File Index — cluster-based vector index, HNSW se kam RAM</div></div>
+  <div class="glos-item"><div class="glos-word">kNN</div><div class="glos-def">k-Nearest Neighbours — k closest vectors dhundho (ANN ka exact version)</div></div>
+  <div class="glos-item"><div class="glos-word">Metadata</div><div class="glos-def">Vector ke saath store hone wali extra info — original text, ID, date, category</div></div>
+  <div class="glos-item"><div class="glos-word">Multi-tenancy</div><div class="glos-def">Ek database se multiple isolated customers serve karna</div></div>
+  <div class="glos-item"><div class="glos-word">PQ</div><div class="glos-def">Product Quantization — lossy vector compression, up to 768× memory savings</div></div>
+  <div class="glos-item"><div class="glos-word">RAG</div><div class="glos-def">Retrieval-Augmented Generation — vector search se LLMs ko private data dena</div></div>
+  <div class="glos-item"><div class="glos-word">Recall</div><div class="glos-def">True nearest neighbours ka fraction jo actually mila. 1.0 = perfect. ≥0.95 target.</div></div>
+  <div class="glos-item"><div class="glos-word">RRF</div><div class="glos-def">Reciprocal Rank Fusion — multiple ranked lists ko merge karne ka algorithm</div></div>
+  <div class="glos-item"><div class="glos-word">Semantic Search</div><div class="glos-def">Exact words nahi, meaning se search — vector similarity se possible hota hai</div></div>
+  <div class="glos-item"><div class="glos-word">Sparse Vector</div><div class="glos-def">Vector jisme zyaadatar values zero hain — BM25 keyword search mein use</div></div>
+  <div class="glos-item"><div class="glos-word">Top-K</div><div class="glos-def">Query ke K most similar results return karo — K tum choose karte ho</div></div>
+  <div class="glos-item"><div class="glos-word">Vector</div><div class="glos-def">Numbers ki ordered list — Vector Database ka fundamental data structure</div></div>
+  <div class="glos-item"><div class="glos-word">ef (HNSW)</div><div class="glos-def">Search breadth — badhao → better recall, thoda slow. Runtime tunable!</div></div>
+  <div class="glos-item"><div class="glos-word">nprobe (IVF)</div><div class="glos-def">Query time par kitne clusters search karein — badhao → better recall, slow</div></div>
+  <div class="glos-item"><div class="glos-word">Word2Vec</div><div class="glos-def">2013 Google ka early embedding model — King-Man+Woman=Queen discovery</div></div>
+</div>
+
+<div class="box-summary" style="margin-top:20px">
+  <div class="bl">🎓 Congratulations! Poora Course Complete Kiya!</div>
+  <ul>
+    <li>Tum zero se expert ho gaye — data kya hai se lekar production pitfalls tak sab samjha</li>
+    <li>Vectors, embeddings, distance metrics, index types, ANN trade-offs, hybrid search, RAG — sab covered</li>
+    <li>Kaunsa database kab choose karein — tumhe pata hai</li>
+    <li>Kab Vector DB use NAHI karna — yeh bhi pata hai (true expert ka sign!)</li>
+    <li>Agla step: Chroma + LangChain + any free model se ek RAG system banao. Phir Qdrant ya Weaviate par production deploy karo!</li>
+  </ul>
+</div>
+
+<div class="ch-end">
+  ★ &nbsp; Vector Databases — Hinglish Complete Guide — Bilkul Zero se Expert Tak &nbsp; ★
+</div>
+<div class="page-num">15</div>
+</div>
+
+</div><!-- /book -->
+
+<script>
+/* Progress bar */
+window.addEventListener('scroll',()=>{
+  const d=document.documentElement;
+  document.getElementById('prog').style.width=
+    (d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+});
+
+/* PDF Download */
+async function downloadPDF(){
+  const {jsPDF}=window.jspdf;
+  const btn=document.getElementById('dlBtn');
+  const orig=btn.innerHTML;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> PDF ban raha hai… (30–60 sec)';
+  btn.disabled=true;
+  try{
+    const pages=document.querySelectorAll('.page');
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    const pw=210,ph=297;
+    for(let i=0;i<pages.length;i++){
+      btn.innerHTML=`<i class="fas fa-spinner fa-spin"></i> Page ${i+1}/${pages.length} ban raha hai…`;
+      const canvas=await html2canvas(pages[i],{
+        scale:2,useCORS:true,backgroundColor:'#ffffff',
+        windowWidth:794,logging:false,allowTaint:true,
+      });
+      const imgData=canvas.toDataURL('image/jpeg',0.88);
+      const ratio=canvas.height/canvas.width;
+      const imgH=pw*ratio;
+      if(i>0) doc.addPage();
+      if(imgH<=ph){
+        doc.addImage(imgData,'JPEG',0,0,pw,imgH,undefined,'FAST');
+      } else {
+        let posY=0,first=true;
+        while(posY<imgH){
+          if(!first) doc.addPage();
+          doc.addImage(imgData,'JPEG',0,-posY,pw,imgH,undefined,'FAST');
+          posY+=ph;first=false;
+        }
+      }
+    }
+    doc.save('VectorDB_Hinglish_Zero_to_Expert.pdf');
+  }catch(e){
+    alert('PDF nahi bana: '+e.message);
+    console.error(e);
+  }finally{
+    btn.innerHTML=orig;
+    btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>
