@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 13 — Production & Deployment | AI Agent Engineering Masterbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink:       #0f1923;
+    --ink-light: #3a4a5a;
+    --paper:     #fdfcf8;
+    --cream:     #f5f2eb;
+    --rule:      #e0dbd0;
+    --accent1:   #c0392b;   /* deep red   – headings */
+    --accent2:   #1a5276;   /* navy       – subheadings */
+    --accent3:   #117a65;   /* teal-green – code / tips */
+    --accent4:   #7d3c98;   /* violet     – notes */
+    --accent5:   #d68910;   /* amber      – warnings */
+    --accent6:   #1e8bc3;   /* sky blue   – interview */
+    --shadow:    rgba(15,25,35,.12);
+    --page-w:    860px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #d6d0c4;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ══════════════════════════════ PRINT ══════════════════════════════ */
+  @media print {
+    body { background: white; }
+    .no-print { display: none !important; }
+    .page { box-shadow: none; margin: 0; page-break-after: always; }
+    pre, .code-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* ══════════════════════════════ LAYOUT ══════════════════════════════ */
+  .book-wrap { max-width: var(--page-w); margin: 0 auto; padding: 40px 20px 80px; }
+  .page {
+    background: var(--paper);
+    box-shadow: 0 4px 32px var(--shadow), 0 1px 4px rgba(0,0,0,.06);
+    border-radius: 4px;
+    margin-bottom: 40px;
+    padding: 64px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--page-stripe, var(--accent1));
+  }
+  @media(max-width:680px){ .page { padding: 36px 22px; } }
+
+  /* ══════════════════════════════ HERO ══════════════════════════════ */
+  .hero {
+    background: var(--ink);
+    color: white;
+    padding: 72px 72px 56px;
+    margin-bottom: 40px;
+    border-radius: 4px;
+    box-shadow: 0 8px 48px rgba(0,0,0,.28);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '⚙';
+    position: absolute;
+    right: -20px; bottom: -30px;
+    font-size: 260px;
+    opacity: .05;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent5);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--accent5); }
+  .hero p { color: #adb8c4; max-width: 560px; font-size: 15px; }
+  .hero-meta {
+    display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap;
+  }
+  .hero-badge {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: #cdd6de;
+  }
+
+  /* ══════════════════════════════ TYPOGRAPHY ══════════════════════════════ */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--accent1);
+    border-bottom: 2.5px solid var(--accent1);
+    padding-bottom: 8px;
+    margin: 48px 0 24px;
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: var(--accent2);
+    font-weight: 700;
+    margin: 32px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3::before { content: '▸'; color: var(--accent2); font-size: .9rem; }
+  h4 {
+    font-size: .95rem;
+    color: var(--accent3);
+    font-weight: 700;
+    margin: 24px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  p { margin-bottom: 14px; }
+  strong { color: var(--ink); }
+  em { color: var(--accent2); font-style: italic; }
+  ul, ol { padding-left: 22px; margin-bottom: 14px; }
+  li { margin-bottom: 5px; }
+
+  /* ══════════════════════════════ CHAPTER BANNER ══════════════════════════════ */
+  .ch-banner {
+    background: linear-gradient(135deg, var(--ch-a) 0%, var(--ch-b) 100%);
+    color: white;
+    padding: 28px 32px;
+    border-radius: 6px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ch-banner::after {
+    content: attr(data-icon);
+    position: absolute; right: 16px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 64px; opacity: .18;
+  }
+  .ch-banner .ch-num {
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    opacity: .7;
+    margin-bottom: 4px;
+  }
+  .ch-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: white;
+    border: none;
+    padding: 0; margin: 0;
+  }
+
+  /* ══════════════════════════════ CALLOUT BOXES ══════════════════════════════ */
+  .box {
+    border-left: 4px solid var(--box-color, #aaa);
+    background: var(--box-bg, #f9f9f9);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .box-title {
+    font-weight: 700;
+    font-size: .85rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--box-color, #555);
+    margin-bottom: 6px;
+  }
+  .tip   { --box-color: var(--accent3); --box-bg: #eafaf1; }
+  .note  { --box-color: var(--accent4); --box-bg: #f5eef8; }
+  .warn  { --box-color: var(--accent5); --box-bg: #fef9e7; }
+  .info  { --box-color: var(--accent6); --box-bg: #eaf4fc; }
+  .error { --box-color: var(--accent1); --box-bg: #fdedec; }
+  .remember {
+    border: 2.5px dashed var(--accent1);
+    background: #fff8f8;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 24px 0;
+  }
+  .remember .box-title { color: var(--accent1); }
+
+  /* ══════════════════════════════ CODE ══════════════════════════════ */
+  .code-block {
+    background: #0d1117;
+    color: #e6edf3;
+    border-radius: 8px;
+    margin: 20px 0;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.65;
+    box-shadow: 0 4px 20px rgba(0,0,0,.18);
+  }
+  .code-header {
+    background: #161b22;
+    padding: 9px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #30363d;
+  }
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #8b949e;
+    letter-spacing: .05em;
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .code-dots span:nth-child(1){ background: #ff5f57; }
+  .code-dots span:nth-child(2){ background: #febc2e; }
+  .code-dots span:nth-child(3){ background: #28c840; }
+  .code-block pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .c-kw   { color: #ff7b72; }   /* keyword    */
+  .c-fn   { color: #d2a8ff; }   /* function   */
+  .c-str  { color: #a5d6ff; }   /* string     */
+  .c-cmt  { color: #6e7681; font-style: italic; } /* comment */
+  .c-num  { color: #f2cc60; }   /* number     */
+  .c-cls  { color: #ffa657; }   /* class name */
+  .c-op   { color: #79c0ff; }   /* operator   */
+  .c-var  { color: #e6edf3; }   /* variable   */
+
+  /* ══════════════════════════════ TABLES ══════════════════════════════ */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: var(--accent2);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--rule); }
+  tr:nth-child(even) td { background: var(--cream); }
+  tr:hover td { background: #eaf2fb; }
+
+  /* ══════════════════════════════ DIAGRAMS ══════════════════════════════ */
+  .diagram-wrap {
+    background: var(--cream);
+    border: 1.5px solid var(--rule);
+    border-radius: 10px;
+    padding: 28px 20px;
+    margin: 28px 0;
+    text-align: center;
+  }
+  .diagram-title {
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-top: 16px;
+    font-weight: 600;
+  }
+
+  /* flow boxes */
+  .flow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0; }
+  .flow-box {
+    background: white;
+    border: 2px solid var(--f-color, var(--accent2));
+    color: var(--f-color, var(--accent2));
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 12.5px;
+    font-weight: 600;
+    min-width: 110px;
+    text-align: center;
+  }
+  .flow-arrow {
+    color: var(--ink-light);
+    font-size: 18px;
+    padding: 0 6px;
+  }
+
+  /* arch boxes */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .arch-card {
+    background: white;
+    border-radius: 8px;
+    border: 1.5px solid var(--rule);
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .arch-card .arch-icon { font-size: 28px; margin-bottom: 6px; }
+  .arch-card .arch-label { font-size: 12px; font-weight: 600; color: var(--ink); }
+  .arch-card .arch-sub { font-size: 11px; color: var(--ink-light); margin-top: 4px; }
+
+  /* ══════════════════════════════ INTERVIEW ══════════════════════════════ */
+  .iq-list { list-style: none; padding: 0; }
+  .iq-list li {
+    background: #eaf4fc;
+    border-left: 4px solid var(--accent6);
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13.5px;
+  }
+  .iq-list li::before { content: '💬 '; }
+
+  /* ══════════════════════════════ EXERCISE ══════════════════════════════ */
+  .exercise {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e8f5e9 100%);
+    border: 1.5px solid #b3d9f7;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 28px 0;
+  }
+  .exercise-title {
+    font-weight: 700;
+    color: var(--accent3);
+    margin-bottom: 10px;
+    font-size: .9rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+  .exercise ol { margin: 0; }
+  .exercise li { margin-bottom: 8px; }
+
+  /* ══════════════════════════════ TOC ══════════════════════════════ */
+  .toc { columns: 2; gap: 32px; }
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dotted var(--rule);
+    font-size: 13.5px;
+    break-inside: avoid;
+  }
+  .toc-item a { color: var(--accent2); text-decoration: none; font-weight: 500; }
+  .toc-item a:hover { color: var(--accent1); }
+  .toc-pg { color: var(--ink-light); font-size: 12px; }
+
+  /* ══════════════════════════════ NAV ══════════════════════════════ */
+  .sticky-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--ink);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 24px;
+    z-index: 1000;
+    box-shadow: 0 2px 16px rgba(0,0,0,.3);
+    font-size: 13px;
+    no-print: true;
+  }
+  .sticky-nav .nav-title { font-weight: 600; letter-spacing: .04em; }
+  .sticky-nav .nav-right { display: flex; gap: 12px; align-items: center; }
+  .pdf-btn {
+    background: var(--accent1);
+    color: white;
+    border: none;
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: .05em;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .pdf-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(192,57,43,.4); }
+  .progress-bar {
+    height: 3px;
+    background: var(--accent5);
+    position: fixed;
+    top: 45px; left: 0;
+    z-index: 999;
+    transition: width .1s;
+  }
+
+  body { padding-top: 48px; }
+
+  /* ══════════════════════════════ HIGHLIGHT LABELS ══════════════════════════════ */
+  .label {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .label-red   { background: #fde8e8; color: var(--accent1); }
+  .label-blue  { background: #dbeafe; color: var(--accent2); }
+  .label-green { background: #d1fae5; color: var(--accent3); }
+  .label-amber { background: #fef3c7; color: #92400e; }
+
+  /* ══════════════════════════════ SUMMARY CARD ══════════════════════════════ */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .summary-card {
+    background: white;
+    border-radius: 8px;
+    border: 1.5px solid var(--rule);
+    padding: 16px;
+    border-top: 3px solid var(--s-color, var(--accent2));
+  }
+  .summary-card h5 {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--s-color, var(--accent2));
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 12.5px; color: var(--ink-light); margin: 0; }
+
+  /* ══════════════════════════════ STEP LIST ══════════════════════════════ */
+  .steps { list-style: none; padding: 0; counter-reset: step; }
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .steps li::before {
+    content: counter(step);
+    min-width: 28px; height: 28px;
+    background: var(--accent2);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════ COMPARISON ══════════════════════════════ */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .vs-card {
+    border-radius: 8px;
+    padding: 18px;
+    border: 1.5px solid var(--rule);
+  }
+  .vs-card h5 { font-size: .85rem; margin-bottom: 10px; }
+
+  /* ══════════════════════════════ GLOSSARY ══════════════════════════════ */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .glossary-item {
+    background: white;
+    border-radius: 6px;
+    padding: 12px 14px;
+    border: 1px solid var(--rule);
+  }
+  .glossary-item dt { font-weight: 700; color: var(--accent2); font-size: .9rem; }
+  .glossary-item dd { font-size: 12.5px; color: var(--ink-light); margin: 4px 0 0; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ STICKY NAV ══════════════════ -->
+<nav class="sticky-nav no-print">
+  <span class="nav-title">📘 AI Agent Masterbook · Part 13</span>
+  <div class="nav-right">
+    <span id="progress-label" style="color:#8b949e;font-size:11px;"></span>
+    <button class="pdf-btn" onclick="window.print()">⬇ Download PDF</button>
+  </div>
+</nav>
+<div class="progress-bar" id="progress-bar"></div>
+
+<div class="book-wrap">
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div class="hero no-print">
+  <div class="hero-label">AI Agent Engineering Masterbook</div>
+  <h1>Part 13 —<br><span>Production &amp;</span><br>Deployment</h1>
+  <p>Real-world AI applications ko build karna sirf code likhna nahi hai — unhe deploy karna, scale karna, secure banana, aur optimize karna bhi utna hi zaroori hai. Yeh chapter aapko complete production engineer banata hai.</p>
+  <div class="hero-meta">
+    <span class="hero-badge">🚀 6 Major Topics</span>
+    <span class="hero-badge">⚙ FastAPI · Docker · K8s · AWS</span>
+    <span class="hero-badge">🔐 Security & Cost Optimization</span>
+    <span class="hero-badge">🌐 Cloud Platforms</span>
+  </div>
+</div>
+
+<!-- ══════════════════ PAGE 1: TOC ══════════════════ -->
+<div class="page" style="--page-stripe: var(--accent1)">
+  <h2 style="margin-top:0">Table of Contents</h2>
+  <p style="color:var(--ink-light);font-size:13px;margin-bottom:24px;">Yeh chapter 6 major sections mein divide hai. Har section deeply cover karta hai ek specific production concern.</p>
+  <div class="toc">
+    <div class="toc-item"><a href="#ch1">Ch 1 · Backend Deployment</a><span class="toc-pg">3</span></div>
+    <div class="toc-item"><a href="#ch1-fastapi">↳ FastAPI</a><span class="toc-pg">3</span></div>
+    <div class="toc-item"><a href="#ch1-flask">↳ Flask</a><span class="toc-pg">5</span></div>
+    <div class="toc-item"><a href="#ch1-nodejs">↳ Node.js</a><span class="toc-pg">7</span></div>
+    <div class="toc-item"><a href="#ch1-serverless">↳ Serverless</a><span class="toc-pg">8</span></div>
+    <div class="toc-item"><a href="#ch2">Ch 2 · Cloud Platforms</a><span class="toc-pg">10</span></div>
+    <div class="toc-item"><a href="#ch2-aws">↳ AWS</a><span class="toc-pg">10</span></div>
+    <div class="toc-item"><a href="#ch2-azure">↳ Azure</a><span class="toc-pg">12</span></div>
+    <div class="toc-item"><a href="#ch2-gcp">↳ GCP</a><span class="toc-pg">13</span></div>
+    <div class="toc-item"><a href="#ch3">Ch 3 · DevOps</a><span class="toc-pg">15</span></div>
+    <div class="toc-item"><a href="#ch3-docker">↳ Docker</a><span class="toc-pg">15</span></div>
+    <div class="toc-item"><a href="#ch3-k8s">↳ Kubernetes</a><span class="toc-pg">18</span></div>
+    <div class="toc-item"><a href="#ch3-cicd">↳ CI/CD</a><span class="toc-pg">20</span></div>
+    <div class="toc-item"><a href="#ch3-gha">↳ GitHub Actions</a><span class="toc-pg">21</span></div>
+    <div class="toc-item"><a href="#ch4">Ch 4 · Scalability</a><span class="toc-pg">23</span></div>
+    <div class="toc-item"><a href="#ch4-lb">↳ Load Balancing</a><span class="toc-pg">23</span></div>
+    <div class="toc-item"><a href="#ch4-cache">↳ Caching</a><span class="toc-pg">25</span></div>
+    <div class="toc-item"><a href="#ch4-scale">↳ Horizontal Scaling</a><span class="toc-pg">26</span></div>
+    <div class="toc-item"><a href="#ch4-queue">↳ Queue Systems</a><span class="toc-pg">27</span></div>
+    <div class="toc-item"><a href="#ch5">Ch 5 · Security</a><span class="toc-pg">29</span></div>
+    <div class="toc-item"><a href="#ch6">Ch 6 · Cost Optimization</a><span class="toc-pg">33</span></div>
+    <div class="toc-item"><a href="#glossary">Glossary</a><span class="toc-pg">37</span></div>
+    <div class="toc-item"><a href="#revision">Revision Notes</a><span class="toc-pg">38</span></div>
+  </div>
+
+  <div class="box info" style="margin-top:32px">
+    <div class="box-title">📖 Is Chapter Ko Kaise Padhe?</div>
+    Pehle pura ek chapter padhein, phir code examples manually type karein (copy-paste mat karein!), aur finally mini exercises solve karein. Yeh approach deep understanding deta hai.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CHAPTER 1 — BACKEND DEPLOYMENT
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="ch1" style="--page-stripe: var(--accent1)">
+  <div class="ch-banner" style="--ch-a:#c0392b;--ch-b:#922b21" data-icon="🖥">
+    <div class="ch-num">Chapter 1 of 6</div>
+    <h2>Backend Deployment</h2>
+  </div>
+
+  <p>Jab aap ek AI model ya agent banate ho, toh use duniya ke saamne laana padta hai — yani ek <strong>server par deploy karna</strong> padta hai. Backend deployment matlab hai aapki Python/Node.js application ko ek aise server par chalana jahan se dusre log us API ko access kar sakein.</p>
+
+  <div class="box note">
+    <div class="box-title">💡 Analogy — Dukaan Kholna</div>
+    Socho tumne ek bahut achha khana banana seekh liya. Ab ghar par toh tum khud khate ho — lekin dukaan kholna matlab hai kitchen ko ek aisi jagah banana jahan hazaron log aayen aur order karein. Backend deployment bilkul yahi hai!
+  </div>
+
+  <h3 id="ch1-fastapi">1.1 FastAPI — The Modern Python Server</h3>
+
+  <h4>FastAPI Kya Hai?</h4>
+  <p>FastAPI ek <strong>modern, high-performance Python web framework</strong> hai jo APIs banane ke liye use hota hai. Yeh <em>Starlette</em> (ASGI framework) aur <em>Pydantic</em> (data validation) ke upar build hua hai. Iska naam isliye FastAPI hai kyunki yeh:</p>
+  <ul>
+    <li><strong>Fast to run</strong> — NodeJS aur Go ke barabar performance</li>
+    <li><strong>Fast to code</strong> — 200–300% faster development speed</li>
+    <li><strong>Fast to learn</strong> — Minimal boilerplate, maximum clarity</li>
+  </ul>
+
+  <h4>FastAPI Kyun Use Karein?</h4>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Feature</th><th>FastAPI</th><th>Flask</th><th>Django</th></tr></thead>
+    <tbody>
+      <tr><td>Speed</td><td>⚡ Very High (async)</td><td>Moderate</td><td>Moderate</td></tr>
+      <tr><td>Auto Documentation</td><td>✅ Built-in Swagger</td><td>❌ Manual</td><td>❌ Manual</td></tr>
+      <tr><td>Type Hints Support</td><td>✅ Native</td><td>⚠ Partial</td><td>⚠ Partial</td></tr>
+      <tr><td>Async Support</td><td>✅ First-class</td><td>⚠ Limited</td><td>⚠ Limited</td></tr>
+      <tr><td>Data Validation</td><td>✅ Pydantic built-in</td><td>❌ Manual</td><td>⚠ DRF</td></tr>
+      <tr><td>Learning Curve</td><td>Easy</td><td>Easy</td><td>Steep</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>FastAPI Kaise Kaam Karta Hai — Internal Working</h4>
+
+  <div class="diagram-wrap">
+    <div class="flow" style="flex-direction:column; gap:0">
+      <div class="flow-box" style="--f-color:#1a5276; background:#dbeafe; width:200px">Client (Browser/App)</div>
+      <div class="flow-arrow">↓ HTTP Request</div>
+      <div class="flow-box" style="--f-color:#117a65; background:#d1fae5; width:200px">Uvicorn (ASGI Server)</div>
+      <div class="flow-arrow">↓ Passes request</div>
+      <div class="flow-box" style="--f-color:#7d3c98; background:#f3e8ff; width:200px">Starlette Middleware</div>
+      <div class="flow-arrow">↓ Route matching</div>
+      <div class="flow-box" style="--f-color:#c0392b; background:#fde8e8; width:200px">FastAPI Router</div>
+      <div class="flow-arrow">↓ Validates data</div>
+      <div class="flow-box" style="--f-color:#d68910; background:#fef3c7; width:200px">Pydantic Models</div>
+      <div class="flow-arrow">↓ Runs your code</div>
+      <div class="flow-box" style="--f-color:#1a5276; background:#dbeafe; width:200px">Your Function (Endpoint)</div>
+      <div class="flow-arrow">↑ Returns JSON response</div>
+    </div>
+    <div class="diagram-title">FastAPI Request Processing Pipeline</div>
+  </div>
+
+  <h4>Installation</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">bash — Terminal</span>
+    </div>
+    <pre><span class="c-cmt"># FastAPI aur Uvicorn (ASGI server) install karo</span>
+pip install fastapi uvicorn[standard]
+
+<span class="c-cmt"># Additional dependencies for AI apps</span>
+pip install pydantic python-dotenv httpx</pre>
+  </div>
+
+  <h4>Basic FastAPI App — Beginner Example</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — main.py</span>
+    </div>
+    <pre><span class="c-kw">from</span> <span class="c-cls">fastapi</span> <span class="c-kw">import</span> FastAPI
+<span class="c-kw">from</span> <span class="c-cls">pydantic</span> <span class="c-kw">import</span> BaseModel
+<span class="c-kw">from</span> <span class="c-cls">typing</span> <span class="c-kw">import</span> Optional
+
+<span class="c-cmt"># FastAPI app create karo</span>
+<span class="c-var">app</span> = <span class="c-fn">FastAPI</span>(
+    <span class="c-var">title</span>=<span class="c-str">"AI Agent API"</span>,
+    <span class="c-var">version</span>=<span class="c-str">"1.0.0"</span>,
+    <span class="c-var">description</span>=<span class="c-str">"Mera pehla AI backend!"</span>
+)
+
+<span class="c-cmt"># Pydantic model — Request body ka structure</span>
+<span class="c-kw">class</span> <span class="c-cls">ChatRequest</span>(BaseModel):
+    <span class="c-var">message</span>: <span class="c-cls">str</span>
+    <span class="c-var">user_id</span>: Optional[<span class="c-cls">str</span>] = <span class="c-str">"anonymous"</span>
+
+<span class="c-cmt"># Response model</span>
+<span class="c-kw">class</span> <span class="c-cls">ChatResponse</span>(BaseModel):
+    <span class="c-var">reply</span>: <span class="c-cls">str</span>
+    <span class="c-var">tokens_used</span>: <span class="c-cls">int</span>
+
+<span class="c-cmt"># GET endpoint — Simple health check</span>
+<span class="c-op">@app</span>.get(<span class="c-str">"/"</span>)
+<span class="c-kw">async def</span> <span class="c-fn">root</span>():
+    <span class="c-kw">return</span> {<span class="c-str">"status"</span>: <span class="c-str">"✅ Server chal raha hai!"</span>}
+
+<span class="c-cmt"># POST endpoint — Chat message receive karo</span>
+<span class="c-op">@app</span>.post(<span class="c-str">"/chat"</span>, response_model=<span class="c-cls">ChatResponse</span>)
+<span class="c-kw">async def</span> <span class="c-fn">chat</span>(<span class="c-var">request</span>: <span class="c-cls">ChatRequest</span>):
+    <span class="c-cmt"># Yahan AI model call hoga (abhi simple response)</span>
+    <span class="c-var">reply</span> = <span class="c-str">f"Aapne kaha: {request.message}"</span>
+    <span class="c-kw">return</span> <span class="c-cls">ChatResponse</span>(
+        <span class="c-var">reply</span>=<span class="c-var">reply</span>,
+        <span class="c-var">tokens_used</span>=<span class="c-fn">len</span>(request.message.split())
+    )
+
+<span class="c-cmt"># Run command:</span>
+<span class="c-cmt"># uvicorn main:app --reload --host 0.0.0.0 --port 8000</span></pre>
+  </div>
+
+  <h4>Real-World FastAPI AI App — Claude Integration</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — ai_server.py</span>
+    </div>
+    <pre><span class="c-kw">from</span> <span class="c-cls">fastapi</span> <span class="c-kw">import</span> FastAPI, HTTPException, Depends
+<span class="c-kw">from</span> <span class="c-cls">fastapi.middleware.cors</span> <span class="c-kw">import</span> CORSMiddleware
+<span class="c-kw">from</span> <span class="c-cls">pydantic</span> <span class="c-kw">import</span> BaseModel
+<span class="c-kw">import</span> <span class="c-cls">anthropic</span>
+<span class="c-kw">import</span> <span class="c-cls">os</span>
+<span class="c-kw">from</span> <span class="c-cls">dotenv</span> <span class="c-kw">import</span> load_dotenv
+
+<span class="c-fn">load_dotenv</span>()  <span class="c-cmt"># .env file se API keys load karo</span>
+
+<span class="c-var">app</span> = <span class="c-fn">FastAPI</span>(<span class="c-var">title</span>=<span class="c-str">"AI Chat Server"</span>)
+
+<span class="c-cmt"># CORS allow karo (frontend se requests aane ke liye)</span>
+app.add_middleware(
+    <span class="c-cls">CORSMiddleware</span>,
+    <span class="c-var">allow_origins</span>=[<span class="c-str">"*"</span>],  <span class="c-cmt"># Production mein specific domain dena</span>
+    <span class="c-var">allow_methods</span>=[<span class="c-str">"*"</span>],
+    <span class="c-var">allow_headers</span>=[<span class="c-str">"*"</span>],
+)
+
+<span class="c-kw">class</span> <span class="c-cls">Message</span>(BaseModel):
+    <span class="c-var">role</span>: <span class="c-cls">str</span>      <span class="c-cmt"># "user" ya "assistant"</span>
+    <span class="c-var">content</span>: <span class="c-cls">str</span>
+
+<span class="c-kw">class</span> <span class="c-cls">ChatReq</span>(BaseModel):
+    <span class="c-var">messages</span>: list[<span class="c-cls">Message</span>]
+    <span class="c-var">system</span>: <span class="c-cls">str</span> = <span class="c-str">"You are a helpful AI assistant."</span>
+
+<span class="c-op">@app</span>.post(<span class="c-str">"/api/chat"</span>)
+<span class="c-kw">async def</span> <span class="c-fn">chat_endpoint</span>(<span class="c-var">req</span>: <span class="c-cls">ChatReq</span>):
+    <span class="c-kw">try</span>:
+        <span class="c-var">client</span> = anthropic.<span class="c-fn">Anthropic</span>(
+            <span class="c-var">api_key</span>=os.getenv(<span class="c-str">"ANTHROPIC_API_KEY"</span>)
+        )
+        <span class="c-var">response</span> = client.messages.<span class="c-fn">create</span>(
+            <span class="c-var">model</span>=<span class="c-str">"claude-sonnet-4-20250514"</span>,
+            <span class="c-var">max_tokens</span>=<span class="c-num">1024</span>,
+            <span class="c-var">system</span>=req.system,
+            <span class="c-var">messages</span>=[m.dict() <span class="c-kw">for</span> m <span class="c-kw">in</span> req.messages]
+        )
+        <span class="c-kw">return</span> {
+            <span class="c-str">"reply"</span>: response.content[<span class="c-num">0</span>].text,
+            <span class="c-str">"usage"</span>: response.usage.model_dump()
+        }
+    <span class="c-kw">except</span> <span class="c-cls">Exception</span> <span class="c-kw">as</span> <span class="c-var">e</span>:
+        <span class="c-kw">raise</span> <span class="c-fn">HTTPException</span>(<span class="c-var">status_code</span>=<span class="c-num">500</span>, <span class="c-var">detail</span>=<span class="c-fn">str</span>(e))</pre>
+  </div>
+
+  <div class="box tip">
+    <div class="box-title">✅ FastAPI Best Practice</div>
+    Hamesha <code>async def</code> use karo endpoints ke liye jab bhi I/O operations ho (database, external API). Isse server ek request ke wait mein dusre requests serve karta rehta hai.
+  </div>
+
+  <h3 id="ch1-flask">1.2 Flask — The Microframework</h3>
+
+  <h4>Flask Kya Hai?</h4>
+  <p>Flask ek <strong>lightweight Python web framework</strong> hai. Yeh <em>"micro"</em> isliye hai kyunki isme bahut kuch built-in nahi hai — tum sirf wahi add karte ho jo chahiye. Flask 2010 mein Armin Ronacher ne banaya tha.</p>
+
+  <h4>Flask vs FastAPI — Kab Kya Use Karein?</h4>
+  <div class="vs-grid">
+    <div class="vs-card" style="border-color: var(--accent2)">
+      <h5 style="color:var(--accent2)">🔵 Flask Use Karo Jab:</h5>
+      <ul style="font-size:13px">
+        <li>Simple REST API banana ho</li>
+        <li>Team ko Flask already aata ho</li>
+        <li>ML model ke liye quick server chahiye</li>
+        <li>Chhote projects (startups, prototypes)</li>
+      </ul>
+    </div>
+    <div class="vs-card" style="border-color: var(--accent3)">
+      <h5 style="color:var(--accent3)">🟢 FastAPI Use Karo Jab:</h5>
+      <ul style="font-size:13px">
+        <li>High performance chahiye</li>
+        <li>Auto documentation zaroorat ho</li>
+        <li>Async operations heavy ho</li>
+        <li>Production AI APIs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Flask AI Server</span>
+    </div>
+    <pre><span class="c-kw">from</span> <span class="c-cls">flask</span> <span class="c-kw">import</span> Flask, request, jsonify
+<span class="c-kw">from</span> <span class="c-cls">flask_cors</span> <span class="c-kw">import</span> CORS
+<span class="c-kw">import</span> <span class="c-cls">anthropic</span>, <span class="c-cls">os</span>
+
+<span class="c-var">app</span> = <span class="c-fn">Flask</span>(__name__)
+<span class="c-fn">CORS</span>(app)  <span class="c-cmt"># Cross-origin requests allow karo</span>
+
+<span class="c-var">client</span> = anthropic.<span class="c-fn">Anthropic</span>(<span class="c-var">api_key</span>=os.getenv(<span class="c-str">"ANTHROPIC_API_KEY"</span>))
+
+<span class="c-op">@app</span>.route(<span class="c-str">"/health"</span>, methods=[<span class="c-str">"GET"</span>])
+<span class="c-kw">def</span> <span class="c-fn">health</span>():
+    <span class="c-kw">return</span> <span class="c-fn">jsonify</span>({<span class="c-str">"status"</span>: <span class="c-str">"ok"</span>})
+
+<span class="c-op">@app</span>.route(<span class="c-str">"/summarize"</span>, methods=[<span class="c-str">"POST"</span>])
+<span class="c-kw">def</span> <span class="c-fn">summarize</span>():
+    <span class="c-var">data</span> = request.<span class="c-fn">get_json</span>()
+    <span class="c-var">text</span> = data.get(<span class="c-str">"text"</span>, <span class="c-str">""</span>)
+    
+    <span class="c-kw">if not</span> text:
+        <span class="c-kw">return</span> <span class="c-fn">jsonify</span>({<span class="c-str">"error"</span>: <span class="c-str">"text field chahiye!"</span>}), <span class="c-num">400</span>
+    
+    <span class="c-var">resp</span> = client.messages.<span class="c-fn">create</span>(
+        <span class="c-var">model</span>=<span class="c-str">"claude-haiku-4-5-20251001"</span>,  <span class="c-cmt"># Faster, cheaper model</span>
+        <span class="c-var">max_tokens</span>=<span class="c-num">500</span>,
+        <span class="c-var">messages</span>=[{
+            <span class="c-str">"role"</span>: <span class="c-str">"user"</span>,
+            <span class="c-str">"content"</span>: <span class="c-str">f"Yeh text summarize karo:\n\n{text}"</span>
+        }]
+    )
+    <span class="c-kw">return</span> <span class="c-fn">jsonify</span>({<span class="c-str">"summary"</span>: resp.content[<span class="c-num">0</span>].text})
+
+<span class="c-kw">if</span> __name__ == <span class="c-str">"__main__"</span>:
+    app.<span class="c-fn">run</span>(<span class="c-var">debug</span>=<span class="c-kw">False</span>, <span class="c-var">host</span>=<span class="c-str">"0.0.0.0"</span>, <span class="c-var">port</span>=<span class="c-num">5000</span>)</pre>
+  </div>
+
+  <h3 id="ch1-nodejs">1.3 Node.js — JavaScript Backend</h3>
+
+  <h4>Node.js Kab Use Karein AI Apps Mein?</h4>
+  <p>Node.js tab use karte hain jab:</p>
+  <ul>
+    <li>Frontend team JavaScript use karti ho (full-stack JS)</li>
+    <li>Real-time features chahiye ho (WebSockets, Server-Sent Events)</li>
+    <li>Next.js ya Vercel par deploy karna ho</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">JavaScript — Express.js AI Server</span>
+    </div>
+    <pre><span class="c-kw">const</span> <span class="c-var">express</span> = <span class="c-fn">require</span>(<span class="c-str">'express'</span>);
+<span class="c-kw">const</span> <span class="c-var">Anthropic</span> = <span class="c-fn">require</span>(<span class="c-str">'@anthropic-ai/sdk'</span>);
+
+<span class="c-kw">const</span> <span class="c-var">app</span> = <span class="c-fn">express</span>();
+app.<span class="c-fn">use</span>(express.<span class="c-fn">json</span>());
+
+<span class="c-kw">const</span> <span class="c-var">client</span> = <span class="c-kw">new</span> <span class="c-fn">Anthropic</span>();
+
+<span class="c-cmt">// Streaming response — real-time text generate karo</span>
+app.<span class="c-fn">post</span>(<span class="c-str">'/stream'</span>, <span class="c-kw">async</span> (req, res) => {
+    <span class="c-var">res</span>.<span class="c-fn">setHeader</span>(<span class="c-str">'Content-Type'</span>, <span class="c-str">'text/event-stream'</span>);
+    <span class="c-var">res</span>.<span class="c-fn">setHeader</span>(<span class="c-str">'Cache-Control'</span>, <span class="c-str">'no-cache'</span>);
+    
+    <span class="c-kw">const</span> <span class="c-var">stream</span> = client.messages.<span class="c-fn">stream</span>({
+        <span class="c-var">model</span>: <span class="c-str">'claude-sonnet-4-20250514'</span>,
+        <span class="c-var">max_tokens</span>: <span class="c-num">1024</span>,
+        <span class="c-var">messages</span>: [{ <span class="c-var">role</span>: <span class="c-str">'user'</span>, <span class="c-var">content</span>: req.body.message }]
+    });
+    
+    <span class="c-cmt">// Har text chunk stream karo client ko</span>
+    stream.<span class="c-fn">on</span>(<span class="c-str">'text'</span>, (text) => {
+        res.<span class="c-fn">write</span>(<span class="c-str">`data: ${JSON.stringify({text})}\n\n`</span>);
+    });
+    
+    stream.<span class="c-fn">on</span>(<span class="c-str">'finalMessage'</span>, () => {
+        res.<span class="c-fn">write</span>(<span class="c-str">'data: [DONE]\n\n'</span>);
+        res.<span class="c-fn">end</span>();
+    });
+});
+
+app.<span class="c-fn">listen</span>(<span class="c-num">3000</span>, () => <span class="c-var">console</span>.<span class="c-fn">log</span>(<span class="c-str">'🚀 Server port 3000 par chal raha hai!'</span>));</pre>
+  </div>
+
+  <h3 id="ch1-serverless">1.4 Serverless Architecture</h3>
+
+  <h4>Serverless Kya Hai?</h4>
+  <p><strong>Serverless</strong> matlab yeh nahi ki server nahi hai — matlab yeh hai ki <em>aapko server manage nahi karna padta</em>. Cloud provider automatically:</p>
+  <ul>
+    <li>Server start karta hai jab request aati hai</li>
+    <li>Request handle karta hai</li>
+    <li>Server band kar deta hai baad mein</li>
+    <li>Sirf actual use ka bill karta hai</li>
+  </ul>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <!-- Traditional Server -->
+      <rect x="20" y="30" width="160" height="160" rx="10" fill="#fde8e8" stroke="#c0392b" stroke-width="2"/>
+      <text x="100" y="55" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" fill="#c0392b" font-weight="700">Traditional Server</text>
+      <text x="100" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#555">Always running</text>
+      <rect x="40" y="90" width="120" height="20" rx="4" fill="#c0392b" opacity=".2"/>
+      <text x="100" y="104" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#c0392b">💰 24/7 Cost</text>
+      <rect x="40" y="118" width="120" height="20" rx="4" fill="#c0392b" opacity=".2"/>
+      <text x="100" y="132" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#c0392b">⚙ Manage karo</text>
+      <rect x="40" y="146" width="120" height="20" rx="4" fill="#c0392b" opacity=".2"/>
+      <text x="100" y="160" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#c0392b">📈 Manual scale</text>
+
+      <!-- VS -->
+      <text x="350" y="120" text-anchor="middle" font-family="Playfair Display,serif" font-size="28" fill="#aaa" font-weight="700">vs</text>
+
+      <!-- Serverless -->
+      <rect x="520" y="30" width="160" height="160" rx="10" fill="#d1fae5" stroke="#117a65" stroke-width="2"/>
+      <text x="600" y="55" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" fill="#117a65" font-weight="700">Serverless</text>
+      <text x="600" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#555">On-demand run</text>
+      <rect x="540" y="90" width="120" height="20" rx="4" fill="#117a65" opacity=".2"/>
+      <text x="600" y="104" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#117a65">💸 Pay per use</text>
+      <rect x="540" y="118" width="120" height="20" rx="4" fill="#117a65" opacity=".2"/>
+      <text x="600" y="132" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#117a65">✅ Auto managed</text>
+      <rect x="540" y="146" width="120" height="20" rx="4" fill="#117a65" opacity=".2"/>
+      <text x="600" y="160" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#117a65">🚀 Auto scale</text>
+    </svg>
+    <div class="diagram-title">Traditional Server vs Serverless Comparison</div>
+  </div>
+
+  <h4>Serverless Platforms</h4>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-icon">⚡</div>
+      <div class="arch-label">AWS Lambda</div>
+      <div class="arch-sub">Most popular, Python/Node support</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">▲</div>
+      <div class="arch-label">Vercel Functions</div>
+      <div class="arch-sub">Best for Next.js apps</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🌐</div>
+      <div class="arch-label">Cloudflare Workers</div>
+      <div class="arch-sub">Edge computing, ultra-fast</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🔥</div>
+      <div class="arch-label">Google Cloud Functions</div>
+      <div class="arch-sub">GCP ecosystem integration</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — AWS Lambda Function (AI)</span>
+    </div>
+    <pre><span class="c-kw">import</span> <span class="c-cls">json</span>
+<span class="c-kw">import</span> <span class="c-cls">anthropic</span>
+<span class="c-kw">import</span> <span class="c-cls">os</span>
+
+<span class="c-cmt"># Lambda handler function — yeh AWS call karta hai</span>
+<span class="c-kw">def</span> <span class="c-fn">handler</span>(<span class="c-var">event</span>, <span class="c-var">context</span>):
+    <span class="c-cmt">"""
+    event: HTTP request data (body, headers, etc.)
+    context: Lambda runtime information
+    """</span>
+    <span class="c-kw">try</span>:
+        <span class="c-cmt"># Request body parse karo</span>
+        <span class="c-var">body</span> = json.<span class="c-fn">loads</span>(event.get(<span class="c-str">'body'</span>, <span class="c-str">'{}'</span>))
+        <span class="c-var">message</span> = body.get(<span class="c-str">'message'</span>, <span class="c-str">''</span>)
+        
+        <span class="c-kw">if not</span> message:
+            <span class="c-kw">return</span> {
+                <span class="c-str">'statusCode'</span>: <span class="c-num">400</span>,
+                <span class="c-str">'body'</span>: json.<span class="c-fn">dumps</span>({<span class="c-str">'error'</span>: <span class="c-str">'message required'</span>})
+            }
+        
+        <span class="c-cmt"># Claude API call</span>
+        <span class="c-var">client</span> = anthropic.<span class="c-fn">Anthropic</span>(
+            <span class="c-var">api_key</span>=os.environ[<span class="c-str">'ANTHROPIC_API_KEY'</span>]  <span class="c-cmt"># Env var se lo</span>
+        )
+        <span class="c-var">resp</span> = client.messages.<span class="c-fn">create</span>(
+            <span class="c-var">model</span>=<span class="c-str">'claude-haiku-4-5-20251001'</span>,
+            <span class="c-var">max_tokens</span>=<span class="c-num">256</span>,
+            <span class="c-var">messages</span>=[{<span class="c-str">'role'</span>: <span class="c-str">'user'</span>, <span class="c-str">'content'</span>: message}]
+        )
+        
+        <span class="c-kw">return</span> {
+            <span class="c-str">'statusCode'</span>: <span class="c-num">200</span>,
+            <span class="c-str">'headers'</span>: {<span class="c-str">'Content-Type'</span>: <span class="c-str">'application/json'</span>},
+            <span class="c-str">'body'</span>: json.<span class="c-fn">dumps</span>({
+                <span class="c-str">'reply'</span>: resp.content[<span class="c-num">0</span>].text
+            })
+        }
+    <span class="c-kw">except</span> <span class="c-cls">Exception</span> <span class="c-kw">as</span> <span class="c-var">e</span>:
+        <span class="c-kw">return</span> {<span class="c-str">'statusCode'</span>: <span class="c-num">500</span>, <span class="c-str">'body'</span>: json.<span class="c-fn">dumps</span>({<span class="c-str">'error'</span>: <span class="c-fn">str</span>(e)})}</pre>
+  </div>
+
+  <div class="box warn">
+    <div class="box-title">⚠ Serverless Cold Start Problem</div>
+    Jab Lambda function pehli baar ya kaafi time baad call ho, toh startup mein 1-3 seconds lag sakte hain. Yeh "cold start" problem AI apps mein annoying ho sakta hai. Solution: <strong>Provisioned Concurrency</strong> (AWS) ya <strong>always-on instances</strong> use karo.
+  </div>
+
+  <ul class="steps">
+    <li><strong>Code likhao</strong> — FastAPI/Flask/Lambda function</li>
+    <li><strong>Dependencies bundle karo</strong> — requirements.txt + pip install</li>
+    <li><strong>Environment variables set karo</strong> — API keys securely</li>
+    <li><strong>Deploy karo</strong> — Cloud provider par upload</li>
+    <li><strong>Test karo</strong> — Postman se API test</li>
+    <li><strong>Monitor karo</strong> — Logs aur errors track</li>
+  </ul>
+
+  <!-- Interview Questions -->
+  <div class="box info" style="margin-top:32px">
+    <div class="box-title">💬 Interview Questions — Backend Deployment</div>
+    <ul class="iq-list">
+      <li>FastAPI aur Flask mein kya main difference hai? Kab kaunsa use karein?</li>
+      <li>ASGI aur WSGI mein kya fark hai? FastAPI kaunsa use karta hai aur kyun?</li>
+      <li>Serverless ka cold start problem kya hai aur ise kaise solve karein?</li>
+      <li>FastAPI mein Pydantic models ka kya role hai?</li>
+      <li>Production mein Flask/FastAPI ko Gunicorn ke saath kyun run karte hain?</li>
+    </ul>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">🏋 Mini Exercise — Backend Deployment</div>
+    <ol>
+      <li>FastAPI install karo aur ek simple <code>/hello</code> endpoint banao jo JSON return kare</li>
+      <li>Ek <code>/summarize</code> POST endpoint banao jo text input le aur 3 bullet points return kare</li>
+      <li>Swagger UI dekho at <code>http://localhost:8000/docs</code></li>
+      <li>Flask mein same API banao aur dono ka code compare karo</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CHAPTER 2 — CLOUD PLATFORMS
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="ch2" style="--page-stripe: var(--accent2)">
+  <div class="ch-banner" style="--ch-a:#1a5276;--ch-b:#154360" data-icon="☁">
+    <div class="ch-num">Chapter 2 of 6</div>
+    <h2>Cloud Platforms</h2>
+  </div>
+
+  <p>Cloud platform ek <strong>remote computer infrastructure</strong> hai jisme aap apni application deploy karte ho. Ghar ke computer par nahi — Amazon, Google, Microsoft ke data centers mein! Yeh companies aapko on-demand computing resources provide karti hain.</p>
+
+  <div class="box note">
+    <div class="box-title">💡 Cloud Ka Ek Simple Analogy</div>
+    Socho electricity. Aap ghar mein generator nahi lagaate — simply power company se bijli khareedtay ho. Usi tarah cloud computing mein aap servers nahi khareedtay — simply computing power rent karte ho!
+  </div>
+
+  <h3>Cloud Service Models — IaaS, PaaS, SaaS</h3>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#c0392b" stop-opacity=".15"/>
+          <stop offset="100%" stop-color="#c0392b" stop-opacity=".05"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1a5276" stop-opacity=".15"/>
+          <stop offset="100%" stop-color="#1a5276" stop-opacity=".05"/>
+        </linearGradient>
+        <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#117a65" stop-opacity=".15"/>
+          <stop offset="100%" stop-color="#117a65" stop-opacity=".05"/>
+        </linearGradient>
+      </defs>
+      <!-- IaaS -->
+      <rect x="20" y="20" width="200" height="220" rx="12" fill="url(#g1)" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="120" y="50" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" fill="#c0392b">IaaS</text>
+      <text x="120" y="66" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888">Infrastructure as a Service</text>
+      <text x="120" y="88" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">You manage: App, OS,</text>
+      <text x="120" y="104" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">Runtime, Data</text>
+      <text x="120" y="130" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#666">Cloud manages:</text>
+      <text x="120" y="146" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#666">Hardware, Network</text>
+      <text x="120" y="180" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#c0392b" font-weight="600">AWS EC2, Azure VM</text>
+      <text x="120" y="198" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#c0392b">GCP Compute Engine</text>
+
+      <!-- PaaS -->
+      <rect x="240" y="20" width="200" height="220" rx="12" fill="url(#g2)" stroke="#1a5276" stroke-width="1.5"/>
+      <text x="340" y="50" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" fill="#1a5276">PaaS</text>
+      <text x="340" y="66" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888">Platform as a Service</text>
+      <text x="340" y="88" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">You manage: App,</text>
+      <text x="340" y="104" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">Data</text>
+      <text x="340" y="130" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#666">Cloud manages:</text>
+      <text x="340" y="146" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#666">OS, Runtime, Server</text>
+      <text x="340" y="180" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#1a5276" font-weight="600">Heroku, Render</text>
+      <text x="340" y="198" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#1a5276">Google App Engine</text>
+
+      <!-- SaaS -->
+      <rect x="460" y="20" width="200" height="220" rx="12" fill="url(#g3)" stroke="#117a65" stroke-width="1.5"/>
+      <text x="560" y="50" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" fill="#117a65">SaaS</text>
+      <text x="560" y="66" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888">Software as a Service</text>
+      <text x="560" y="88" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">You manage: Nothing</text>
+      <text x="560" y="104" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">(Just use it!)</text>
+      <text x="560" y="130" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#666">Cloud manages:</text>
+      <text x="560" y="146" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#666">Everything</text>
+      <text x="560" y="180" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#117a65" font-weight="600">Gmail, Slack, Claude.ai</text>
+      <text x="560" y="198" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#117a65">Notion, Salesforce</text>
+    </svg>
+    <div class="diagram-title">Cloud Service Models: IaaS vs PaaS vs SaaS</div>
+  </div>
+
+  <h3 id="ch2-aws">2.1 Amazon Web Services (AWS)</h3>
+  <p>AWS duniya ka <strong>sabse bada cloud provider</strong> hai — market share ~32%! 200+ services offer karta hai. AI applications ke liye AWS ke key services:</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>AWS Service</th><th>Kya Karta Hai</th><th>AI App Use Case</th></tr></thead>
+    <tbody>
+      <tr><td><strong>EC2</strong></td><td>Virtual Machines (Servers)</td><td>FastAPI/Flask server run karna</td></tr>
+      <tr><td><strong>Lambda</strong></td><td>Serverless Functions</td><td>AI endpoints, webhooks</td></tr>
+      <tr><td><strong>S3</strong></td><td>Object Storage</td><td>Documents, images, model files store karna</td></tr>
+      <tr><td><strong>RDS</strong></td><td>Managed SQL Database</td><td>User data, conversation history</td></tr>
+      <tr><td><strong>DynamoDB</strong></td><td>NoSQL Database</td><td>Session data, fast key-value lookups</td></tr>
+      <tr><td><strong>ElastiCache</strong></td><td>Redis/Memcached</td><td>Response caching, rate limiting</td></tr>
+      <tr><td><strong>API Gateway</strong></td><td>API Management</td><td>Lambda ke aage reverse proxy</td></tr>
+      <tr><td><strong>ECS/EKS</strong></td><td>Container Orchestration</td><td>Docker containers run karna</td></tr>
+      <tr><td><strong>CloudWatch</strong></td><td>Monitoring & Logs</td><td>App errors aur metrics track karna</td></tr>
+      <tr><td><strong>Bedrock</strong></td><td>Managed AI Models</td><td>Claude, Llama APIs access karna</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>AWS Deployment Flow — FastAPI on EC2</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">bash — EC2 Deployment Steps</span>
+    </div>
+    <pre><span class="c-cmt"># Step 1: EC2 instance mein SSH karo</span>
+ssh -i <span class="c-str">"your-key.pem"</span> ubuntu@your-ec2-public-ip
+
+<span class="c-cmt"># Step 2: Python aur dependencies install karo</span>
+sudo apt update && sudo apt install python3-pip nginx -y
+
+<span class="c-cmt"># Step 3: Apna code clone/copy karo</span>
+git clone https://github.com/your-repo/ai-app.git
+cd ai-app
+pip3 install -r requirements.txt
+
+<span class="c-cmt"># Step 4: Environment variables set karo</span>
+<span class="c-kw">export</span> ANTHROPIC_API_KEY=<span class="c-str">"sk-ant-..."</span>
+
+<span class="c-cmt"># Step 5: Gunicorn se run karo (production WSGI server)</span>
+gunicorn -w <span class="c-num">4</span> -k uvicorn.workers.UvicornWorker main:app \
+  --bind <span class="c-num">0.0.0.0</span>:<span class="c-num">8000</span> \
+  --daemon  <span class="c-cmt"># background mein run karo</span>
+
+<span class="c-cmt"># Step 6: Nginx as reverse proxy configure karo</span>
+<span class="c-cmt"># /etc/nginx/sites-available/ai-app mein:</span>
+server {
+    listen <span class="c-num">80</span>;
+    server_name your-domain.com;
+    location / {
+        proxy_pass http://127.0.0.1:<span class="c-num">8000</span>;
+        proxy_set_header Host $host;
+    }
+}</pre>
+  </div>
+
+  <h3 id="ch2-azure">2.2 Microsoft Azure</h3>
+  <p>Azure Microsoft ka cloud platform hai — enterprises aur government sector mein bahut popular. AI ke liye <strong>Azure OpenAI Service</strong> aur <strong>Azure AI Studio</strong> famous hain.</p>
+
+  <h4>Key Azure Services for AI</h4>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-icon">🤖</div>
+      <div class="arch-label">Azure OpenAI</div>
+      <div class="arch-sub">GPT-4, DALL-E access with enterprise security</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🔍</div>
+      <div class="arch-label">Azure AI Search</div>
+      <div class="arch-sub">Vector search for RAG applications</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">⚡</div>
+      <div class="arch-label">Azure Functions</div>
+      <div class="arch-sub">Serverless compute (like AWS Lambda)</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">📦</div>
+      <div class="arch-label">Azure Container Apps</div>
+      <div class="arch-sub">Docker containers easily deploy karo</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🧠</div>
+      <div class="arch-label">Azure ML Studio</div>
+      <div class="arch-sub">ML model training aur deployment</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🗄</div>
+      <div class="arch-label">Cosmos DB</div>
+      <div class="arch-sub">Global NoSQL database</div>
+    </div>
+  </div>
+
+  <h3 id="ch2-gcp">2.3 Google Cloud Platform (GCP)</h3>
+  <p>GCP Google ka cloud hai — <strong>AI/ML ke liye sabse advanced</strong> platform mana jata hai kyunki Google ne hi TensorFlow, Kubernetes, aur Transformer architecture create kiya.</p>
+
+  <h4>GCP AI-Specific Services</h4>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Service</th><th>Kya Hai</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Vertex AI</strong></td><td>Complete ML platform — train, deploy, monitor models</td></tr>
+      <tr><td><strong>Gemini API</strong></td><td>Google ka LLM family access karo</td></tr>
+      <tr><td><strong>Cloud Run</strong></td><td>Containerized apps serverless run karo</td></tr>
+      <tr><td><strong>BigQuery</strong></td><td>Petabyte-scale data warehouse + ML</td></tr>
+      <tr><td><strong>TPU (v5)</strong></td><td>Tensor Processing Units — ML training ke liye</td></tr>
+      <tr><td><strong>Firebase</strong></td><td>Realtime database + hosting for web/mobile AI apps</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>Cloud Run Deployment — Easiest Production Deploy</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">bash — Google Cloud Run Deploy</span>
+    </div>
+    <pre><span class="c-cmt"># Step 1: Google Cloud SDK install aur login</span>
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+
+<span class="c-cmt"># Step 2: Docker image build aur push karo</span>
+gcloud builds submit --tag gcr.io/YOUR_PROJECT/ai-app
+
+<span class="c-cmt"># Step 3: Cloud Run par deploy karo — bas ek command!</span>
+gcloud run deploy ai-app \
+  --image gcr.io/YOUR_PROJECT/ai-app \
+  --platform managed \
+  --region asia-south1 \
+  --allow-unauthenticated \
+  --set-env-vars ANTHROPIC_API_KEY=<span class="c-str">"sk-ant-..."</span> \
+  --memory 512Mi \
+  --cpu 1
+
+<span class="c-cmt"># Output: https://ai-app-xxx-uc.a.run.app</span>
+<span class="c-cmt"># Bas! Aapki app live hai! 🎉</span></pre>
+  </div>
+
+  <div class="remember">
+    <div class="box-title">🧠 Remember This — Cloud Selection Guide</div>
+    <ul style="font-size:13.5px">
+      <li><strong>AWS choose karo</strong> → Agar team AWS experienced hai ya most popular option chahiye</li>
+      <li><strong>GCP choose karo</strong> → Agar AI/ML heavy workload hai ya Vertex AI use karna hai</li>
+      <li><strong>Azure choose karo</strong> → Agar enterprise/government client hai ya Microsoft ecosystem mein ho</li>
+      <li><strong>Render/Railway choose karo</strong> → Side projects aur quick demos ke liye (cheapest!)</li>
+    </ul>
+  </div>
+
+  <div class="box info">
+    <div class="box-title">💬 Interview Questions — Cloud Platforms</div>
+    <ul class="iq-list">
+      <li>AWS EC2 aur Lambda mein kya fundamental difference hai?</li>
+      <li>IaaS, PaaS, SaaS explain karo real-world examples ke saath</li>
+      <li>Cloud Run aur Kubernetes Engine (GKE) mein kab kya prefer karein?</li>
+      <li>Multi-region deployment kyun zaroori hai production AI apps ke liye?</li>
+      <li>AWS S3 ko AI applications mein kaise use karte hain?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CHAPTER 3 — DEVOPS
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="ch3" style="--page-stripe: var(--accent3)">
+  <div class="ch-banner" style="--ch-a:#117a65;--ch-b:#0e6655" data-icon="🐳">
+    <div class="ch-num">Chapter 3 of 6</div>
+    <h2>DevOps — Docker, Kubernetes, CI/CD</h2>
+  </div>
+
+  <p><strong>DevOps</strong> = Development + Operations. Yeh ek culture aur set of practices hai jo software development aur IT operations ko combine karta hai taaki applications <em>faster, more reliably, aur at scale</em> deliver ho sakein.</p>
+
+  <div class="box note">
+    <div class="box-title">💡 DevOps Ka Essence</div>
+    Pehle developers code likhte the aur "wall ke upar phenk dete the" — Operations team handle karti thi. DevOps mein dono collaborate karte hain: code likhna, test karna, aur deploy karna — sab ek seamless pipeline mein!
+  </div>
+
+  <h3 id="ch3-docker">3.1 Docker — Containerization</h3>
+
+  <h4>Docker Kya Hai?</h4>
+  <p>Docker ek tool hai jo application aur uski <strong>sari dependencies ko ek portable "container"</strong> mein pack karta hai. Container ek chhota, isolated environment hota hai jisme aapka app run hota hai.</p>
+
+  <h4>The Classic Problem — "Works on My Machine!"</h4>
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <!-- Dev Machine -->
+      <rect x="30" y="30" width="280" height="140" rx="10" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="170" y="55" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" fill="#c0392b">💻 Developer Machine</text>
+      <text x="170" y="78" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">Python 3.11, numpy 1.24</text>
+      <text x="170" y="96" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">Ubuntu 22.04, CUDA 12.1</text>
+      <text x="170" y="120" text-anchor="middle" font-family="DM Sans" font-size="13" fill="#117a65" font-weight="700">✅ "Chalta hai bhai!"</text>
+      <!-- Arrow -->
+      <text x="355" y="100" text-anchor="middle" font-family="DM Sans" font-size="28" fill="#c0392b">→</text>
+      <text x="355" y="120" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#c0392b">deploy</text>
+      <!-- Server -->
+      <rect x="400" y="30" width="270" height="140" rx="10" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="535" y="55" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" fill="#c0392b">🖥 Production Server</text>
+      <text x="535" y="78" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">Python 3.9, numpy 1.22</text>
+      <text x="535" y="96" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">CentOS 7, No CUDA</text>
+      <text x="535" y="120" text-anchor="middle" font-family="DM Sans" font-size="13" fill="#c0392b" font-weight="700">💥 "ImportError! Crash!"</text>
+    </svg>
+    <div class="diagram-title">The "Works on My Machine" Problem — Docker ise solve karta hai</div>
+  </div>
+
+  <h4>Docker Solution — Container = App + Everything It Needs</h4>
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <!-- Container box -->
+      <rect x="190" y="20" width="300" height="200" rx="12" fill="#d1fae5" stroke="#117a65" stroke-width="2"/>
+      <text x="340" y="48" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" fill="#117a65">🐳 Docker Container</text>
+      <!-- Layers inside -->
+      <rect x="210" y="60" width="260" height="32" rx="6" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="340" y="81" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">Your AI Application Code</text>
+      <rect x="210" y="98" width="260" height="32" rx="6" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="340" y="119" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">Python 3.11 + All Libraries</text>
+      <rect x="210" y="136" width="260" height="32" rx="6" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="340" y="157" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">System Dependencies + Config</text>
+      <rect x="210" y="174" width="260" height="32" rx="6" fill="#117a65"/>
+      <text x="340" y="195" text-anchor="middle" font-family="DM Sans" font-size="11" fill="white" font-weight="600">Ubuntu Base OS Layer</text>
+      <!-- Arrows to environments -->
+      <text x="30" y="100" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#555">💻 Dev</text>
+      <text x="30" y="116" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#555">Machine</text>
+      <line x1="75" y1="110" x2="185" y2="120" stroke="#117a65" stroke-width="1.5" marker-end="url(#arr)"/>
+      <text x="645" y="100" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#555">🖥 Prod</text>
+      <text x="645" y="116" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#555">Server</text>
+      <line x1="495" y1="120" x2="610" y2="110" stroke="#117a65" stroke-width="1.5"/>
+      <text x="340" y="228" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#117a65" font-weight="600">✅ Same Container — Everywhere Same Behavior!</text>
+    </svg>
+    <div class="diagram-title">Docker Container — Ek Jagah Pack, Kahin Bhi Run</div>
+  </div>
+
+  <h4>Dockerfile — Recipe for Container</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Dockerfile — AI FastAPI App</span>
+    </div>
+    <pre><span class="c-cmt"># Base image choose karo — Python 3.11 slim version</span>
+<span class="c-kw">FROM</span> python:<span class="c-num">3.11</span>-slim
+
+<span class="c-cmt"># Container ke andar working directory set karo</span>
+<span class="c-kw">WORKDIR</span> <span class="c-str">/app</span>
+
+<span class="c-cmt"># Pehle requirements copy karo (caching ke liye)</span>
+<span class="c-kw">COPY</span> requirements.txt .
+
+<span class="c-cmt"># Dependencies install karo</span>
+<span class="c-kw">RUN</span> pip install --no-cache-dir -r requirements.txt
+
+<span class="c-cmt"># Baaki code copy karo</span>
+<span class="c-kw">COPY</span> . .
+
+<span class="c-cmt"># Port 8000 expose karo (container ke bahar dikhne ke liye)</span>
+<span class="c-kw">EXPOSE</span> <span class="c-num">8000</span>
+
+<span class="c-cmt"># Container start hone par yeh command run hogi</span>
+<span class="c-kw">CMD</span> [<span class="c-str">"uvicorn"</span>, <span class="c-str">"main:app"</span>, <span class="c-str">"--host"</span>, <span class="c-str">"0.0.0.0"</span>, <span class="c-str">"--port"</span>, <span class="c-str">"8000"</span>]</pre>
+  </div>
+
+  <h4>docker-compose.yml — Multiple Services Chalao</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">YAML — docker-compose.yml</span>
+    </div>
+    <pre><span class="c-cmt"># docker-compose up -d se sab kuch start hoga</span>
+<span class="c-var">version</span>: <span class="c-str">'3.8'</span>
+
+<span class="c-var">services</span>:
+  <span class="c-cmt"># FastAPI AI Application</span>
+  <span class="c-var">api</span>:
+    <span class="c-var">build</span>: .
+    <span class="c-var">ports</span>:
+      - <span class="c-str">"8000:8000"</span>
+    <span class="c-var">environment</span>:
+      - ANTHROPIC_API_KEY=<span class="c-str">${ANTHROPIC_API_KEY}</span>
+    <span class="c-var">depends_on</span>:
+      - redis
+      - postgres
+    <span class="c-var">restart</span>: unless-stopped
+
+  <span class="c-cmt"># Redis — Caching ke liye</span>
+  <span class="c-var">redis</span>:
+    <span class="c-var">image</span>: redis:<span class="c-num">7</span>-alpine
+    <span class="c-var">ports</span>:
+      - <span class="c-str">"6379:6379"</span>
+
+  <span class="c-cmt"># PostgreSQL — Database</span>
+  <span class="c-var">postgres</span>:
+    <span class="c-var">image</span>: postgres:<span class="c-num">15</span>
+    <span class="c-var">environment</span>:
+      POSTGRES_DB: aiapp
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: <span class="c-str">${DB_PASSWORD}</span>
+    <span class="c-var">volumes</span>:
+      - <span class="c-str">pgdata:/var/lib/postgresql/data</span>
+
+<span class="c-var">volumes</span>:
+  <span class="c-var">pgdata</span>:</pre>
+  </div>
+
+  <h3 id="ch3-k8s">3.2 Kubernetes (K8s) — Container Orchestration</h3>
+
+  <h4>Kubernetes Kya Hai?</h4>
+  <p>Kubernetes ek <strong>container orchestration platform</strong> hai jo automatically:</p>
+  <ul>
+    <li><strong>Deploy</strong> karta hai containers ko multiple servers par</li>
+    <li><strong>Scale</strong> karta hai based on traffic</li>
+    <li><strong>Heal</strong> karta hai — crashed containers restart karta hai</li>
+    <li><strong>Load balance</strong> karta hai requests ke beech</li>
+  </ul>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <!-- Control Plane -->
+      <rect x="20" y="20" width="640" height="80" rx="10" fill="#dbeafe" stroke="#1a5276" stroke-width="2"/>
+      <text x="340" y="45" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" fill="#1a5276">⚙ Control Plane (Master Node)</text>
+      <rect x="40" y="56" width="120" height="28" rx="5" fill="white" stroke="#1a5276" stroke-width="1"/>
+      <text x="100" y="74" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#1a5276">API Server</text>
+      <rect x="175" y="56" width="120" height="28" rx="5" fill="white" stroke="#1a5276" stroke-width="1"/>
+      <text x="235" y="74" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#1a5276">Scheduler</text>
+      <rect x="310" y="56" width="120" height="28" rx="5" fill="white" stroke="#1a5276" stroke-width="1"/>
+      <text x="370" y="74" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#1a5276">etcd (Storage)</text>
+      <rect x="445" y="56" width="140" height="28" rx="5" fill="white" stroke="#1a5276" stroke-width="1"/>
+      <text x="515" y="74" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#1a5276">Controller Manager</text>
+
+      <!-- Arrow -->
+      <line x1="340" y1="100" x2="340" y2="130" stroke="#1a5276" stroke-width="2"/>
+      <text x="355" y="118" font-family="DM Sans" font-size="10" fill="#1a5276">manages</text>
+
+      <!-- Worker Nodes -->
+      <rect x="20" y="135" width="190" height="150" rx="10" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="115" y="158" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#117a65">Worker Node 1</text>
+      <rect x="35" y="165" width="155" height="30" rx="5" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="112" y="184" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#333">🐳 Pod (AI API Container)</text>
+      <rect x="35" y="200" width="155" height="30" rx="5" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="112" y="219" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#333">🐳 Pod (AI API Container)</text>
+      <rect x="35" y="235" width="155" height="30" rx="5" fill="white" stroke="#aaa" stroke-width="1"/>
+      <text x="112" y="254" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#999">kubelet + kube-proxy</text>
+
+      <rect x="245" y="135" width="190" height="150" rx="10" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="340" y="158" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#117a65">Worker Node 2</text>
+      <rect x="260" y="165" width="155" height="30" rx="5" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="337" y="184" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#333">🐳 Pod (AI API Container)</text>
+      <rect x="260" y="200" width="155" height="30" rx="5" fill="white" stroke="#aaa" stroke-width="1"/>
+      <text x="337" y="219" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#999">kubelet + kube-proxy</text>
+      <rect x="260" y="235" width="155" height="30" rx="5" fill="white" stroke="#aaa" stroke-width="1"/>
+      <text x="337" y="254" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#999">kubelet + kube-proxy</text>
+
+      <rect x="470" y="135" width="190" height="150" rx="10" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="565" y="158" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#117a65">Worker Node 3</text>
+      <rect x="485" y="165" width="155" height="30" rx="5" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="562" y="184" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#333">🐳 Pod (Redis Cache)</text>
+      <rect x="485" y="200" width="155" height="30" rx="5" fill="white" stroke="#117a65" stroke-width="1"/>
+      <text x="562" y="219" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#333">🐳 Pod (PostgreSQL DB)</text>
+      <rect x="485" y="235" width="155" height="30" rx="5" fill="white" stroke="#aaa" stroke-width="1"/>
+      <text x="562" y="254" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#999">kubelet + kube-proxy</text>
+    </svg>
+    <div class="diagram-title">Kubernetes Architecture — Control Plane + Worker Nodes</div>
+  </div>
+
+  <h4>K8s Deployment YAML</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">YAML — Kubernetes Deployment</span>
+    </div>
+    <pre><span class="c-cmt"># deployment.yaml — AI App ko K8s par deploy karo</span>
+<span class="c-var">apiVersion</span>: apps/v1
+<span class="c-var">kind</span>: Deployment
+<span class="c-var">metadata</span>:
+  <span class="c-var">name</span>: ai-api-deployment
+<span class="c-var">spec</span>:
+  <span class="c-var">replicas</span>: <span class="c-num">3</span>   <span class="c-cmt"># 3 copies chalao simultaneously</span>
+  <span class="c-var">selector</span>:
+    <span class="c-var">matchLabels</span>:
+      <span class="c-var">app</span>: ai-api
+  <span class="c-var">template</span>:
+    <span class="c-var">metadata</span>:
+      <span class="c-var">labels</span>:
+        <span class="c-var">app</span>: ai-api
+    <span class="c-var">spec</span>:
+      <span class="c-var">containers</span>:
+        - <span class="c-var">name</span>: ai-api
+          <span class="c-var">image</span>: gcr.io/my-project/ai-app:<span class="c-num">v1.2</span>
+          <span class="c-var">ports</span>:
+            - <span class="c-var">containerPort</span>: <span class="c-num">8000</span>
+          <span class="c-var">env</span>:
+            - <span class="c-var">name</span>: ANTHROPIC_API_KEY
+              <span class="c-var">valueFrom</span>:
+                <span class="c-var">secretKeyRef</span>:   <span class="c-cmt"># Secret se lo, hardcode mat karo!</span>
+                  <span class="c-var">name</span>: api-secrets
+                  <span class="c-var">key</span>: anthropic-key
+          <span class="c-var">resources</span>:
+            <span class="c-var">requests</span>: { memory: "256Mi", cpu: "250m" }
+            <span class="c-var">limits</span>: { memory: "512Mi", cpu: "500m" }
+---
+<span class="c-var">apiVersion</span>: v1
+<span class="c-var">kind</span>: Service
+<span class="c-var">metadata</span>:
+  <span class="c-var">name</span>: ai-api-service
+<span class="c-var">spec</span>:
+  <span class="c-var">selector</span>:
+    <span class="c-var">app</span>: ai-api
+  <span class="c-var">ports</span>:
+    - <span class="c-var">port</span>: <span class="c-num">80</span>
+      <span class="c-var">targetPort</span>: <span class="c-num">8000</span>
+  <span class="c-var">type</span>: LoadBalancer  <span class="c-cmt"># Automatically traffic distribute karo</span></pre>
+  </div>
+
+  <h3 id="ch3-cicd">3.3 CI/CD — Continuous Integration & Deployment</h3>
+
+  <h4>CI/CD Kya Hai?</h4>
+  <p><strong>CI (Continuous Integration)</strong> = Code push hone par automatically tests run karo.<br>
+  <strong>CD (Continuous Deployment)</strong> = Tests pass hone par automatically deploy karo.</p>
+
+  <div class="diagram-wrap">
+    <div class="flow">
+      <div class="flow-box" style="--f-color:#7d3c98;background:#f3e8ff">Code Push</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#1a5276;background:#dbeafe">Tests Run</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#117a65;background:#d1fae5">Build Image</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#d68910;background:#fef3c7">Staging Deploy</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#c0392b;background:#fde8e8">Production Deploy</div>
+    </div>
+    <div class="diagram-title">CI/CD Pipeline — Code se Production tak Automated Journey</div>
+  </div>
+
+  <h3 id="ch3-gha">3.4 GitHub Actions</h3>
+  <p>GitHub Actions ek <strong>free CI/CD platform</strong> hai jo GitHub repository ke saath built-in aata hai. YAML files likhke automation define karte hain.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">YAML — .github/workflows/deploy.yml</span>
+    </div>
+    <pre><span class="c-var">name</span>: AI App CI/CD Pipeline
+
+<span class="c-cmt"># Trigger: main branch par push hone par</span>
+<span class="c-var">on</span>:
+  <span class="c-var">push</span>:
+    <span class="c-var">branches</span>: [main]
+
+<span class="c-var">jobs</span>:
+  <span class="c-cmt"># Job 1: Tests chalao</span>
+  <span class="c-var">test</span>:
+    <span class="c-var">runs-on</span>: ubuntu-latest
+    <span class="c-var">steps</span>:
+      - <span class="c-var">name</span>: Code checkout karo
+        <span class="c-var">uses</span>: actions/checkout@v4
+
+      - <span class="c-var">name</span>: Python setup
+        <span class="c-var">uses</span>: actions/setup-python@v5
+        <span class="c-var">with</span>:
+          <span class="c-var">python-version</span>: <span class="c-str">'3.11'</span>
+
+      - <span class="c-var">name</span>: Dependencies install karo
+        <span class="c-var">run</span>: pip install -r requirements.txt
+
+      - <span class="c-var">name</span>: Tests run karo
+        <span class="c-var">run</span>: pytest tests/ -v
+        <span class="c-var">env</span>:
+          ANTHROPIC_API_KEY: <span class="c-str">${{ secrets.ANTHROPIC_API_KEY }}</span>
+
+  <span class="c-cmt"># Job 2: Deploy (sirf test pass hone par)</span>
+  <span class="c-var">deploy</span>:
+    <span class="c-var">needs</span>: test   <span class="c-cmt"># test job ke baad chalega</span>
+    <span class="c-var">runs-on</span>: ubuntu-latest
+    <span class="c-var">steps</span>:
+      - <span class="c-var">uses</span>: actions/checkout@v4
+
+      - <span class="c-var">name</span>: Google Cloud auth
+        <span class="c-var">uses</span>: google-github-actions/auth@v2
+        <span class="c-var">with</span>:
+          <span class="c-var">credentials_json</span>: <span class="c-str">${{ secrets.GCP_CREDENTIALS }}</span>
+
+      - <span class="c-var">name</span>: Docker image build & push
+        <span class="c-var">run</span>: |
+          gcloud builds submit --tag gcr.io/${{ env.PROJECT_ID }}/ai-app:${{ github.sha }}
+
+      - <span class="c-var">name</span>: Cloud Run deploy
+        <span class="c-var">run</span>: |
+          gcloud run deploy ai-app \
+            --image gcr.io/${{ env.PROJECT_ID }}/ai-app:${{ github.sha }} \
+            --region asia-south1 \
+            --platform managed</pre>
+  </div>
+
+  <div class="box tip">
+    <div class="box-title">✅ GitHub Actions Best Practice</div>
+    Hamesha API keys aur secrets ko <strong>GitHub Secrets</strong> mein store karo — never hardcode karo YAML mein. Settings → Secrets and variables → Actions mein jaake add karo.
+  </div>
+
+  <div class="box info">
+    <div class="box-title">💬 Interview Questions — DevOps</div>
+    <ul class="iq-list">
+      <li>Docker image aur Docker container mein kya difference hai?</li>
+      <li>Kubernetes mein Pod, Deployment, aur Service ka kya role hai?</li>
+      <li>CI/CD pipeline kaise AI application development speed badhata hai?</li>
+      <li>docker-compose vs Kubernetes — kab kaunsa use karein?</li>
+      <li>GitHub Actions mein secrets kaise securely manage karte hain?</li>
+    </ul>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">🏋 Mini Exercise — DevOps</div>
+    <ol>
+      <li>FastAPI app ke liye Dockerfile likhao aur build karo: <code>docker build -t my-ai-app .</code></li>
+      <li>Container run karo: <code>docker run -p 8000:8000 -e ANTHROPIC_API_KEY=xxx my-ai-app</code></li>
+      <li>GitHub Actions workflow banao jo tests run kare har PR par</li>
+      <li><code>docker-compose.yml</code> likho jisme API + Redis dono ho</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CHAPTER 4 — SCALABILITY
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="ch4" style="--page-stripe: var(--accent4)">
+  <div class="ch-banner" style="--ch-a:#7d3c98;--ch-b:#6c3483" data-icon="📈">
+    <div class="ch-num">Chapter 4 of 6</div>
+    <h2>Scalability — Scale Karna Seekho</h2>
+  </div>
+
+  <p><strong>Scalability</strong> ek system ki ability hai ki jab load badhta hai toh usse handle kar sake — performance degrade hue bina. AI applications ke liye especially important hai kyunki LLM calls expensive aur slow hote hain.</p>
+
+  <div class="box note">
+    <div class="box-title">💡 Scalability Analogy — Dhaba vs Restaurant Chain</div>
+    Ek dhabe mein ek hi cook sab kuch karta hai — 100 log aaye toh problem! Lekin McDonald's ek system hai: multiple stations, multiple workers, standardized process. Scalability ka matlab hai apni app ko McDonald's jaisa banana!
+  </div>
+
+  <h3 id="ch4-lb">4.1 Load Balancing</h3>
+
+  <h4>Load Balancer Kya Hai?</h4>
+  <p>Load Balancer ek <strong>traffic cop</strong> hai jo incoming requests ko multiple servers mein distribute karta hai taaki koi ek server overloaded na ho.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <!-- Clients -->
+      <text x="40" y="50" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">👤 User 1</text>
+      <text x="40" y="120" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">👤 User 2</text>
+      <text x="40" y="190" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#333">👤 User 3</text>
+      <!-- Lines to LB -->
+      <line x1="70" y1="48" x2="185" y2="118" stroke="#aaa" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="70" y1="118" x2="185" y2="118" stroke="#aaa" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="70" y1="188" x2="185" y2="118" stroke="#aaa" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- Load Balancer -->
+      <rect x="190" y="88" width="130" height="60" rx="10" fill="#dbeafe" stroke="#1a5276" stroke-width="2"/>
+      <text x="255" y="115" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#1a5276">⚖ Load</text>
+      <text x="255" y="133" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#1a5276">Balancer</text>
+      <!-- Lines to servers -->
+      <line x1="322" y1="100" x2="430" y2="55" stroke="#1a5276" stroke-width="1.5"/>
+      <line x1="322" y1="118" x2="430" y2="118" stroke="#1a5276" stroke-width="1.5"/>
+      <line x1="322" y1="136" x2="430" y2="180" stroke="#1a5276" stroke-width="1.5"/>
+      <!-- Servers -->
+      <rect x="435" y="28" width="130" height="50" rx="8" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="500" y="58" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#117a65">🖥 Server 1</text>
+      <rect x="435" y="93" width="130" height="50" rx="8" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="500" y="123" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#117a65">🖥 Server 2</text>
+      <rect x="435" y="158" width="130" height="50" rx="8" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="500" y="188" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#117a65">🖥 Server 3</text>
+    </svg>
+    <div class="diagram-title">Load Balancer — Traffic Distribute Karna</div>
+  </div>
+
+  <h4>Load Balancing Algorithms</h4>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Algorithm</th><th>Kaise Kaam Karta Hai</th><th>Best For</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Round Robin</strong></td><td>Server 1, 2, 3, 1, 2, 3... (rotate karo)</td><td>Equal servers, simple cases</td></tr>
+      <tr><td><strong>Least Connections</strong></td><td>Sabse kam busy server ko bhejo</td><td>Variable processing time (AI calls!)</td></tr>
+      <tr><td><strong>IP Hash</strong></td><td>User ka IP dekh ke same server pe bhejo</td><td>Session persistence (login apps)</td></tr>
+      <tr><td><strong>Weighted</strong></td><td>Powerful servers ko zyada traffic</td><td>Mixed hardware setups</td></tr>
+      <tr><td><strong>Random</strong></td><td>Random server choose karo</td><td>Simple stateless services</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box tip">
+    <div class="box-title">✅ AI App ke Liye Best Algorithm</div>
+    AI apps ke liye <strong>Least Connections</strong> use karo. Kyunki Claude/GPT calls ka response time variable hota hai — koi query 2 sec mein done, koi 10 sec mein. Least connections algorithm smartly route karta hai.
+  </div>
+
+  <h3 id="ch4-cache">4.2 Caching — Repeat Kaam Mat Karo</h3>
+
+  <h4>Caching Kya Hai?</h4>
+  <p>Caching matlab hai <strong>pehle se compute kiye results store karna</strong> taaki baar baar wahi kaam na karna pade. AI apps mein yeh bahut important hai kyunki LLM calls expensive ($) aur slow (seconds) hote hain.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Redis Caching with FastAPI</span>
+    </div>
+    <pre><span class="c-kw">import</span> <span class="c-cls">redis</span>
+<span class="c-kw">import</span> <span class="c-cls">hashlib</span>
+<span class="c-kw">import</span> <span class="c-cls">json</span>
+<span class="c-kw">from</span> <span class="c-cls">fastapi</span> <span class="c-kw">import</span> FastAPI
+
+<span class="c-var">app</span> = <span class="c-fn">FastAPI</span>()
+<span class="c-var">cache</span> = redis.<span class="c-fn">Redis</span>(<span class="c-var">host</span>=<span class="c-str">'localhost'</span>, <span class="c-var">port</span>=<span class="c-num">6379</span>)
+
+<span class="c-kw">def</span> <span class="c-fn">get_cache_key</span>(<span class="c-var">text</span>: <span class="c-cls">str</span>) -> <span class="c-cls">str</span>:
+    <span class="c-cmt"># Text ka unique hash banao (same text = same key)</span>
+    <span class="c-kw">return</span> <span class="c-str">f"ai:response:{hashlib.md5(text.encode()).hexdigest()}"</span>
+
+<span class="c-op">@app</span>.post(<span class="c-str">"/summarize"</span>)
+<span class="c-kw">async def</span> <span class="c-fn">summarize</span>(<span class="c-var">text</span>: <span class="c-cls">str</span>):
+    <span class="c-var">key</span> = <span class="c-fn">get_cache_key</span>(text)
+    
+    <span class="c-cmt"># Step 1: Cache check karo pehle</span>
+    <span class="c-var">cached</span> = cache.<span class="c-fn">get</span>(key)
+    <span class="c-kw">if</span> cached:
+        <span class="c-kw">return</span> {<span class="c-str">"summary"</span>: json.<span class="c-fn">loads</span>(cached), <span class="c-str">"from_cache"</span>: <span class="c-kw">True</span>}
+    
+    <span class="c-cmt"># Step 2: Cache miss — AI call karo</span>
+    <span class="c-var">result</span> = <span class="c-kw">await</span> <span class="c-fn">call_claude_api</span>(text)
+    
+    <span class="c-cmt"># Step 3: Result cache mein save karo (1 hour ke liye)</span>
+    cache.<span class="c-fn">setex</span>(key, <span class="c-num">3600</span>, json.<span class="c-fn">dumps</span>(result))
+    
+    <span class="c-kw">return</span> {<span class="c-str">"summary"</span>: result, <span class="c-str">"from_cache"</span>: <span class="c-kw">False</span>}
+    
+<span class="c-cmt"># Cache hit rate 70%+ → Cost 70% kam! 🎉</span></pre>
+  </div>
+
+  <h4>Caching Strategies</h4>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-icon">📥</div>
+      <div class="arch-label">Cache-Aside</div>
+      <div class="arch-sub">App manually cache check karta hai (most common)</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">✍</div>
+      <div class="arch-label">Write-Through</div>
+      <div class="arch-sub">DB write ke saath hi cache update karo</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🔄</div>
+      <div class="arch-label">Write-Behind</div>
+      <div class="arch-sub">Pehle cache likhao, baad mein DB sync karo</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">⏰</div>
+      <div class="arch-label">TTL-Based</div>
+      <div class="arch-sub">Time limit ke baad cache expire hota hai</div>
+    </div>
+  </div>
+
+  <h3 id="ch4-scale">4.3 Horizontal vs Vertical Scaling</h3>
+  <div class="vs-grid">
+    <div class="vs-card" style="background:#fde8e8;border-color:#c0392b">
+      <h5 style="color:#c0392b">⬆ Vertical Scaling (Scale Up)</h5>
+      <p style="font-size:13px">Ek hi server ko powerful banana — zyada RAM, zyada CPU, zyada storage.</p>
+      <ul style="font-size:12.5px">
+        <li>✅ Simple, no code changes</li>
+        <li>❌ Expensive, limit hoti hai</li>
+        <li>❌ Single point of failure</li>
+      </ul>
+      <p style="font-size:12px;color:#888;margin-top:8px">Example: 4 GB RAM → 32 GB RAM server</p>
+    </div>
+    <div class="vs-card" style="background:#d1fae5;border-color:#117a65">
+      <h5 style="color:#117a65">➡ Horizontal Scaling (Scale Out)</h5>
+      <p style="font-size:13px">Zyada servers add karna — load distribute karo multiple machines mein.</p>
+      <ul style="font-size:12.5px">
+        <li>✅ Theoretically unlimited scale</li>
+        <li>✅ No single point of failure</li>
+        <li>❌ Complex, load balancer chahiye</li>
+      </ul>
+      <p style="font-size:12px;color:#888;margin-top:8px">Example: 1 server → 10 servers</p>
+    </div>
+  </div>
+
+  <h3 id="ch4-queue">4.4 Queue Systems — Async Processing</h3>
+
+  <h4>Queue Kya Hai?</h4>
+  <p>Queue ek <strong>waiting line</strong> hai. Jab AI task expensive ho (video generate, report create, bulk emails) toh user ko wait karwane ki jagah task queue mein daalo — background mein process karo — user ko notification do.</p>
+
+  <div class="diagram-wrap">
+    <div class="flow">
+      <div class="flow-box" style="--f-color:#1a5276;background:#dbeafe">User Request</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#7d3c98;background:#f3e8ff">API Server<br><span style="font-size:10px">(Instantly returns job_id)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#d68910;background:#fef3c7">📬 Message Queue<br><span style="font-size:10px">(Redis/RabbitMQ/SQS)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#117a65;background:#d1fae5">Worker Process<br><span style="font-size:10px">(AI kaam karta hai)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="--f-color:#c0392b;background:#fde8e8">Result Store<br><span style="font-size:10px">+ User Notify</span></div>
+    </div>
+    <div class="diagram-title">Async Queue Pattern — AI Heavy Tasks ke Liye Ideal</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Celery + Redis Queue</span>
+    </div>
+    <pre><span class="c-cmt"># tasks.py — Background AI tasks</span>
+<span class="c-kw">from</span> <span class="c-cls">celery</span> <span class="c-kw">import</span> Celery
+<span class="c-kw">import</span> <span class="c-cls">anthropic</span>
+
+<span class="c-cmt"># Redis ko message broker use karo</span>
+<span class="c-var">celery_app</span> = <span class="c-fn">Celery</span>(
+    <span class="c-str">'tasks'</span>,
+    <span class="c-var">broker</span>=<span class="c-str">'redis://localhost:6379/0'</span>,
+    <span class="c-var">backend</span>=<span class="c-str">'redis://localhost:6379/1'</span>
+)
+
+<span class="c-op">@celery_app</span>.task
+<span class="c-kw">def</span> <span class="c-fn">analyze_document</span>(<span class="c-var">doc_text</span>: <span class="c-cls">str</span>, <span class="c-var">user_id</span>: <span class="c-cls">str</span>):
+    <span class="c-cmt">"""Ye background mein chalega — user ko wait nahi karna"""</span>
+    <span class="c-var">client</span> = anthropic.<span class="c-fn">Anthropic</span>()
+    <span class="c-var">result</span> = client.messages.<span class="c-fn">create</span>(
+        <span class="c-var">model</span>=<span class="c-str">"claude-sonnet-4-20250514"</span>,
+        <span class="c-var">max_tokens</span>=<span class="c-num">2000</span>,
+        <span class="c-var">messages</span>=[{
+            <span class="c-str">"role"</span>: <span class="c-str">"user"</span>,
+            <span class="c-str">"content"</span>: <span class="c-str">f"Yeh document deeply analyze karo:\n{doc_text}"</span>
+        }]
+    )
+    <span class="c-cmt"># Email/notification bhejo user ko</span>
+    <span class="c-fn">send_email</span>(user_id, result.content[<span class="c-num">0</span>].text)
+    <span class="c-kw">return</span> result.content[<span class="c-num">0</span>].text
+
+<span class="c-cmt"># main.py mein FastAPI endpoint</span>
+<span class="c-op">@app</span>.post(<span class="c-str">"/analyze"</span>)
+<span class="c-kw">async def</span> <span class="c-fn">start_analysis</span>(<span class="c-var">doc</span>: str, <span class="c-var">user_id</span>: str):
+    <span class="c-cmt"># Task queue mein daalo, instantly return karo</span>
+    <span class="c-var">task</span> = <span class="c-fn">analyze_document</span>.delay(doc, user_id)
+    <span class="c-kw">return</span> {<span class="c-str">"job_id"</span>: task.id, <span class="c-str">"status"</span>: <span class="c-str">"queued"</span>}
+    <span class="c-cmt"># User turant job_id milta hai — wait nahi!</span></pre>
+  </div>
+
+  <div class="box info">
+    <div class="box-title">💬 Interview Questions — Scalability</div>
+    <ul class="iq-list">
+      <li>Horizontal aur vertical scaling mein kya difference hai? AI apps ke liye kaunsa better hai?</li>
+      <li>Cache invalidation kya hai aur yeh kyun challenging hai?</li>
+      <li>Message queue kab use karte hain API response ke bajaaye?</li>
+      <li>Load balancer kaise decide karta hai ki kaunsa server request handle karega?</li>
+      <li>Redis aur Memcached mein kya difference hai?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CHAPTER 5 — SECURITY
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="ch5" style="--page-stripe: var(--accent5)">
+  <div class="ch-banner" style="--ch-a:#d68910;--ch-b:#b7770d" data-icon="🔐">
+    <div class="ch-num">Chapter 5 of 6</div>
+    <h2>Security — Apni AI App Ko Safe Banao</h2>
+  </div>
+
+  <p>Security ek afterthought nahi — <strong>architecture ka core part</strong> hai. AI applications especially vulnerable hote hain kyunki:</p>
+  <ul>
+    <li>Sensitive user data handle karte hain</li>
+    <li>Expensive API calls vulnerable to abuse</li>
+    <li>Prompt injection attacks possible hain</li>
+    <li>LLM outputs unpredictable ho sakte hain</li>
+  </ul>
+
+  <h3>5.1 API Security</h3>
+
+  <h4>Authentication vs Authorization</h4>
+  <div class="vs-grid">
+    <div class="vs-card" style="background:#dbeafe;border-color:#1a5276">
+      <h5 style="color:#1a5276">🔑 Authentication (AuthN)</h5>
+      <p style="font-size:13px"><strong>"Tum kaun ho?"</strong> — Identity verify karna</p>
+      <ul style="font-size:12.5px">
+        <li>Username + Password</li>
+        <li>API Keys</li>
+        <li>OAuth tokens</li>
+        <li>Biometrics</li>
+      </ul>
+    </div>
+    <div class="vs-card" style="background:#fef3c7;border-color:#d68910">
+      <h5 style="color:#d68910">🛡 Authorization (AuthZ)</h5>
+      <p style="font-size:13px"><strong>"Tumhara haq kya hai?"</strong> — Permission check karna</p>
+      <ul style="font-size:12.5px">
+        <li>User: read only</li>
+        <li>Admin: read + write</li>
+        <li>Super Admin: everything</li>
+        <li>Role-Based Access Control (RBAC)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>JWT — JSON Web Tokens</h4>
+  <p>JWT ek <strong>self-contained token</strong> hai jisme user ki information encoded hoti hai. Server ko database check nahi karna parta — token khud proof hai!</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <rect x="20" y="30" width="175" height="60" rx="8" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="108" y="55" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#c0392b">Header</text>
+      <text x="108" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#555">eyJhbGciOiJIUzI1NiJ9</text>
+      <text x="108" y="85" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#888">Algorithm info</text>
+
+      <text x="205" y="63" text-anchor="middle" font-family="DM Sans" font-size="14" fill="#ccc">.</text>
+
+      <rect x="215" y="30" width="250" height="60" rx="8" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="340" y="55" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#117a65">Payload (Claims)</text>
+      <text x="340" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#555">eyJ1c2VyX2lkIjoiMTIzIn0</text>
+      <text x="340" y="85" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#888">user_id, exp, role, etc.</text>
+
+      <text x="475" y="63" text-anchor="middle" font-family="DM Sans" font-size="14" fill="#ccc">.</text>
+
+      <rect x="485" y="30" width="175" height="60" rx="8" fill="#dbeafe" stroke="#1a5276" stroke-width="1.5"/>
+      <text x="572" y="55" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#1a5276">Signature</text>
+      <text x="572" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#555">SflKxwRJSMeKKF2QT4fw</text>
+      <text x="572" y="85" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#888">Tamper-proof verify</text>
+    </svg>
+    <div class="diagram-title">JWT Structure — Header.Payload.Signature</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — FastAPI JWT Authentication</span>
+    </div>
+    <pre><span class="c-kw">from</span> <span class="c-cls">fastapi</span> <span class="c-kw">import</span> FastAPI, HTTPException, Depends
+<span class="c-kw">from</span> <span class="c-cls">fastapi.security</span> <span class="c-kw">import</span> HTTPBearer, HTTPAuthorizationCredentials
+<span class="c-kw">import</span> <span class="c-cls">jwt</span>
+<span class="c-kw">from</span> <span class="c-cls">datetime</span> <span class="c-kw">import</span> datetime, timedelta
+<span class="c-kw">import</span> <span class="c-cls">os</span>
+
+<span class="c-var">SECRET_KEY</span> = os.getenv(<span class="c-str">"JWT_SECRET"</span>)  <span class="c-cmt"># Strong secret key chahiye!</span>
+<span class="c-var">security</span> = <span class="c-fn">HTTPBearer</span>()
+
+<span class="c-kw">def</span> <span class="c-fn">create_token</span>(<span class="c-var">user_id</span>: <span class="c-cls">str</span>) -> <span class="c-cls">str</span>:
+    <span class="c-var">payload</span> = {
+        <span class="c-str">"user_id"</span>: user_id,
+        <span class="c-str">"exp"</span>: datetime.<span class="c-fn">utcnow</span>() + timedelta(hours=<span class="c-num">24</span>)  <span class="c-cmt"># 24h expiry</span>
+    }
+    <span class="c-kw">return</span> jwt.<span class="c-fn">encode</span>(payload, SECRET_KEY, algorithm=<span class="c-str">"HS256"</span>)
+
+<span class="c-kw">def</span> <span class="c-fn">verify_token</span>(<span class="c-var">creds</span>: HTTPAuthorizationCredentials = <span class="c-fn">Depends</span>(security)):
+    <span class="c-kw">try</span>:
+        <span class="c-var">payload</span> = jwt.<span class="c-fn">decode</span>(creds.credentials, SECRET_KEY, algorithms=[<span class="c-str">"HS256"</span>])
+        <span class="c-kw">return</span> payload
+    <span class="c-kw">except</span> jwt.ExpiredSignatureError:
+        <span class="c-kw">raise</span> <span class="c-fn">HTTPException</span>(<span class="c-num">401</span>, <span class="c-str">"Token expired! Dobara login karo."</span>)
+    <span class="c-kw">except</span> jwt.InvalidTokenError:
+        <span class="c-kw">raise</span> <span class="c-fn">HTTPException</span>(<span class="c-num">401</span>, <span class="c-str">"Invalid token!"</span>)
+
+<span class="c-cmt"># Protected endpoint — sirf authenticated users</span>
+<span class="c-op">@app</span>.post(<span class="c-str">"/api/chat"</span>)
+<span class="c-kw">async def</span> <span class="c-fn">chat</span>(<span class="c-var">message</span>: str, <span class="c-var">user</span> = <span class="c-fn">Depends</span>(verify_token)):
+    <span class="c-cmt"># user["user_id"] se pata chalta hai kaun hai</span>
+    <span class="c-kw">return</span> {<span class="c-str">"reply"</span>: <span class="c-str">f"Hello {user['user_id']}!"</span>}</pre>
+  </div>
+
+  <h3>5.2 Rate Limiting — Abuse Rokna</h3>
+  <p>Rate limiting matlab ek user kitni requests per minute kar sakta hai — yeh limit set karna. AI apps ke liye <em>critical</em> hai kyunki bina limit ke koi ek user thousands of dollars ka API cost kar sakta hai!</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Rate Limiting with Redis</span>
+    </div>
+    <pre><span class="c-kw">import</span> <span class="c-cls">redis</span>
+<span class="c-kw">from</span> <span class="c-cls">fastapi</span> <span class="c-kw">import</span> HTTPException, Request
+<span class="c-kw">from</span> <span class="c-cls">functools</span> <span class="c-kw">import</span> wraps
+
+<span class="c-var">redis_client</span> = redis.<span class="c-fn">Redis</span>(<span class="c-var">host</span>=<span class="c-str">'localhost'</span>)
+
+<span class="c-kw">def</span> <span class="c-fn">rate_limit</span>(<span class="c-var">max_requests</span>: <span class="c-cls">int</span> = <span class="c-num">10</span>, <span class="c-var">window_seconds</span>: <span class="c-cls">int</span> = <span class="c-num">60</span>):
+    <span class="c-cmt">"""10 requests per 60 seconds per user"""</span>
+    <span class="c-kw">def</span> <span class="c-fn">decorator</span>(<span class="c-var">func</span>):
+        <span class="c-op">@wraps</span>(func)
+        <span class="c-kw">async def</span> <span class="c-fn">wrapper</span>(<span class="c-var">request</span>: <span class="c-cls">Request</span>, *args, **kwargs):
+            <span class="c-cmt"># User ka IP ya user_id se key banao</span>
+            <span class="c-var">client_ip</span> = request.client.host
+            <span class="c-var">key</span> = <span class="c-str">f"rate:{client_ip}"</span>
+            
+            <span class="c-cmt"># Current count check karo</span>
+            <span class="c-var">count</span> = redis_client.<span class="c-fn">get</span>(key)
+            <span class="c-kw">if</span> count <span class="c-kw">and</span> <span class="c-fn">int</span>(count) >= max_requests:
+                <span class="c-kw">raise</span> <span class="c-fn">HTTPException</span>(
+                    <span class="c-num">429</span>,
+                    <span class="c-str">f"Bahut zyada requests! {window_seconds}s baad try karo."</span>
+                )
+            
+            <span class="c-cmt"># Count increment karo</span>
+            redis_client.<span class="c-fn">incr</span>(key)
+            redis_client.<span class="c-fn">expire</span>(key, window_seconds)  <span class="c-cmt"># Auto expire</span>
+            
+            <span class="c-kw">return await</span> <span class="c-fn">func</span>(request, *args, **kwargs)
+        <span class="c-kw">return</span> wrapper
+    <span class="c-kw">return</span> decorator
+
+<span class="c-cmt"># Use karna aasaan hai:</span>
+<span class="c-op">@app</span>.post(<span class="c-str">"/chat"</span>)
+<span class="c-op">@rate_limit</span>(<span class="c-var">max_requests</span>=<span class="c-num">10</span>, <span class="c-var">window_seconds</span>=<span class="c-num">60</span>)
+<span class="c-kw">async def</span> <span class="c-fn">chat</span>(<span class="c-var">request</span>: <span class="c-cls">Request</span>, ...):
+    ...</pre>
+  </div>
+
+  <h3>5.3 Secret Management — Keys Safely Store Karna</h3>
+
+  <div class="box error">
+    <div class="box-title">🚨 NEVER DO THIS — Critical Security Mistake</div>
+    <code style="color:#c0392b">ANTHROPIC_API_KEY = "sk-ant-api03-abc123..."</code>
+    <p style="margin-top:8px;font-size:13px">API key kabhi bhi code mein hardcode mat karo! GitHub par push ho gayi toh 5 minutes mein koi misuse kar sakta hai. Yeh real incident bahut baar hua hai — millions ka bill aa gaya!</p>
+  </div>
+
+  <h4>Sahi Tarika — Environment Variables & Secrets Managers</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">bash — Secure Secret Management</span>
+    </div>
+    <pre><span class="c-cmt"># Method 1: .env file (local development)</span>
+<span class="c-cmt"># .env file banao (NEVER commit to git!)</span>
+echo "ANTHROPIC_API_KEY=sk-ant-..." > .env
+echo ".env" >> .gitignore  <span class="c-cmt"># Zaroori!</span>
+
+<span class="c-cmt"># Python mein use karo:</span>
+<span class="c-kw">from</span> <span class="c-cls">dotenv</span> <span class="c-kw">import</span> load_dotenv
+<span class="c-fn">load_dotenv</span>()
+key = os.getenv(<span class="c-str">"ANTHROPIC_API_KEY"</span>)
+
+<span class="c-cmt"># Method 2: AWS Secrets Manager (production)</span>
+<span class="c-kw">import</span> <span class="c-cls">boto3</span>
+<span class="c-kw">import</span> <span class="c-cls">json</span>
+
+<span class="c-kw">def</span> <span class="c-fn">get_secret</span>(<span class="c-var">secret_name</span>):
+    <span class="c-var">client</span> = boto3.<span class="c-fn">client</span>(<span class="c-str">'secretsmanager'</span>, <span class="c-var">region_name</span>=<span class="c-str">'ap-south-1'</span>)
+    <span class="c-var">response</span> = client.<span class="c-fn">get_secret_value</span>(<span class="c-var">SecretId</span>=secret_name)
+    <span class="c-kw">return</span> json.<span class="c-fn">loads</span>(response[<span class="c-str">'SecretString'</span>])
+
+<span class="c-var">secrets</span> = <span class="c-fn">get_secret</span>(<span class="c-str">"ai-app/production"</span>)
+<span class="c-var">api_key</span> = secrets[<span class="c-str">"ANTHROPIC_API_KEY"</span>]
+
+<span class="c-cmt"># Method 3: Kubernetes Secrets</span>
+kubectl create secret generic api-secrets \
+  --from-literal=anthropic-key=<span class="c-str">"sk-ant-..."</span>
+  <span class="c-cmt"># YAML mein reference karo (Ch.3 deployment.yaml dekho)</span></pre>
+  </div>
+
+  <h3>5.4 HTTPS & Encryption</h3>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Security Layer</th><th>Kya Protect Karta Hai</th><th>Implementation</th></tr></thead>
+    <tbody>
+      <tr><td><strong>HTTPS/TLS</strong></td><td>Transit mein data encryption</td><td>Let's Encrypt (free SSL), Cloudflare</td></tr>
+      <tr><td><strong>At-Rest Encryption</strong></td><td>Database mein stored data</td><td>AWS RDS encryption, PostgreSQL pgcrypto</td></tr>
+      <tr><td><strong>Input Validation</strong></td><td>SQL injection, XSS attacks</td><td>Pydantic models, parameterized queries</td></tr>
+      <tr><td><strong>CORS Policy</strong></td><td>Unauthorized domains se requests</td><td>FastAPI CORSMiddleware with whitelist</td></tr>
+      <tr><td><strong>API Key Rotation</strong></td><td>Leaked key damage minimize</td><td>Monthly rotation, monitoring alerts</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>5.5 Prompt Injection Security — AI-Specific</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Prompt Injection Defense</span>
+    </div>
+    <pre><span class="c-kw">import</span> <span class="c-cls">re</span>
+
+<span class="c-kw">def</span> <span class="c-fn">sanitize_user_input</span>(<span class="c-var">user_message</span>: <span class="c-cls">str</span>) -> <span class="c-cls">str</span>:
+    <span class="c-cmt">"""
+    Prompt injection attacks filter karo:
+    - "Ignore all instructions" jaisi strings
+    - System prompt override attempts
+    - Jailbreak patterns
+    """</span>
+    <span class="c-cmt"># Common injection patterns</span>
+    <span class="c-var">injection_patterns</span> = [
+        <span class="c-str">r"ignore (all |previous |above )?instructions"</span>,
+        <span class="c-str">r"you are now"</span>,
+        <span class="c-str">r"forget (everything|all)"</span>,
+        <span class="c-str">r"new (persona|role|identity)"</span>,
+        <span class="c-str">r"\[SYSTEM\]"</span>,
+        <span class="c-str">r"###\s*instruction"</span>,
+    ]
+    
+    <span class="c-var">clean_msg</span> = user_message.lower()
+    <span class="c-kw">for</span> pattern <span class="c-kw">in</span> injection_patterns:
+        <span class="c-kw">if</span> re.<span class="c-fn">search</span>(pattern, clean_msg, re.IGNORECASE):
+            <span class="c-kw">raise</span> <span class="c-fn">ValueError</span>(<span class="c-str">"Suspicious input detected! Allowed nahi hai."</span>)
+    
+    <span class="c-cmt"># Length limit bhi lagao</span>
+    <span class="c-kw">if</span> <span class="c-fn">len</span>(user_message) > <span class="c-num">10000</span>:
+        <span class="c-kw">raise</span> <span class="c-fn">ValueError</span>(<span class="c-str">"Input too long!"</span>)
+    
+    <span class="c-kw">return</span> user_message.strip()</pre>
+  </div>
+
+  <div class="box info">
+    <div class="box-title">💬 Interview Questions — Security</div>
+    <ul class="iq-list">
+      <li>Authentication aur Authorization mein kya difference hai? Example do.</li>
+      <li>JWT ka structure kya hai? Signature kyun zaroori hai?</li>
+      <li>Rate limiting kaise implement karein Redis ke saath?</li>
+      <li>API keys securely manage karne ke best practices kya hain?</li>
+      <li>Prompt injection attack kya hai? AI apps mein kaise defend karein?</li>
+      <li>HTTPS aur HTTP mein kya fark hai? SSL/TLS kaise kaam karta hai?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CHAPTER 6 — COST OPTIMIZATION
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="ch6" style="--page-stripe: var(--accent6)">
+  <div class="ch-banner" style="--ch-a:#1e8bc3;--ch-b:#1a6fa8" data-icon="💰">
+    <div class="ch-num">Chapter 6 of 6</div>
+    <h2>Cost Optimization — Paisa Bachao, Performance Rakho</h2>
+  </div>
+
+  <p>AI applications ke saath sabse bada challenge hai <strong>cost</strong>. LLM APIs expensive hote hain — agar smart nahi rahe toh monthly bill lakhs mein aa sakta hai. Yeh chapter aapko production mein cost significantly kam karna sikhata hai bina performance sacrifice kiye.</p>
+
+  <div class="box warn">
+    <div class="box-title">⚠ Real Cost Warning</div>
+    GPT-4 ya Claude Sonnet ke saath ek popular app jo sirf 100 users process karta hai per day — without optimization — easily $500–2000/month cost kar sakta hai. With proper optimization, yeh $50–200 ho sakta hai!
+  </div>
+
+  <h3>6.1 Model Routing — Sahi Kaam Ke Liye Sahi Model</h3>
+
+  <h4>Model Routing Kya Hai?</h4>
+  <p>Har query ke liye sabse expensive model use karna jaroori nahi! <strong>Model routing</strong> matlab hai task ki complexity ke hisaab se sahi model choose karna.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <!-- User Query -->
+      <rect x="270" y="15" width="140" height="40" rx="8" fill="#dbeafe" stroke="#1a5276" stroke-width="1.5"/>
+      <text x="340" y="39" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#1a5276">User Query</text>
+      <!-- Arrow down -->
+      <line x1="340" y1="55" x2="340" y2="80" stroke="#1a5276" stroke-width="1.5"/>
+      <!-- Router -->
+      <rect x="230" y="82" width="220" height="44" rx="8" fill="#7d3c98" opacity=".15" stroke="#7d3c98" stroke-width="1.5"/>
+      <text x="340" y="103" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#7d3c98">🔀 Smart Router</text>
+      <text x="340" y="118" text-anchor="middle" font-family="DM Sans" font-size="9.5" fill="#7d3c98">Task complexity analyze karo</text>
+      <!-- Branches -->
+      <line x1="240" y1="126" x2="100" y2="170" stroke="#117a65" stroke-width="1.5"/>
+      <line x1="340" y1="126" x2="340" y2="170" stroke="#d68910" stroke-width="1.5"/>
+      <line x1="440" y1="126" x2="580" y2="170" stroke="#c0392b" stroke-width="1.5"/>
+      <!-- Model boxes -->
+      <rect x="25" y="172" width="155" height="80" rx="8" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="102" y="195" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#117a65">Claude Haiku</text>
+      <text x="102" y="210" text-anchor="middle" font-family="DM Sans" font-size="9.5" fill="#555">Simple tasks:</text>
+      <text x="102" y="223" text-anchor="middle" font-family="DM Sans" font-size="9.5" fill="#555">Classification, FAQ</text>
+      <text x="102" y="241" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#117a65" font-weight="700">💵 ~$0.25/M tokens</text>
+
+      <rect x="260" y="172" width="160" height="80" rx="8" fill="#fef3c7" stroke="#d68910" stroke-width="1.5"/>
+      <text x="340" y="195" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#d68910">Claude Sonnet</text>
+      <text x="340" y="210" text-anchor="middle" font-family="DM Sans" font-size="9.5" fill="#555">Medium tasks:</text>
+      <text x="340" y="223" text-anchor="middle" font-family="DM Sans" font-size="9.5" fill="#555">Analysis, coding</text>
+      <text x="340" y="241" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#d68910" font-weight="700">💵 ~$3/M tokens</text>
+
+      <rect x="498" y="172" width="160" height="80" rx="8" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="578" y="195" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="700" fill="#c0392b">Claude Opus</text>
+      <text x="578" y="210" text-anchor="middle" font-family="DM Sans" font-size="9.5" fill="#555">Complex tasks:</text>
+      <text x="578" y="223" text-anchor="middle" font-family="DM Sans" font-size="9.5" fill="#555">Research, strategy</text>
+      <text x="578" y="241" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#c0392b" font-weight="700">💵 ~$15/M tokens</text>
+    </svg>
+    <div class="diagram-title">Model Routing — Task Complexity Ke Hisaab Se Model Choose Karo</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Smart Model Router</span>
+    </div>
+    <pre><span class="c-kw">import</span> <span class="c-cls">anthropic</span>
+
+<span class="c-kw">def</span> <span class="c-fn">route_to_model</span>(<span class="c-var">query</span>: <span class="c-cls">str</span>) -> <span class="c-cls">str</span>:
+    <span class="c-cmt">"""Query ki complexity dekh ke best model choose karo"""</span>
+    <span class="c-var">query_lower</span> = query.lower()
+    <span class="c-var">word_count</span> = <span class="c-fn">len</span>(query.split())
+    
+    <span class="c-cmt"># Simple queries → Haiku (cheapest, fastest)</span>
+    <span class="c-var">simple_keywords</span> = [<span class="c-str">"kya hai"</span>, <span class="c-str">"what is"</span>, <span class="c-str">"define"</span>, <span class="c-str">"translate"</span>]
+    <span class="c-kw">if</span> word_count < <span class="c-num">20</span> <span class="c-kw">or</span> <span class="c-fn">any</span>(k <span class="c-kw">in</span> query_lower <span class="c-kw">for</span> k <span class="c-kw">in</span> simple_keywords):
+        <span class="c-kw">return</span> <span class="c-str">"claude-haiku-4-5-20251001"</span>  <span class="c-cmt"># 60x cheaper!</span>
+    
+    <span class="c-cmt"># Complex queries → Opus (expensive but best)</span>
+    <span class="c-var">complex_keywords</span> = [<span class="c-str">"analyze"</span>, <span class="c-str">"research"</span>, <span class="c-str">"strategy"</span>, <span class="c-str">"compare"</span>]
+    <span class="c-kw">if</span> word_count > <span class="c-num">100</span> <span class="c-kw">or</span> <span class="c-fn">any</span>(k <span class="c-kw">in</span> query_lower <span class="c-kw">for</span> k <span class="c-kw">in</span> complex_keywords):
+        <span class="c-kw">return</span> <span class="c-str">"claude-opus-4-6"</span>
+    
+    <span class="c-cmt"># Default → Sonnet (balanced)</span>
+    <span class="c-kw">return</span> <span class="c-str">"claude-sonnet-4-6"</span>
+
+<span class="c-kw">async def</span> <span class="c-fn">smart_chat</span>(<span class="c-var">user_query</span>: <span class="c-cls">str</span>):
+    <span class="c-var">model</span> = <span class="c-fn">route_to_model</span>(user_query)
+    <span class="c-var">client</span> = anthropic.<span class="c-fn">Anthropic</span>()
+    
+    <span class="c-var">response</span> = client.messages.<span class="c-fn">create</span>(
+        <span class="c-var">model</span>=model,
+        <span class="c-var">max_tokens</span>=<span class="c-num">1024</span>,
+        <span class="c-var">messages</span>=[{<span class="c-str">"role"</span>: <span class="c-str">"user"</span>, <span class="c-str">"content"</span>: user_query}]
+    )
+    <span class="c-kw">return</span> {<span class="c-str">"reply"</span>: response.content[<span class="c-num">0</span>].text, <span class="c-str">"model_used"</span>: model}</pre>
+  </div>
+
+  <h3>6.2 Prompt Optimization — Token Waste Rokna</h3>
+
+  <h4>Tokens Kya Hain?</h4>
+  <p>LLMs text ko "tokens" mein process karte hain — roughly 1 token ≈ 0.75 English words. Longer prompts = more tokens = more cost. <strong>Har word counts!</strong></p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Technique</th><th>Example</th><th>Token Saving</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Concise System Prompt</strong></td><td>"Helpful AI" vs 500-word description</td><td>~80% system prompt tokens</td></tr>
+      <tr><td><strong>Remove Redundancy</strong></td><td>"Please kindly summarize" → "Summarize"</td><td>30-40% reduction</td></tr>
+      <tr><td><strong>Structured Format</strong></td><td>JSON output instead of verbose text</td><td>50-60% output tokens</td></tr>
+      <tr><td><strong>Chunking Long Docs</strong></td><td>Split 100-page PDF into sections</td><td>Only relevant chunks send</td></tr>
+      <tr><td><strong>Caching (Prompt Cache)</strong></td><td>Anthropic's cache feature for long system prompts</td><td>Up to 90% on system prompt</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>Anthropic Prompt Caching — Game Changer</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Prompt Caching (Saves 90% on Long System Prompts)</span>
+    </div>
+    <pre><span class="c-kw">import</span> <span class="c-cls">anthropic</span>
+
+<span class="c-cmt"># Lambi system prompt ek baar cache karo</span>
+<span class="c-var">long_system_prompt</span> = <span class="c-str">"""
+Tum ek expert financial advisor ho jo Indian markets mein specialize 
+karta hai. Tumhare paas 20 saal ka experience hai aur tum SEBI 
+certified ho. ... [10,000 characters ka detailed prompt]
+"""</span>
+
+<span class="c-kw">def</span> <span class="c-fn">chat_with_caching</span>(<span class="c-var">user_message</span>: <span class="c-cls">str</span>):
+    <span class="c-var">client</span> = anthropic.<span class="c-fn">Anthropic</span>()
+    
+    <span class="c-kw">return</span> client.messages.<span class="c-fn">create</span>(
+        <span class="c-var">model</span>=<span class="c-str">"claude-sonnet-4-6"</span>,
+        <span class="c-var">max_tokens</span>=<span class="c-num">1024</span>,
+        <span class="c-var">system</span>=[
+            {
+                <span class="c-str">"type"</span>: <span class="c-str">"text"</span>,
+                <span class="c-str">"text"</span>: long_system_prompt,
+                <span class="c-str">"cache_control"</span>: {<span class="c-str">"type"</span>: <span class="c-str">"ephemeral"</span>}  <span class="c-cmt"># ← Magic!</span>
+            }
+        ],
+        <span class="c-var">messages</span>=[{<span class="c-str">"role"</span>: <span class="c-str">"user"</span>, <span class="c-str">"content"</span>: user_message}]
+    )
+    <span class="c-cmt"># Pehli call: full cost
+    # Subsequent calls: 90% cheaper! Cache hit = 0.1x cost</span></pre>
+  </div>
+
+  <h3>6.3 Batch Inference</h3>
+  <p><strong>Batch processing</strong> matlab hai ek saath many requests ek batch mein process karna. Real-time nahi chahiye? Batch use karo — 50% discount milta hai Anthropic par!</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Anthropic Batch API (50% Cost Saving!)</span>
+    </div>
+    <pre><span class="c-kw">import</span> <span class="c-cls">anthropic</span>
+
+<span class="c-var">client</span> = anthropic.<span class="c-fn">Anthropic</span>()
+
+<span class="c-cmt"># 100 documents batch mein process karo</span>
+<span class="c-var">batch_requests</span> = [
+    {
+        <span class="c-str">"custom_id"</span>: <span class="c-str">f"doc_{i}"</span>,
+        <span class="c-str">"params"</span>: {
+            <span class="c-str">"model"</span>: <span class="c-str">"claude-haiku-4-5-20251001"</span>,
+            <span class="c-str">"max_tokens"</span>: <span class="c-num">200</span>,
+            <span class="c-str">"messages"</span>: [{
+                <span class="c-str">"role"</span>: <span class="c-str">"user"</span>,
+                <span class="c-str">"content"</span>: <span class="c-str">f"Summarize: {docs[i]}"</span>
+            }]
+        }
+    }
+    <span class="c-kw">for</span> i <span class="c-kw">in</span> <span class="c-fn">range</span>(<span class="c-fn">len</span>(docs))
+]
+
+<span class="c-cmt"># Batch submit karo</span>
+<span class="c-var">batch</span> = client.messages.batches.<span class="c-fn">create</span>(<span class="c-var">requests</span>=batch_requests)
+<span class="c-fn">print</span>(<span class="c-str">f"Batch ID: {batch.id}"</span>)
+
+<span class="c-cmt"># Results fetch karo jab ready ho (24 hours tak)</span>
+<span class="c-kw">for</span> result <span class="c-kw">in</span> client.messages.batches.<span class="c-fn">results</span>(batch.id):
+    <span class="c-kw">if</span> result.result.type == <span class="c-str">"succeeded"</span>:
+        <span class="c-fn">print</span>(result.result.message.content[<span class="c-num">0</span>].text)</pre>
+  </div>
+
+  <h3>6.4 GPU Optimization — Self-Hosted Models</h3>
+
+  <h4>Kab Self-Host Karna Chahiye?</h4>
+  <p>Agar aap <strong>bahut zyada requests</strong> kar rahe ho, toh open-source models (Llama, Mistral) GPU par self-host karna cheaper pad sakta hai long term mein.</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Scale</th><th>Best Option</th><th>Monthly Cost (est.)</th></tr></thead>
+    <tbody>
+      <tr><td>&lt; 1M tokens/month</td><td>API (Claude/GPT)</td><td>$5–50</td></tr>
+      <tr><td>1M–50M tokens/month</td><td>API + Caching + Routing</td><td>$50–500</td></tr>
+      <tr><td>50M–500M tokens/month</td><td>Hybrid (API + Self-hosted)</td><td>$500–2000</td></tr>
+      <tr><td>&gt; 500M tokens/month</td><td>Self-hosted Llama/Mistral on GPU</td><td>$2000 flat (GPU server)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">bash — Ollama — Local LLM Server (Free!)</span>
+    </div>
+    <pre><span class="c-cmt"># Ollama install karo — local LLM server</span>
+curl -fsSL https://ollama.ai/install.sh | sh
+
+<span class="c-cmt"># Llama 3.1 8B model download karo (4.7 GB)</span>
+ollama pull llama3.1
+
+<span class="c-cmt"># Server start karo (OpenAI-compatible API!)</span>
+ollama serve
+
+<span class="c-cmt"># Python se use karo — same code, different endpoint</span>
+<span class="c-kw">from</span> <span class="c-cls">openai</span> <span class="c-kw">import</span> OpenAI
+
+<span class="c-var">client</span> = <span class="c-fn">OpenAI</span>(
+    <span class="c-var">base_url</span>=<span class="c-str">'http://localhost:11434/v1'</span>,  <span class="c-cmt"># Local server!</span>
+    <span class="c-var">api_key</span>=<span class="c-str">'ollama'</span>  <span class="c-cmt"># Key ki zaroorat nahi</span>
+)
+
+<span class="c-var">response</span> = client.chat.completions.<span class="c-fn">create</span>(
+    <span class="c-var">model</span>=<span class="c-str">'llama3.1'</span>,
+    <span class="c-var">messages</span>=[{<span class="c-str">'role'</span>: <span class="c-str">'user'</span>, <span class="c-str">'content'</span>: <span class="c-str">'Hello!'</span>}]
+)
+<span class="c-cmt"># 100% FREE! No API cost. But GPU chahiye best performance ke liye.</span></pre>
+  </div>
+
+  <h3>6.5 Quantization — Model Size Compress Karna</h3>
+  <p><strong>Quantization</strong> matlab model ke weights ko lower precision format mein convert karna (float32 → int8/int4). Isse:</p>
+  <ul>
+    <li><strong>Memory 4x–8x kam</strong> lagti hai</li>
+    <li><strong>Speed 2x–4x fast</strong> hoti hai</li>
+    <li>Quality thodi si decrease hoti hai (5% tak)</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Quantized Model with Transformers</span>
+    </div>
+    <pre><span class="c-kw">from</span> <span class="c-cls">transformers</span> <span class="c-kw">import</span> AutoModelForCausalLM, BitsAndBytesConfig
+<span class="c-kw">import</span> <span class="c-cls">torch</span>
+
+<span class="c-cmt"># 4-bit quantization config</span>
+<span class="c-var">quantization_config</span> = <span class="c-fn">BitsAndBytesConfig</span>(
+    <span class="c-var">load_in_4bit</span>=<span class="c-kw">True</span>,       <span class="c-cmt"># 4-bit precision use karo</span>
+    <span class="c-var">bnb_4bit_compute_dtype</span>=torch.float16,
+    <span class="c-var">bnb_4bit_use_double_quant</span>=<span class="c-kw">True</span>,  <span class="c-cmt"># Double quantization</span>
+)
+
+<span class="c-cmt"># Llama 7B: normally 14GB GPU → 4-bit = 4GB GPU!</span>
+<span class="c-var">model</span> = AutoModelForCausalLM.<span class="c-fn">from_pretrained</span>(
+    <span class="c-str">"meta-llama/Llama-2-7b-chat-hf"</span>,
+    <span class="c-var">quantization_config</span>=quantization_config,
+    <span class="c-var">device_map</span>=<span class="c-str">"auto"</span>
+)
+<span class="c-fn">print</span>(<span class="c-str">"Model loaded! Memory: ~4GB instead of 14GB 🎉"</span>)</pre>
+  </div>
+
+  <h3>6.6 Cost Monitoring — Paisa Track Karo</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">Python — Token Usage Tracking</span>
+    </div>
+    <pre><span class="c-kw">from</span> <span class="c-cls">dataclasses</span> <span class="c-kw">import</span> dataclass
+<span class="c-kw">from</span> <span class="c-cls">datetime</span> <span class="c-kw">import</span> datetime
+<span class="c-kw">import</span> <span class="c-cls">json</span>
+
+<span class="c-cmt"># Claude Sonnet pricing (approximate)</span>
+<span class="c-var">PRICE_PER_MILLION_INPUT</span> = <span class="c-num">3.0</span>   <span class="c-cmt"># $3 per 1M input tokens</span>
+<span class="c-var">PRICE_PER_MILLION_OUTPUT</span> = <span class="c-num">15.0</span>  <span class="c-cmt"># $15 per 1M output tokens</span>
+
+<span class="c-kw">def</span> <span class="c-fn">track_usage</span>(<span class="c-var">response</span>, <span class="c-var">user_id</span>: <span class="c-cls">str</span>):
+    <span class="c-var">usage</span> = response.usage
+    
+    <span class="c-cmt"># Cost calculate karo</span>
+    <span class="c-var">input_cost</span> = (usage.input_tokens / <span class="c-num">1_000_000</span>) * PRICE_PER_MILLION_INPUT
+    <span class="c-var">output_cost</span> = (usage.output_tokens / <span class="c-num">1_000_000</span>) * PRICE_PER_MILLION_OUTPUT
+    <span class="c-var">total_cost</span> = input_cost + output_cost
+    
+    <span class="c-cmt"># Log karo database/file mein</span>
+    <span class="c-var">log_entry</span> = {
+        <span class="c-str">"timestamp"</span>: datetime.<span class="c-fn">utcnow</span>().isoformat(),
+        <span class="c-str">"user_id"</span>: user_id,
+        <span class="c-str">"input_tokens"</span>: usage.input_tokens,
+        <span class="c-str">"output_tokens"</span>: usage.output_tokens,
+        <span class="c-str">"cost_usd"</span>: <span class="c-fn">round</span>(total_cost, <span class="c-num">6</span>)
+    }
+    <span class="c-fn">save_to_db</span>(log_entry)
+    
+    <span class="c-cmt"># Alert if user zyada kharch kar raha hai</span>
+    <span class="c-kw">if</span> total_cost > <span class="c-num">0.10</span>:  <span class="c-cmt"># 10 cents per request limit</span>
+        <span class="c-fn">alert_admin</span>(<span class="c-str">f"High cost alert: {user_id} = ${total_cost:.4f}"</span>)
+    
+    <span class="c-kw">return</span> total_cost</pre>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card" style="--s-color:var(--accent3)">
+      <h5>Model Routing</h5>
+      <p>Sahi model use karo — 60x cost difference hai Haiku aur Opus mein</p>
+    </div>
+    <div class="summary-card" style="--s-color:var(--accent2)">
+      <h5>Caching</h5>
+      <p>Same queries dobara process mat karo — 70%+ cost bachate hain popular apps</p>
+    </div>
+    <div class="summary-card" style="--s-color:var(--accent4)">
+      <h5>Batch Processing</h5>
+      <p>Real-time zaroorat nahi? Batch API use karo — 50% discount!</p>
+    </div>
+    <div class="summary-card" style="--s-color:var(--accent1)">
+      <h5>Prompt Optimization</h5>
+      <p>Concise prompts likhna + Prompt Caching = dramatic cost reduction</p>
+    </div>
+    <div class="summary-card" style="--s-color:var(--accent5)">
+      <h5>Monitoring</h5>
+      <p>Hamesha usage track karo — surprises nahi aayenge month end par</p>
+    </div>
+    <div class="summary-card" style="--s-color:var(--accent6)">
+      <h5>Quantization</h5>
+      <p>Self-hosted models 4-bit quantize karo — 4x memory savings</p>
+    </div>
+  </div>
+
+  <div class="box info">
+    <div class="box-title">💬 Interview Questions — Cost Optimization</div>
+    <ul class="iq-list">
+      <li>Model routing kya hai? Production mein kaise implement karein?</li>
+      <li>Semantic caching aur exact-match caching mein kya fark hai?</li>
+      <li>Anthropic prompt caching kaise kaam karta hai? Kab use karein?</li>
+      <li>Quantization kya hai? INT4 quantization mein kya tradeoffs hain?</li>
+      <li>AI application ke monthly cost ko 80% kaise reduce karein?</li>
+    </ul>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">🏋 Mini Exercise — Cost Optimization</div>
+    <ol>
+      <li>Ek simple model router likhao jo query length ke basis par Haiku ya Sonnet choose kare</li>
+      <li>Redis caching setup karo aur same query ke response time compare karo (cache hit vs miss)</li>
+      <li>Anthropic API call ke baad token usage log karo aur estimated cost calculate karo</li>
+      <li>Ollama install karo aur locally Llama model run karo — API cost = $0!</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     GLOSSARY
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="glossary" style="--page-stripe: var(--accent3)">
+  <h2 style="margin-top:0">📖 Glossary — Key Terms</h2>
+  <div class="glossary-grid">
+    <dl class="glossary-item">
+      <dt>FastAPI</dt>
+      <dd>Modern Python web framework for building APIs — fast, async, auto-docs</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>ASGI</dt>
+      <dd>Asynchronous Server Gateway Interface — FastAPI ka foundation</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Serverless</dt>
+      <dd>Server manage kiye bina code run karna — pay per execution</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Cold Start</dt>
+      <dd>Serverless function ka pehli baar ya idle state ke baad slow startup</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Docker</dt>
+      <dd>Application ko portable container mein pack karna — "runs everywhere"</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Container</dt>
+      <dd>Isolated environment jisme app + all dependencies packed hoti hain</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Kubernetes (K8s)</dt>
+      <dd>Container orchestration platform — auto-deploy, scale, heal karta hai</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Pod</dt>
+      <dd>Kubernetes ka smallest deployable unit — ek ya zyada containers</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>CI/CD</dt>
+      <dd>Continuous Integration/Deployment — automatic test aur deploy pipeline</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Load Balancer</dt>
+      <dd>Traffic ko multiple servers mein distribute karne wala component</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Redis</dt>
+      <dd>In-memory data store — caching aur session management ke liye</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Message Queue</dt>
+      <dd>Async tasks ke liye waiting line — Celery/RabbitMQ/SQS</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>JWT</dt>
+      <dd>JSON Web Token — self-contained authentication token</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Rate Limiting</dt>
+      <dd>Ek user ki requests per time unit limit karna</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Prompt Caching</dt>
+      <dd>Long prompts ko Anthropic servers par cache karna — 90% savings</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Model Routing</dt>
+      <dd>Task complexity ke basis par sahi LLM choose karna</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Quantization</dt>
+      <dd>Model weights ko lower precision mein compress karna — 4x memory savings</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Horizontal Scaling</dt>
+      <dd>Zyada servers add karna traffic handle karne ke liye</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>IaaS/PaaS/SaaS</dt>
+      <dd>Cloud service models — Infrastructure/Platform/Software as a Service</dd>
+    </dl>
+    <dl class="glossary-item">
+      <dt>Gunicorn</dt>
+      <dd>Production-grade Python WSGI server — multiple workers run karta hai</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     REVISION NOTES
+══════════════════════════════════════════════════════════ -->
+<div class="page" id="revision" style="--page-stripe: var(--accent1)">
+  <h2 style="margin-top:0">📝 Revision Notes — Part 13 Summary</h2>
+
+  <div class="remember">
+    <div class="box-title">🧠 Chapter 1 — Backend Deployment</div>
+    <ul style="font-size:13.5px">
+      <li><strong>FastAPI</strong> = Modern async Python server, auto-docs, Pydantic validation</li>
+      <li><strong>Flask</strong> = Lightweight, good for simple APIs aur ML model serving</li>
+      <li><strong>Node.js</strong> = Best for streaming responses aur real-time apps</li>
+      <li><strong>Serverless</strong> = Pay per request, auto scale, cold start problem hoti hai</li>
+    </ul>
+  </div>
+
+  <div class="remember">
+    <div class="box-title">🧠 Chapter 2 — Cloud Platforms</div>
+    <ul style="font-size:13.5px">
+      <li><strong>IaaS</strong> = Aap OS manage karo (EC2), <strong>PaaS</strong> = Sirf code do (Cloud Run), <strong>SaaS</strong> = Bas use karo (Gmail)</li>
+      <li><strong>AWS</strong> = Most popular, 200+ services, EC2/Lambda/S3/RDS</li>
+      <li><strong>GCP</strong> = AI/ML best (Vertex AI, TPUs), Cloud Run = easiest deploy</li>
+      <li><strong>Azure</strong> = Enterprise-friendly, OpenAI integration strong hai</li>
+    </ul>
+  </div>
+
+  <div class="remember">
+    <div class="box-title">🧠 Chapter 3 — DevOps</div>
+    <ul style="font-size:13.5px">
+      <li><strong>Docker</strong> = App + dependencies = Container (runs everywhere, same behavior)</li>
+      <li><strong>Kubernetes</strong> = Containers ko orchestrate karta hai — deploy, scale, heal auto</li>
+      <li><strong>CI/CD</strong> = Code push → auto test → auto deploy pipeline</li>
+      <li><strong>GitHub Actions</strong> = Free CI/CD, YAML workflows, .github/workflows/</li>
+    </ul>
+  </div>
+
+  <div class="remember">
+    <div class="box-title">🧠 Chapter 4 — Scalability</div>
+    <ul style="font-size:13.5px">
+      <li><strong>Load Balancer</strong> = Traffic distribute karo multiple servers mein</li>
+      <li><strong>Caching</strong> = Pehle compute kiye results store karo (Redis)</li>
+      <li><strong>Horizontal Scaling</strong> = Zyada servers add karo (better than vertical)</li>
+      <li><strong>Queue</strong> = Async tasks ke liye — user ko instantly respond karo, background mein process karo</li>
+    </ul>
+  </div>
+
+  <div class="remember">
+    <div class="box-title">🧠 Chapter 5 — Security</div>
+    <ul style="font-size:13.5px">
+      <li><strong>AuthN</strong> = "Tum kaun ho?" (JWT, OAuth), <strong>AuthZ</strong> = "Tumhara haq kya hai?" (RBAC)</li>
+      <li><strong>Rate Limiting</strong> = Abuse rokna (Redis + counter pattern)</li>
+      <li><strong>Secret Management</strong> = NEVER hardcode keys — .env / AWS Secrets Manager use karo</li>
+      <li><strong>HTTPS</strong> = Always! Let's Encrypt (free), Cloudflare (easier)</li>
+    </ul>
+  </div>
+
+  <div class="remember">
+    <div class="box-title">🧠 Chapter 6 — Cost Optimization</div>
+    <ul style="font-size:13.5px">
+      <li><strong>Model Routing</strong> = Simple query → Haiku, Complex query → Opus (60x price difference)</li>
+      <li><strong>Prompt Caching</strong> = Long system prompts cache karo — 90% savings possible</li>
+      <li><strong>Batch API</strong> = Real-time nahi chahiye? 50% discount milta hai</li>
+      <li><strong>Quantization</strong> = Self-hosted models 4-bit compress karo — 4x memory savings</li>
+    </ul>
+  </div>
+
+  <h3 style="margin-top:32px">🏗 Production Architecture — Complete Picture</h3>
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+      <!-- User -->
+      <text x="340" y="25" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" fill="#555">👤 Users</text>
+      <line x1="340" y1="30" x2="340" y2="50" stroke="#aaa" stroke-width="1.5"/>
+      <!-- Cloudflare -->
+      <rect x="230" y="52" width="220" height="32" rx="6" fill="#fef3c7" stroke="#d68910" stroke-width="1.5"/>
+      <text x="340" y="72" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="600" fill="#d68910">🌐 Cloudflare (CDN + DDoS + HTTPS)</text>
+      <line x1="340" y1="84" x2="340" y2="102" stroke="#aaa" stroke-width="1.5"/>
+      <!-- Load Balancer -->
+      <rect x="255" y="104" width="170" height="32" rx="6" fill="#dbeafe" stroke="#1a5276" stroke-width="1.5"/>
+      <text x="340" y="124" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="600" fill="#1a5276">⚖ Load Balancer (AWS ALB)</text>
+      <!-- Branch lines -->
+      <line x1="240" y1="136" x2="130" y2="165" stroke="#1a5276" stroke-width="1.2"/>
+      <line x1="340" y1="136" x2="340" y2="165" stroke="#1a5276" stroke-width="1.2"/>
+      <line x1="440" y1="136" x2="550" y2="165" stroke="#1a5276" stroke-width="1.2"/>
+      <!-- API Instances -->
+      <rect x="60" y="167" width="145" height="40" rx="6" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="132" y="185" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#117a65">🐳 FastAPI Pod 1</text>
+      <text x="132" y="200" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#555">Rate Limit + Auth</text>
+      <rect x="265" y="167" width="150" height="40" rx="6" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="340" y="185" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#117a65">🐳 FastAPI Pod 2</text>
+      <text x="340" y="200" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#555">Rate Limit + Auth</text>
+      <rect x="475" y="167" width="145" height="40" rx="6" fill="#d1fae5" stroke="#117a65" stroke-width="1.5"/>
+      <text x="548" y="185" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#117a65">🐳 FastAPI Pod 3</text>
+      <text x="548" y="200" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#555">Rate Limit + Auth</text>
+      <!-- Lines down from pods -->
+      <line x1="132" y1="207" x2="132" y2="235" stroke="#aaa" stroke-width="1"/>
+      <line x1="340" y1="207" x2="340" y2="235" stroke="#aaa" stroke-width="1"/>
+      <line x1="548" y1="207" x2="548" y2="235" stroke="#aaa" stroke-width="1"/>
+      <line x1="132" y1="235" x2="548" y2="235" stroke="#aaa" stroke-width="1"/>
+      <line x1="220" y1="235" x2="220" y2="255" stroke="#aaa" stroke-width="1"/>
+      <line x1="340" y1="235" x2="340" y2="255" stroke="#aaa" stroke-width="1"/>
+      <line x1="460" y1="235" x2="460" y2="255" stroke="#aaa" stroke-width="1"/>
+      <!-- Bottom services -->
+      <rect x="130" y="257" width="165" height="40" rx="6" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="213" y="275" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#c0392b">🧠 Claude API</text>
+      <text x="213" y="290" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#555">Model Routing + Cache</text>
+      <rect x="260" y="257" width="165" height="40" rx="6" fill="#fef3c7" stroke="#d68910" stroke-width="1.5"/>
+      <text x="342" y="275" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#d68910">📦 Redis Cache</text>
+      <text x="342" y="290" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#555">Session + Responses</text>
+      <rect x="390" y="257" width="145" height="40" rx="6" fill="#dbeafe" stroke="#1a5276" stroke-width="1.5"/>
+      <text x="462" y="275" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#1a5276">🗄 PostgreSQL</text>
+      <text x="462" y="290" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#555">User data + History</text>
+      <!-- K8s label -->
+      <rect x="22" y="155" width="636" height="155" rx="10" fill="none" stroke="#7d3c98" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <text x="30" y="170" font-family="DM Sans" font-size="9" fill="#7d3c98" font-weight="600">⎈ Kubernetes Cluster (GKE / EKS)</text>
+    </svg>
+    <div class="diagram-title">Complete Production AI Application Architecture</div>
+  </div>
+
+  <div class="box tip">
+    <div class="box-title">✅ Production Checklist</div>
+    <ul style="font-size:13px">
+      <li>☐ HTTPS enabled (Let's Encrypt / Cloudflare)</li>
+      <li>☐ API keys .env mein / AWS Secrets Manager mein</li>
+      <li>☐ Rate limiting implemented (per user + global)</li>
+      <li>☐ JWT authentication working</li>
+      <li>☐ Docker container build aur tested</li>
+      <li>☐ CI/CD pipeline (GitHub Actions)</li>
+      <li>☐ Monitoring setup (CloudWatch / Grafana)</li>
+      <li>☐ Error logging (Sentry ya equivalent)</li>
+      <li>☐ Redis caching for LLM responses</li>
+      <li>☐ Cost monitoring + alerts setup</li>
+    </ul>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;padding:32px;background:linear-gradient(135deg,#0f1923 0%,#1a2a3a 100%);border-radius:12px;color:white">
+    <div style="font-size:40px;margin-bottom:12px">🎉</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:10px">Part 13 Complete!</div>
+    <p style="color:#adb8c4;font-size:14px;max-width:480px;margin:0 auto">Tumne Production &amp; Deployment ke saare concepts seekh liye! Ab tum apni AI applications ko professionally deploy, scale, secure aur optimize kar sakte ho. Yeh real-world engineering skills hain jo tumhara package significant increase karengi.</p>
+    <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <span style="background:rgba(255,255,255,.1);padding:6px 16px;border-radius:20px;font-size:12px">✅ Backend Deployment</span>
+      <span style="background:rgba(255,255,255,.1);padding:6px 16px;border-radius:20px;font-size:12px">✅ Cloud Platforms</span>
+      <span style="background:rgba(255,255,255,.1);padding:6px 16px;border-radius:20px;font-size:12px">✅ DevOps</span>
+      <span style="background:rgba(255,255,255,.1);padding:6px 16px;border-radius:20px;font-size:12px">✅ Scalability</span>
+      <span style="background:rgba(255,255,255,.1);padding:6px 16px;border-radius:20px;font-size:12px">✅ Security</span>
+      <span style="background:rgba(255,255,255,.1);padding:6px 16px;border-radius:20px;font-size:12px">✅ Cost Optimization</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /book-wrap -->
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const scrolled = el.scrollTop / (el.scrollHeight - el.clientHeight);
+    document.getElementById('progress-bar').style.width = (scrolled * 100) + '%';
+    document.getElementById('progress-label').textContent =
+      Math.round(scrolled * 100) + '% read';
+  });
+</script>
+</body>
+</html>
