@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 9 — Agent Frameworks | AI Agent Engineering Masterbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Baloo+2:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a237e;
+    --primary-light: #3949ab;
+    --secondary: #e65100;
+    --secondary-light: #ff6d00;
+    --accent: #00695c;
+    --accent2: #6a1b9a;
+    --accent3: #c62828;
+    --bg: #f5f5f0;
+    --page-bg: #ffffff;
+    --text: #1a1a2e;
+    --text-muted: #4a4a6a;
+    --border: #dde1f0;
+    --code-bg: #1e1e2e;
+    --code-text: #cdd6f4;
+    --yellow-bg: #fffde7;
+    --yellow-border: #f9a825;
+    --green-bg: #e8f5e9;
+    --green-border: #2e7d32;
+    --red-bg: #ffebee;
+    --red-border: #c62828;
+    --blue-bg: #e3f2fd;
+    --blue-border: #1565c0;
+    --purple-bg: #f3e5f5;
+    --purple-border: #6a1b9a;
+    --orange-bg: #fff3e0;
+    --orange-border: #e65100;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Baloo 2', 'Noto Sans Devanagari', sans-serif;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* ===== STICKY NAV ===== */
+  #sticky-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--primary);
+    color: white;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  #sticky-nav .nav-brand {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.1rem; font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  #sticky-nav .nav-links {
+    display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto;
+  }
+  #sticky-nav .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none; font-size: 0.72rem;
+    padding: 4px 8px; border-radius: 4px;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  #sticky-nav .nav-links a:hover { background: rgba(255,255,255,0.15); color: white; }
+  .pdf-btn {
+    background: var(--secondary);
+    color: white !important; border-radius: 6px !important;
+    padding: 5px 12px !important; font-weight: 600 !important;
+    font-size: 0.75rem !important;
+  }
+  .pdf-btn:hover { background: var(--secondary-light) !important; }
+
+  /* ===== LAYOUT ===== */
+  .book-container {
+    max-width: 860px;
+    margin: 70px auto 40px;
+    padding: 0 20px;
+  }
+
+  .page {
+    background: var(--page-bg);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.12), 0 1px 6px rgba(0,0,0,0.08);
+    border-radius: 3px;
+    margin-bottom: 32px;
+    padding: 52px 64px;
+    position: relative;
+    border-top: 4px solid var(--primary);
+  }
+  .page::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 3px 0 0 3px;
+  }
+
+  /* ===== HERO ===== */
+  .hero-page {
+    background: linear-gradient(135deg, #0d1b5e 0%, #1a237e 40%, #283593 70%, #1565c0 100%);
+    color: white;
+    padding: 72px 64px 60px;
+    border-top: none;
+    border-radius: 3px;
+    position: relative; overflow: hidden;
+  }
+  .hero-page::before { display: none; }
+  .hero-bg-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px;
+  }
+  .hero-part-badge {
+    display: inline-block;
+    background: var(--secondary);
+    color: white; padding: 6px 20px; border-radius: 30px;
+    font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 3.2rem; font-weight: 700;
+    line-height: 1.15; margin-bottom: 14px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .hero-subtitle {
+    font-size: 1.1rem; color: rgba(255,255,255,0.82);
+    margin-bottom: 30px; max-width: 580px;
+    font-weight: 400;
+  }
+  .hero-stats {
+    display: flex; gap: 28px; flex-wrap: wrap; margin-top: 32px;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; padding: 14px 22px;
+    backdrop-filter: blur(10px);
+  }
+  .hero-stat .num {
+    font-size: 1.7rem; font-weight: 800; line-height: 1;
+    font-family: 'Crimson Pro', serif;
+  }
+  .hero-stat .lbl {
+    font-size: 0.72rem; opacity: 0.75; text-transform: uppercase;
+    letter-spacing: 1px; margin-top: 2px;
+  }
+  .hero-frameworks-row {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
+  }
+  .fw-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white; border-radius: 20px;
+    padding: 5px 14px; font-size: 0.8rem; font-weight: 600;
+  }
+
+  /* ===== TOC ===== */
+  .toc-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-top: 20px;
+  }
+  .toc-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: #f8f9ff; border: 1px solid var(--border);
+    border-radius: 8px; text-decoration: none; color: var(--text);
+    transition: all 0.2s; border-left: 3px solid transparent;
+  }
+  .toc-item:hover { border-left-color: var(--primary); background: var(--blue-bg); }
+  .toc-num {
+    background: var(--primary); color: white;
+    border-radius: 50%; width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+  }
+  .toc-text { font-size: 0.88rem; font-weight: 600; }
+
+  /* ===== HEADINGS ===== */
+  h1.chapter-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 2.2rem; font-weight: 700;
+    color: var(--primary); margin-bottom: 6px;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 10px;
+  }
+  h2.section-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.65rem; font-weight: 700;
+    color: var(--primary-light); margin: 36px 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2.section-title::before {
+    content: ''; display: inline-block;
+    width: 5px; height: 28px;
+    background: var(--secondary); border-radius: 3px;
+    flex-shrink: 0;
+  }
+  h3.sub-title {
+    font-size: 1.2rem; font-weight: 700;
+    color: var(--primary); margin: 26px 0 10px;
+    padding-left: 12px;
+    border-left: 3px solid var(--primary-light);
+  }
+  h4.mini-title {
+    font-size: 1.0rem; font-weight: 700;
+    color: var(--accent2); margin: 18px 0 8px;
+  }
+
+  p { margin-bottom: 13px; line-height: 1.85; }
+
+  /* ===== CALLOUT BOXES ===== */
+  .callout {
+    border-radius: 10px; padding: 16px 20px;
+    margin: 18px 0; border-left: 5px solid;
+    font-size: 0.93rem;
+  }
+  .callout-title {
+    font-weight: 700; font-size: 0.82rem;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .callout.note { background: var(--blue-bg); border-color: var(--blue-border); }
+  .callout.note .callout-title { color: var(--blue-border); }
+  .callout.tip { background: var(--green-bg); border-color: var(--green-border); }
+  .callout.tip .callout-title { color: var(--green-border); }
+  .callout.warn { background: var(--yellow-bg); border-color: var(--yellow-border); }
+  .callout.warn .callout-title { color: #e65100; }
+  .callout.danger { background: var(--red-bg); border-color: var(--red-border); }
+  .callout.danger .callout-title { color: var(--red-border); }
+  .callout.remember { background: var(--purple-bg); border-color: var(--purple-border); }
+  .callout.remember .callout-title { color: var(--purple-border); }
+  .callout.interview { background: var(--orange-bg); border-color: var(--orange-border); }
+  .callout.interview .callout-title { color: var(--orange-border); }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    background: var(--code-bg); border-radius: 10px;
+    margin: 16px 0; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .code-header {
+    background: #2a2a3e; padding: 8px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: #a0a0c0;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .code-dots span:nth-child(1) { background: #ff5f57; }
+  .code-dots span:nth-child(2) { background: #febc2e; }
+  .code-dots span:nth-child(3) { background: #28c840; }
+  .code-body {
+    padding: 20px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; line-height: 1.7;
+    color: var(--code-text); overflow-x: auto;
+    white-space: pre;
+  }
+  /* Syntax colors */
+  .kw { color: #cba6f7; }
+  .fn { color: #89b4fa; }
+  .str { color: #a6e3a1; }
+  .cm { color: #6c7086; font-style: italic; }
+  .num { color: #fab387; }
+  .cls { color: #f9e2af; }
+  .var { color: #cdd6f4; }
+  .dec { color: #f38ba8; }
+  .op { color: #89dceb; }
+
+  /* ===== TABLES ===== */
+  .table-wrap { overflow-x: auto; margin: 18px 0; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead tr { background: var(--primary); color: white; }
+  thead th {
+    padding: 12px 14px; text-align: left;
+    font-weight: 600; font-size: 0.82rem;
+    letter-spacing: 0.5px;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:nth-child(even) { background: #f8f9ff; }
+  tbody tr:hover { background: var(--blue-bg); }
+  tbody td { padding: 10px 14px; vertical-align: top; }
+  td.bold { font-weight: 700; color: var(--primary); }
+
+  /* ===== DIAGRAMS ===== */
+  .diagram-box {
+    background: #fafbff; border: 2px solid var(--border);
+    border-radius: 12px; padding: 28px 20px;
+    margin: 22px 0; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .diagram-title {
+    font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); margin-bottom: 20px;
+    padding-bottom: 10px; border-bottom: 1px dashed var(--border);
+  }
+
+  /* Framework card in diagram */
+  .fw-card {
+    display: inline-flex; flex-direction: column; align-items: center;
+    background: white; border: 2px solid;
+    border-radius: 12px; padding: 14px 18px;
+    margin: 6px; font-size: 0.82rem; font-weight: 700;
+    min-width: 110px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+  }
+  .fw-card:hover { transform: translateY(-2px); }
+  .fw-card .fw-icon { font-size: 1.8rem; margin-bottom: 5px; }
+  .fw-card .fw-name { font-size: 0.85rem; }
+  .fw-card .fw-tag {
+    font-size: 0.65rem; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+    margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* Arrow */
+  .arrow-down {
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid var(--primary);
+    margin: 6px auto;
+  }
+  .arrow-right {
+    width: 0; height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid var(--primary);
+    display: inline-block; margin: 0 6px;
+  }
+
+  /* Flow diagram nodes */
+  .flow-row {
+    display: flex; align-items: center;
+    justify-content: center; flex-wrap: wrap; gap: 8px;
+    margin: 10px 0;
+  }
+  .flow-node {
+    background: var(--primary); color: white;
+    padding: 10px 18px; border-radius: 8px;
+    font-size: 0.82rem; font-weight: 600;
+    text-align: center; min-width: 100px;
+  }
+  .flow-node.green { background: var(--accent); }
+  .flow-node.orange { background: var(--secondary); }
+  .flow-node.purple { background: var(--accent2); }
+  .flow-node.red { background: var(--accent3); }
+  .flow-node.light {
+    background: white; color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+  .flow-diamond {
+    background: var(--yellow-border); color: white;
+    padding: 10px 18px; border-radius: 0;
+    font-size: 0.82rem; font-weight: 600;
+    transform: rotate(0); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    width: 110px; height: 55px; display: flex; align-items: center; justify-content: center;
+  }
+  .flow-arrow { font-size: 1.4rem; color: var(--primary); }
+
+  /* Architecture diagram */
+  .arch-layer {
+    background: white; border: 2px solid var(--primary-light);
+    border-radius: 10px; padding: 12px 20px; margin: 8px;
+    display: flex; align-items: center; gap: 14px;
+    text-align: left;
+  }
+  .arch-layer .layer-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .arch-layer .layer-name {
+    font-weight: 700; font-size: 0.9rem; color: var(--primary);
+  }
+  .arch-layer .layer-desc { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* ===== COMPARISON GRID ===== */
+  .comparison-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px; margin: 16px 0;
+  }
+  .compare-card {
+    border-radius: 12px; padding: 18px 16px;
+    border: 2px solid; transition: transform 0.2s;
+  }
+  .compare-card:hover { transform: translateY(-3px); }
+  .compare-card .cc-title {
+    font-weight: 700; font-size: 0.95rem; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .compare-card ul { padding-left: 16px; font-size: 0.85rem; }
+  .compare-card ul li { margin-bottom: 4px; }
+  .cc-blue { background: var(--blue-bg); border-color: var(--blue-border); }
+  .cc-green { background: var(--green-bg); border-color: var(--green-border); }
+  .cc-orange { background: var(--orange-bg); border-color: var(--orange-border); }
+  .cc-purple { background: var(--purple-bg); border-color: var(--purple-border); }
+  .cc-red { background: var(--red-bg); border-color: var(--red-border); }
+  .cc-yellow { background: var(--yellow-bg); border-color: var(--yellow-border); }
+
+  /* ===== STEP BOX ===== */
+  .step-list { margin: 14px 0; }
+  .step-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    margin-bottom: 14px; padding: 14px 16px;
+    background: #f8f9ff; border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .step-num {
+    background: var(--primary); color: white;
+    border-radius: 50%; width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; flex-shrink: 0; margin-top: 2px;
+  }
+  .step-content .step-title { font-weight: 700; margin-bottom: 4px; font-size: 0.95rem; }
+  .step-content .step-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* ===== HIGHLIGHT LIST ===== */
+  .hl-list { list-style: none; padding: 0; margin: 10px 0; }
+  .hl-list li {
+    padding: 7px 14px; border-radius: 6px;
+    margin-bottom: 6px; font-size: 0.9rem;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .hl-list li::before {
+    content: '▸'; color: var(--secondary); font-size: 0.8rem; margin-top: 3px; flex-shrink: 0;
+  }
+  .hl-list.blue li { background: var(--blue-bg); }
+  .hl-list.green li { background: var(--green-bg); }
+  .hl-list.orange li { background: var(--orange-bg); }
+
+  /* ===== SUMMARY BOX ===== */
+  .summary-box {
+    background: linear-gradient(135deg, #e8eaf6 0%, #ede7f6 100%);
+    border: 2px solid var(--primary-light);
+    border-radius: 12px; padding: 22px 24px; margin: 24px 0;
+  }
+  .summary-box .s-title {
+    font-weight: 700; color: var(--primary); font-size: 1.05rem;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ===== INTERVIEW Q BOX ===== */
+  .iq-list { margin: 12px 0; }
+  .iq-item {
+    padding: 12px 16px; margin-bottom: 8px;
+    background: var(--orange-bg); border-left: 4px solid var(--orange-border);
+    border-radius: 0 8px 8px 0; font-size: 0.9rem;
+  }
+  .iq-item .q-label {
+    font-size: 0.7rem; font-weight: 700; color: var(--secondary);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;
+  }
+
+  /* ===== EXERCISE BOX ===== */
+  .exercise-box {
+    background: var(--green-bg); border: 2px dashed var(--green-border);
+    border-radius: 12px; padding: 20px 24px; margin: 24px 0;
+  }
+  .exercise-box .ex-title {
+    font-weight: 700; color: var(--green-border);
+    font-size: 1rem; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .exercise-box ol { padding-left: 20px; font-size: 0.9rem; }
+  .exercise-box ol li { margin-bottom: 6px; }
+
+  /* ===== CHAPTER DIVIDER ===== */
+  .chapter-divider {
+    display: flex; align-items: center; gap: 14px; margin: 40px 0 24px;
+  }
+  .chapter-divider hr { flex: 1; border: none; border-top: 2px solid var(--border); }
+  .chapter-divider .ch-label {
+    background: var(--secondary); color: white;
+    padding: 4px 16px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;
+  }
+
+  /* ===== FRAMEWORK DETAIL CARD ===== */
+  .fw-detail {
+    border-radius: 14px; padding: 24px 26px;
+    margin: 20px 0; border: 2px solid;
+  }
+  .fw-detail-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+  }
+  .fw-logo {
+    width: 54px; height: 54px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; flex-shrink: 0;
+  }
+  .fw-detail-name { font-size: 1.5rem; font-weight: 700; font-family: 'Crimson Pro', serif; }
+  .fw-detail-tagline { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* ===== MINI CONCEPT CARD ===== */
+  .mini-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px; margin: 14px 0;
+  }
+  .mini-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px;
+    text-align: center; transition: box-shadow 0.2s;
+  }
+  .mini-card:hover { box-shadow: 0 4px 16px rgba(26,35,126,0.12); }
+  .mini-card .mc-icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .mini-card .mc-name { font-size: 0.82rem; font-weight: 700; color: var(--primary); }
+  .mini-card .mc-desc { font-size: 0.73rem; color: var(--text-muted); margin-top: 3px; }
+
+  /* ===== PROGRESS CHIPS ===== */
+  .chip {
+    display: inline-block; padding: 3px 12px;
+    border-radius: 20px; font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; margin: 2px;
+  }
+  .chip.beginner { background: var(--green-bg); color: var(--green-border); border: 1px solid var(--green-border); }
+  .chip.intermediate { background: var(--yellow-bg); color: #e65100; border: 1px solid #e65100; }
+  .chip.advanced { background: var(--red-bg); color: var(--red-border); border: 1px solid var(--red-border); }
+  .chip.production { background: var(--purple-bg); color: var(--accent2); border: 1px solid var(--accent2); }
+
+  /* ===== PRINT ===== */
+  @media print {
+    #sticky-nav { display: none; }
+    .book-container { margin: 0; padding: 0; max-width: 100%; }
+    .page {
+      box-shadow: none; margin: 0; padding: 40px 52px;
+      border-radius: 0; page-break-after: always;
+      border-top: 3px solid var(--primary);
+    }
+    .pdf-btn { display: none; }
+    body { background: white; font-size: 13px; }
+  }
+
+  @page { size: A4; margin: 20mm 18mm; }
+
+  /* glossary */
+  .glossary-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0;
+  }
+  .glossary-item {
+    padding: 10px 14px; border-radius: 8px;
+    background: #f8f9ff; border: 1px solid var(--border);
+    font-size: 0.86rem;
+  }
+  .glossary-item .g-term { font-weight: 700; color: var(--primary); }
+  .glossary-item .g-def { color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+
+  /* concept pill row */
+  .concept-row {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0;
+  }
+  .concept-pill {
+    background: var(--primary); color: white;
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 600;
+  }
+
+  /* SVG diagram */
+  .svg-wrap { overflow-x: auto; margin: 18px 0; }
+  svg text { font-family: 'Baloo 2', sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav id="sticky-nav">
+  <div class="nav-brand">🤖 AI Agent Masterbook</div>
+  <div class="nav-links">
+    <a href="#intro">Intro</a>
+    <a href="#langchain">LangChain</a>
+    <a href="#langgraph">LangGraph</a>
+    <a href="#llamaindex">LlamaIndex</a>
+    <a href="#crewai">CrewAI</a>
+    <a href="#autogen">AutoGen</a>
+    <a href="#sk">Sem. Kernel</a>
+    <a href="#haystack">Haystack</a>
+    <a href="#compare">Compare</a>
+    <a href="#" class="pdf-btn" onclick="window.print(); return false;">⬇ PDF</a>
+  </div>
+</nav>
+
+<div class="book-container">
+
+<!-- ==================== HERO PAGE ==================== -->
+<div class="page hero-page">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-part-badge">Part 9</div>
+  <h1 class="hero-title">Agent Frameworks</h1>
+  <p class="hero-subtitle">
+    LangChain se CrewAI tak — AI Agent banane ke sabse powerful frameworks ka complete guide.
+    Har framework ko deeply samjho, kab kya use karo, aur production-grade agents kaise banao.
+  </p>
+  <div class="hero-frameworks-row">
+    <span class="fw-badge">🦜 LangChain</span>
+    <span class="fw-badge">🕸 LangGraph</span>
+    <span class="fw-badge">🦙 LlamaIndex</span>
+    <span class="fw-badge">🚢 CrewAI</span>
+    <span class="fw-badge">⚡ AutoGen</span>
+    <span class="fw-badge">🔮 Semantic Kernel</span>
+    <span class="fw-badge">🌾 Haystack</span>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">Frameworks</div></div>
+    <div class="hero-stat"><div class="num">40+</div><div class="lbl">Concepts</div></div>
+    <div class="hero-stat"><div class="num">25+</div><div class="lbl">Code Examples</div></div>
+    <div class="hero-stat"><div class="num">100%</div><div class="lbl">Production Ready</div></div>
+  </div>
+</div>
+
+<!-- ==================== TABLE OF CONTENTS ==================== -->
+<div class="page" id="toc">
+  <h1 class="chapter-title">📋 Table of Contents</h1>
+  <div class="toc-grid">
+    <a href="#intro" class="toc-item">
+      <div class="toc-num">1</div>
+      <div class="toc-text">Agent Frameworks — Introduction</div>
+    </a>
+    <a href="#concepts" class="toc-item">
+      <div class="toc-num">2</div>
+      <div class="toc-text">Core Concepts: Chains, Agents, Memory, Tools</div>
+    </a>
+    <a href="#langchain" class="toc-item">
+      <div class="toc-num">3</div>
+      <div class="toc-text">LangChain — Deep Dive</div>
+    </a>
+    <a href="#langgraph" class="toc-item">
+      <div class="toc-num">4</div>
+      <div class="toc-text">LangGraph — Stateful Agent Graphs</div>
+    </a>
+    <a href="#llamaindex" class="toc-item">
+      <div class="toc-num">5</div>
+      <div class="toc-text">LlamaIndex — Query Engines & RAG</div>
+    </a>
+    <a href="#crewai" class="toc-item">
+      <div class="toc-num">6</div>
+      <div class="toc-text">CrewAI — Multi-Agent Crews</div>
+    </a>
+    <a href="#autogen" class="toc-item">
+      <div class="toc-num">7</div>
+      <div class="toc-text">AutoGen — Conversational Agents</div>
+    </a>
+    <a href="#sk" class="toc-item">
+      <div class="toc-num">8</div>
+      <div class="toc-text">Semantic Kernel — Enterprise AI</div>
+    </a>
+    <a href="#haystack" class="toc-item">
+      <div class="toc-num">9</div>
+      <div class="toc-text">Haystack — NLP Pipelines</div>
+    </a>
+    <a href="#compare" class="toc-item">
+      <div class="toc-num">10</div>
+      <div class="toc-text">Framework Comparison & When to Use</div>
+    </a>
+    <a href="#orchestration" class="toc-item">
+      <div class="toc-num">11</div>
+      <div class="toc-text">Multi-Agent Orchestration</div>
+    </a>
+    <a href="#glossary" class="toc-item">
+      <div class="toc-num">12</div>
+      <div class="toc-text">Glossary & Summary</div>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== INTRODUCTION ==================== -->
+<div class="page" id="intro">
+  <h1 class="chapter-title">Chapter 1 — Agent Frameworks kya hote hain?</h1>
+
+  <p>
+    Jab hum ek AI Agent banana chahte hain — jaise ek research assistant jo internet search kare,
+    documents padhe, code likhe, aur apne aap decisions le — toh hume bahut saari cheezein manage karni padti hain:
+    LLM calls, memory, tools, planning, error handling, aur state management.
+  </p>
+  <p>
+    Agar hum yeh sab <strong>scratch se</strong> likhein, toh bahut time waste hoga.
+    Isliye <strong>Agent Frameworks</strong> aate hain — ye ready-made building blocks provide karte hain
+    jinse hum quickly powerful agents bana sakte hain.
+  </p>
+
+  <div class="callout note">
+    <div class="callout-title">📘 Simple Definition</div>
+    <strong>Agent Framework ek software library hai</strong> jo AI Agents banane ke liye pre-built components provide karta hai —
+    jaise LLM integration, memory management, tool calling, multi-agent coordination, aur workflow orchestration.
+    Yeh frameworks "Agent ka skeleton" hote hain — tum sirf logic dalo, framework sab handle karta hai.
+  </div>
+
+  <h2 class="section-title">Agent Framework ki zaroorat kyun hai?</h2>
+
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">🔧 Boilerplate Code reduce karta hai</div>
+        <div class="step-desc">Bina framework ke, har bar LLM call, error handling, retry logic likhna padta. Framework yeh sab handle karta hai.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">🧩 Modularity deta hai</div>
+        <div class="step-desc">Memory, Tools, LLM — sab alag-alag components hote hain. Aap ek swap kar sakte ho bina baaki ko todne ke.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">🚀 Production patterns built-in hote hain</div>
+        <div class="step-desc">Streaming, async execution, observability, tracing — yeh sab frameworks me already integrated hoti hain.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">🌐 Ecosystem integration</div>
+        <div class="step-desc">OpenAI, Anthropic, vector databases, search APIs — frameworks inhe easily connect karte hain bina extra code ke.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">👥 Community & Plugins</div>
+        <div class="step-desc">Thousands of contributors ne plugins, integrations, examples banaye hain. Aapko wheel reinvent nahi karna.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Framework Ecosystem Diagram -->
+  <div class="diagram-box">
+    <div class="diagram-title">🌐 Agent Framework Ecosystem Overview</div>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">
+      <div class="fw-card" style="border-color:#4caf50">
+        <div class="fw-icon">🦜</div>
+        <div class="fw-name">LangChain</div>
+        <div class="fw-tag" style="background:#e8f5e9;color:#2e7d32">Chains & Agents</div>
+      </div>
+      <div class="fw-card" style="border-color:#1565c0">
+        <div class="fw-icon">🕸</div>
+        <div class="fw-name">LangGraph</div>
+        <div class="fw-tag" style="background:#e3f2fd;color:#1565c0">Graph State</div>
+      </div>
+      <div class="fw-card" style="border-color:#e65100">
+        <div class="fw-icon">🦙</div>
+        <div class="fw-name">LlamaIndex</div>
+        <div class="fw-tag" style="background:#fff3e0;color:#e65100">RAG & Query</div>
+      </div>
+      <div class="fw-card" style="border-color:#6a1b9a">
+        <div class="fw-icon">🚢</div>
+        <div class="fw-name">CrewAI</div>
+        <div class="fw-tag" style="background:#f3e5f5;color:#6a1b9a">Multi-Agent</div>
+      </div>
+      <div class="fw-card" style="border-color:#c62828">
+        <div class="fw-icon">⚡</div>
+        <div class="fw-name">AutoGen</div>
+        <div class="fw-tag" style="background:#ffebee;color:#c62828">Conversational</div>
+      </div>
+      <div class="fw-card" style="border-color:#00695c">
+        <div class="fw-icon">🔮</div>
+        <div class="fw-name">Sem. Kernel</div>
+        <div class="fw-tag" style="background:#e8f5e9;color:#00695c">Enterprise</div>
+      </div>
+      <div class="fw-card" style="border-color:#f9a825">
+        <div class="fw-icon">🌾</div>
+        <div class="fw-name">Haystack</div>
+        <div class="fw-tag" style="background:#fffde7;color:#f57f17">NLP Pipelines</div>
+      </div>
+    </div>
+    <div style="margin-top:16px; font-size:0.8rem; color:var(--text-muted)">
+      Har framework ka apna specialty area hota hai — ek project me multiple frameworks bhi use ho sakti hain
+    </div>
+  </div>
+
+  <h2 class="section-title">Framework Selection Mindset</h2>
+  <p>Framework choose karte waqt yeh questions pucho:</p>
+  <ul class="hl-list blue">
+    <li>Kya mujhe simple chains chahiye ya complex stateful workflows? → LangChain vs LangGraph</li>
+    <li>Kya mera task mainly document retrieval / RAG hai? → LlamaIndex</li>
+    <li>Kya mujhe multiple AI agents milkar kaam karte chahiye? → CrewAI ya AutoGen</li>
+    <li>Kya mera organization Microsoft stack use karta hai? → Semantic Kernel</li>
+    <li>Kya mujhe production-grade NLP pipeline chahiye? → Haystack</li>
+  </ul>
+</div>
+
+<!-- ==================== CORE CONCEPTS ==================== -->
+<div class="page" id="concepts">
+  <h1 class="chapter-title">Chapter 2 — Core Concepts: Chains, Agents, Memory, Tools</h1>
+  <p>
+    Sabse pehle, hume yeh samajhna hoga ki sabhi frameworks mein <strong>4 core building blocks</strong> hote hain —
+    chahe naam alag ho, concept same hai.
+  </p>
+
+  <div class="mini-cards">
+    <div class="mini-card">
+      <div class="mc-icon">⛓</div>
+      <div class="mc-name">Chains</div>
+      <div class="mc-desc">Steps ki sequence — ek ka output doosre ka input</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🤖</div>
+      <div class="mc-name">Agents</div>
+      <div class="mc-desc">Autonomous entities jo decide karte hain kya action lena hai</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🧠</div>
+      <div class="mc-name">Memory</div>
+      <div class="mc-desc">Past context store karna aur retrieve karna</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🔧</div>
+      <div class="mc-name">Tools</div>
+      <div class="mc-desc">External functions jo agent call kar sakta hai</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">📊</div>
+      <div class="mc-name">Query Engines</div>
+      <div class="mc-desc">Documents se structured answers nikalna</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🎭</div>
+      <div class="mc-name">Orchestration</div>
+      <div class="mc-desc">Multiple agents ko coordinate karna</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">1. Chains — Kya hain aur kaise kaam karte hain?</h2>
+  <p>
+    <strong>Chain</strong> ek <em>pipeline</em> hai jahan ek step ka output directly doosre step ka input banta hai.
+    Jaise assembly line mein har station ek kaam karta hai — chain mein bhi ऐसा hi hota hai.
+  </p>
+
+  <!-- Chain flow diagram -->
+  <div class="diagram-box">
+    <div class="diagram-title">⛓ Chain Flow — Step by Step</div>
+    <div class="flow-row">
+      <div class="flow-node" style="background:#1565c0">📝 User Input</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node green">✂️ Prompt Template</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node orange">🤖 LLM Call</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node purple">📤 Output Parser</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="background:#00695c">✅ Final Answer</div>
+    </div>
+    <div style="margin-top:10px; font-size:0.8rem; color:var(--text-muted)">
+      LangChain Expression Language (LCEL): <code style="background:#eee;padding:2px 6px;border-radius:4px">chain = prompt | llm | parser</code>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — Simple Chain (LangChain)</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">langchain_core.prompts</span> <span class="kw">import</span> <span class="cls">ChatPromptTemplate</span>
+<span class="kw">from</span> <span class="fn">langchain_openai</span> <span class="kw">import</span> <span class="cls">ChatOpenAI</span>
+<span class="kw">from</span> <span class="fn">langchain_core.output_parsers</span> <span class="kw">import</span> <span class="cls">StrOutputParser</span>
+
+<span class="cm"># Step 1: Prompt Template banao</span>
+<span class="var">prompt</span> = <span class="cls">ChatPromptTemplate</span>.<span class="fn">from_messages</span>([
+    (<span class="str">"system"</span>, <span class="str">"Tum ek helpful AI assistant ho."</span>),
+    (<span class="str">"user"</span>, <span class="str">"{question}"</span>)
+])
+
+<span class="cm"># Step 2: LLM initialize karo</span>
+<span class="var">llm</span> = <span class="cls">ChatOpenAI</span>(model=<span class="str">"gpt-4o"</span>, temperature=<span class="num">0.7</span>)
+
+<span class="cm"># Step 3: Output parser</span>
+<span class="var">parser</span> = <span class="cls">StrOutputParser</span>()
+
+<span class="cm"># Step 4: Chain banao — LCEL syntax (pipe operator)</span>
+<span class="var">chain</span> = <span class="var">prompt</span> | <span class="var">llm</span> | <span class="var">parser</span>
+
+<span class="cm"># Step 5: Chain invoke karo</span>
+<span class="var">result</span> = chain.<span class="fn">invoke</span>({<span class="str">"question"</span>: <span class="str">"Python kya hai?"</span>})
+<span class="fn">print</span>(<span class="var">result</span>)
+
+<span class="cm"># Output: "Python ek high-level, interpreted programming language hai..."</span></div>
+  </div>
+
+  <h2 class="section-title">2. Agents — Autonomous Decision Making</h2>
+  <p>
+    Chain mein <strong>flow fixed</strong> hota hai — agent mein <strong>LLM khud decide karta hai</strong>
+    ki agla step kya hoga. Agent ko tools diye jaate hain, aur wo observe → think → act loop follow karta hai.
+  </p>
+
+  <!-- ReAct Agent Diagram -->
+  <div class="diagram-box">
+    <div class="diagram-title">🤖 ReAct Agent Loop — Observe → Think → Act</div>
+    <div style="max-width:500px; margin:0 auto;">
+      <div class="flow-row">
+        <div class="flow-node" style="background:#1565c0; min-width:130px">👤 User Query</div>
+      </div>
+      <div style="text-align:center"><div class="arrow-down"></div></div>
+      <div class="flow-row">
+        <div class="flow-node orange" style="min-width:200px">🧠 LLM "Mujhe kya karna chahiye?"</div>
+      </div>
+      <div style="text-align:center"><div class="arrow-down"></div></div>
+      <div class="flow-row">
+        <div class="flow-node green">🔧 Tool A<br><small>Search</small></div>
+        <div style="font-size:0.8rem; color:var(--text-muted); padding:0 8px">OR</div>
+        <div class="flow-node green">🔧 Tool B<br><small>Calculator</small></div>
+        <div style="font-size:0.8rem; color:var(--text-muted); padding:0 8px">OR</div>
+        <div class="flow-node" style="background:#00695c">📝 Direct Answer</div>
+      </div>
+      <div style="text-align:center"><div class="arrow-down"></div></div>
+      <div class="flow-row">
+        <div class="flow-node purple" style="min-width:200px">👁 Observation (Tool Result)</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:0.8rem; color:var(--text-muted); margin:4px 0">Loop continues jab tak answer nahi milta...</div>
+        <div class="arrow-down"></div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node" style="background:#c62828; min-width:180px">✅ Final Answer to User</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">3. Memory — Context Yaad Rakhna</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Memory Type</th><th>Kya Store Karta Hai</th><th>Example Use</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">Buffer Memory</td><td>Poori conversation history</td><td>Chatbot jo pichla context yaad rakhe</td></tr>
+        <tr><td class="bold">Summary Memory</td><td>Compressed summary of conversation</td><td>Long conversations ke liye</td></tr>
+        <tr><td class="bold">Vector Memory</td><td>Semantically similar past messages</td><td>Relevant context retrieve karna</td></tr>
+        <tr><td class="bold">Entity Memory</td><td>Key entities (people, places)</td><td>"Rahul ka phone number kya tha?"</td></tr>
+        <tr><td class="bold">External Memory</td><td>Database / file mein persist</td><td>Sessions ke beech yaad rakhna</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">4. Tools — Agent ki Superpowers</h2>
+  <p>
+    Tools wo functions hain jo agent call kar sakta hai LLM ke baahar jaake.
+    Jaise ek student ko library, calculator, aur internet access milta hai — agent ko tools milte hain.
+  </p>
+
+  <div class="comparison-grid">
+    <div class="compare-card cc-blue">
+      <div class="cc-title">🔍 Search Tool</div>
+      <ul><li>Google/Bing search</li><li>Wikipedia lookup</li><li>News search</li></ul>
+    </div>
+    <div class="compare-card cc-green">
+      <div class="cc-title">🧮 Calculator Tool</div>
+      <ul><li>Math operations</li><li>Python code execution</li><li>Data analysis</li></ul>
+    </div>
+    <div class="compare-card cc-orange">
+      <div class="cc-title">📁 File Tools</div>
+      <ul><li>Read/write files</li><li>PDF reading</li><li>CSV processing</li></ul>
+    </div>
+    <div class="compare-card cc-purple">
+      <div class="cc-title">🌐 API Tools</div>
+      <ul><li>HTTP requests</li><li>Database queries</li><li>Weather/Maps APIs</li></ul>
+    </div>
+    <div class="compare-card cc-red">
+      <div class="cc-title">💻 Code Tools</div>
+      <ul><li>Code execution</li><li>Bash commands</li><li>Git operations</li></ul>
+    </div>
+    <div class="compare-card cc-yellow">
+      <div class="cc-title">🧠 Memory Tools</div>
+      <ul><li>Vector DB search</li><li>Fact retrieval</li><li>Context injection</li></ul>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 Pro Tip</div>
+    Tools likhte waqt <strong>clear docstrings</strong> likho — LLM yahi padh ke decide karta hai ki kab kaunsa tool use karna hai.
+    Agar docstring unclear hai, agent wrong tool use karega.
+  </div>
+</div>
+
+<!-- ==================== LANGCHAIN ==================== -->
+<div class="page" id="langchain">
+  <div class="chapter-divider"><hr><div class="ch-label">Framework 1</div><hr></div>
+  <h1 class="chapter-title">Chapter 3 — LangChain 🦜</h1>
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="chip beginner">Beginner Friendly</span>
+    <span class="chip intermediate">Intermediate</span>
+    <span class="chip production">Production Ready</span>
+  </div>
+
+  <div class="fw-detail" style="background:var(--green-bg); border-color:var(--green-border)">
+    <div class="fw-detail-header">
+      <div class="fw-logo" style="background:#e8f5e9;">🦜</div>
+      <div>
+        <div class="fw-detail-name" style="color:#1b5e20">LangChain</div>
+        <div class="fw-detail-tagline">The most popular AI application framework — LLM pe based applications banane ka goto library</div>
+      </div>
+    </div>
+    <p>
+      LangChain 2022 mein Harrison Chase ne banaya tha. Yeh ek open-source framework hai jo LLMs ko
+      external data sources aur tools ke saath easily connect karne deta hai.
+      Aaj ke date mein yeh sabse zyada use hone wala AI framework hai jiske <strong>90,000+ GitHub stars</strong> hain.
+    </p>
+  </div>
+
+  <h2 class="section-title">LangChain ka Architecture</h2>
+
+  <!-- LangChain Architecture Diagram -->
+  <div class="diagram-box">
+    <div class="diagram-title">🏗 LangChain Architecture — Layered Design</div>
+    <div style="max-width:600px; margin:0 auto;">
+      <div class="arch-layer" style="border-color:#1b5e20; background:#f1f8e9;">
+        <div class="layer-icon">🎯</div>
+        <div>
+          <div class="layer-name">Application Layer</div>
+          <div class="layer-desc">Chatbots, RAG apps, Agents, Automation workflows</div>
+        </div>
+      </div>
+      <div style="text-align:center"><div class="arrow-down"></div></div>
+      <div class="arch-layer" style="border-color:#2e7d32; background:#e8f5e9;">
+        <div class="layer-icon">⛓</div>
+        <div>
+          <div class="layer-name">LangChain Chains & Agents</div>
+          <div class="layer-desc">LCEL, AgentExecutor, Tools, Memory, Callbacks</div>
+        </div>
+      </div>
+      <div style="text-align:center"><div class="arrow-down"></div></div>
+      <div class="arch-layer" style="border-color:#388e3c;">
+        <div class="layer-icon">🔌</div>
+        <div>
+          <div class="layer-name">LangChain Integrations</div>
+          <div class="layer-desc">OpenAI, Anthropic, Pinecone, ChromaDB, Tavily, 500+ integrations</div>
+        </div>
+      </div>
+      <div style="text-align:center"><div class="arrow-down"></div></div>
+      <div class="arch-layer" style="border-color:#43a047;">
+        <div class="layer-icon">⚙️</div>
+        <div>
+          <div class="layer-name">LangChain Core (langchain-core)</div>
+          <div class="layer-desc">Base classes: Runnable, BaseLanguageModel, BaseTool, BaseMemory</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">LangChain ke Key Components</h2>
+
+  <h3 class="sub-title">1. LCEL — LangChain Expression Language</h3>
+  <p>
+    LCEL LangChain ka <strong>modern way</strong> hai components ko compose karne ka.
+    Pipe operator (<code>|</code>) se chains banate hain — bilkul Unix commands ki tarah.
+  </p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — LCEL Complete Example</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">langchain_openai</span> <span class="kw">import</span> <span class="cls">ChatOpenAI</span>
+<span class="kw">from</span> <span class="fn">langchain_core.prompts</span> <span class="kw">import</span> <span class="cls">ChatPromptTemplate</span>
+<span class="kw">from</span> <span class="fn">langchain_core.output_parsers</span> <span class="kw">import</span> <span class="cls">StrOutputParser</span>, <span class="cls">JsonOutputParser</span>
+<span class="kw">from</span> <span class="fn">langchain_core.runnables</span> <span class="kw">import</span> <span class="cls">RunnableParallel</span>, <span class="cls">RunnablePassthrough</span>
+
+<span class="cm"># === Basic Chain ===</span>
+<span class="var">basic_chain</span> = (
+    <span class="cls">ChatPromptTemplate</span>.<span class="fn">from_template</span>(<span class="str">"Topic: {topic} ke baare mein batao"</span>)
+    | <span class="cls">ChatOpenAI</span>(model=<span class="str">"gpt-4o-mini"</span>)
+    | <span class="cls">StrOutputParser</span>()
+)
+
+<span class="cm"># === Parallel Chains — dono kaam ek saath ===</span>
+<span class="var">parallel_chain</span> = <span class="cls">RunnableParallel</span>(
+    <span class="var">summary</span>=basic_chain,
+    <span class="var">keywords</span>=(
+        <span class="cls">ChatPromptTemplate</span>.<span class="fn">from_template</span>(
+            <span class="str">"{topic} ke 5 keywords JSON mein do: {{keywords: [...]}}"</span>
+        )
+        | <span class="cls">ChatOpenAI</span>()
+        | <span class="cls">JsonOutputParser</span>()
+    )
+)
+
+<span class="cm"># Invoke karo</span>
+<span class="var">result</span> = parallel_chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>: <span class="str">"Machine Learning"</span>})
+<span class="fn">print</span>(<span class="var">result</span>[<span class="str">"summary"</span>])     <span class="cm"># ML ki summary</span>
+<span class="fn">print</span>(<span class="var">result</span>[<span class="str">"keywords"</span>])   <span class="cm"># {"keywords": ["neural", "training", ...]}</span>
+
+<span class="cm"># === Streaming support ===</span>
+<span class="kw">for</span> <span class="var">chunk</span> <span class="kw">in</span> basic_chain.<span class="fn">stream</span>({<span class="str">"topic"</span>: <span class="str">"AI Agents"</span>}):
+    <span class="fn">print</span>(<span class="var">chunk</span>, end=<span class="str">""</span>, flush=<span class="cls">True</span>)</div>
+  </div>
+
+  <h3 class="sub-title">2. LangChain Agents with Tools</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — Tool-Using Agent</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">langchain_openai</span> <span class="kw">import</span> <span class="cls">ChatOpenAI</span>
+<span class="kw">from</span> <span class="fn">langchain.agents</span> <span class="kw">import</span> <span class="fn">create_tool_calling_agent</span>, <span class="cls">AgentExecutor</span>
+<span class="kw">from</span> <span class="fn">langchain_core.tools</span> <span class="kw">import</span> <span class="fn">tool</span>
+<span class="kw">from</span> <span class="fn">langchain_core.prompts</span> <span class="kw">import</span> <span class="cls">ChatPromptTemplate</span>
+
+<span class="cm"># Custom Tool banana — decorator use karo</span>
+<span class="dec">@tool</span>
+<span class="kw">def</span> <span class="fn">calculate_area</span>(<span class="var">length</span>: <span class="cls">float</span>, <span class="var">width</span>: <span class="cls">float</span>) -> <span class="cls">float</span>:
+    <span class="str">"""Kisi bhi rectangle ka area calculate karta hai."""</span>
+    <span class="kw">return</span> <span class="var">length</span> * <span class="var">width</span>
+
+<span class="dec">@tool</span>
+<span class="kw">def</span> <span class="fn">get_weather</span>(<span class="var">city</span>: <span class="cls">str</span>) -> <span class="cls">str</span>:
+    <span class="str">"""Kisi city ka weather batata hai."""</span>
+    <span class="cm"># Real implementation mein API call hogi</span>
+    <span class="kw">return</span> <span class="str">f"{city} mein aaj 28°C, sunny weather hai"</span>
+
+<span class="cm"># Tools list</span>
+<span class="var">tools</span> = [<span class="fn">calculate_area</span>, <span class="fn">get_weather</span>]
+
+<span class="cm"># Agent prompt</span>
+<span class="var">prompt</span> = <span class="cls">ChatPromptTemplate</span>.<span class="fn">from_messages</span>([
+    (<span class="str">"system"</span>, <span class="str">"Tum ek helpful assistant ho. Diye gaye tools use karo."</span>),
+    (<span class="str">"placeholder"</span>, <span class="str">"{chat_history}"</span>),
+    (<span class="str">"human"</span>, <span class="str">"{input}"</span>),
+    (<span class="str">"placeholder"</span>, <span class="str">"{agent_scratchpad}"</span>),
+])
+
+<span class="cm"># LLM + Agent + Executor</span>
+<span class="var">llm</span> = <span class="cls">ChatOpenAI</span>(model=<span class="str">"gpt-4o"</span>)
+<span class="var">agent</span> = <span class="fn">create_tool_calling_agent</span>(<span class="var">llm</span>, <span class="var">tools</span>, <span class="var">prompt</span>)
+<span class="var">executor</span> = <span class="cls">AgentExecutor</span>(<span class="var">agent</span>=<span class="var">agent</span>, <span class="var">tools</span>=<span class="var">tools</span>, verbose=<span class="cls">True</span>)
+
+<span class="cm"># Agent ko kaam do</span>
+<span class="var">result</span> = executor.<span class="fn">invoke</span>({
+    <span class="str">"input"</span>: <span class="str">"Mumbai ka weather kya hai aur 10x5 ka area kya hoga?"</span>,
+    <span class="str">"chat_history"</span>: []
+})
+<span class="cm"># Output: "Mumbai mein 28°C hai aur area 50 square units hai"</span></div>
+  </div>
+
+  <h3 class="sub-title">3. RAG with LangChain</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — RAG Pipeline with LangChain</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">langchain_openai</span> <span class="kw">import</span> <span class="cls">ChatOpenAI</span>, <span class="cls">OpenAIEmbeddings</span>
+<span class="kw">from</span> <span class="fn">langchain_community.vectorstores</span> <span class="kw">import</span> <span class="cls">Chroma</span>
+<span class="kw">from</span> <span class="fn">langchain_community.document_loaders</span> <span class="kw">import</span> <span class="cls">PyPDFLoader</span>
+<span class="kw">from</span> <span class="fn">langchain.text_splitter</span> <span class="kw">import</span> <span class="cls">RecursiveCharacterTextSplitter</span>
+<span class="kw">from</span> <span class="fn">langchain_core.prompts</span> <span class="kw">import</span> <span class="cls">ChatPromptTemplate</span>
+<span class="kw">from</span> <span class="fn">langchain_core.runnables</span> <span class="kw">import</span> <span class="cls">RunnablePassthrough</span>
+<span class="kw">from</span> <span class="fn">langchain_core.output_parsers</span> <span class="kw">import</span> <span class="cls">StrOutputParser</span>
+
+<span class="cm"># Step 1: Document load karo</span>
+<span class="var">loader</span> = <span class="cls">PyPDFLoader</span>(<span class="str">"my_document.pdf"</span>)
+<span class="var">docs</span> = <span class="var">loader</span>.<span class="fn">load</span>()
+
+<span class="cm"># Step 2: Chunks mein todo</span>
+<span class="var">splitter</span> = <span class="cls">RecursiveCharacterTextSplitter</span>(
+    chunk_size=<span class="num">500</span>, chunk_overlap=<span class="num">50</span>
+)
+<span class="var">chunks</span> = <span class="var">splitter</span>.<span class="fn">split_documents</span>(<span class="var">docs</span>)
+
+<span class="cm"># Step 3: Vector store mein store karo</span>
+<span class="var">vectorstore</span> = <span class="cls">Chroma</span>.<span class="fn">from_documents</span>(
+    <span class="var">chunks</span>, <span class="cls">OpenAIEmbeddings</span>()
+)
+<span class="var">retriever</span> = <span class="var">vectorstore</span>.<span class="fn">as_retriever</span>(search_kwargs={<span class="str">"k"</span>: <span class="num">3</span>})
+
+<span class="cm"># Step 4: RAG Prompt</span>
+<span class="var">rag_prompt</span> = <span class="cls">ChatPromptTemplate</span>.<span class="fn">from_template</span>(<span class="str">"""
+Context:
+{context}
+
+Question: {question}
+Answer the question using ONLY the context above.
+"""</span>)
+
+<span class="cm"># Step 5: Complete RAG Chain</span>
+<span class="var">rag_chain</span> = (
+    {<span class="str">"context"</span>: <span class="var">retriever</span>, <span class="str">"question"</span>: <span class="cls">RunnablePassthrough</span>()}
+    | <span class="var">rag_prompt</span>
+    | <span class="cls">ChatOpenAI</span>()
+    | <span class="cls">StrOutputParser</span>()
+)
+
+<span class="cm"># Query karo</span>
+<span class="fn">print</span>(rag_chain.<span class="fn">invoke</span>(<span class="str">"Document mein kya likha hai?"</span>))</div>
+  </div>
+
+  <div class="callout interview">
+    <div class="callout-title">🎤 Interview Questions — LangChain</div>
+    <div class="iq-list">
+      <div class="iq-item"><div class="q-label">Q1</div>LangChain mein LCEL kya hai aur iska fayda kya hai? (Pipe operator ka concept explain karo)</div>
+      <div class="iq-item"><div class="q-label">Q2</div>LangChain Chain aur Agent mein kya difference hai?</div>
+      <div class="iq-item"><div class="q-label">Q3</div>AgentExecutor ka kaam kya hota hai? Internally kaise kaam karta hai?</div>
+      <div class="iq-item"><div class="q-label">Q4</div>LangChain mein RAG pipeline kaise banate hain? Steps explain karo.</div>
+      <div class="iq-item"><div class="q-label">Q5</div>Callbacks aur Tracing LangChain mein kaise use hote hain?</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">⚠️ Common Mistakes — LangChain</div>
+    <ul>
+      <li>Deprecated <code>LLMChain</code> use karna — LCEL use karo</li>
+      <li>Tool docstrings vague likhna — LLM tool wrong use karega</li>
+      <li>Memory bina stream kiye use karna — async handling miss ho jaata hai</li>
+      <li>Unnecessary chaining — zyada steps chain slow karti hai</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== LANGGRAPH ==================== -->
+<div class="page" id="langgraph">
+  <div class="chapter-divider"><hr><div class="ch-label">Framework 2</div><hr></div>
+  <h1 class="chapter-title">Chapter 4 — LangGraph 🕸</h1>
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="chip intermediate">Intermediate</span>
+    <span class="chip advanced">Advanced</span>
+    <span class="chip production">Production Ready</span>
+  </div>
+
+  <div class="fw-detail" style="background:var(--blue-bg); border-color:var(--blue-border)">
+    <div class="fw-detail-header">
+      <div class="fw-logo" style="background:#e3f2fd;">🕸</div>
+      <div>
+        <div class="fw-detail-name" style="color:#0d47a1">LangGraph</div>
+        <div class="fw-detail-tagline">Stateful, multi-actor applications — Graph-based agent orchestration</div>
+      </div>
+    </div>
+    <p>
+      LangGraph LangChain team ka ek powerful extension hai jo complex, <strong>stateful workflows</strong> banane deta hai.
+      Jahan LangChain linear chains banata hai, LangGraph <strong>cyclic graphs</strong> banata hai —
+      matlab agent loop mein kaam kar sakta hai, decisions le sakta hai, aur state maintain kar sakta hai.
+    </p>
+  </div>
+
+  <h2 class="section-title">LangGraph vs LangChain — Kab Kya Use Karein?</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>LangChain</th><th>LangGraph</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">Flow Type</td><td>Linear / DAG</td><td>Cyclic Graphs (loops supported)</td></tr>
+        <tr><td class="bold">State Management</td><td>Limited</td><td>First-class — TypedDict based</td></tr>
+        <tr><td class="bold">Human-in-loop</td><td>Difficult</td><td>Built-in (interrupt, breakpoints)</td></tr>
+        <tr><td class="bold">Conditional Routing</td><td>Basic</td><td>Powerful conditional edges</td></tr>
+        <tr><td class="bold">Debugging</td><td>Callbacks</td><td>LangSmith Studio visual debugger</td></tr>
+        <tr><td class="bold">Use Case</td><td>Simple agents, RAG</td><td>Complex multi-step agents, workflows</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">LangGraph Core Concepts</h2>
+
+  <div class="mini-cards">
+    <div class="mini-card">
+      <div class="mc-icon">📊</div>
+      <div class="mc-name">State</div>
+      <div class="mc-desc">TypedDict — graph ki shared memory</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">📦</div>
+      <div class="mc-name">Nodes</div>
+      <div class="mc-desc">Functions jo state ko process karte hain</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">➡️</div>
+      <div class="mc-name">Edges</div>
+      <div class="mc-desc">Nodes ke beech connections</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🔀</div>
+      <div class="mc-name">Conditional Edges</div>
+      <div class="mc-desc">Dynamic routing — kaun sa node next?</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">⏸</div>
+      <div class="mc-name">Checkpoints</div>
+      <div class="mc-desc">State save karna — resume possible</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🛑</div>
+      <div class="mc-name">Interrupts</div>
+      <div class="mc-desc">Human approval lena mid-execution</div>
+    </div>
+  </div>
+
+  <!-- LangGraph Flow Diagram -->
+  <div class="diagram-box">
+    <div class="diagram-title">🕸 LangGraph — ReAct Agent Graph Structure</div>
+    <svg viewBox="0 0 700 340" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:340px">
+      <!-- START -->
+      <rect x="290" y="10" width="120" height="40" rx="20" fill="#1a237e"/>
+      <text x="350" y="35" fill="white" font-size="13" font-weight="bold" text-anchor="middle">START</text>
+      <!-- Arrow -->
+      <line x1="350" y1="50" x2="350" y2="80" stroke="#1a237e" stroke-width="2" marker-end="url(#arr)"/>
+      <!-- Agent Node -->
+      <rect x="255" y="80" width="190" height="55" rx="10" fill="#283593"/>
+      <text x="350" y="105" fill="white" font-size="13" font-weight="bold" text-anchor="middle">🧠 Agent Node</text>
+      <text x="350" y="123" fill="#90caf9" font-size="10" text-anchor="middle">LLM decide karta hai</text>
+      <!-- Decision diamond -->
+      <polygon points="350,155 420,185 350,215 280,185" fill="#e65100"/>
+      <text x="350" y="182" fill="white" font-size="11" font-weight="bold" text-anchor="middle">Tool</text>
+      <text x="350" y="197" fill="white" font-size="11" font-weight="bold" text-anchor="middle">Needed?</text>
+      <!-- Yes - Tools Node -->
+      <line x1="420" y1="185" x2="520" y2="185" stroke="#1a237e" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="470" y="178" fill="#e65100" font-size="10" font-weight="bold" text-anchor="middle">YES</text>
+      <rect x="520" y="160" width="150" height="55" rx="10" fill="#00695c"/>
+      <text x="595" y="185" fill="white" font-size="13" font-weight="bold" text-anchor="middle">🔧 Tools Node</text>
+      <text x="595" y="203" fill="#a5d6a7" font-size="10" text-anchor="middle">Tool execute hota hai</text>
+      <!-- Loop back -->
+      <path d="M595 215 Q595 270 350 270 Q200 270 200 190 Q200 135 255 107" stroke="#1565c0" stroke-width="2" fill="none" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+      <text x="420" y="268" fill="#1565c0" font-size="10" font-style="italic" text-anchor="middle">Loop back to Agent</text>
+      <!-- No - END -->
+      <line x1="350" y1="215" x2="350" y2="280" stroke="#1a237e" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="338" y="253" fill="#2e7d32" font-size="10" font-weight="bold">NO</text>
+      <rect x="275" y="280" width="150" height="45" rx="20" fill="#2e7d32"/>
+      <text x="350" y="308" fill="white" font-size="13" font-weight="bold" text-anchor="middle">✅ END</text>
+      <!-- Arrow marker -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1a237e"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h3 class="sub-title">LangGraph Complete Code Example</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — LangGraph ReAct Agent</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">typing</span> <span class="kw">import</span> <span class="cls">TypedDict</span>, <span class="cls">Annotated</span>
+<span class="kw">from</span> <span class="fn">langgraph.graph</span> <span class="kw">import</span> <span class="cls">StateGraph</span>, <span class="cls">START</span>, <span class="cls">END</span>
+<span class="kw">from</span> <span class="fn">langgraph.prebuilt</span> <span class="kw">import</span> <span class="fn">ToolNode</span>, <span class="fn">tools_condition</span>
+<span class="kw">from</span> <span class="fn">langchain_openai</span> <span class="kw">import</span> <span class="cls">ChatOpenAI</span>
+<span class="kw">from</span> <span class="fn">langchain_core.tools</span> <span class="kw">import</span> <span class="fn">tool</span>
+<span class="kw">from</span> <span class="fn">langgraph.graph.message</span> <span class="kw">import</span> <span class="fn">add_messages</span>
+
+<span class="cm"># === Step 1: State define karo ===</span>
+<span class="kw">class</span> <span class="cls">AgentState</span>(<span class="cls">TypedDict</span>):
+    <span class="cm"># messages list — Annotated[list, add_messages] se auto-merge hoga</span>
+    <span class="var">messages</span>: <span class="cls">Annotated</span>[<span class="cls">list</span>, <span class="fn">add_messages</span>]
+
+<span class="cm"># === Step 2: Tools define karo ===</span>
+<span class="dec">@tool</span>
+<span class="kw">def</span> <span class="fn">search_web</span>(<span class="var">query</span>: <span class="cls">str</span>) -> <span class="cls">str</span>:
+    <span class="str">"""Web pe search karta hai kisi topic ke baare mein."""</span>
+    <span class="kw">return</span> <span class="str">f"Search result for '{query}': Sample data..."</span>
+
+<span class="var">tools</span> = [<span class="fn">search_web</span>]
+
+<span class="cm"># === Step 3: LLM ko tools bind karo ===</span>
+<span class="var">llm</span> = <span class="cls">ChatOpenAI</span>(model=<span class="str">"gpt-4o"</span>).<span class="fn">bind_tools</span>(<span class="var">tools</span>)
+
+<span class="cm"># === Step 4: Nodes define karo ===</span>
+<span class="kw">def</span> <span class="fn">agent_node</span>(<span class="var">state</span>: <span class="cls">AgentState</span>):
+    <span class="str">"""Main agent jo LLM call karta hai"""</span>
+    <span class="var">response</span> = <span class="var">llm</span>.<span class="fn">invoke</span>(<span class="var">state</span>[<span class="str">"messages"</span>])
+    <span class="kw">return</span> {<span class="str">"messages"</span>: [<span class="var">response</span>]}
+
+<span class="cm"># ToolNode automatically tools execute karta hai</span>
+<span class="var">tool_node</span> = <span class="fn">ToolNode</span>(<span class="var">tools</span>)
+
+<span class="cm"># === Step 5: Graph banao ===</span>
+<span class="var">graph</span> = <span class="cls">StateGraph</span>(<span class="cls">AgentState</span>)
+
+<span class="cm"># Nodes add karo</span>
+<span class="var">graph</span>.<span class="fn">add_node</span>(<span class="str">"agent"</span>, <span class="fn">agent_node</span>)
+<span class="var">graph</span>.<span class="fn">add_node</span>(<span class="str">"tools"</span>, <span class="var">tool_node</span>)
+
+<span class="cm"># Edges add karo</span>
+<span class="var">graph</span>.<span class="fn">add_edge</span>(<span class="cls">START</span>, <span class="str">"agent"</span>)
+<span class="var">graph</span>.<span class="fn">add_conditional_edges</span>(
+    <span class="str">"agent"</span>,
+    <span class="fn">tools_condition</span>,   <span class="cm"># tool_calls hai → "tools", warna → END</span>
+)
+<span class="var">graph</span>.<span class="fn">add_edge</span>(<span class="str">"tools"</span>, <span class="str">"agent"</span>)  <span class="cm"># tool ke baad wapas agent</span>
+
+<span class="cm"># === Step 6: Compile & Run ===</span>
+<span class="var">app</span> = <span class="var">graph</span>.<span class="fn">compile</span>()
+
+<span class="var">result</span> = <span class="var">app</span>.<span class="fn">invoke</span>({
+    <span class="str">"messages"</span>: [{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"AI agents kya hote hain?"</span>}]
+})
+<span class="fn">print</span>(<span class="var">result</span>[<span class="str">"messages"</span>][-<span class="num">1</span>].<span class="var">content</span>)</div>
+  </div>
+
+  <h3 class="sub-title">Human-in-the-Loop with LangGraph</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — Human Approval Checkpoint</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">langgraph.checkpoint.memory</span> <span class="kw">import</span> <span class="cls">MemorySaver</span>
+
+<span class="cm"># Checkpointer — state save karta hai</span>
+<span class="var">memory</span> = <span class="cls">MemorySaver</span>()
+
+<span class="cm"># Compile with interrupt — tool se pehle human approval</span>
+<span class="var">app</span> = <span class="var">graph</span>.<span class="fn">compile</span>(
+    <span class="var">checkpointer</span>=<span class="var">memory</span>,
+    <span class="var">interrupt_before</span>=[<span class="str">"tools"</span>]  <span class="cm"># tool run se PEHLE ruko</span>
+)
+
+<span class="var">config</span> = {<span class="str">"configurable"</span>: {<span class="str">"thread_id"</span>: <span class="str">"session_1"</span>}}
+
+<span class="cm"># Step 1: Pehli run — tool call pe ruk jaega</span>
+<span class="var">result</span> = <span class="var">app</span>.<span class="fn">invoke</span>({
+    <span class="str">"messages"</span>: [{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Search AI trends"</span>}]
+}, config=<span class="var">config</span>)
+
+<span class="cm"># Step 2: Human check karo</span>
+<span class="var">state</span> = <span class="var">app</span>.<span class="fn">get_state</span>(<span class="var">config</span>)
+<span class="fn">print</span>(<span class="str">"Agent iska tool use karna chahta hai:"</span>)
+<span class="fn">print</span>(<span class="var">state</span>.<span class="var">values</span>[<span class="str">"messages"</span>][-<span class="num">1</span>].<span class="var">tool_calls</span>)
+
+<span class="cm"># Step 3: Approve karo — None input se continue hoga</span>
+<span class="var">approval</span> = <span class="fn">input</span>(<span class="str">"Approve? (y/n): "</span>)
+<span class="kw">if</span> <span class="var">approval</span> == <span class="str">"y"</span>:
+    <span class="var">final</span> = <span class="var">app</span>.<span class="fn">invoke</span>(<span class="cls">None</span>, config=<span class="var">config</span>)
+    <span class="fn">print</span>(<span class="var">final</span>[<span class="str">"messages"</span>][-<span class="num">1</span>].<span class="var">content</span>)</div>
+  </div>
+
+  <div class="callout remember">
+    <div class="callout-title">🧠 Remember This — LangGraph</div>
+    <strong>LangGraph ka power</strong> uski state management aur cycles mein hai.
+    Jab bhi tumhara agent ko <strong>loop karna ho, state maintain karna ho, ya human approval chahiye ho</strong> —
+    LangGraph use karo. Simple linear tasks ke liye LangChain kaafi hai.
+  </div>
+
+  <div class="callout interview">
+    <div class="callout-title">🎤 Interview Questions — LangGraph</div>
+    <div class="iq-list">
+      <div class="iq-item"><div class="q-label">Q1</div>LangGraph mein State, Node, aur Edge kya hote hain? Ek example do.</div>
+      <div class="iq-item"><div class="q-label">Q2</div>Conditional edges kaise kaam karte hain? tools_condition explain karo.</div>
+      <div class="iq-item"><div class="q-label">Q3</div>Human-in-the-loop LangGraph mein kaise implement karte hain?</div>
+      <div class="iq-item"><div class="q-label">Q4</div>LangGraph checkpointing kya hai? Production mein kyun important hai?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LLAMAINDEX ==================== -->
+<div class="page" id="llamaindex">
+  <div class="chapter-divider"><hr><div class="ch-label">Framework 3</div><hr></div>
+  <h1 class="chapter-title">Chapter 5 — LlamaIndex 🦙</h1>
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="chip beginner">Beginner Friendly</span>
+    <span class="chip intermediate">Intermediate</span>
+    <span class="chip production">Production Ready</span>
+  </div>
+
+  <div class="fw-detail" style="background:var(--orange-bg); border-color:var(--orange-border)">
+    <div class="fw-detail-header">
+      <div class="fw-logo" style="background:#fff3e0;">🦙</div>
+      <div>
+        <div class="fw-detail-name" style="color:#bf360c">LlamaIndex</div>
+        <div class="fw-detail-tagline">Data framework for LLMs — RAG aur document intelligence ka best tool</div>
+      </div>
+    </div>
+    <p>
+      LlamaIndex (pehle GPT Index) Jerry Liu ne banaya tha. Yeh specifically <strong>document-heavy applications</strong>
+      ke liye design kiya gaya hai — jahan aapko PDFs, databases, APIs se data LLM ke saath connect karna ho.
+      LangChain general purpose hai, LlamaIndex <strong>data retrieval ka specialist</strong> hai.
+    </p>
+  </div>
+
+  <h2 class="section-title">LlamaIndex Architecture</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">🏗 LlamaIndex Data Flow</div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; align-items:center;">
+      <div style="text-align:center; min-width:120px;">
+        <div style="background:#fff3e0; border:2px solid #e65100; border-radius:10px; padding:12px; margin-bottom:6px;">
+          <div style="font-size:1.5rem">📄</div>
+          <div style="font-size:0.8rem; font-weight:700">Data Sources</div>
+          <div style="font-size:0.7rem; color:#666">PDF, CSV, DB, API, Web</div>
+        </div>
+      </div>
+      <div class="arrow-right"></div>
+      <div style="text-align:center; min-width:120px;">
+        <div style="background:#e3f2fd; border:2px solid #1565c0; border-radius:10px; padding:12px; margin-bottom:6px;">
+          <div style="font-size:1.5rem">⚙️</div>
+          <div style="font-size:0.8rem; font-weight:700">Data Loader</div>
+          <div style="font-size:0.7rem; color:#666">Parse & Chunk</div>
+        </div>
+      </div>
+      <div class="arrow-right"></div>
+      <div style="text-align:center; min-width:120px;">
+        <div style="background:#f3e5f5; border:2px solid #6a1b9a; border-radius:10px; padding:12px; margin-bottom:6px;">
+          <div style="font-size:1.5rem">🗂</div>
+          <div style="font-size:0.8rem; font-weight:700">Index</div>
+          <div style="font-size:0.7rem; color:#666">Vector/Tree/List</div>
+        </div>
+      </div>
+      <div class="arrow-right"></div>
+      <div style="text-align:center; min-width:120px;">
+        <div style="background:#e8f5e9; border:2px solid #2e7d32; border-radius:10px; padding:12px; margin-bottom:6px;">
+          <div style="font-size:1.5rem">🔍</div>
+          <div style="font-size:0.8rem; font-weight:700">Query Engine</div>
+          <div style="font-size:0.7rem; color:#666">Retrieval + Synthesis</div>
+        </div>
+      </div>
+      <div class="arrow-right"></div>
+      <div style="text-align:center; min-width:120px;">
+        <div style="background:#e8f5e9; border:2px solid #1b5e20; border-radius:10px; padding:12px; margin-bottom:6px;">
+          <div style="font-size:1.5rem">💬</div>
+          <div style="font-size:0.8rem; font-weight:700">LLM Response</div>
+          <div style="font-size:0.7rem; color:#666">Context-aware Answer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">LlamaIndex Core Components</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Component</th><th>Kya karta hai</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">SimpleDirectoryReader</td><td>Folder se documents load karta hai</td><td>PDFs, TXTs, DOCXs auto-parse</td></tr>
+        <tr><td class="bold">VectorStoreIndex</td><td>Documents ko vectors mein store karta hai</td><td>Semantic search enable karta hai</td></tr>
+        <tr><td class="bold">QueryEngine</td><td>User query pe documents se answer leta hai</td><td>PDF se Q&A</td></tr>
+        <tr><td class="bold">ChatEngine</td><td>Conversational interface with memory</td><td>Document chatbot</td></tr>
+        <tr><td class="bold">RetrieverQueryEngine</td><td>Custom retrieval + response synthesis</td><td>Hybrid search</td></tr>
+        <tr><td class="bold">SubQuestionQueryEngine</td><td>Complex queries ko sub-questions mein todta hai</td><td>Multi-doc research</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — LlamaIndex Basic RAG</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">llama_index.core</span> <span class="kw">import</span> <span class="cls">VectorStoreIndex</span>, <span class="cls">SimpleDirectoryReader</span>
+<span class="kw">from</span> <span class="fn">llama_index.core</span> <span class="kw">import</span> <span class="cls">Settings</span>
+<span class="kw">from</span> <span class="fn">llama_index.llms.openai</span> <span class="kw">import</span> <span class="cls">OpenAI</span>
+<span class="kw">from</span> <span class="fn">llama_index.embeddings.openai</span> <span class="kw">import</span> <span class="cls">OpenAIEmbedding</span>
+
+<span class="cm"># Settings configure karo (global)</span>
+<span class="cls">Settings</span>.<span class="var">llm</span> = <span class="cls">OpenAI</span>(model=<span class="str">"gpt-4o"</span>, temperature=<span class="num">0.1</span>)
+<span class="cls">Settings</span>.<span class="var">embed_model</span> = <span class="cls">OpenAIEmbedding</span>()
+
+<span class="cm"># Step 1: Documents load karo</span>
+<span class="var">documents</span> = <span class="cls">SimpleDirectoryReader</span>(<span class="str">"./my_docs/"</span>).<span class="fn">load_data</span>()
+<span class="fn">print</span>(<span class="str">f"Loaded {len(documents)} documents"</span>)
+
+<span class="cm"># Step 2: Index banao — automatically chunks & embeds</span>
+<span class="var">index</span> = <span class="cls">VectorStoreIndex</span>.<span class="fn">from_documents</span>(<span class="var">documents</span>)
+
+<span class="cm"># Step 3: Query Engine create karo</span>
+<span class="var">query_engine</span> = <span class="var">index</span>.<span class="fn">as_query_engine</span>(
+    <span class="var">similarity_top_k</span>=<span class="num">3</span>  <span class="cm"># Top 3 relevant chunks</span>
+)
+
+<span class="cm"># Step 4: Query karo</span>
+<span class="var">response</span> = <span class="var">query_engine</span>.<span class="fn">query</span>(<span class="str">"Document mein main topic kya hai?"</span>)
+<span class="fn">print</span>(<span class="var">response</span>)
+<span class="fn">print</span>(<span class="str">"\n--- Source Nodes ---"</span>)
+<span class="kw">for</span> <span class="var">node</span> <span class="kw">in</span> <span class="var">response</span>.<span class="var">source_nodes</span>:
+    <span class="fn">print</span>(<span class="str">f"Score: {node.score:.2f} | Text: {node.text[:100]}..."</span>)</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — LlamaIndex Agent with Tools</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">llama_index.core.agent</span> <span class="kw">import</span> <span class="cls">ReActAgent</span>
+<span class="kw">from</span> <span class="fn">llama_index.core.tools</span> <span class="kw">import</span> <span class="cls">FunctionTool</span>, <span class="cls">QueryEngineTool</span>
+
+<span class="cm"># === Tool 1: Custom function tool ===</span>
+<span class="kw">def</span> <span class="fn">multiply_numbers</span>(<span class="var">a</span>: <span class="cls">float</span>, <span class="var">b</span>: <span class="cls">float</span>) -> <span class="cls">float</span>:
+    <span class="str">"""Do numbers ko multiply karta hai."""</span>
+    <span class="kw">return</span> <span class="var">a</span> * <span class="var">b</span>
+
+<span class="var">math_tool</span> = <span class="cls">FunctionTool</span>.<span class="fn">from_defaults</span>(<span class="fn">fn</span>=<span class="fn">multiply_numbers</span>)
+
+<span class="cm"># === Tool 2: Index ko tool banana ===</span>
+<span class="var">doc_tool</span> = <span class="cls">QueryEngineTool</span>.<span class="fn">from_defaults</span>(
+    <span class="var">query_engine</span>=<span class="var">query_engine</span>,
+    <span class="var">name</span>=<span class="str">"document_search"</span>,
+    <span class="var">description</span>=<span class="str">"Documents mein information search karta hai."</span>
+)
+
+<span class="cm"># === ReAct Agent banao ===</span>
+<span class="var">agent</span> = <span class="cls">ReActAgent</span>.<span class="fn">from_tools</span>(
+    [<span class="var">math_tool</span>, <span class="var">doc_tool</span>],
+    verbose=<span class="cls">True</span>
+)
+
+<span class="cm"># Query karo</span>
+<span class="var">response</span> = <span class="var">agent</span>.<span class="fn">chat</span>(<span class="str">"Document mein bataye price ko 1.18 se multiply karo"</span>)
+<span class="fn">print</span>(<span class="var">response</span>)</div>
+  </div>
+
+  <div class="callout interview">
+    <div class="callout-title">🎤 Interview Questions — LlamaIndex</div>
+    <div class="iq-list">
+      <div class="iq-item"><div class="q-label">Q1</div>LlamaIndex aur LangChain mein kya fundamental difference hai?</div>
+      <div class="iq-item"><div class="q-label">Q2</div>VectorStoreIndex internally kaise kaam karta hai?</div>
+      <div class="iq-item"><div class="q-label">Q3</div>SubQuestionQueryEngine kab use karna chahiye?</div>
+      <div class="iq-item"><div class="q-label">Q4</div>LlamaIndex mein query engine aur chat engine mein kya fark hai?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CREWAI ==================== -->
+<div class="page" id="crewai">
+  <div class="chapter-divider"><hr><div class="ch-label">Framework 4</div><hr></div>
+  <h1 class="chapter-title">Chapter 6 — CrewAI 🚢</h1>
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="chip intermediate">Intermediate</span>
+    <span class="chip production">Production Ready</span>
+  </div>
+
+  <div class="fw-detail" style="background:var(--purple-bg); border-color:var(--purple-border)">
+    <div class="fw-detail-header">
+      <div class="fw-logo" style="background:#f3e5f5;">🚢</div>
+      <div>
+        <div class="fw-detail-name" style="color:#4a148c">CrewAI</div>
+        <div class="fw-detail-tagline">Role-based multi-agent framework — Agents ki "crew" milkar kaam karti hai</div>
+      </div>
+    </div>
+    <p>
+      CrewAI ek framework hai jahan aap multiple <strong>AI agents ko ek team</strong> ki tarah organize kar sakte ho.
+      Har agent ka ek specific <strong>role</strong>, <strong>goal</strong>, aur <strong>backstory</strong> hota hai —
+      jaise ek real company mein CEO, Developer, aur Designer hote hain.
+      Yeh "AI ke workforce" banane ka sabse intuitive framework hai.
+    </p>
+  </div>
+
+  <h2 class="section-title">CrewAI Core Concepts</h2>
+
+  <!-- CrewAI Architecture -->
+  <div class="diagram-box">
+    <div class="diagram-title">🚢 CrewAI Architecture — Team Collaboration</div>
+    <div style="max-width:620px; margin:0 auto;">
+      <div style="background:#4a148c; color:white; border-radius:12px; padding:12px 20px; text-align:center; margin-bottom:12px;">
+        <strong>🚢 Crew</strong> — Sabhi agents aur tasks ka container
+      </div>
+      <div style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:160px; background:#f3e5f5; border:2px solid #7b1fa2; border-radius:10px; padding:12px;">
+          <div style="font-weight:700; color:#4a148c; margin-bottom:6px;">🤵 Agent 1: Researcher</div>
+          <div style="font-size:0.78rem; color:#666;">Role: Senior Research Analyst<br>Goal: Find accurate data<br>Tools: search_web, read_docs</div>
+        </div>
+        <div style="flex:1; min-width:160px; background:#f3e5f5; border:2px solid #7b1fa2; border-radius:10px; padding:12px;">
+          <div style="font-weight:700; color:#4a148c; margin-bottom:6px;">✍️ Agent 2: Writer</div>
+          <div style="font-size:0.78rem; color:#666;">Role: Content Strategist<br>Goal: Write compelling content<br>Tools: write_file</div>
+        </div>
+        <div style="flex:1; min-width:160px; background:#f3e5f5; border:2px solid #7b1fa2; border-radius:10px; padding:12px;">
+          <div style="font-weight:700; color:#4a148c; margin-bottom:6px;">🔍 Agent 3: Editor</div>
+          <div style="font-size:0.78rem; color:#666;">Role: Quality Reviewer<br>Goal: Review & improve<br>Tools: review_content</div>
+        </div>
+      </div>
+      <div style="background:#e8eaf6; border:2px solid #3949ab; border-radius:10px; padding:12px; text-align:center;">
+        <div style="font-weight:700; color:#1a237e; margin-bottom:8px;">📋 Tasks (Sequential ya Parallel)</div>
+        <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; font-size:0.8rem;">
+          <div style="background:white; border:1px solid #3949ab; border-radius:6px; padding:6px 12px;">Task 1: Research topic → Researcher</div>
+          <div>→</div>
+          <div style="background:white; border:1px solid #3949ab; border-radius:6px; padding:6px 12px;">Task 2: Write article → Writer</div>
+          <div>→</div>
+          <div style="background:white; border:1px solid #3949ab; border-radius:6px; padding:6px 12px;">Task 3: Review → Editor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — CrewAI Complete Example</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">crewai</span> <span class="kw">import</span> <span class="cls">Agent</span>, <span class="cls">Task</span>, <span class="cls">Crew</span>, <span class="cls">Process</span>
+<span class="kw">from</span> <span class="fn">crewai_tools</span> <span class="kw">import</span> <span class="cls">SerperDevTool</span>
+<span class="kw">from</span> <span class="fn">langchain_openai</span> <span class="kw">import</span> <span class="cls">ChatOpenAI</span>
+
+<span class="cm"># LLM</span>
+<span class="var">llm</span> = <span class="cls">ChatOpenAI</span>(model=<span class="str">"gpt-4o"</span>)
+<span class="var">search_tool</span> = <span class="cls">SerperDevTool</span>()
+
+<span class="cm"># === Step 1: Agents define karo ===</span>
+<span class="var">researcher</span> = <span class="cls">Agent</span>(
+    <span class="var">role</span>=<span class="str">"Senior Research Analyst"</span>,
+    <span class="var">goal</span>=<span class="str">"AI industry ke latest trends dhundho aur accurate data provide karo"</span>,
+    <span class="var">backstory</span>=<span class="str">"""Tum ek experienced research analyst ho jo 10 saal se 
+    technology trends analyze kar raha hai. Tumhara analysis always data-driven 
+    aur comprehensive hota hai."""</span>,
+    <span class="var">tools</span>=[<span class="var">search_tool</span>],
+    <span class="var">llm</span>=<span class="var">llm</span>,
+    <span class="var">verbose</span>=<span class="cls">True</span>
+)
+
+<span class="var">writer</span> = <span class="cls">Agent</span>(
+    <span class="var">role</span>=<span class="str">"Content Strategist"</span>,
+    <span class="var">goal</span>=<span class="str">"Research ko ek engaging aur educational article mein convert karo"</span>,
+    <span class="var">backstory</span>=<span class="str">"""Tum ek master storyteller ho jo complex technical topics ko 
+    easy language mein explain karna jaante ho."""</span>,
+    <span class="var">llm</span>=<span class="var">llm</span>,
+    <span class="var">verbose</span>=<span class="cls">True</span>
+)
+
+<span class="cm"># === Step 2: Tasks define karo ===</span>
+<span class="var">research_task</span> = <span class="cls">Task</span>(
+    <span class="var">description</span>=<span class="str">"""2024-2025 mein top 5 AI Agent frameworks ke baare mein 
+    comprehensive research karo. Include: popularity, use cases, pros/cons."""</span>,
+    <span class="var">expected_output</span>=<span class="str">"Detailed research report with data and sources"</span>,
+    <span class="var">agent</span>=<span class="var">researcher</span>
+)
+
+<span class="var">write_task</span> = <span class="cls">Task</span>(
+    <span class="var">description</span>=<span class="str">"""Research ko use karke ek beginner-friendly blog post likho 
+    jo explain kare 'Which AI Framework Should You Choose in 2025?'"""</span>,
+    <span class="var">expected_output</span>=<span class="str">"800 word blog post in markdown format"</span>,
+    <span class="var">agent</span>=<span class="var">writer</span>,
+    <span class="var">context</span>=[<span class="var">research_task</span>]  <span class="cm"># Research ka output use karega</span>
+)
+
+<span class="cm"># === Step 3: Crew banao ===</span>
+<span class="var">crew</span> = <span class="cls">Crew</span>(
+    <span class="var">agents</span>=[<span class="var">researcher</span>, <span class="var">writer</span>],
+    <span class="var">tasks</span>=[<span class="var">research_task</span>, <span class="var">write_task</span>],
+    <span class="var">process</span>=<span class="cls">Process</span>.<span class="var">sequential</span>,  <span class="cm"># Ek ke baad ek</span>
+    <span class="var">verbose</span>=<span class="cls">True</span>
+)
+
+<span class="cm"># === Step 4: Crew ko kaam pe lagao ===</span>
+<span class="var">result</span> = <span class="var">crew</span>.<span class="fn">kickoff</span>()
+<span class="fn">print</span>(<span class="var">result</span>.<span class="var">raw</span>)</div>
+  </div>
+
+  <h2 class="section-title">CrewAI Process Types</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Process</th><th>Description</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">Process.sequential</td><td>Tasks ek ke baad ek</td><td>Research → Write → Review pipeline</td></tr>
+        <tr><td class="bold">Process.hierarchical</td><td>Manager agent tasks assign karta hai</td><td>Complex projects with delegation</td></tr>
+        <tr><td class="bold">Parallel Tasks</td><td>Independent tasks simultaneously</td><td>Research + Design ek saath</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 CrewAI Best Practice</div>
+    Agent ka <strong>backstory</strong> zyada specific rakhne se uska output better hota hai.
+    Vague backstory se agent generic answers deta hai.
+    Real-world professional jaise backstory likho — jaise "Tum IIT passout senior developer ho..."
+  </div>
+
+  <div class="callout interview">
+    <div class="callout-title">🎤 Interview Questions — CrewAI</div>
+    <div class="iq-list">
+      <div class="iq-item"><div class="q-label">Q1</div>CrewAI mein Agent, Task, aur Crew ke beech kya relationship hai?</div>
+      <div class="iq-item"><div class="q-label">Q2</div>Sequential vs Hierarchical process mein kya fark hai?</div>
+      <div class="iq-item"><div class="q-label">Q3</div>Task context parameter kab use karte hain?</div>
+      <div class="iq-item"><div class="q-label">Q4</div>CrewAI ko production mein deploy karte waqt kya challenges aate hain?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== AUTOGEN ==================== -->
+<div class="page" id="autogen">
+  <div class="chapter-divider"><hr><div class="ch-label">Framework 5</div><hr></div>
+  <h1 class="chapter-title">Chapter 7 — AutoGen ⚡</h1>
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="chip intermediate">Intermediate</span>
+    <span class="chip advanced">Advanced</span>
+    <span class="chip production">Production Ready</span>
+  </div>
+
+  <div class="fw-detail" style="background:var(--red-bg); border-color:var(--red-border)">
+    <div class="fw-detail-header">
+      <div class="fw-logo" style="background:#ffebee;">⚡</div>
+      <div>
+        <div class="fw-detail-name" style="color:#b71c1c">AutoGen (Microsoft)</div>
+        <div class="fw-detail-tagline">Conversation-driven multi-agent framework by Microsoft Research</div>
+      </div>
+    </div>
+    <p>
+      AutoGen Microsoft Research ne develop kiya hai. Iska unique approach yeh hai ki sab kuch
+      <strong>conversations ke through</strong> hota hai — agents ek doosre se baat karke problems solve karte hain.
+      Yeh especially <strong>code generation aur execution</strong> ke liye bahut powerful hai.
+    </p>
+  </div>
+
+  <h2 class="section-title">AutoGen ka Conversation Model</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">⚡ AutoGen — Agent Conversation Flow</div>
+    <div style="max-width:550px; margin:0 auto;">
+      <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+        <div style="text-align:center; flex:1; min-width:180px;">
+          <div style="background:#b71c1c; color:white; border-radius:12px; padding:14px; margin-bottom:10px;">
+            <div style="font-size:1.4rem">👤</div>
+            <div style="font-weight:700">UserProxyAgent</div>
+            <div style="font-size:0.75rem; opacity:0.85">User represent karta hai<br>Code execute karta hai</div>
+          </div>
+        </div>
+        <div style="padding-top:30px; font-size:2rem; color:var(--primary)">⇌</div>
+        <div style="text-align:center; flex:1; min-width:180px;">
+          <div style="background:#e65100; color:white; border-radius:12px; padding:14px; margin-bottom:10px;">
+            <div style="font-size:1.4rem">🤖</div>
+            <div style="font-weight:700">AssistantAgent</div>
+            <div style="font-size:0.75rem; opacity:0.85">LLM-powered<br>Solutions suggest karta hai</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#f5f5f5; border-radius:10px; padding:12px; margin-top:12px; font-size:0.8rem; text-align:left;">
+        <div style="font-weight:700; margin-bottom:6px; color:var(--primary)">Conversation Example:</div>
+        <div style="background:#e3f2fd; border-radius:6px; padding:8px; margin-bottom:6px;"><strong>User:</strong> "Fibonacci series ka code likho"</div>
+        <div style="background:#fff3e0; border-radius:6px; padding:8px; margin-bottom:6px;"><strong>Assistant:</strong> "```python def fib(n)... ```"</div>
+        <div style="background:#e3f2fd; border-radius:6px; padding:8px; margin-bottom:6px;"><strong>User (auto-executes):</strong> "Code execute kiya — Output: 0,1,1,2,3..."</div>
+        <div style="background:#fff3e0; border-radius:6px; padding:8px;"><strong>Assistant:</strong> "✅ Code sahi kaam kar raha hai!"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — AutoGen Basic Agent Conversation</div>
+    </div>
+    <div class="code-body"><span class="kw">import</span> <span class="fn">autogen</span>
+
+<span class="cm"># Configuration</span>
+<span class="var">config_list</span> = [{
+    <span class="str">"model"</span>: <span class="str">"gpt-4o"</span>,
+    <span class="str">"api_key"</span>: <span class="str">"your-api-key"</span>
+}]
+
+<span class="var">llm_config</span> = {<span class="str">"config_list"</span>: <span class="var">config_list</span>}
+
+<span class="cm"># === AssistantAgent — LLM powered ===</span>
+<span class="var">assistant</span> = <span class="fn">autogen</span>.<span class="cls">AssistantAgent</span>(
+    <span class="var">name</span>=<span class="str">"AI_Assistant"</span>,
+    <span class="var">llm_config</span>=<span class="var">llm_config</span>,
+    <span class="var">system_message</span>=<span class="str">"""Tum ek expert Python developer ho.
+    Sada working code do aur explain karo."""</span>
+)
+
+<span class="cm"># === UserProxyAgent — Code execute karta hai ===</span>
+<span class="var">user_proxy</span> = <span class="fn">autogen</span>.<span class="cls">UserProxyAgent</span>(
+    <span class="var">name</span>=<span class="str">"User_Proxy"</span>,
+    <span class="var">human_input_mode</span>=<span class="str">"NEVER"</span>,    <span class="cm"># Auto — human se input nahi lega</span>
+    <span class="var">max_consecutive_auto_reply</span>=<span class="num">10</span>,
+    <span class="var">is_termination_msg</span>=<span class="kw">lambda</span> <span class="var">x</span>: <span class="var">x</span>.<span class="fn">get</span>(<span class="str">"content"</span>, <span class="str">""</span>).<span class="fn">rstrip</span>().<span class="fn">endswith</span>(<span class="str">"TERMINATE"</span>),
+    <span class="var">code_execution_config</span>={
+        <span class="str">"work_dir"</span>: <span class="str">"coding_workspace"</span>,
+        <span class="str">"use_docker"</span>: <span class="cls">False</span>
+    }
+)
+
+<span class="cm"># === Conversation start karo ===</span>
+<span class="var">user_proxy</span>.<span class="fn">initiate_chat</span>(
+    <span class="var">assistant</span>,
+    <span class="var">message</span>=<span class="str">"""
+    Ek Python script banao jo:
+    1. 1 se 100 tak ke prime numbers find kare
+    2. Result plot kare matplotlib se
+    3. CSV mein save kare
+    Reply TERMINATE when done.
+    """</span>
+)</div>
+  </div>
+
+  <h3 class="sub-title">AutoGen GroupChat — Multiple Agents</h3>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — AutoGen GroupChat</div>
+    </div>
+    <div class="code-body"><span class="kw">import</span> <span class="fn">autogen</span>
+
+<span class="cm"># Multiple agents define karo</span>
+<span class="var">coder</span> = <span class="fn">autogen</span>.<span class="cls">AssistantAgent</span>(
+    <span class="var">name</span>=<span class="str">"Coder"</span>, <span class="var">llm_config</span>=<span class="var">llm_config</span>,
+    <span class="var">system_message</span>=<span class="str">"Tum ek expert coder ho. Sirf code likho."</span>
+)
+<span class="var">reviewer</span> = <span class="fn">autogen</span>.<span class="cls">AssistantAgent</span>(
+    <span class="var">name</span>=<span class="str">"Code_Reviewer"</span>, <span class="var">llm_config</span>=<span class="var">llm_config</span>,
+    <span class="var">system_message</span>=<span class="str">"Tum code review expert ho. Bugs aur improvements batao."</span>
+)
+<span class="var">user_proxy</span> = <span class="fn">autogen</span>.<span class="cls">UserProxyAgent</span>(
+    <span class="var">name</span>=<span class="str">"User"</span>, <span class="var">human_input_mode</span>=<span class="str">"TERMINATE"</span>,
+    <span class="var">code_execution_config</span>={<span class="str">"work_dir"</span>: <span class="str">"."</span>}
+)
+
+<span class="cm"># GroupChat setup</span>
+<span class="var">groupchat</span> = <span class="fn">autogen</span>.<span class="cls">GroupChat</span>(
+    <span class="var">agents</span>=[<span class="var">user_proxy</span>, <span class="var">coder</span>, <span class="var">reviewer</span>],
+    <span class="var">messages</span>=[],
+    <span class="var">max_round</span>=<span class="num">12</span>
+)
+<span class="var">manager</span> = <span class="fn">autogen</span>.<span class="cls">GroupChatManager</span>(
+    <span class="var">groupchat</span>=<span class="var">groupchat</span>, <span class="var">llm_config</span>=<span class="var">llm_config</span>
+)
+
+<span class="cm"># Start karo</span>
+<span class="var">user_proxy</span>.<span class="fn">initiate_chat</span>(
+    <span class="var">manager</span>,
+    <span class="var">message</span>=<span class="str">"Ek sorting algorithm implement karo aur review karo"</span>
+)</div>
+  </div>
+
+  <div class="callout interview">
+    <div class="callout-title">🎤 Interview Questions — AutoGen</div>
+    <div class="iq-list">
+      <div class="iq-item"><div class="q-label">Q1</div>AssistantAgent aur UserProxyAgent mein kya fark hai?</div>
+      <div class="iq-item"><div class="q-label">Q2</div>AutoGen mein human_input_mode ke different options kya hain?</div>
+      <div class="iq-item"><div class="q-label">Q3</div>GroupChat aur GroupChatManager kaise kaam karte hain?</div>
+      <div class="iq-item"><div class="q-label">Q4</div>AutoGen ki code execution safety concerns kya hain? Kaise handle karte hain?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SEMANTIC KERNEL ==================== -->
+<div class="page" id="sk">
+  <div class="chapter-divider"><hr><div class="ch-label">Framework 6</div><hr></div>
+  <h1 class="chapter-title">Chapter 8 — Semantic Kernel 🔮</h1>
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="chip intermediate">Intermediate</span>
+    <span class="chip advanced">Advanced</span>
+    <span class="chip production">Enterprise Grade</span>
+  </div>
+
+  <div class="fw-detail" style="background:var(--green-bg); border-color:var(--green-border)">
+    <div class="fw-detail-header">
+      <div class="fw-logo" style="background:#e8f5e9;">🔮</div>
+      <div>
+        <div class="fw-detail-name" style="color:#1b5e20">Semantic Kernel (Microsoft)</div>
+        <div class="fw-detail-tagline">Enterprise-grade AI SDK — .NET, Python, Java support</div>
+      </div>
+    </div>
+    <p>
+      Semantic Kernel Microsoft ka enterprise-focused framework hai jo <strong>C#/.NET, Python, aur Java</strong>
+      mein kaam karta hai. Yeh large enterprises ke liye design kiya gaya hai jahan
+      security, reliability, aur existing systems ke saath integration critical hai.
+      Azure OpenAI ke saath deep integration hai.
+    </p>
+  </div>
+
+  <h2 class="section-title">Semantic Kernel Unique Concepts</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Concept</th><th>Kya Hai</th><th>Analogy</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">Kernel</td><td>Central orchestrator — sab kuch yahan se control hota hai</td><td>CPU of your AI app</td></tr>
+        <tr><td class="bold">Plugins</td><td>Functions ka collection — native ya semantic</td><td>App ke features</td></tr>
+        <tr><td class="bold">Native Functions</td><td>Regular Python/C# code functions</td><td>Built-in tools</td></tr>
+        <tr><td class="bold">Semantic Functions</td><td>Prompt templates jo functions ki tarah kaam karte hain</td><td>AI-powered tools</td></tr>
+        <tr><td class="bold">Planner</td><td>Auto-plan karta hai — kaunse functions use karein</td><td>Auto-pilot mode</td></tr>
+        <tr><td class="bold">Memory</td><td>Vector-based semantic memory built-in</td><td>AI ka RAM</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — Semantic Kernel Basic Usage</div>
+    </div>
+    <div class="code-body"><span class="kw">import</span> <span class="fn">asyncio</span>
+<span class="kw">import</span> <span class="fn">semantic_kernel</span> <span class="kw">as</span> <span class="fn">sk</span>
+<span class="kw">from</span> <span class="fn">semantic_kernel.connectors.ai.open_ai</span> <span class="kw">import</span> <span class="cls">OpenAIChatCompletion</span>
+<span class="kw">from</span> <span class="fn">semantic_kernel.functions</span> <span class="kw">import</span> <span class="fn">kernel_function</span>
+
+<span class="cm"># === Step 1: Kernel create karo ===</span>
+<span class="var">kernel</span> = <span class="fn">sk</span>.<span class="cls">Kernel</span>()
+
+<span class="cm"># AI Service add karo</span>
+<span class="var">kernel</span>.<span class="fn">add_service</span>(<span class="cls">OpenAIChatCompletion</span>(
+    <span class="var">service_id</span>=<span class="str">"openai"</span>,
+    <span class="var">ai_model_id</span>=<span class="str">"gpt-4o"</span>,
+    <span class="var">api_key</span>=<span class="str">"your-key"</span>
+))
+
+<span class="cm"># === Step 2: Plugin banao ===</span>
+<span class="kw">class</span> <span class="cls">MathPlugin</span>:
+    <span class="dec">@kernel_function</span>(description=<span class="str">"Do numbers add karta hai"</span>)
+    <span class="kw">def</span> <span class="fn">add</span>(<span class="var">self</span>, <span class="var">number1</span>: <span class="cls">float</span>, <span class="var">number2</span>: <span class="cls">float</span>) -> <span class="cls">float</span>:
+        <span class="kw">return</span> <span class="var">number1</span> + <span class="var">number2</span>
+
+    <span class="dec">@kernel_function</span>(description=<span class="str">"Do numbers multiply karta hai"</span>)
+    <span class="kw">def</span> <span class="fn">multiply</span>(<span class="var">self</span>, <span class="var">number1</span>: <span class="cls">float</span>, <span class="var">number2</span>: <span class="cls">float</span>) -> <span class="cls">float</span>:
+        <span class="kw">return</span> <span class="var">number1</span> * <span class="var">number2</span>
+
+<span class="cm"># Plugin register karo</span>
+<span class="var">kernel</span>.<span class="fn">add_plugin</span>(<span class="cls">MathPlugin</span>(), plugin_name=<span class="str">"math"</span>)
+
+<span class="cm"># === Step 3: Semantic Function — prompt as function ===</span>
+<span class="var">summarize_fn</span> = <span class="var">kernel</span>.<span class="fn">add_function</span>(
+    <span class="var">function_name</span>=<span class="str">"Summarize"</span>,
+    <span class="var">plugin_name</span>=<span class="str">"TextPlugin"</span>,
+    <span class="var">prompt</span>=<span class="str">"Yeh text summarize karo 3 points mein:\n{{$input}}"</span>
+)
+
+<span class="cm"># === Step 4: Invoke karo ===</span>
+<span class="kw">async</span> <span class="kw">def</span> <span class="fn">main</span>():
+    <span class="cm"># Native function call</span>
+    <span class="var">math_result</span> = <span class="kw">await</span> <span class="var">kernel</span>.<span class="fn">invoke</span>(
+        <span class="var">kernel</span>.<span class="var">plugins</span>[<span class="str">"math"</span>][<span class="str">"multiply"</span>],
+        <span class="var">number1</span>=<span class="num">15.0</span>, <span class="var">number2</span>=<span class="num">3.0</span>
+    )
+    <span class="fn">print</span>(<span class="str">f"Math result: {math_result}"</span>)  <span class="cm"># 45.0</span>
+
+    <span class="cm"># Semantic function call</span>
+    <span class="var">summary</span> = <span class="kw">await</span> <span class="var">kernel</span>.<span class="fn">invoke</span>(
+        <span class="var">summarize_fn</span>,
+        <span class="var">input</span>=<span class="str">"AI Agents complex tasks automate karte hain..."</span>
+    )
+    <span class="fn">print</span>(<span class="var">summary</span>)
+
+<span class="fn">asyncio</span>.<span class="fn">run</span>(<span class="fn">main</span>())</div>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">📘 Semantic Kernel vs LangChain</div>
+    <strong>Choose Semantic Kernel when:</strong>
+    <ul>
+      <li>Tumhara organization Microsoft/Azure stack use karta hai</li>
+      <li>C# ya .NET mein development hai</li>
+      <li>Enterprise security aur compliance requirements hain</li>
+      <li>Azure Active Directory integration chahiye</li>
+    </ul>
+    <strong>Choose LangChain when:</strong>
+    <ul>
+      <li>Pure Python development hai</li>
+      <li>Large community support chahiye</li>
+      <li>Rapid prototyping karna hai</li>
+    </ul>
+  </div>
+
+  <div class="callout interview">
+    <div class="callout-title">🎤 Interview Questions — Semantic Kernel</div>
+    <div class="iq-list">
+      <div class="iq-item"><div class="q-label">Q1</div>Semantic Kernel mein Native Function aur Semantic Function mein kya fark hai?</div>
+      <div class="iq-item"><div class="q-label">Q2</div>Semantic Kernel ke Planner kya hote hain? Auto-planning kaise kaam karta hai?</div>
+      <div class="iq-item"><div class="q-label">Q3</div>Semantic Kernel enterprise settings mein kyu prefer kiya jaata hai?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HAYSTACK ==================== -->
+<div class="page" id="haystack">
+  <div class="chapter-divider"><hr><div class="ch-label">Framework 7</div><hr></div>
+  <h1 class="chapter-title">Chapter 9 — Haystack 🌾</h1>
+  <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+    <span class="chip intermediate">Intermediate</span>
+    <span class="chip production">Production Ready</span>
+  </div>
+
+  <div class="fw-detail" style="background:var(--yellow-bg); border-color:var(--yellow-border)">
+    <div class="fw-detail-header">
+      <div class="fw-logo" style="background:#fffde7;">🌾</div>
+      <div>
+        <div class="fw-detail-name" style="color:#e65100">Haystack (deepset)</div>
+        <div class="fw-detail-tagline">Production-grade NLP pipelines — Modular, testable, enterprise-ready</div>
+      </div>
+    </div>
+    <p>
+      Haystack deepset ka framework hai jo <strong>NLP pipelines</strong> banane ke liye specifically designed hai.
+      Yeh highly modular hai — components ko YAML/JSON se configure kiya jaata hai.
+      Production deployment, testing, aur scalability pe zyada focus hai.
+    </p>
+  </div>
+
+  <h2 class="section-title">Haystack Core Concepts</h2>
+
+  <div class="mini-cards">
+    <div class="mini-card">
+      <div class="mc-icon">🔧</div>
+      <div class="mc-name">Components</div>
+      <div class="mc-desc">Individual processing units — DocumentStore, Retriever, Reader</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🔗</div>
+      <div class="mc-name">Pipelines</div>
+      <div class="mc-desc">Components ko connect karna — Indexing ya Query pipeline</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🗄</div>
+      <div class="mc-name">DocumentStore</div>
+      <div class="mc-desc">Documents store karna — Elasticsearch, OpenSearch, Chroma</div>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">🔍</div>
+      <div class="mc-name">Retriever</div>
+      <div class="mc-desc">Relevant documents dhundhna</div>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">🌾 Haystack Pipeline Types</div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+      <div style="flex:1; min-width:250px;">
+        <div style="font-weight:700; color:var(--primary); text-align:center; margin-bottom:10px">📥 Indexing Pipeline</div>
+        <div style="background:white; border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+          <div style="background:#e65100; color:white; padding:8px 14px; font-size:0.82rem; font-weight:600">📄 File Input</div>
+          <div style="padding:4px; text-align:center; font-size:0.8rem; color:var(--text-muted)">↓</div>
+          <div style="background:#fff3e0; color:#e65100; padding:8px 14px; font-size:0.82rem; font-weight:600">✂️ Text Converter</div>
+          <div style="padding:4px; text-align:center; font-size:0.8rem; color:var(--text-muted)">↓</div>
+          <div style="background:#fff3e0; color:#e65100; padding:8px 14px; font-size:0.82rem; font-weight:600">🔢 Embedder</div>
+          <div style="padding:4px; text-align:center; font-size:0.8rem; color:var(--text-muted)">↓</div>
+          <div style="background:#e65100; color:white; padding:8px 14px; font-size:0.82rem; font-weight:600">🗄 DocumentStore</div>
+        </div>
+      </div>
+      <div style="flex:1; min-width:250px;">
+        <div style="font-weight:700; color:var(--primary); text-align:center; margin-bottom:10px">🔍 Query Pipeline</div>
+        <div style="background:white; border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+          <div style="background:#1565c0; color:white; padding:8px 14px; font-size:0.82rem; font-weight:600">❓ User Query</div>
+          <div style="padding:4px; text-align:center; font-size:0.8rem; color:var(--text-muted)">↓</div>
+          <div style="background:#e3f2fd; color:#1565c0; padding:8px 14px; font-size:0.82rem; font-weight:600">🔢 Query Embedder</div>
+          <div style="padding:4px; text-align:center; font-size:0.8rem; color:var(--text-muted)">↓</div>
+          <div style="background:#e3f2fd; color:#1565c0; padding:8px 14px; font-size:0.82rem; font-weight:600">🔍 Retriever</div>
+          <div style="padding:4px; text-align:center; font-size:0.8rem; color:var(--text-muted)">↓</div>
+          <div style="background:#1565c0; color:white; padding:8px 14px; font-size:0.82rem; font-weight:600">🤖 LLM Generator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — Haystack RAG Pipeline</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">haystack</span> <span class="kw">import</span> <span class="cls">Pipeline</span>, <span class="cls">Document</span>
+<span class="kw">from</span> <span class="fn">haystack.components.retrievers.in_memory</span> <span class="kw">import</span> <span class="cls">InMemoryBM25Retriever</span>
+<span class="kw">from</span> <span class="fn">haystack.components.builders</span> <span class="kw">import</span> <span class="cls">PromptBuilder</span>
+<span class="kw">from</span> <span class="fn">haystack.components.generators</span> <span class="kw">import</span> <span class="cls">OpenAIGenerator</span>
+<span class="kw">from</span> <span class="fn">haystack.document_stores.in_memory</span> <span class="kw">import</span> <span class="cls">InMemoryDocumentStore</span>
+
+<span class="cm"># === Step 1: DocumentStore setup ===</span>
+<span class="var">store</span> = <span class="cls">InMemoryDocumentStore</span>()
+<span class="var">store</span>.<span class="fn">write_documents</span>([
+    <span class="cls">Document</span>(<span class="var">content</span>=<span class="str">"Python ek versatile programming language hai."</span>),
+    <span class="cls">Document</span>(<span class="var">content</span>=<span class="str">"LangChain LLM applications banane ka framework hai."</span>),
+    <span class="cls">Document</span>(<span class="var">content</span>=<span class="str">"AI Agents autonomous tasks perform karte hain."</span>),
+])
+
+<span class="cm"># === Step 2: Prompt Template ===</span>
+<span class="var">template</span> = <span class="str">"""
+Context:
+{% for doc in documents %}
+- {{ doc.content }}
+{% endfor %}
+
+Question: {{question}}
+Answer:
+"""</span>
+
+<span class="cm"># === Step 3: Pipeline banao ===</span>
+<span class="var">pipe</span> = <span class="cls">Pipeline</span>()
+
+<span class="cm"># Components add karo</span>
+<span class="var">pipe</span>.<span class="fn">add_component</span>(<span class="str">"retriever"</span>, <span class="cls">InMemoryBM25Retriever</span>(document_store=<span class="var">store</span>))
+<span class="var">pipe</span>.<span class="fn">add_component</span>(<span class="str">"prompt_builder"</span>, <span class="cls">PromptBuilder</span>(template=<span class="var">template</span>))
+<span class="var">pipe</span>.<span class="fn">add_component</span>(<span class="str">"llm"</span>, <span class="cls">OpenAIGenerator</span>())
+
+<span class="cm"># Connect karo</span>
+<span class="var">pipe</span>.<span class="fn">connect</span>(<span class="str">"retriever"</span>, <span class="str">"prompt_builder.documents"</span>)
+<span class="var">pipe</span>.<span class="fn">connect</span>(<span class="str">"prompt_builder"</span>, <span class="str">"llm"</span>)
+
+<span class="cm"># === Step 4: Run karo ===</span>
+<span class="var">result</span> = <span class="var">pipe</span>.<span class="fn">run</span>({
+    <span class="str">"retriever"</span>: {<span class="str">"query"</span>: <span class="str">"LangChain kya hai?"</span>},
+    <span class="str">"prompt_builder"</span>: {<span class="str">"question"</span>: <span class="str">"LangChain kya hai?"</span>}
+})
+<span class="fn">print</span>(<span class="var">result</span>[<span class="str">"llm"</span>][<span class="str">"replies"</span>][<span class="num">0</span>])</div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">💡 Haystack Production Feature</div>
+    Haystack pipelines ko <strong>YAML files</strong> mein serialize kar sakte ho — iska matlab aap code change kiye bina
+    pipeline config change kar sakte ho. Yeh feature DevOps aur CI/CD ke liye bahut useful hai.
+  </div>
+</div>
+
+<!-- ==================== COMPARISON ==================== -->
+<div class="page" id="compare">
+  <div class="chapter-divider"><hr><div class="ch-label">Master Comparison</div><hr></div>
+  <h1 class="chapter-title">Chapter 10 — Framework Comparison & Decision Guide</h1>
+
+  <p>
+    Ab sabse important question — <strong>"Kaunsa framework use karein?"</strong>
+    Yeh ek complete comparison guide hai jo tumhare decision ko easy karega.
+  </p>
+
+  <h2 class="section-title">Master Comparison Table</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Framework</th>
+          <th>Primary Use Case</th>
+          <th>Learning Curve</th>
+          <th>Community</th>
+          <th>Production?</th>
+          <th>Multi-Agent?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bold">🦜 LangChain</td>
+          <td>General LLM apps, RAG, Chains</td>
+          <td>🟢 Easy</td>
+          <td>⭐⭐⭐⭐⭐ 90k+ stars</td>
+          <td>✅ Yes</td>
+          <td>🟡 Basic</td>
+        </tr>
+        <tr>
+          <td class="bold">🕸 LangGraph</td>
+          <td>Stateful complex agents, workflows</td>
+          <td>🟡 Medium</td>
+          <td>⭐⭐⭐⭐ Growing</td>
+          <td>✅ Yes</td>
+          <td>✅ Yes</td>
+        </tr>
+        <tr>
+          <td class="bold">🦙 LlamaIndex</td>
+          <td>Document intelligence, RAG</td>
+          <td>🟢 Easy</td>
+          <td>⭐⭐⭐⭐ 35k+ stars</td>
+          <td>✅ Yes</td>
+          <td>🟡 Basic</td>
+        </tr>
+        <tr>
+          <td class="bold">🚢 CrewAI</td>
+          <td>Role-based multi-agent teams</td>
+          <td>🟢 Easy</td>
+          <td>⭐⭐⭐⭐ 20k+ stars</td>
+          <td>✅ Yes</td>
+          <td>✅ Yes</td>
+        </tr>
+        <tr>
+          <td class="bold">⚡ AutoGen</td>
+          <td>Conversational agents, code gen</td>
+          <td>🟡 Medium</td>
+          <td>⭐⭐⭐⭐ Microsoft backed</td>
+          <td>✅ Yes</td>
+          <td>✅ Yes</td>
+        </tr>
+        <tr>
+          <td class="bold">🔮 Sem. Kernel</td>
+          <td>Enterprise, .NET/Azure integration</td>
+          <td>🔴 Hard</td>
+          <td>⭐⭐⭐ Enterprise</td>
+          <td>✅ Yes</td>
+          <td>🟡 Growing</td>
+        </tr>
+        <tr>
+          <td class="bold">🌾 Haystack</td>
+          <td>NLP pipelines, search systems</td>
+          <td>🟡 Medium</td>
+          <td>⭐⭐⭐ Niche but strong</td>
+          <td>✅ Yes</td>
+          <td>❌ Limited</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">Decision Flowchart — Kaunsa Framework Use Karein?</h2>
+
+  <div class="diagram-box">
+    <div class="diagram-title">🤔 Framework Selection Decision Tree</div>
+    <svg viewBox="0 0 700 500" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:500px; font-family:'Baloo 2',sans-serif;">
+      <!-- Start -->
+      <rect x="260" y="10" width="180" height="40" rx="20" fill="#1a237e"/>
+      <text x="350" y="35" fill="white" font-size="13" font-weight="bold" text-anchor="middle">Mujhe kya chahiye?</text>
+
+      <!-- Q1 -->
+      <line x1="350" y1="50" x2="350" y2="80" stroke="#666" stroke-width="1.5"/>
+      <polygon points="350,75 340,65 360,65" fill="#666"/>
+      <polygon points="230,80 350,80 470,140 230,140" fill="#e65100" opacity="0.9"/>
+      <text x="350" y="106" fill="white" font-size="11" font-weight="bold" text-anchor="middle">Mainly documents/RAG</text>
+      <text x="350" y="122" fill="white" font-size="11" font-weight="bold" text-anchor="middle">search hai kaam?</text>
+
+      <!-- YES to LlamaIndex -->
+      <line x1="230" y1="110" x2="80" y2="170" stroke="#666" stroke-width="1.5"/>
+      <text x="148" y="140" fill="#2e7d32" font-size="10" font-weight="bold" text-anchor="middle">YES</text>
+      <rect x="20" y="170" width="130" height="45" rx="8" fill="#e65100"/>
+      <text x="85" y="190" fill="white" font-size="12" font-weight="bold" text-anchor="middle">🦙 LlamaIndex</text>
+      <text x="85" y="206" fill="white" font-size="10" text-anchor="middle">Document-first</text>
+
+      <!-- NO to Q2 -->
+      <line x1="470" y1="110" x2="580" y2="170" stroke="#666" stroke-width="1.5"/>
+      <text x="538" y="140" fill="#c62828" font-size="10" font-weight="bold" text-anchor="middle">NO</text>
+      <polygon points="500,170 660,170 660,230 500,230" fill="#6a1b9a" opacity="0.9"/>
+      <text x="580" y="195" fill="white" font-size="11" font-weight="bold" text-anchor="middle">Multiple AI agents</text>
+      <text x="580" y="211" fill="white" font-size="11" font-weight="bold" text-anchor="middle">chahiye?</text>
+
+      <!-- YES to CrewAI/AutoGen -->
+      <line x1="580" y1="230" x2="580" y2="270" stroke="#666" stroke-width="1.5"/>
+      <text x="590" y="256" fill="#2e7d32" font-size="10" font-weight="bold">YES</text>
+      <rect x="490" y="270" width="180" height="55" rx="8" fill="#6a1b9a"/>
+      <text x="580" y="293" fill="white" font-size="12" font-weight="bold" text-anchor="middle">🚢 CrewAI</text>
+      <text x="580" y="308" fill="white" font-size="10" text-anchor="middle">ya ⚡ AutoGen</text>
+      <text x="580" y="320" fill="#d1c4e9" font-size="9" text-anchor="middle">Role-based crew</text>
+
+      <!-- NO from Q2 to Q3 -->
+      <line x1="500" y1="200" x2="350" y2="265" stroke="#666" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="415" y="235" fill="#c62828" font-size="10" font-weight="bold" text-anchor="middle">NO</text>
+      <polygon points="250,265 450,265 450,325 250,325" fill="#1565c0" opacity="0.9"/>
+      <text x="350" y="292" fill="white" font-size="11" font-weight="bold" text-anchor="middle">Complex stateful workflow,</text>
+      <text x="350" y="308" fill="white" font-size="11" font-weight="bold" text-anchor="middle">loops, human-in-loop?</text>
+
+      <!-- YES LangGraph -->
+      <line x1="250" y1="295" x2="130" y2="360" stroke="#666" stroke-width="1.5"/>
+      <text x="182" y="325" fill="#2e7d32" font-size="10" font-weight="bold">YES</text>
+      <rect x="20" y="360" width="140" height="45" rx="8" fill="#1565c0"/>
+      <text x="90" y="380" fill="white" font-size="12" font-weight="bold" text-anchor="middle">🕸 LangGraph</text>
+      <text x="90" y="396" fill="white" font-size="10" text-anchor="middle">Graph workflows</text>
+
+      <!-- NO → LangChain (simple) -->
+      <line x1="450" y1="295" x2="570" y2="380" stroke="#666" stroke-width="1.5"/>
+      <text x="518" y="336" fill="#c62828" font-size="10" font-weight="bold">NO</text>
+      <rect x="490" y="380" width="160" height="60" rx="8" fill="#2e7d32"/>
+      <text x="570" y="402" fill="white" font-size="12" font-weight="bold" text-anchor="middle">🦜 LangChain</text>
+      <text x="570" y="418" fill="white" font-size="10" text-anchor="middle">General purpose</text>
+      <text x="570" y="433" fill="#c8e6c9" font-size="9" text-anchor="middle">Beginner friendly</text>
+
+      <!-- Enterprise note -->
+      <rect x="200" y="400" width="230" height="45" rx="8" fill="#ff6f00"/>
+      <text x="315" y="420" fill="white" font-size="11" font-weight="bold" text-anchor="middle">🏢 Enterprise + Azure?</text>
+      <text x="315" y="436" fill="white" font-size="10" text-anchor="middle">→ 🔮 Semantic Kernel</text>
+    </svg>
+  </div>
+
+  <h2 class="section-title">Framework Combination Patterns</h2>
+  <p>
+    Real production systems mein aksar <strong>multiple frameworks milkaar</strong> use hote hain.
+    Yeh common combinations hain:
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Combination</th><th>Use Case</th><th>Why This Combo?</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">LangGraph + LlamaIndex</td><td>Research assistant agent</td><td>LangGraph ke graph + LlamaIndex ki document intelligence</td></tr>
+        <tr><td class="bold">CrewAI + LangChain</td><td>Multi-agent content pipeline</td><td>CrewAI orchestration + LangChain ke tools</td></tr>
+        <tr><td class="bold">LangGraph + Haystack</td><td>Enterprise search + workflow</td><td>Haystack retrieval + LangGraph state management</td></tr>
+        <tr><td class="bold">AutoGen + LlamaIndex</td><td>Code-aware document agent</td><td>AutoGen code execution + LlamaIndex doc search</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout remember">
+    <div class="callout-title">🧠 Remember This — Framework Selection Rule</div>
+    <strong>"Don't fall in love with a framework."</strong><br>
+    Har problem ke liye best tool choose karo. Sirf LangChain seekhna kaafi nahi — architecture samjho.
+    2025 mein sabse valuable skill hai: <em>kab kaunsa framework kyu use karna chahiye</em> — yahi tumhe
+    ek average engineer se alag karega.
+  </div>
+</div>
+
+<!-- ==================== MULTI-AGENT ORCHESTRATION ==================== -->
+<div class="page" id="orchestration">
+  <div class="chapter-divider"><hr><div class="ch-label">Advanced</div><hr></div>
+  <h1 class="chapter-title">Chapter 11 — Multi-Agent Orchestration</h1>
+
+  <p>
+    Abhi tak humne individual frameworks dekhe. Ab samjhenge ki <strong>multiple agents ek saath</strong>
+    kaise milke kaam karte hain — yahi modern AI engineering ka core hai.
+  </p>
+
+  <h2 class="section-title">Orchestration Patterns</h2>
+
+  <!-- Orchestration Patterns Diagram -->
+  <div class="diagram-box">
+    <div class="diagram-title">🎭 Multi-Agent Orchestration Patterns</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:640px; margin:0 auto;">
+
+      <div style="background:#e3f2fd; border:2px solid #1565c0; border-radius:10px; padding:14px;">
+        <div style="font-weight:700; color:#1565c0; margin-bottom:8px; font-size:0.9rem">1️⃣ Sequential Pipeline</div>
+        <div style="display:flex; align-items:center; gap:6px; font-size:0.78rem; flex-wrap:wrap;">
+          <div style="background:#1565c0; color:white; padding:4px 8px; border-radius:6px;">Agent A</div>
+          <span>→</span>
+          <div style="background:#1565c0; color:white; padding:4px 8px; border-radius:6px;">Agent B</div>
+          <span>→</span>
+          <div style="background:#1565c0; color:white; padding:4px 8px; border-radius:6px;">Agent C</div>
+        </div>
+        <div style="font-size:0.75rem; color:#666; margin-top:8px">Output ek ka input doosre ka. Simple, predictable.</div>
+      </div>
+
+      <div style="background:#f3e5f5; border:2px solid #6a1b9a; border-radius:10px; padding:14px;">
+        <div style="font-weight:700; color:#6a1b9a; margin-bottom:8px; font-size:0.9rem">2️⃣ Supervisor Pattern</div>
+        <div style="text-align:center; font-size:0.78rem;">
+          <div style="background:#6a1b9a; color:white; padding:4px 8px; border-radius:6px; display:inline-block; margin-bottom:8px;">👑 Supervisor</div>
+          <div style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap;">
+            <div style="background:#ab47bc; color:white; padding:3px 6px; border-radius:4px; font-size:0.72rem;">Worker A</div>
+            <div style="background:#ab47bc; color:white; padding:3px 6px; border-radius:4px; font-size:0.72rem;">Worker B</div>
+            <div style="background:#ab47bc; color:white; padding:3px 6px; border-radius:4px; font-size:0.72rem;">Worker C</div>
+          </div>
+        </div>
+        <div style="font-size:0.75rem; color:#666; margin-top:8px">Manager delegates tasks to specialized workers.</div>
+      </div>
+
+      <div style="background:#e8f5e9; border:2px solid #2e7d32; border-radius:10px; padding:14px;">
+        <div style="font-weight:700; color:#2e7d32; margin-bottom:8px; font-size:0.9rem">3️⃣ Parallel Execution</div>
+        <div style="text-align:center; font-size:0.78rem;">
+          <div style="background:#2e7d32; color:white; padding:4px 8px; border-radius:6px; display:inline-block; margin-bottom:4px;">Input</div>
+          <div style="display:flex; gap:4px; justify-content:center; margin:4px 0;">
+            <div style="background:#4caf50; color:white; padding:3px 6px; border-radius:4px;">A</div>
+            <div style="background:#4caf50; color:white; padding:3px 6px; border-radius:4px;">B</div>
+            <div style="background:#4caf50; color:white; padding:3px 6px; border-radius:4px;">C</div>
+          </div>
+          <div style="background:#2e7d32; color:white; padding:4px 8px; border-radius:6px; display:inline-block; margin-top:4px;">Aggregator</div>
+        </div>
+        <div style="font-size:0.75rem; color:#666; margin-top:4px">Saare agents ek saath kaam karte hain.</div>
+      </div>
+
+      <div style="background:#fff3e0; border:2px solid #e65100; border-radius:10px; padding:14px;">
+        <div style="font-weight:700; color:#e65100; margin-bottom:8px; font-size:0.9rem">4️⃣ Debate Pattern</div>
+        <div style="text-align:center; font-size:0.78rem;">
+          <div style="display:flex; gap:8px; justify-content:center; align-items:center;">
+            <div style="background:#e65100; color:white; padding:3px 8px; border-radius:4px;">Agent A</div>
+            <span style="font-size:1rem">⇌</span>
+            <div style="background:#f57c00; color:white; padding:3px 8px; border-radius:4px;">Agent B</div>
+          </div>
+          <div style="margin-top:8px; background:#e65100; color:white; padding:3px 8px; border-radius:4px; display:inline-block;">Judge Agent</div>
+        </div>
+        <div style="font-size:0.75rem; color:#666; margin-top:4px">Agents argue, judge decides. Better accuracy.</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">LangGraph Supervisor Pattern — Code</h2>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <div class="code-lang">Python — LangGraph Supervisor Multi-Agent</div>
+    </div>
+    <div class="code-body"><span class="kw">from</span> <span class="fn">typing</span> <span class="kw">import</span> <span class="cls">TypedDict</span>, <span class="cls">Annotated</span>, <span class="cls">Literal</span>
+<span class="kw">from</span> <span class="fn">langgraph.graph</span> <span class="kw">import</span> <span class="cls">StateGraph</span>, <span class="cls">START</span>, <span class="cls">END</span>
+<span class="kw">from</span> <span class="fn">langgraph.graph.message</span> <span class="kw">import</span> <span class="fn">add_messages</span>
+<span class="kw">from</span> <span class="fn">langchain_openai</span> <span class="kw">import</span> <span class="cls">ChatOpenAI</span>
+
+<span class="cm"># State</span>
+<span class="kw">class</span> <span class="cls">TeamState</span>(<span class="cls">TypedDict</span>):
+    <span class="var">messages</span>: <span class="cls">Annotated</span>[<span class="cls">list</span>, <span class="fn">add_messages</span>]
+    <span class="var">next_agent</span>: <span class="cls">str</span>
+
+<span class="var">llm</span> = <span class="cls">ChatOpenAI</span>(model=<span class="str">"gpt-4o"</span>)
+
+<span class="cm"># Supervisor — decide karta hai kisko kaam dena hai</span>
+<span class="kw">def</span> <span class="fn">supervisor_node</span>(<span class="var">state</span>):
+    <span class="var">msgs</span> = <span class="var">state</span>[<span class="str">"messages"</span>]
+    <span class="var">system</span> = <span class="str">"""Tum supervisor ho. Team: researcher, coder, writer.
+    Decide karo next me kaunsa agent kaam karega.
+    Sirf ek naam do: researcher/coder/writer/FINISH"""</span>
+    <span class="var">response</span> = <span class="var">llm</span>.<span class="fn">invoke</span>([{<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="var">system</span>}] + <span class="var">msgs</span>)
+    <span class="kw">return</span> {<span class="str">"next_agent"</span>: <span class="var">response</span>.<span class="var">content</span>.<span class="fn">strip</span>()}
+
+<span class="cm"># Worker nodes</span>
+<span class="kw">def</span> <span class="fn">researcher_node</span>(<span class="var">state</span>):
+    <span class="var">response</span> = <span class="var">llm</span>.<span class="fn">invoke</span>([{<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="str">"Tum research specialist ho."</span>}] + <span class="var">state</span>[<span class="str">"messages"</span>])
+    <span class="kw">return</span> {<span class="str">"messages"</span>: [{<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: <span class="str">f"[Researcher]: {response.content}"</span>}]}
+
+<span class="kw">def</span> <span class="fn">coder_node</span>(<span class="var">state</span>):
+    <span class="var">response</span> = <span class="var">llm</span>.<span class="fn">invoke</span>([{<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="str">"Tum expert coder ho."</span>}] + <span class="var">state</span>[<span class="str">"messages"</span>])
+    <span class="kw">return</span> {<span class="str">"messages"</span>: [{<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: <span class="str">f"[Coder]: {response.content}"</span>}]}
+
+<span class="cm"># Routing function</span>
+<span class="kw">def</span> <span class="fn">route_to_agent</span>(<span class="var">state</span>) -> <span class="cls">Literal</span>[<span class="str">"researcher"</span>, <span class="str">"coder"</span>, <span class="str">"__end__"</span>]:
+    <span class="var">next_a</span> = <span class="var">state</span>.<span class="fn">get</span>(<span class="str">"next_agent"</span>, <span class="str">""</span>)
+    <span class="kw">if</span> <span class="str">"FINISH"</span> <span class="kw">in</span> <span class="var">next_a</span>: <span class="kw">return</span> <span class="str">"__end__"</span>
+    <span class="kw">if</span> <span class="str">"researcher"</span> <span class="kw">in</span> <span class="var">next_a</span>: <span class="kw">return</span> <span class="str">"researcher"</span>
+    <span class="kw">return</span> <span class="str">"coder"</span>
+
+<span class="cm"># Graph build karo</span>
+<span class="var">graph</span> = <span class="cls">StateGraph</span>(<span class="cls">TeamState</span>)
+<span class="var">graph</span>.<span class="fn">add_node</span>(<span class="str">"supervisor"</span>, <span class="fn">supervisor_node</span>)
+<span class="var">graph</span>.<span class="fn">add_node</span>(<span class="str">"researcher"</span>, <span class="fn">researcher_node</span>)
+<span class="var">graph</span>.<span class="fn">add_node</span>(<span class="str">"coder"</span>, <span class="fn">coder_node</span>)
+<span class="var">graph</span>.<span class="fn">add_edge</span>(<span class="cls">START</span>, <span class="str">"supervisor"</span>)
+<span class="var">graph</span>.<span class="fn">add_conditional_edges</span>(<span class="str">"supervisor"</span>, <span class="fn">route_to_agent</span>)
+<span class="var">graph</span>.<span class="fn">add_edge</span>(<span class="str">"researcher"</span>, <span class="str">"supervisor"</span>)
+<span class="var">graph</span>.<span class="fn">add_edge</span>(<span class="str">"coder"</span>, <span class="str">"supervisor"</span>)
+<span class="var">app</span> = <span class="var">graph</span>.<span class="fn">compile</span>()
+
+<span class="var">result</span> = <span class="var">app</span>.<span class="fn">invoke</span>({
+    <span class="str">"messages"</span>: [{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"AI agent frameworks research karke Python code likho"</span>}],
+    <span class="str">"next_agent"</span>: <span class="str">""</span>
+})</div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">⚠️ Multi-Agent Common Mistakes</div>
+    <ul>
+      <li><strong>Infinite loops:</strong> Termination condition define nahi ki — agents chaklate rahte hain</li>
+      <li><strong>Context overflow:</strong> Bahut saari agents ke messages se token limit exceed ho jaati hai</li>
+      <li><strong>Agent hallucinations:</strong> Ek agent galat info doosre ko pass karta hai — compounding errors</li>
+      <li><strong>No error handling:</strong> Ek agent fail ho toh poora workflow crash ho jaata hai</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== GLOSSARY & SUMMARY ==================== -->
+<div class="page" id="glossary">
+  <div class="chapter-divider"><hr><div class="ch-label">Revision</div><hr></div>
+  <h1 class="chapter-title">Chapter 12 — Glossary & Final Summary</h1>
+
+  <h2 class="section-title">📖 Key Terms Glossary</h2>
+
+  <div class="glossary-grid">
+    <div class="glossary-item"><div class="g-term">Agent Framework</div><div class="g-def">AI agents banane ke liye pre-built tools ka collection</div></div>
+    <div class="glossary-item"><div class="g-term">LCEL (LangChain Expression Language)</div><div class="g-def">Pipe operator se chains compose karna</div></div>
+    <div class="glossary-item"><div class="g-term">State (LangGraph)</div><div class="g-def">Graph execution ke dauran shared data</div></div>
+    <div class="glossary-item"><div class="g-term">Checkpoint</div><div class="g-def">State save point — resume karne ke liye</div></div>
+    <div class="glossary-item"><div class="g-term">Node (LangGraph)</div><div class="g-def">State process karne wala function</div></div>
+    <div class="glossary-item"><div class="g-term">Conditional Edge</div><div class="g-def">Dynamic routing — condition pe based next node</div></div>
+    <div class="glossary-item"><div class="g-term">Crew (CrewAI)</div><div class="g-def">Agents + Tasks ka team container</div></div>
+    <div class="glossary-item"><div class="g-term">Plugin (Semantic Kernel)</div><div class="g-def">Functions ka named collection</div></div>
+    <div class="glossary-item"><div class="g-term">QueryEngine (LlamaIndex)</div><div class="g-def">Documents se structured answers nikalna</div></div>
+    <div class="glossary-item"><div class="g-term">GroupChat (AutoGen)</div><div class="g-def">Multiple agents ki conversation group</div></div>
+    <div class="glossary-item"><div class="g-term">Pipeline (Haystack)</div><div class="g-def">Connected NLP components ki chain</div></div>
+    <div class="glossary-item"><div class="g-term">DocumentStore</div><div class="g-def">Documents store + retrieve karne ka component</div></div>
+    <div class="glossary-item"><div class="g-term">Tool Binding</div><div class="g-def">LLM ko tools ke baare mein batana</div></div>
+    <div class="glossary-item"><div class="g-term">Human-in-Loop</div><div class="g-def">Agent execution mein human approval step</div></div>
+    <div class="glossary-item"><div class="g-term">Orchestration</div><div class="g-def">Multiple agents ko coordinate karna</div></div>
+    <div class="glossary-item"><div class="g-term">Supervisor Pattern</div><div class="g-def">Manager agent jo workers ko delegate karta hai</div></div>
+  </div>
+
+  <div class="chapter-divider"><hr><div class="ch-label">Final Summary</div><hr></div>
+
+  <div class="summary-box">
+    <div class="s-title">📝 Part 9 Complete Summary — Agent Frameworks</div>
+    <ul style="padding-left:20px; font-size:0.92rem; line-height:2.0;">
+      <li><strong>Agent Frameworks</strong> — ready-made building blocks jo AI agents banane ki process fast karte hain</li>
+      <li><strong>LangChain</strong> — sabse popular, general-purpose, LCEL chains + tools + RAG ka go-to framework</li>
+      <li><strong>LangGraph</strong> — stateful complex agents ke liye, cyclic graphs, human-in-loop, best for production</li>
+      <li><strong>LlamaIndex</strong> — document intelligence aur RAG applications ka specialist framework</li>
+      <li><strong>CrewAI</strong> — role-based multi-agent teams, intuitive API, sequential/hierarchical process</li>
+      <li><strong>AutoGen</strong> — conversation-driven agents, code execution, Microsoft Research backed</li>
+      <li><strong>Semantic Kernel</strong> — enterprise grade, .NET/Azure deep integration, plugins system</li>
+      <li><strong>Haystack</strong> — modular NLP pipelines, YAML config, production search systems</li>
+      <li><strong>Multi-Agent Patterns</strong> — sequential, supervisor, parallel, debate patterns</li>
+    </ul>
+  </div>
+
+  <!-- Final Interview Q -->
+  <div class="callout interview">
+    <div class="callout-title">🎤 Final Master Interview Questions — Part 9</div>
+    <div class="iq-list">
+      <div class="iq-item"><div class="q-label">Q1</div>LangChain aur LangGraph mein fundamental difference kya hai? Kab kaunsa use karein?</div>
+      <div class="iq-item"><div class="q-label">Q2</div>Ek production AI agent mein aap kaunse frameworks combine karoge aur kyun?</div>
+      <div class="iq-item"><div class="q-label">Q3</div>Multi-agent system mein "supervisor pattern" kaise implement karte hain?</div>
+      <div class="iq-item"><div class="q-label">Q4</div>LangGraph checkpointing ka real use case kya hai? Example do.</div>
+      <div class="iq-item"><div class="q-label">Q5</div>CrewAI vs AutoGen — dono ke pros/cons kya hain? Kab kaunsa better hai?</div>
+      <div class="iq-item"><div class="q-label">Q6</div>Human-in-the-loop agents kab zarooori hain? LangGraph mein kaise implement karte hain?</div>
+      <div class="iq-item"><div class="q-label">Q7</div>Agent ke tools mein docstring kyun important hai?</div>
+      <div class="iq-item"><div class="q-label">Q8</div>LlamaIndex ka SubQuestionQueryEngine kya karta hai aur kab use karein?</div>
+    </div>
+  </div>
+
+  <!-- Exercises -->
+  <div class="exercise-box">
+    <div class="ex-title">🏋️ Mini Exercises — Part 9</div>
+    <ol>
+      <li><strong>Basic:</strong> LangChain se ek simple chatbot banao jisme memory ho (ConversationBufferMemory)</li>
+      <li><strong>Intermediate:</strong> LangGraph se ek agent banao jo web search tool use kare aur 3 se zyada steps le</li>
+      <li><strong>Intermediate:</strong> LlamaIndex se apne 5 PDFs ka RAG system banao aur query karo</li>
+      <li><strong>Advanced:</strong> CrewAI se 3 agents ka crew banao — Researcher, Writer, Editor — jo blog post banaye</li>
+      <li><strong>Advanced:</strong> LangGraph + LlamaIndex combine karke ek research assistant banao</li>
+      <li><strong>Challenge:</strong> AutoGen se ek code review system banao jisme 2 agents hoon — Coder + Reviewer</li>
+    </ol>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:36px; padding-top:20px; border-top:2px solid var(--border); text-align:center;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div style="font-size:0.82rem; color:var(--text-muted)">
+        <strong>Part 9 — Agent Frameworks</strong><br>
+        AI Agent Engineering Masterbook
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+        <span class="chip beginner">LangChain ✓</span>
+        <span class="chip intermediate">LangGraph ✓</span>
+        <span class="chip intermediate">LlamaIndex ✓</span>
+        <span class="chip advanced">CrewAI ✓</span>
+        <span class="chip production">AutoGen ✓</span>
+      </div>
+      <div style="font-size:0.82rem; color:var(--text-muted)">
+        Next: <strong>Part 10 — Multi-Agent Systems</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end book-container -->
+
+<script>
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      if (this.href.includes('#')) {
+        const id = this.getAttribute('href');
+        if (id === '#') return;
+        const el = document.querySelector(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+
+  // Active nav highlighting
+  const sections = document.querySelectorAll('.page[id]');
+  const navLinks = document.querySelectorAll('#sticky-nav .nav-links a[href^="#"]');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 80;
+      if (window.scrollY >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.style.background = '';
+      link.style.color = '';
+      if (link.getAttribute('href') === '#' + current) {
+        link.style.background = 'rgba(255,255,255,0.2)';
+        link.style.color = 'white';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
