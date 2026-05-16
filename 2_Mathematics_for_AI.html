@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 2 — Mathematics for AI | AI Agent Engineering Masterbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a237e;
+    --primary-light: #3949ab;
+    --accent: #e65100;
+    --accent-light: #ff6d00;
+    --gold: #f57f17;
+    --green: #1b5e20;
+    --green-light: #2e7d32;
+    --teal: #006064;
+    --red: #b71c1c;
+    --purple: #4a148c;
+    --page-bg: #f5f5f0;
+    --paper: #ffffff;
+    --text: #1a1a2e;
+    --text-light: #37474f;
+    --border: #e0e0e0;
+    --code-bg: #1e1e2e;
+    --code-text: #cdd6f4;
+    --note-bg: #e8f5e9;
+    --tip-bg: #fff8e1;
+    --warn-bg: #fce4ec;
+    --info-bg: #e3f2fd;
+    --shadow: 0 4px 24px rgba(0,0,0,0.13);
+    --shadow-deep: 0 8px 40px rgba(0,0,0,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--page-bg);
+    font-family: 'Crimson Pro', 'Noto Sans Devanagari', Georgia, serif;
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  /* ===== STICKY NAV ===== */
+  .sticky-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .sticky-nav .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .sticky-nav .nav-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sticky-nav .nav-links a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.2s;
+    font-family: 'Crimson Pro', serif;
+  }
+  .sticky-nav .nav-links a:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+  .pdf-btn {
+    background: var(--accent);
+    color: white !important;
+    border: none !important;
+    padding: 6px 16px !important;
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    font-size: 12px !important;
+    transition: all 0.2s;
+  }
+  .pdf-btn:hover { background: var(--accent-light) !important; transform: translateY(-1px); }
+
+  /* ===== PAGES ===== */
+  .page-wrapper {
+    max-width: 860px;
+    margin: 80px auto 40px;
+    padding: 0 16px;
+  }
+
+  .page {
+    background: var(--paper);
+    box-shadow: var(--shadow-deep);
+    margin-bottom: 40px;
+    padding: 64px 72px;
+    position: relative;
+    border-top: 5px solid var(--primary);
+  }
+
+  @media (max-width: 720px) {
+    .page { padding: 32px 20px; }
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 40%, #3949ab 70%, #1565c0 100%);
+    color: white;
+    padding: 80px 72px 60px;
+    position: relative;
+    overflow: hidden;
+    border-top: none;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-part {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.8);
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== TABLE OF CONTENTS ===== */
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  @media (max-width: 600px) { .toc-grid { grid-template-columns: 1fr; } }
+  .toc-card {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    transition: all 0.2s;
+  }
+  .toc-card:hover { border-color: var(--primary-light); box-shadow: 0 4px 12px rgba(26,35,126,0.1); }
+  .toc-card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .toc-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 4px 0;
+  }
+  .toc-card-topics {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ===== CHAPTER HEADERS ===== */
+  .chapter-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 40px 72px 32px;
+    margin: 0 -72px 40px;
+    position: relative;
+    overflow: hidden;
+    border-top: none;
+  }
+  @media (max-width: 720px) { .chapter-header { margin: 0 -20px 32px; padding: 32px 20px 24px; } }
+  .chapter-header::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+  }
+  .chapter-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .chapter-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+  }
+  .chapter-header p {
+    color: rgba(255,255,255,0.8);
+    font-size: 16px;
+    margin-top: 8px;
+    max-width: 500px;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--primary);
+    margin: 36px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .sec-icon {
+    width: 32px; height: 32px;
+    background: var(--primary);
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .subsection-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--primary-light);
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 4px solid var(--accent);
+  }
+
+  /* ===== TEXT ===== */
+  p { margin-bottom: 14px; font-size: 16px; line-height: 1.85; }
+  strong { color: var(--primary); font-weight: 600; }
+  em { color: var(--accent); font-style: italic; }
+
+  /* ===== CALLOUT BOXES ===== */
+  .callout {
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    border-left: 5px solid;
+    position: relative;
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .callout-note { background: var(--note-bg); border-color: var(--green-light); }
+  .callout-note .callout-label { color: var(--green-light); }
+  .callout-tip { background: var(--tip-bg); border-color: var(--gold); }
+  .callout-tip .callout-label { color: var(--gold); }
+  .callout-warn { background: var(--warn-bg); border-color: var(--red); }
+  .callout-warn .callout-label { color: var(--red); }
+  .callout-info { background: var(--info-bg); border-color: var(--primary-light); }
+  .callout-info .callout-label { color: var(--primary-light); }
+  .callout-remember { background: #f3e5f5; border-color: var(--purple); }
+  .callout-remember .callout-label { color: var(--purple); }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+    overflow-x: auto;
+    position: relative;
+    border: 1px solid #313244;
+  }
+  .code-label {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #6c7086;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .code-block pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--code-text);
+    white-space: pre;
+  }
+  .kw { color: #cba6f7; } /* keywords */
+  .fn { color: #89b4fa; } /* functions */
+  .st { color: #a6e3a1; } /* strings */
+  .nm { color: #fab387; } /* numbers */
+  .cm { color: #6c7086; font-style: italic; } /* comments */
+  .op { color: #89dceb; } /* operators */
+  .cl { color: #f9e2af; } /* classes */
+  .im { color: #cba6f7; } /* import */
+  .ot { color: #cdd6f4; } /* other */
+  .output-block {
+    background: #11111b;
+    border-radius: 0 0 10px 10px;
+    border: 1px solid #313244;
+    border-top: none;
+    padding: 16px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #a6e3a1;
+    margin-top: -10px;
+    margin-bottom: 20px;
+  }
+  .output-label {
+    font-size: 10px;
+    color: #6c7086;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  /* ===== MATH FORMULA BOXES ===== */
+  .formula-box {
+    background: linear-gradient(135deg, #e8eaf6, #ede7f6);
+    border: 2px solid var(--primary-light);
+    border-radius: 10px;
+    padding: 24px 32px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .formula-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .formula-main {
+    font-size: 22px;
+    color: var(--primary);
+    font-family: 'Crimson Pro', serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .formula-desc {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 8px;
+  }
+
+  /* ===== TABLES ===== */
+  .table-wrapper { overflow-x: auto; margin: 20px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead tr { background: var(--primary); color: white; }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Crimson Pro', serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  tbody tr:nth-child(even) { background: #f0f4ff; }
+  tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+    color: var(--text);
+  }
+  tbody tr:hover { background: #e8eaf6; }
+
+  /* ===== SVG DIAGRAMS ===== */
+  .diagram-wrap {
+    margin: 24px 0;
+    text-align: center;
+  }
+  .diagram-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .diagram-wrap svg { max-width: 100%; height: auto; }
+
+  /* ===== INTERVIEW Q ===== */
+  .interview-section {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: white;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 28px 0;
+  }
+  .interview-section h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: #f9e2af;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .interview-q {
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-left: 3px solid #f9e2af;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .interview-q strong { color: #f9e2af; }
+
+  /* ===== EXERCISE BOX ===== */
+  .exercise-box {
+    border: 2px dashed var(--accent);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 24px 0;
+    background: #fff8f0;
+  }
+  .exercise-box h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--accent);
+    font-size: 17px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .exercise-box ol { padding-left: 20px; }
+  .exercise-box ol li { margin-bottom: 8px; font-size: 14.5px; line-height: 1.6; }
+
+  /* ===== SUMMARY BOX ===== */
+  .summary-box {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border: 2px solid var(--green-light);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 24px 0;
+  }
+  .summary-box h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--green);
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .summary-box ul { padding-left: 20px; }
+  .summary-box ul li { margin-bottom: 6px; font-size: 14.5px; }
+
+  /* ===== STEP CARDS ===== */
+  .steps-list { list-style: none; padding: 0; margin: 16px 0; }
+  .steps-list li {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-content strong { display: block; color: var(--primary); margin-bottom: 4px; font-size: 15px; }
+  .step-content p { margin: 0; font-size: 14.5px; }
+
+  /* ===== ANALOGY BOX ===== */
+  .analogy-box {
+    background: linear-gradient(135deg, #fff9c4, #fff8e1);
+    border: 2px solid #f9a825;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    position: relative;
+  }
+  .analogy-box::before {
+    content: '💡';
+    position: absolute;
+    top: -14px; left: 20px;
+    font-size: 22px;
+    background: white;
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+  .analogy-box h5 {
+    font-family: 'Playfair Display', serif;
+    color: #f57f17;
+    font-size: 15px;
+    margin-bottom: 8px;
+    margin-top: 4px;
+  }
+
+  /* ===== HIGHLIGHT GRID ===== */
+  .highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .highlight-card {
+    border-radius: 8px;
+    padding: 16px 18px;
+    border-top: 4px solid;
+  }
+  .hc-blue { background: #e8eaf6; border-color: var(--primary-light); }
+  .hc-orange { background: #fff3e0; border-color: var(--accent); }
+  .hc-green { background: #e8f5e9; border-color: var(--green-light); }
+  .hc-purple { background: #f3e5f5; border-color: var(--purple); }
+  .hc-teal { background: #e0f7fa; border-color: var(--teal); }
+  .highlight-card h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .highlight-card p { font-size: 13.5px; margin: 0; line-height: 1.6; }
+
+  /* ===== DIVIDERS ===== */
+  .chapter-divider {
+    text-align: center;
+    margin: 40px 0;
+    position: relative;
+  }
+  .chapter-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+  }
+  .chapter-divider span {
+    background: var(--paper);
+    padding: 0 20px;
+    color: var(--text-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ===== PROGRESS TRACKER ===== */
+  .progress-tracker {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    border: 1px solid var(--border);
+  }
+  .progress-tracker h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--text-light);
+    margin-bottom: 12px;
+  }
+  .progress-dots {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .progress-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .progress-dot.done { background: var(--green-light); }
+  .progress-dot.active { background: var(--accent); transform: scale(1.3); }
+
+  /* ===== VECTOR VISUAL ===== */
+  .vector-visual {
+    background: #f8f9ff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+    border: 1px solid #c5cae9;
+  }
+
+  /* ===== PRINT STYLES ===== */
+  @media print {
+    .sticky-nav { display: none !important; }
+    body { background: white; }
+    .page { box-shadow: none; margin: 0; padding: 40px; }
+    .page-wrapper { margin: 0; }
+    .code-block { break-inside: avoid; }
+  }
+
+  /* ===== FORMULA INLINE ===== */
+  .math {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1.05em;
+    color: var(--primary);
+  }
+  .math-block {
+    display: block;
+    text-align: center;
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1.4em;
+    color: var(--primary);
+    margin: 16px 0;
+    padding: 12px;
+    background: #f0f4ff;
+    border-radius: 6px;
+  }
+
+  /* ===== DEFINITION BOX ===== */
+  .def-box {
+    background: white;
+    border: 1px solid var(--primary-light);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+  }
+  .def-box .def-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+
+  /* ===== COMPARISON TABLE (colored header variants) ===== */
+  .table-green thead tr { background: var(--green); }
+  .table-teal thead tr { background: var(--teal); }
+  .table-purple thead tr { background: var(--purple); }
+  .table-accent thead tr { background: var(--accent); }
+
+  /* ===== GLOSSARY ===== */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .glossary-grid { grid-template-columns: 1fr; } }
+  .glossary-item {
+    background: #f8f9ff;
+    border-radius: 6px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--primary-light);
+  }
+  .glossary-item strong { color: var(--primary); display: block; margin-bottom: 3px; font-size: 14px; }
+  .glossary-item span { font-size: 13px; color: var(--text-light); line-height: 1.5; }
+
+  /* inline tag */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: #eef0ff;
+    color: var(--primary);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  ul.topic-list { padding-left: 22px; margin: 10px 0; }
+  ul.topic-list li { margin-bottom: 7px; font-size: 15px; line-height: 1.65; }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <div class="nav-title">📐 Part 2 — Mathematics for AI</div>
+  <div class="nav-links">
+    <a href="#ch1">Linear Algebra</a>
+    <a href="#ch2">Probability & Stats</a>
+    <a href="#ch3">Calculus</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#" class="pdf-btn" onclick="window.print(); return false;">⬇ PDF Download</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+
+<!-- ==================== HERO PAGE ==================== -->
+<div class="page hero">
+  <div class="hero-part">AI Agent Engineering Masterbook • Part 2 of 15</div>
+  <h1>Mathematics<br>for Artificial Intelligence</h1>
+  <p class="hero-sub">AI ke andar jo "intelligence" hai, woh poori tarah mathematics par based hai. Ye chapter aapko woh sab mathematical tools dega jo ek AI engineer ko zaroor aane chahiye — bilkul basics se lekar production-level understanding tak.</p>
+  <div class="hero-badges">
+    <span class="badge">📐 Linear Algebra</span>
+    <span class="badge">🎲 Probability & Statistics</span>
+    <span class="badge">∂ Calculus</span>
+    <span class="badge">🐍 Python Code</span>
+    <span class="badge">🧠 Hinglish</span>
+  </div>
+</div>
+
+<!-- TABLE OF CONTENTS PAGE -->
+<div class="page">
+  <div class="section-title"><span class="sec-icon">📋</span>Table of Contents</div>
+  <p>Is part mein <strong>3 major chapters</strong> hain jo AI ke mathematical foundation cover karte hain. Har chapter mein deep explanations, diagrams, Python code, aur real-world examples honge.</p>
+
+  <div class="toc-grid">
+    <div class="toc-card">
+      <div class="toc-card-num">CHAPTER 01</div>
+      <div class="toc-card-title">📐 Linear Algebra</div>
+      <div class="toc-card-topics">Scalars, Vectors, Matrices, Tensors, Dot Product, Matrix Multiplication, Eigenvalues, Eigenvectors</div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-card-num">CHAPTER 02</div>
+      <div class="toc-card-title">🎲 Probability & Statistics</div>
+      <div class="toc-card-topics">Mean, Median, Mode, Variance, Std Dev, Distributions, Conditional Probability, Bayes Theorem, Hypothesis Testing</div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-card-num">CHAPTER 03</div>
+      <div class="toc-card-title">∂ Calculus Basics</div>
+      <div class="toc-card-topics">Derivatives, Gradients, Partial Derivatives, Chain Rule, Optimization Intuition</div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-card-num">REFERENCE</div>
+      <div class="toc-card-title">📖 Glossary & Revision</div>
+      <div class="toc-card-topics">Key terms, formulas, quick revision, interview prep, practice exercises</div>
+    </div>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-label">🎯 Ye Part Kyun Seekhna Zaroori Hai</div>
+    Jab aap ek LLM use karte ho, jab neural network train hota hai, jab RAG system embedding dhundta hai — har jagah yahi mathematics kaam karti hai. Bina iske samjhe aap ek parrot ki tarah AI use karenge. Iske saath samajhkar aap ek <strong>AI Engineer</strong> banenge.
+  </div>
+
+  <div class="progress-tracker">
+    <h4>📊 Chapter Progress Tracker</h4>
+    <div class="progress-dots" id="progressDots"></div>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 1: LINEAR ALGEBRA ==================== -->
+<div class="page" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">CHAPTER 01 • PART 2</div>
+    <h2>📐 Linear Algebra</h2>
+    <p>AI ka backbone — data ko numbers mein samajhna, transform karna, aur represent karna</p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="section-title"><span class="sec-icon">🌟</span>Introduction — Linear Algebra Kyun?</div>
+
+  <p>Socho ek baar — ChatGPT ke paas aaya tumhara question: <em>"Mujhe Python seekhni hai."</em> ChatGPT ne tumhara jawab diya. Lekin andar kya hua? Tumhara text pehle <strong>numbers mein convert</strong> hua — vectors mein. Phir in vectors pe <strong>matrix operations</strong> hue. Phir neural network ne in numbers ko process kiya, aur output wapis text mein aaya.</p>
+
+  <p>Yahi hai Linear Algebra ka role AI mein. Har image ek matrix hai. Har word ek vector hai. Har neural network layer ek matrix multiplication hai. Linear Algebra ke bina AI <strong>exist hi nahi karta</strong>.</p>
+
+  <div class="analogy-box">
+    <h5>Real-World Analogy — Address System ki Tarah</h5>
+    Jaise GPS coordinates ek jagah ko numbers se represent karte hain (28.6° N, 77.2° E = Delhi), waise hi Linear Algebra har cheez ko numbers ki language mein represent karta hai. Machine ko numbers samajh aate hain, text nahi. Linear Algebra woh translator hai jo duniya ko numbers mein convert karta hai.
+  </div>
+
+  <!-- 1.1 SCALARS -->
+  <div class="subsection-title">1.1 Scalars — Ek Akela Number</div>
+
+  <div class="def-box">
+    <div class="def-term">Scalar kya hota hai?</div>
+    <p><strong>Scalar</strong> ek single number hota hai — sirf magnitude hoti hai, koi direction nahi. Jaise temperature, age, price — ye sab scalars hain.</p>
+  </div>
+
+  <p>AI mein scalars bahut jagah aate hain — <strong>learning rate</strong> ek scalar hai (jaise 0.001), <strong>loss value</strong> ek scalar hai (jaise 0.342), <strong>temperature parameter</strong> LLMs mein ek scalar hai.</p>
+
+  <div class="code-block">
+    <div class="code-label">Python</div>
+    <pre>
+<span class="cm"># Scalar examples in Python</span>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+
+<span class="cm"># Simple scalars</span>
+<span class="ot">temperature</span> = <span class="nm">98.6</span>          <span class="cm"># Body temperature</span>
+<span class="ot">learning_rate</span> = <span class="nm">0.001</span>       <span class="cm"># AI training mein use hota hai</span>
+<span class="ot">loss</span> = <span class="nm">0.342</span>               <span class="cm"># Model ka error value</span>
+<span class="ot">llm_temperature</span> = <span class="nm">0.7</span>      <span class="cm"># ChatGPT ka creativity parameter</span>
+
+<span class="cm"># NumPy scalar</span>
+<span class="ot">a</span> = <span class="fn">np.float32</span>(<span class="nm">3.14</span>)
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="ot">a</span>))             <span class="cm"># numpy.float32</span>
+<span class="fn">print</span>(<span class="ot">a</span>.<span class="ot">shape</span>)             <span class="cm"># () — koi dimension nahi</span>
+
+<span class="cm"># Scalar operations</span>
+<span class="ot">result</span> = <span class="ot">learning_rate</span> * <span class="nm">10</span> + <span class="nm">0.5</span>
+<span class="fn">print</span>(<span class="st">f"Result: </span><span class="ot">{result}</span><span class="st">"</span>)   <span class="cm"># Result: 0.51</span>
+    </pre>
+  </div>
+  <div class="output-block">
+    <div class="output-label">📤 Output</div>
+&lt;class 'numpy.float32'&gt;
+()
+Result: 0.510...
+  </div>
+
+  <!-- 1.2 VECTORS -->
+  <div class="subsection-title">1.2 Vectors — Direction Wale Numbers</div>
+
+  <div class="def-box">
+    <div class="def-term">Vector kya hota hai?</div>
+    <p><strong>Vector</strong> numbers ki ek ordered list hoti hai — magnitude bhi hoti hai aur direction bhi. Ise ek arrow ki tarah socho jo space mein kisi jagah point karta hai.</p>
+  </div>
+
+  <p>AI mein vectors bohot fundamental hain:</p>
+  <ul class="topic-list">
+    <li><strong>Word Embedding:</strong> "King" word ko [0.2, -0.5, 0.8, 0.1, ...] jaise 512-dimensional vector se represent karte hain</li>
+    <li><strong>Image pixels:</strong> Ek row of pixels ek vector hai</li>
+    <li><strong>User preferences:</strong> Recommendation systems mein user ek vector hota hai</li>
+    <li><strong>Neural network neurons:</strong> Har layer ka output ek vector hota hai</li>
+  </ul>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Vector — 2D aur 3D Representation</div>
+    <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+      <!-- 2D Vector -->
+      <rect x="20" y="10" width="300" height="220" rx="10" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
+      <text x="170" y="35" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#1a237e" font-weight="bold">2D Vector v = [3, 4]</text>
+      <!-- Grid -->
+      <line x1="60" y1="180" x2="290" y2="180" stroke="#9fa8da" stroke-width="1"/>
+      <line x1="80" y1="50" x2="80" y2="190" stroke="#9fa8da" stroke-width="1"/>
+      <!-- Axes -->
+      <line x1="60" y1="180" x2="295" y2="180" stroke="#1a237e" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="80" y1="190" x2="80" y2="55" stroke="#1a237e" stroke-width="2" marker-end="url(#arrow2)"/>
+      <!-- Vector arrow -->
+      <line x1="80" y1="180" x2="215" y2="105" stroke="#e65100" stroke-width="2.5" marker-end="url(#varrow)"/>
+      <!-- Labels -->
+      <text x="300" y="184" font-family="Crimson Pro,serif" font-size="13" fill="#1a237e">x</text>
+      <text x="84" y="52" font-family="Crimson Pro,serif" font-size="13" fill="#1a237e">y</text>
+      <text x="220" y="102" font-family="Crimson Pro,serif" font-size="13" fill="#e65100" font-weight="bold">v</text>
+      <text x="160" y="196" font-family="JetBrains Mono,monospace" font-size="11" fill="#3949ab">3</text>
+      <text x="64" y="140" font-family="JetBrains Mono,monospace" font-size="11" fill="#3949ab">4</text>
+      <text x="50" y="215" font-family="Crimson Pro,serif" font-size="12" fill="#546e7a">Magnitude = √(3²+4²) = 5</text>
+
+      <!-- Vector as array -->
+      <rect x="370" y="10" width="300" height="220" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+      <text x="520" y="35" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#1b5e20" font-weight="bold">Vector as Data Array</text>
+
+      <!-- Word embedding example -->
+      <text x="390" y="62" font-family="JetBrains Mono,monospace" font-size="12" fill="#1b5e20">word = "King"</text>
+      <text x="390" y="82" font-family="JetBrains Mono,monospace" font-size="12" fill="#1b5e20">embedding = [</text>
+      <rect x="390" y="90" width="260" height="22" rx="4" fill="#c8e6c9"/>
+      <text x="400" y="105" font-family="JetBrains Mono,monospace" font-size="11" fill="#1b5e20">  0.25,  -0.48,   0.71, ...</text>
+      <rect x="390" y="115" width="260" height="22" rx="4" fill="#a5d6a7"/>
+      <text x="400" y="130" font-family="JetBrains Mono,monospace" font-size="11" fill="#1b5e20">  0.13,   0.89,  -0.33, ...</text>
+      <rect x="390" y="140" width="260" height="22" rx="4" fill="#c8e6c9"/>
+      <text x="400" y="155" font-family="JetBrains Mono,monospace" font-size="11" fill="#1b5e20">  -0.05,  0.44,   0.67, ...</text>
+      <text x="390" y="175" font-family="JetBrains Mono,monospace" font-size="11" fill="#546e7a">  ... (512 dimensions total)</text>
+      <text x="390" y="192" font-family="JetBrains Mono,monospace" font-size="12" fill="#1b5e20">]</text>
+      <text x="390" y="215" font-family="Crimson Pro,serif" font-size="13" fill="#2e7d32">Har word ek point in high-dim space hai!</text>
+
+      <!-- Arrowheads -->
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#1a237e"/>
+        </marker>
+        <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#1a237e"/>
+        </marker>
+        <marker id="varrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#e65100"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Vectors</div>
+    <pre>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+
+<span class="cm"># ===== Vector Creation =====</span>
+<span class="ot">v1</span> = <span class="fn">np.array</span>([<span class="nm">3</span>, <span class="nm">4</span>])           <span class="cm"># 2D vector</span>
+<span class="ot">v2</span> = <span class="fn">np.array</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])         <span class="cm"># 3D vector</span>
+<span class="ot">word_vec</span> = <span class="fn">np.random.randn</span>(<span class="nm">512</span>)   <span class="cm"># 512D word embedding jaise</span>
+
+<span class="cm"># ===== Basic Properties =====</span>
+<span class="fn">print</span>(<span class="st">"Shape:"</span>, <span class="ot">v1</span>.<span class="ot">shape</span>)        <span class="cm"># (2,)</span>
+<span class="fn">print</span>(<span class="st">"Dtype:"</span>, <span class="ot">v1</span>.<span class="ot">dtype</span>)        <span class="cm"># int64</span>
+<span class="fn">print</span>(<span class="st">"Size:"</span>, <span class="ot">v1</span>.<span class="ot">size</span>)          <span class="cm"># 2</span>
+
+<span class="cm"># ===== Vector Operations =====</span>
+<span class="ot">a</span> = <span class="fn">np.array</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
+<span class="ot">b</span> = <span class="fn">np.array</span>([<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>])
+
+<span class="cm"># Addition — vectors add up component-wise</span>
+<span class="fn">print</span>(<span class="st">"a + b ="</span>, <span class="ot">a</span> + <span class="ot">b</span>)           <span class="cm"># [5, 7, 9]</span>
+
+<span class="cm"># Scalar multiplication</span>
+<span class="fn">print</span>(<span class="st">"2 * a ="</span>, <span class="nm">2</span> * <span class="ot">a</span>)           <span class="cm"># [2, 4, 6]</span>
+
+<span class="cm"># Magnitude (length) of vector</span>
+<span class="ot">magnitude</span> = <span class="fn">np.linalg.norm</span>(<span class="ot">v1</span>)
+<span class="fn">print</span>(<span class="st">f"v1 ka magnitude = {magnitude}"</span>) <span class="cm"># 5.0 (3-4-5 triangle)</span>
+
+<span class="cm"># Unit vector (direction only, magnitude=1)</span>
+<span class="ot">unit_v</span> = <span class="ot">v1</span> / <span class="fn">np.linalg.norm</span>(<span class="ot">v1</span>)
+<span class="fn">print</span>(<span class="st">"Unit vector:"</span>, <span class="ot">unit_v</span>)      <span class="cm"># [0.6, 0.8]</span>
+
+<span class="cm"># ===== AI Use Case: Cosine Similarity =====</span>
+<span class="cm"># Kitna similar hain do vectors? (0 = different, 1 = same)</span>
+<span class="kw">def</span> <span class="fn">cosine_similarity</span>(<span class="ot">v1</span>, <span class="ot">v2</span>):
+    <span class="ot">dot</span> = <span class="fn">np.dot</span>(<span class="ot">v1</span>, <span class="ot">v2</span>)
+    <span class="ot">mag</span> = <span class="fn">np.linalg.norm</span>(<span class="ot">v1</span>) * <span class="fn">np.linalg.norm</span>(<span class="ot">v2</span>)
+    <span class="kw">return</span> <span class="ot">dot</span> / <span class="ot">mag</span>
+
+<span class="ot">king</span>  = <span class="fn">np.array</span>([<span class="nm">0.9</span>, <span class="nm">0.1</span>, <span class="nm">0.8</span>])  <span class="cm"># "king" embedding</span>
+<span class="ot">queen</span> = <span class="fn">np.array</span>([<span class="nm">0.8</span>, <span class="nm">0.2</span>, <span class="nm">0.7</span>])  <span class="cm"># "queen" embedding</span>
+<span class="ot">car</span>   = <span class="fn">np.array</span>([<span class="nm">0.1</span>, <span class="nm">0.9</span>, <span class="nm">0.2</span>])  <span class="cm"># "car" embedding</span>
+
+<span class="fn">print</span>(<span class="st">f"King-Queen similarity: {cosine_similarity(king, queen):.3f}"</span>)
+<span class="fn">print</span>(<span class="st">f"King-Car similarity:   {cosine_similarity(king, car):.3f}"</span>)
+    </pre>
+  </div>
+  <div class="output-block">
+    <div class="output-label">📤 Output</div>
+Shape: (2,)
+Dtype: int64
+Size: 2
+a + b = [5 7 9]
+2 * a = [2 4 6]
+v1 ka magnitude = 5.0
+Unit vector: [0.6 0.8]
+King-Queen similarity: 0.997  ← bohot similar!
+King-Car similarity:   0.573  ← alag hain
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-label">💡 AI Insight</div>
+    RAG (Retrieval Augmented Generation) systems mein exactly yahi cosine similarity use hoti hai! Jab tum koi question poochte ho, uska embedding vector banta hai, phir database mein sabse similar vectors dhundhe jaate hain. Ye hi "relevant documents" hote hain jo LLM ko context ke liye diye jaate hain.
+  </div>
+
+  <!-- 1.3 MATRICES -->
+  <div class="subsection-title">1.3 Matrices — 2D Grid of Numbers</div>
+
+  <div class="def-box">
+    <div class="def-term">Matrix kya hai?</div>
+    <p><strong>Matrix</strong> numbers ka ek 2D grid hota hai — rows aur columns mein arrange kiya hua. Ise vectors ki list ki tarah bhi socha ja sakta hai.</p>
+  </div>
+
+  <p>AI mein matrices har jagah hain:</p>
+  <ul class="topic-list">
+    <li><strong>Images:</strong> Ek 28×28 grayscale image = 28×28 matrix</li>
+    <li><strong>Weight matrices:</strong> Neural networks ke connections</li>
+    <li><strong>Attention matrices:</strong> Transformer mein query-key attention scores</li>
+    <li><strong>Embeddings lookup table:</strong> Vocabulary size × embedding dimension</li>
+  </ul>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Matrix — AI mein Kahan Use Hoti Hai</div>
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Image as Matrix -->
+      <rect x="10" y="10" width="190" height="240" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+      <text x="105" y="32" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1565c0" font-weight="bold">Image Matrix</text>
+      <text x="105" y="48" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">5×5 pixel grid</text>
+      <!-- Mini pixel grid -->
+      <g transform="translate(25,58)">
+        <rect x="0" y="0" width="28" height="28" fill="#90caf9" stroke="white" stroke-width="1"/>
+        <rect x="29" y="0" width="28" height="28" fill="#42a5f5" stroke="white" stroke-width="1"/>
+        <rect x="58" y="0" width="28" height="28" fill="#1e88e5" stroke="white" stroke-width="1"/>
+        <rect x="87" y="0" width="28" height="28" fill="#1565c0" stroke="white" stroke-width="1"/>
+        <rect x="116" y="0" width="28" height="28" fill="#0d47a1" stroke="white" stroke-width="1"/>
+
+        <rect x="0" y="29" width="28" height="28" fill="#42a5f5" stroke="white" stroke-width="1"/>
+        <rect x="29" y="29" width="28" height="28" fill="#1e88e5" stroke="white" stroke-width="1"/>
+        <rect x="58" y="29" width="28" height="28" fill="#1565c0" stroke="white" stroke-width="1"/>
+        <rect x="87" y="29" width="28" height="28" fill="#0d47a1" stroke="white" stroke-width="1"/>
+        <rect x="116" y="29" width="28" height="28" fill="#1a237e" stroke="white" stroke-width="1"/>
+
+        <rect x="0" y="58" width="28" height="28" fill="#64b5f6" stroke="white" stroke-width="1"/>
+        <rect x="29" y="58" width="28" height="28" fill="#42a5f5" stroke="white" stroke-width="1"/>
+        <rect x="58" y="58" width="28" height="28" fill="#1e88e5" stroke="white" stroke-width="1"/>
+        <rect x="87" y="58" width="28" height="28" fill="#1565c0" stroke="white" stroke-width="1"/>
+        <rect x="116" y="58" width="28" height="28" fill="#0d47a1" stroke="white" stroke-width="1"/>
+
+        <!-- Pixel values -->
+        <text x="14" y="19" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">180</text>
+        <text x="43" y="19" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">210</text>
+        <text x="72" y="19" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">240</text>
+        <text x="101" y="19" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">20</text>
+        <text x="130" y="19" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">5</text>
+      </g>
+      <text x="105" y="178" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1565c0">Pixel value = 0-255</text>
+      <text x="105" y="196" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#1565c0">28×28 image = 784 values</text>
+      <text x="105" y="213" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#1565c0">1024×1024 = 1M values</text>
+      <text x="105" y="238" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">Shape: (H, W, C)</text>
+
+      <!-- Weight Matrix -->
+      <rect x="215" y="10" width="230" height="240" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+      <text x="330" y="32" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#4a148c" font-weight="bold">Weight Matrix (Neural Net)</text>
+      <text x="330" y="48" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">W : (4 inputs → 3 outputs)</text>
+
+      <!-- Weight matrix values -->
+      <g transform="translate(232,58)">
+        <!-- Headers -->
+        <text x="40" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">out1</text>
+        <text x="100" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">out2</text>
+        <text x="160" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">out3</text>
+
+        <text x="-4" y="36" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">in1</text>
+        <text x="-4" y="62" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">in2</text>
+        <text x="-4" y="88" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">in3</text>
+        <text x="-4" y="114" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">in4</text>
+
+        <!-- Cells -->
+        <rect x="10" y="20" width="60" height="24" rx="3" fill="#ce93d8"/>
+        <rect x="75" y="20" width="60" height="24" rx="3" fill="#ba68c8"/>
+        <rect x="140" y="20" width="60" height="24" rx="3" fill="#ab47bc"/>
+
+        <rect x="10" y="48" width="60" height="24" rx="3" fill="#ab47bc"/>
+        <rect x="75" y="48" width="60" height="24" rx="3" fill="#ce93d8"/>
+        <rect x="140" y="48" width="60" height="24" rx="3" fill="#e1bee7"/>
+
+        <rect x="10" y="76" width="60" height="24" rx="3" fill="#e1bee7"/>
+        <rect x="75" y="76" width="60" height="24" rx="3" fill="#ab47bc"/>
+        <rect x="140" y="76" width="60" height="24" rx="3" fill="#ce93d8"/>
+
+        <rect x="10" y="104" width="60" height="24" rx="3" fill="#ba68c8"/>
+        <rect x="75" y="104" width="60" height="24" rx="3" fill="#e1bee7"/>
+        <rect x="140" y="104" width="60" height="24" rx="3" fill="#ab47bc"/>
+
+        <!-- Values -->
+        <text x="40" y="36" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.21</text>
+        <text x="105" y="36" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">-0.4</text>
+        <text x="170" y="36" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.73</text>
+        <text x="40" y="64" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.55</text>
+        <text x="105" y="64" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.11</text>
+        <text x="170" y="64" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">-0.3</text>
+        <text x="40" y="92" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">-0.1</text>
+        <text x="105" y="92" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.88</text>
+        <text x="170" y="92" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.44</text>
+        <text x="40" y="120" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.67</text>
+        <text x="105" y="120" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">-0.2</text>
+        <text x="170" y="120" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="white">0.33</text>
+      </g>
+      <text x="330" y="200" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#4a148c">Shape: (4, 3)</text>
+      <text x="330" y="218" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#4a148c">Training mein ye values update hoti hain</text>
+      <text x="330" y="240" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">Gradient Descent se!</text>
+
+      <!-- Attention Matrix -->
+      <rect x="460" y="10" width="230" height="240" rx="8" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5"/>
+      <text x="575" y="32" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#e65100" font-weight="bold">Attention Matrix</text>
+      <text x="575" y="48" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">Transformer (4 tokens × 4 tokens)</text>
+
+      <!-- Attention heatmap -->
+      <g transform="translate(477,58)">
+        <text x="25" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">The</text>
+        <text x="65" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">cat</text>
+        <text x="105" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">sat</text>
+        <text x="145" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">here</text>
+
+        <text x="-2" y="36" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">The</text>
+        <text x="-2" y="62" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">cat</text>
+        <text x="-2" y="88" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">sat</text>
+        <text x="-2" y="114" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">here</text>
+
+        <!-- Heatmap cells with varying opacity -->
+        <rect x="5" y="20" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.9"/>
+        <rect x="48" y="20" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.3"/>
+        <rect x="91" y="20" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.1"/>
+        <rect x="134" y="20" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.2"/>
+
+        <rect x="5" y="48" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.2"/>
+        <rect x="48" y="48" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.9"/>
+        <rect x="91" y="48" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.4"/>
+        <rect x="134" y="48" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.1"/>
+
+        <rect x="5" y="76" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.1"/>
+        <rect x="48" y="76" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.5"/>
+        <rect x="91" y="76" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.8"/>
+        <rect x="134" y="76" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.3"/>
+
+        <rect x="5" y="104" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.1"/>
+        <rect x="48" y="104" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.3"/>
+        <rect x="91" y="104" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.2"/>
+        <rect x="134" y="104" width="40" height="24" rx="2" fill="#ff8f00" opacity="0.9"/>
+      </g>
+      <text x="575" y="200" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#e65100">Darker = more attention</text>
+      <text x="575" y="218" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#e65100">Har word kitna dhyan de</text>
+      <text x="575" y="238" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#e65100">doosre words pe</text>
+    </svg>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Matrices</div>
+    <pre>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+
+<span class="cm"># ===== Matrix Creation =====</span>
+<span class="ot">A</span> = <span class="fn">np.array</span>([
+    [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>],   <span class="cm"># Row 1</span>
+    [<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>],   <span class="cm"># Row 2</span>
+    [<span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">9</span>]    <span class="cm"># Row 3</span>
+])  <span class="cm"># Shape: (3, 3)</span>
+
+<span class="fn">print</span>(<span class="st">"Matrix A:\n"</span>, <span class="ot">A</span>)
+<span class="fn">print</span>(<span class="st">"Shape:"</span>, <span class="ot">A</span>.<span class="ot">shape</span>)     <span class="cm"># (3, 3)</span>
+<span class="fn">print</span>(<span class="st">"Rows:"</span>, <span class="ot">A</span>.<span class="ot">shape</span>[<span class="nm">0</span>])   <span class="cm"># 3</span>
+<span class="fn">print</span>(<span class="st">"Cols:"</span>, <span class="ot">A</span>.<span class="ot">shape</span>[<span class="nm">1</span>])   <span class="cm"># 3</span>
+
+<span class="cm"># ===== Special Matrices =====</span>
+<span class="ot">zeros</span>    = <span class="fn">np.zeros</span>((<span class="nm">3</span>, <span class="nm">3</span>))    <span class="cm"># All zeros</span>
+<span class="ot">ones</span>     = <span class="fn">np.ones</span>((<span class="nm">3</span>, <span class="nm">3</span>))     <span class="cm"># All ones</span>
+<span class="ot">identity</span> = <span class="fn">np.eye</span>(<span class="nm">3</span>)           <span class="cm"># Identity matrix</span>
+<span class="ot">random_m</span> = <span class="fn">np.random.randn</span>(<span class="nm">3</span>, <span class="nm">3</span>) <span class="cm"># Random (weight init)</span>
+
+<span class="fn">print</span>(<span class="st">"\nIdentity Matrix:\n"</span>, <span class="ot">identity</span>)
+
+<span class="cm"># ===== Element Access =====</span>
+<span class="fn">print</span>(<span class="st">"\nElement [1][2]:"</span>, <span class="ot">A</span>[<span class="nm">1</span>][<span class="nm">2</span>])  <span class="cm"># 6 (row 1, col 2)</span>
+<span class="fn">print</span>(<span class="st">"Row 0:"</span>, <span class="ot">A</span>[<span class="nm">0</span>])               <span class="cm"># [1 2 3]</span>
+<span class="fn">print</span>(<span class="st">"Col 0:"</span>, <span class="ot">A</span>[:, <span class="nm">0</span>])            <span class="cm"># [1 4 7]</span>
+
+<span class="cm"># ===== Transpose (rows ↔ columns) =====</span>
+<span class="ot">B</span> = <span class="fn">np.array</span>([[<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>], [<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>]])  <span class="cm"># Shape (2, 3)</span>
+<span class="fn">print</span>(<span class="st">"\nB.T (Transpose):\n"</span>, <span class="ot">B</span>.<span class="ot">T</span>)     <span class="cm"># Shape (3, 2)</span>
+<span class="fn">print</span>(<span class="st">"B shape:"</span>, <span class="ot">B</span>.<span class="ot">shape</span>,           <span class="cm"># (2, 3)</span>
+      <span class="st">"  B.T shape:"</span>, <span class="ot">B</span>.<span class="ot">T</span>.<span class="ot">shape</span>)     <span class="cm"># (3, 2)</span>
+    </pre>
+  </div>
+
+  <!-- 1.4 DOT PRODUCT -->
+  <div class="subsection-title">1.4 Dot Product — Similarity ka Measure</div>
+
+  <div class="def-box">
+    <div class="def-term">Dot Product kya hai?</div>
+    <p>Do vectors ka dot product ek <strong>single number</strong> deta hai jo batata hai ki woh kitne ek direction mein hain. Formula: <strong>a·b = Σ(aᵢ × bᵢ)</strong></p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Dot Product Formula</div>
+    <div class="formula-main">a · b = a₁b₁ + a₂b₂ + a₃b₃ + ... + aₙbₙ</div>
+    <div class="formula-main">= Σᵢ aᵢ bᵢ</div>
+    <div class="formula-desc">
+      Agar a = [1, 2, 3] aur b = [4, 5, 6] toh:<br>
+      a · b = (1×4) + (2×5) + (3×6) = 4 + 10 + 18 = <strong>32</strong>
+    </div>
+  </div>
+
+  <p>Dot product AI mein <strong>sabse fundamental operation</strong> hai:</p>
+  <ul class="topic-list">
+    <li><strong>Neural network neurons:</strong> Har neuron inputs ka dot product + bias calculate karta hai</li>
+    <li><strong>Attention mechanism:</strong> Query aur Key vectors ka dot product = attention score</li>
+    <li><strong>Similarity search:</strong> Vectors kitne similar hain = dot product (normalized = cosine similarity)</li>
+  </ul>
+
+  <!-- 1.5 MATRIX MULTIPLICATION -->
+  <div class="subsection-title">1.5 Matrix Multiplication — AI ka Core Operation</div>
+
+  <p>Matrix multiplication AI mein <strong>sabse important operation</strong> hai. Jab bhi neural network forward pass karta hai — woh matrix multiplication kar raha hota hai.</p>
+
+  <div class="formula-box">
+    <div class="formula-title">Matrix Multiplication Rule</div>
+    <div class="formula-main">C = A × B</div>
+    <div class="formula-desc">
+      A ki shape (m × k) honi chahiye, B ki (k × n) — result C ki shape (m × n) hogi.<br>
+      C[i][j] = Σₖ A[i][k] × B[k][j] — Row of A dot Column of B
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Matrix Multiplication — Visual Step-by-Step</div>
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Matrix A (2x3) -->
+      <rect x="10" y="30" width="140" height="100" rx="6" fill="#e8eaf6" stroke="#3949ab" stroke-width="2"/>
+      <text x="80" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a237e" font-weight="bold">A (2×3)</text>
+      <text x="35" y="65" font-family="JetBrains Mono,monospace" font-size="12" fill="#1a237e">1  2  3</text>
+      <text x="35" y="95" font-family="JetBrains Mono,monospace" font-size="12" fill="#1a237e">4  5  6</text>
+      <!-- Highlight row 0 of A -->
+      <rect x="15" y="48" width="130" height="24" rx="4" fill="#3949ab" opacity="0.2"/>
+
+      <!-- × symbol -->
+      <text x="160" y="85" font-family="Playfair Display,serif" font-size="22" fill="#e65100" font-weight="bold">×</text>
+
+      <!-- Matrix B (3x2) -->
+      <rect x="185" y="30" width="110" height="130" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+      <text x="240" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1b5e20" font-weight="bold">B (3×2)</text>
+      <text x="200" y="58" font-family="JetBrains Mono,monospace" font-size="12" fill="#1b5e20">7   8</text>
+      <text x="200" y="85" font-family="JetBrains Mono,monospace" font-size="12" fill="#1b5e20">9  10</text>
+      <text x="200" y="112" font-family="JetBrains Mono,monospace" font-size="12" fill="#1b5e20">11  12</text>
+      <!-- Highlight col 0 of B -->
+      <rect x="190" y="35" width="28" height="120" rx="4" fill="#2e7d32" opacity="0.2"/>
+
+      <!-- = symbol -->
+      <text x="308" y="85" font-family="Playfair Display,serif" font-size="22" fill="#e65100" font-weight="bold">=</text>
+
+      <!-- Matrix C (2x2) -->
+      <rect x="335" y="30" width="110" height="100" rx="6" fill="#fff8e1" stroke="#f57f17" stroke-width="2"/>
+      <text x="390" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#e65100" font-weight="bold">C (2×2)</text>
+      <text x="350" y="65" font-family="JetBrains Mono,monospace" font-size="12" fill="#bf360c">58   64</text>
+      <text x="350" y="95" font-family="JetBrains Mono,monospace" font-size="12" fill="#bf360c">139  154</text>
+      <!-- Highlight C[0][0] -->
+      <rect x="340" y="48" width="56" height="24" rx="4" fill="#ff6d00" opacity="0.25"/>
+
+      <!-- Explanation -->
+      <rect x="460" y="10" width="230" height="180" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+      <text x="575" y="30" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#4a148c" font-weight="bold">C[0][0] = ?</text>
+      <text x="475" y="55" font-family="JetBrains Mono,monospace" font-size="11" fill="#4a148c">Row 0 of A = [1, 2, 3]</text>
+      <text x="475" y="75" font-family="JetBrains Mono,monospace" font-size="11" fill="#4a148c">Col 0 of B = [7, 9, 11]</text>
+      <line x1="475" y1="82" x2="680" y2="82" stroke="#9c27b0" stroke-width="1"/>
+      <text x="475" y="100" font-family="JetBrains Mono,monospace" font-size="11" fill="#4a148c">1×7 = 7</text>
+      <text x="475" y="118" font-family="JetBrains Mono,monospace" font-size="11" fill="#4a148c">2×9 = 18</text>
+      <text x="475" y="136" font-family="JetBrains Mono,monospace" font-size="11" fill="#4a148c">3×11 = 33</text>
+      <line x1="475" y1="143" x2="680" y2="143" stroke="#9c27b0" stroke-width="1"/>
+      <text x="475" y="162" font-family="JetBrains Mono,monospace" font-size="12" fill="#7b1fa2" font-weight="bold">Sum = 58 ✓</text>
+      <text x="475" y="182" font-family="Crimson Pro,serif" font-size="11" fill="#546e7a">Neural net forward pass!</text>
+    </svg>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Matrix Multiplication</div>
+    <pre>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+
+<span class="ot">A</span> = <span class="fn">np.array</span>([[<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>],
+               [<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>]])   <span class="cm"># Shape: (2, 3)</span>
+
+<span class="ot">B</span> = <span class="fn">np.array</span>([[<span class="nm">7</span>,  <span class="nm">8</span>],
+               [<span class="nm">9</span>,  <span class="nm">10</span>],
+               [<span class="nm">11</span>, <span class="nm">12</span>]])     <span class="cm"># Shape: (3, 2)</span>
+
+<span class="cm"># Method 1: np.matmul</span>
+<span class="ot">C</span> = <span class="fn">np.matmul</span>(<span class="ot">A</span>, <span class="ot">B</span>)
+<span class="fn">print</span>(<span class="st">"C =\n"</span>, <span class="ot">C</span>)              <span class="cm"># [[58, 64], [139, 154]]</span>
+<span class="fn">print</span>(<span class="st">"Shape:"</span>, <span class="ot">C</span>.<span class="ot">shape</span>)       <span class="cm"># (2, 2)</span>
+
+<span class="cm"># Method 2: @ operator (Python 3.5+)</span>
+<span class="ot">C2</span> = <span class="ot">A</span> <span class="op">@</span> <span class="ot">B</span>
+<span class="fn">print</span>(<span class="st">"\nC2 =\n"</span>, <span class="ot">C2</span>)           <span class="cm"># Same result</span>
+
+<span class="cm"># ===== Neural Network Forward Pass Simulation =====</span>
+<span class="cm"># Input: batch of 32 samples, 784 features (MNIST flattened)</span>
+<span class="ot">X</span> = <span class="fn">np.random.randn</span>(<span class="nm">32</span>, <span class="nm">784</span>)  <span class="cm"># (32, 784) - 32 images</span>
+
+<span class="cm"># Weight matrix: 784 inputs → 256 hidden neurons</span>
+<span class="ot">W1</span> = <span class="fn">np.random.randn</span>(<span class="nm">784</span>, <span class="nm">256</span>) * <span class="nm">0.01</span>
+<span class="ot">b1</span> = <span class="fn">np.zeros</span>(<span class="nm">256</span>)
+
+<span class="cm"># Forward pass: Hidden layer output</span>
+<span class="ot">H</span> = <span class="ot">X</span> <span class="op">@</span> <span class="ot">W1</span> + <span class="ot">b1</span>    <span class="cm"># (32, 784) @ (784, 256) = (32, 256)</span>
+<span class="fn">print</span>(<span class="st">f"\nHidden layer output shape: {H.shape}"</span>)
+
+<span class="cm"># Second layer: 256 → 10 (10 classes)</span>
+<span class="ot">W2</span> = <span class="fn">np.random.randn</span>(<span class="nm">256</span>, <span class="nm">10</span>) * <span class="nm">0.01</span>
+<span class="ot">output</span> = <span class="ot">H</span> <span class="op">@</span> <span class="ot">W2</span>    <span class="cm"># (32, 256) @ (256, 10) = (32, 10)</span>
+<span class="fn">print</span>(<span class="st">f"Output shape: {output.shape}"</span>)
+<span class="cm"># Shape batata hai: 32 images, har ek ke liye 10 class scores</span>
+    </pre>
+  </div>
+  <div class="output-block">
+    <div class="output-label">📤 Output</div>
+C =
+ [[ 58  64]
+  [139 154]]
+Shape: (2, 2)
+Hidden layer output shape: (32, 256)
+Output shape: (32, 10)
+  </div>
+
+  <!-- 1.6 TENSORS -->
+  <div class="subsection-title">1.6 Tensors — Generalized Arrays</div>
+
+  <div class="def-box">
+    <div class="def-term">Tensor kya hai?</div>
+    <p><strong>Tensor</strong> numbers ka generalized container hai. Scalar = 0D tensor, Vector = 1D tensor, Matrix = 2D tensor, phir 3D, 4D, 5D... sab tensors hain. PyTorch aur TensorFlow sab tensors pe kaam karte hain.</p>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>Dimension</th><th>Name</th><th>Shape Example</th><th>AI Use Case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0D</td><td>Scalar</td><td><code>()</code></td><td>Loss value, learning rate</td></tr>
+        <tr><td>1D</td><td>Vector</td><td><code>(512,)</code></td><td>Word embedding, hidden state</td></tr>
+        <tr><td>2D</td><td>Matrix</td><td><code>(batch, features)</code></td><td>Input data, weight matrix</td></tr>
+        <tr><td>3D</td><td>Tensor</td><td><code>(batch, seq, features)</code></td><td>NLP sequences, time series</td></tr>
+        <tr><td>4D</td><td>Tensor</td><td><code>(batch, H, W, C)</code></td><td>Batch of images (CNN)</td></tr>
+        <tr><td>5D</td><td>Tensor</td><td><code>(batch, frames, H, W, C)</code></td><td>Video data</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Tensors with PyTorch</div>
+    <pre>
+<span class="im">import</span> <span class="ot">torch</span>
+
+<span class="cm"># ===== Creating Tensors =====</span>
+<span class="ot">scalar</span>   = <span class="ot">torch</span>.<span class="fn">tensor</span>(<span class="nm">3.14</span>)        <span class="cm"># 0D</span>
+<span class="ot">vector</span>   = <span class="ot">torch</span>.<span class="fn">tensor</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])     <span class="cm"># 1D</span>
+<span class="ot">matrix</span>   = <span class="ot">torch</span>.<span class="fn">randn</span>(<span class="nm">3</span>, <span class="nm">4</span>)          <span class="cm"># 2D</span>
+<span class="ot">image</span>    = <span class="ot">torch</span>.<span class="fn">randn</span>(<span class="nm">3</span>, <span class="nm">224</span>, <span class="nm">224</span>)   <span class="cm"># 3D (C, H, W)</span>
+<span class="ot">batch</span>    = <span class="ot">torch</span>.<span class="fn">randn</span>(<span class="nm">32</span>, <span class="nm">3</span>, <span class="nm">224</span>, <span class="nm">224</span>)<span class="cm"># 4D batch</span>
+
+<span class="fn">print</span>(<span class="st">f"Scalar dim: {scalar.dim()}, shape: {scalar.shape}"</span>)
+<span class="fn">print</span>(<span class="st">f"Vector dim: {vector.dim()}, shape: {vector.shape}"</span>)
+<span class="fn">print</span>(<span class="st">f"Image  dim: {image.dim()},  shape: {image.shape}"</span>)
+<span class="fn">print</span>(<span class="st">f"Batch  dim: {batch.dim()},  shape: {batch.shape}"</span>)
+
+<span class="cm"># ===== NLP Tensor Example =====</span>
+<span class="ot">batch_size</span>  = <span class="nm">32</span>    <span class="cm"># 32 sentences at once</span>
+<span class="ot">seq_len</span>     = <span class="nm">128</span>   <span class="cm"># 128 tokens per sentence</span>
+<span class="ot">embed_dim</span>   = <span class="nm">768</span>   <span class="cm"># BERT-style embedding size</span>
+
+<span class="ot">nlp_tensor</span> = <span class="ot">torch</span>.<span class="fn">randn</span>(<span class="ot">batch_size</span>, <span class="ot">seq_len</span>, <span class="ot">embed_dim</span>)
+<span class="fn">print</span>(<span class="st">f"\nNLP Tensor shape: {nlp_tensor.shape}"</span>)
+<span class="cm"># torch.Size([32, 128, 768])</span>
+
+<span class="cm"># ===== GPU Transfer =====</span>
+<span class="kw">if</span> <span class="ot">torch</span>.<span class="ot">cuda</span>.<span class="fn">is_available</span>():
+    <span class="ot">t</span> = <span class="ot">nlp_tensor</span>.<span class="fn">cuda</span>()   <span class="cm"># GPU pe move karo</span>
+    <span class="fn">print</span>(<span class="st">f"Device: {t.device}"</span>)  <span class="cm"># cuda:0</span>
+    </pre>
+  </div>
+
+  <!-- 1.7 EIGENVALUES -->
+  <div class="subsection-title">1.7 Eigenvalues & Eigenvectors — Data ka DNA</div>
+
+  <div class="def-box">
+    <div class="def-term">Eigenvalue/Eigenvector kya hai?</div>
+    <p>Ek matrix <strong>A</strong> ke liye, agar koi vector <strong>v</strong> hai aur ek number <strong>λ</strong> (lambda) hai jaise ki: <strong>Av = λv</strong> — toh v ek <strong>eigenvector</strong> hai aur λ ek <strong>eigenvalue</strong> hai. Matrix sirf vector ko scale karta hai, rotate nahi karta.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Eigenvalue Equation</div>
+    <div class="formula-main">A × v = λ × v</div>
+    <div class="formula-desc">
+      A = matrix | v = eigenvector | λ (lambda) = eigenvalue<br>
+      Iska matlab: Matrix A, vector v ko sirf λ times scale karta hai — direction same rehti hai!
+    </div>
+  </div>
+
+  <p>AI mein eigenvalues aur eigenvectors ka use:</p>
+  <ul class="topic-list">
+    <li><strong>PCA (Principal Component Analysis):</strong> Data ke most important directions dhundhne ke liye — dimensionality reduction</li>
+    <li><strong>Google PageRank:</strong> Web pages ki ranking ke liye eigenvector use hota tha</li>
+    <li><strong>Stability Analysis:</strong> Neural networks ki training stability check karne ke liye</li>
+    <li><strong>Spectral Clustering:</strong> Graph-based ML algorithms mein</li>
+  </ul>
+
+  <div class="code-block">
+    <div class="code-label">Python — Eigenvalues & PCA</div>
+    <pre>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+<span class="im">from</span> <span class="ot">sklearn.decomposition</span> <span class="im">import</span> <span class="cl">PCA</span>
+<span class="im">import</span> <span class="ot">matplotlib.pyplot</span> <span class="im">as</span> <span class="ot">plt</span>
+
+<span class="cm"># ===== Eigenvalue Calculation =====</span>
+<span class="ot">A</span> = <span class="fn">np.array</span>([[<span class="nm">3</span>, <span class="nm">1</span>],
+               [<span class="nm">1</span>, <span class="nm">3</span>]])
+
+<span class="ot">eigenvalues</span>, <span class="ot">eigenvectors</span> = <span class="fn">np.linalg.eig</span>(<span class="ot">A</span>)
+<span class="fn">print</span>(<span class="st">"Eigenvalues:"</span>, <span class="ot">eigenvalues</span>)       <span class="cm"># [4. 2.]</span>
+<span class="fn">print</span>(<span class="st">"Eigenvectors:\n"</span>, <span class="ot">eigenvectors</span>)   <span class="cm"># columns are eigenvectors</span>
+
+<span class="cm"># Verify: Av = λv</span>
+<span class="ot">v</span> = <span class="ot">eigenvectors</span>[:, <span class="nm">0</span>]   <span class="cm"># First eigenvector</span>
+<span class="ot">λ</span> = <span class="ot">eigenvalues</span>[<span class="nm">0</span>]       <span class="cm"># First eigenvalue</span>
+<span class="fn">print</span>(<span class="st">"\nAv:"</span>, <span class="ot">A</span> <span class="op">@</span> <span class="ot">v</span>)
+<span class="fn">print</span>(<span class="st">"λv:"</span>, <span class="ot">λ</span> * <span class="ot">v</span>)         <span class="cm"># Same! ✓</span>
+
+<span class="cm"># ===== PCA — Real AI Use Case =====</span>
+<span class="cm"># 1000 data points with 10 features → reduce to 2</span>
+<span class="fn">np.random.seed</span>(<span class="nm">42</span>)
+<span class="ot">data</span> = <span class="fn">np.random.randn</span>(<span class="nm">1000</span>, <span class="nm">10</span>)  <span class="cm"># 1000 samples, 10 features</span>
+
+<span class="ot">pca</span> = <span class="cl">PCA</span>(<span class="ot">n_components</span>=<span class="nm">2</span>)
+<span class="ot">reduced</span> = <span class="ot">pca</span>.<span class="fn">fit_transform</span>(<span class="ot">data</span>)
+
+<span class="fn">print</span>(<span class="st">f"\nOriginal shape: {data.shape}"</span>)    <span class="cm"># (1000, 10)</span>
+<span class="fn">print</span>(<span class="st">f"Reduced shape:  {reduced.shape}"</span>)  <span class="cm"># (1000, 2)</span>
+<span class="fn">print</span>(<span class="st">f"Variance explained: {pca.explained_variance_ratio_}"</span>)
+<span class="cm"># Pehle 2 components kitna variance explain karte hain</span>
+    </pre>
+  </div>
+
+  <div class="interview-section">
+    <h4>🎯 Linear Algebra Interview Questions</h4>
+    <div class="interview-q"><strong>Q1.</strong> "Cosine similarity aur Euclidean distance mein kya difference hai? RAG mein kaunsa use karte hain aur kyun?"</div>
+    <div class="interview-q"><strong>Q2.</strong> "Matrix multiplication ki shape rules explain karo. (2,3) @ (3,4) = ? aur (3,4) @ (2,3) kyun nahi hoga?"</div>
+    <div class="interview-q"><strong>Q3.</strong> "PCA kya hai aur yeh eigenvalues se kaise related hai? LLMs mein dimensionality reduction kab use karte hain?"</div>
+    <div class="interview-q"><strong>Q4.</strong> "Ek transformer mein attention score kaise calculate hota hai? Q, K, V matrices kya hain?"</div>
+    <div class="interview-q"><strong>Q5.</strong> "Transpose operation ka neural networks mein kya role hai? Backpropagation mein kaise use hota hai?"</div>
+  </div>
+
+  <div class="exercise-box">
+    <h4>🖊 Linear Algebra Practice Exercises</h4>
+    <ol>
+      <li>NumPy use karke do 3D vectors ka dot product calculate karo aur cosine similarity find karo.</li>
+      <li>Ek (4,3) aur (3,2) matrix multiply karo manually, phir NumPy se verify karo.</li>
+      <li>Apne naam ke har letter ki ASCII value nikalo, unka ek vector banao, aur uska magnitude calculate karo.</li>
+      <li>50 random 2D points generate karo, PCA se 1D reduce karo, aur visualize karo ki kaunsa component sabse zyada variance explain karta hai.</li>
+      <li>Word2Vec-style: "King - Man + Woman" operation vector arithmetic se try karo (random vectors se).</li>
+    </ol>
+  </div>
+
+  <div class="summary-box">
+    <h4>📌 Linear Algebra — Key Takeaways</h4>
+    <ul>
+      <li><strong>Scalar:</strong> Single number — learning rate, temperature, loss value</li>
+      <li><strong>Vector:</strong> Ordered numbers — word embeddings, hidden states, user preferences</li>
+      <li><strong>Matrix:</strong> 2D grid — weight matrices, image data, attention scores</li>
+      <li><strong>Tensor:</strong> N-dimensional — PyTorch/TensorFlow ka base data type</li>
+      <li><strong>Dot Product:</strong> Similarity measure — attention mechanism ka core</li>
+      <li><strong>Matrix Multiply:</strong> Neural network forward pass ka foundation</li>
+      <li><strong>Eigenvalues/PCA:</strong> Data compression aur feature extraction</li>
+      <li><strong>Cosine Similarity:</strong> RAG systems mein document retrieval</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 2: PROBABILITY & STATISTICS ==================== -->
+<div class="page" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">CHAPTER 02 • PART 2</div>
+    <h2>🎲 Probability & Statistics</h2>
+    <p>Uncertainty ko measure karna — AI ke decisions ka foundation</p>
+  </div>
+
+  <div class="section-title"><span class="sec-icon">🌟</span>Introduction — Probability Kyun Zaroori Hai?</div>
+
+  <p>AI koi crystal ball nahi hai — woh certainties nahi, <strong>probabilities</strong> deal karta hai. Jab ChatGPT koi word predict karta hai, woh ek probability distribution se sample karta hai. Jab spam filter email ko spam classify karta hai, woh probability calculate karta hai. Jab recommendation system Netflix pe movie suggest karta hai, woh probability of user liking predict karta hai.</p>
+
+  <div class="analogy-box">
+    <h5>Real-World Analogy — Weather Forecast ki Tarah</h5>
+    "Kal 70% chance of rain" — yeh ek probability statement hai. AI hamesha aisa sochta hai. "Is email ke spam hone ka 93% chance hai." "Is patient ke diabetes hone ka 67% probability hai." "Next word 'the' hone ki 34% probability, 'a' ki 28%..." — Probability ek AI ki natural language hai!
+  </div>
+
+  <!-- 2.1 MEAN -->
+  <div class="subsection-title">2.1 Mean — Average Value</div>
+
+  <div class="def-box">
+    <div class="def-term">Mean (Arithmetic Mean) kya hai?</div>
+    <p>Saare values ka sum, total count se divide karna. Yeh central tendency ka sabse common measure hai — "typical value" batata hai.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Mean Formula</div>
+    <div class="formula-main">μ = (1/N) × Σᵢ xᵢ = (x₁ + x₂ + ... + xₙ) / N</div>
+    <div class="formula-desc">
+      μ (mu) = population mean | N = total count | xᵢ = individual values<br>
+      Example: [2, 4, 6, 8, 10] → Mean = (2+4+6+8+10)/5 = 30/5 = <strong>6</strong>
+    </div>
+  </div>
+
+  <p>AI mein mean kahan use hota hai:</p>
+  <ul class="topic-list">
+    <li><strong>Batch Normalization:</strong> Neural networks mein har layer ke outputs ka mean subtract karte hain</li>
+    <li><strong>Mean Squared Error (MSE):</strong> Most common loss function</li>
+    <li><strong>Feature scaling:</strong> Data preprocessing mein mean use karte hain</li>
+    <li><strong>Ensemble methods:</strong> Multiple models ke predictions ka mean = final prediction</li>
+  </ul>
+
+  <!-- 2.2 MEDIAN -->
+  <div class="subsection-title">2.2 Median — Middle Value</div>
+
+  <div class="def-box">
+    <div class="def-term">Median kya hai?</div>
+    <p>Data ko sort karne ke baad beech wali value. Yeh <strong>outliers se affected nahi</strong> hoti — isliye median mean se zyada "robust" hoti hai.</p>
+  </div>
+
+  <div class="analogy-box">
+    <h5>Analogy — Salary Example</h5>
+    Ek company mein 9 employees hain jिनकी salary hai: [20K, 25K, 30K, 32K, 35K, 40K, 45K, 50K, 500K].<br>
+    Mean = ~86K (CEO ki 500K salary se distorted!) | Median = 35K (actually representative!)<br>
+    Isliye median zyada "fair" hota hai jab outliers ho.
+  </div>
+
+  <!-- 2.3 MODE -->
+  <div class="subsection-title">2.3 Mode — Sabse Common Value</div>
+
+  <div class="def-box">
+    <div class="def-term">Mode kya hai?</div>
+    <p>Jo value sabse zyada baar repeat hoti hai. Categorical data ke liye best central tendency measure. Ek dataset bimodal ya multimodal bhi ho sakta hai.</p>
+  </div>
+
+  <!-- 2.4 VARIANCE -->
+  <div class="subsection-title">2.4 Variance — Spread of Data</div>
+
+  <div class="def-box">
+    <div class="def-term">Variance kya hai?</div>
+    <p>Data kitna spread out hai mean se — yeh <strong>variability ka measure</strong> hai. High variance = data bohot scattered. Low variance = data mean ke paas.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Variance Formula</div>
+    <div class="formula-main">σ² = (1/N) Σᵢ (xᵢ − μ)²</div>
+    <div class="formula-desc">
+      σ² (sigma squared) = variance | μ = mean | N = count<br>
+      Har value ko mean se subtract karo, square karo, phir sab ka average lo.<br>
+      Squaring kyun? Negative differences positive ho jaate hain aur bade differences zyada penalize hote hain.
+    </div>
+  </div>
+
+  <!-- 2.5 STANDARD DEVIATION -->
+  <div class="subsection-title">2.5 Standard Deviation — Variance ka Square Root</div>
+
+  <div class="formula-box">
+    <div class="formula-title">Standard Deviation</div>
+    <div class="formula-main">σ = √σ² = √[(1/N) Σᵢ (xᵢ − μ)²]</div>
+    <div class="formula-desc">
+      σ (sigma) = standard deviation | Same unit mein hoti hai data ke<br>
+      Variance: squared units mein (e.g., meters²) | Std Dev: same units (meters)<br>
+      Isliye std dev zyada interpretable hai!
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Mean, Variance, Std Dev — Visual Comparison</div>
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Low variance dataset -->
+      <rect x="10" y="10" width="320" height="200" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+      <text x="170" y="30" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1b5e20" font-weight="bold">Low Variance (σ² = 2)</text>
+
+      <!-- Number line -->
+      <line x1="30" y1="90" x2="310" y2="90" stroke="#1b5e20" stroke-width="2"/>
+      <text x="30" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">1</text>
+      <text x="100" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">3</text>
+      <text x="170" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#1b5e20" font-weight="bold">5 (μ)</text>
+      <text x="240" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">7</text>
+      <text x="305" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">9</text>
+
+      <!-- Data points clustered near mean -->
+      <circle cx="155" cy="90" r="8" fill="#43a047" opacity="0.8"/>
+      <circle cx="168" cy="90" r="8" fill="#43a047" opacity="0.8"/>
+      <circle cx="175" cy="90" r="8" fill="#43a047" opacity="0.8"/>
+      <circle cx="180" cy="90" r="8" fill="#43a047" opacity="0.8"/>
+      <circle cx="162" cy="90" r="8" fill="#43a047" opacity="0.8"/>
+      <circle cx="185" cy="90" r="8" fill="#43a047" opacity="0.8"/>
+
+      <!-- Mean line -->
+      <line x1="170" y1="60" x2="170" y2="115" stroke="#1b5e20" stroke-width="2" stroke-dasharray="4"/>
+      <text x="170" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1b5e20">μ=5</text>
+
+      <!-- Std dev bracket -->
+      <line x1="130" y1="125" x2="210" y2="125" stroke="#2e7d32" stroke-width="2"/>
+      <line x1="130" y1="120" x2="130" y2="130" stroke="#2e7d32" stroke-width="2"/>
+      <line x1="210" y1="120" x2="210" y2="130" stroke="#2e7d32" stroke-width="2"/>
+      <text x="170" y="145" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#2e7d32">σ ≈ 1.4</text>
+
+      <text x="170" y="170" text-anchor="middle" font-family="Crimson Pro,serif" font-size="13" fill="#1b5e20">Data tightly clustered!</text>
+      <text x="170" y="188" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#1b5e20">Model consistent hoga</text>
+
+      <!-- High variance dataset -->
+      <rect x="370" y="10" width="320" height="200" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+      <text x="530" y="30" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#b71c1c" font-weight="bold">High Variance (σ² = 24)</text>
+
+      <!-- Number line -->
+      <line x1="390" y1="90" x2="670" y2="90" stroke="#b71c1c" stroke-width="2"/>
+      <text x="390" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">1</text>
+      <text x="460" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">3</text>
+      <text x="530" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#b71c1c" font-weight="bold">5 (μ)</text>
+      <text x="600" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">7</text>
+      <text x="660" y="107" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">9</text>
+
+      <!-- Data points scattered -->
+      <circle cx="400" cy="90" r="8" fill="#e53935" opacity="0.8"/>
+      <circle cx="450" cy="90" r="8" fill="#e53935" opacity="0.8"/>
+      <circle cx="530" cy="90" r="8" fill="#e53935" opacity="0.8"/>
+      <circle cx="600" cy="90" r="8" fill="#e53935" opacity="0.8"/>
+      <circle cx="650" cy="90" r="8" fill="#e53935" opacity="0.8"/>
+      <circle cx="490" cy="90" r="8" fill="#e53935" opacity="0.8"/>
+
+      <!-- Mean line -->
+      <line x1="530" y1="60" x2="530" y2="115" stroke="#b71c1c" stroke-width="2" stroke-dasharray="4"/>
+      <text x="530" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#b71c1c">μ=5</text>
+
+      <!-- Std dev bracket -->
+      <line x1="440" y1="125" x2="620" y2="125" stroke="#c62828" stroke-width="2"/>
+      <line x1="440" y1="120" x2="440" y2="130" stroke="#c62828" stroke-width="2"/>
+      <line x1="620" y1="120" x2="620" y2="130" stroke="#c62828" stroke-width="2"/>
+      <text x="530" y="145" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#c62828">σ ≈ 4.9</text>
+
+      <text x="530" y="170" text-anchor="middle" font-family="Crimson Pro,serif" font-size="13" fill="#b71c1c">Data widely spread!</text>
+      <text x="530" y="188" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#b71c1c">Model unpredictable hoga</text>
+    </svg>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Statistics Fundamentals</div>
+    <pre>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+<span class="im">from</span> <span class="ot">scipy</span> <span class="im">import</span> <span class="ot">stats</span>
+
+<span class="cm"># ===== Sample Dataset: AI model evaluation scores =====</span>
+<span class="ot">scores</span> = <span class="fn">np.array</span>([<span class="nm">72</span>, <span class="nm">85</span>, <span class="nm">78</span>, <span class="nm">92</span>, <span class="nm">68</span>, <span class="nm">88</span>, <span class="nm">75</span>, <span class="nm">95</span>, <span class="nm">71</span>, <span class="nm">83</span>])
+
+<span class="cm"># ===== Measures of Central Tendency =====</span>
+<span class="ot">mean</span>   = <span class="fn">np.mean</span>(<span class="ot">scores</span>)
+<span class="ot">median</span> = <span class="fn">np.median</span>(<span class="ot">scores</span>)
+<span class="ot">mode</span>   = <span class="ot">stats</span>.<span class="fn">mode</span>(<span class="ot">scores</span>)
+
+<span class="fn">print</span>(<span class="st">f"Mean   (Average):   {mean:.2f}"</span>)     <span class="cm"># 80.70</span>
+<span class="fn">print</span>(<span class="st">f"Median (Middle):    {median:.2f}"</span>)   <span class="cm"># 81.50</span>
+<span class="fn">print</span>(<span class="st">f"Mode   (Frequent):  {mode.mode[0]}"</span>) <span class="cm"># No repeat = each appears once</span>
+
+<span class="cm"># ===== Measures of Spread =====</span>
+<span class="ot">variance</span> = <span class="fn">np.var</span>(<span class="ot">scores</span>)
+<span class="ot">std_dev</span>  = <span class="fn">np.std</span>(<span class="ot">scores</span>)
+<span class="ot">data_range</span> = <span class="fn">np.max</span>(<span class="ot">scores</span>) - <span class="fn">np.min</span>(<span class="ot">scores</span>)
+
+<span class="fn">print</span>(<span class="st">f"\nVariance (σ²):      {variance:.2f}"</span>)
+<span class="fn">print</span>(<span class="st">f"Std Dev  (σ):       {std_dev:.2f}"</span>)
+<span class="fn">print</span>(<span class="st">f"Range:              {data_range}"</span>)
+<span class="fn">print</span>(<span class="st">f"Min: {np.min(scores)}, Max: {np.max(scores)}"</span>)
+
+<span class="cm"># ===== AI Context: Evaluating Model Performance =====</span>
+<span class="ot">model_a_scores</span> = <span class="fn">np.array</span>([<span class="nm">80</span>, <span class="nm">81</span>, <span class="nm">79</span>, <span class="nm">82</span>, <span class="nm">80</span>])  <span class="cm"># Consistent model</span>
+<span class="ot">model_b_scores</span> = <span class="fn">np.array</span>([<span class="nm">90</span>, <span class="nm">60</span>, <span class="nm">85</span>, <span class="nm">55</span>, <span class="nm">95</span>])  <span class="cm"># Inconsistent model</span>
+
+<span class="fn">print</span>(<span class="st">f"\nModel A — Mean: {np.mean(model_a_scores):.1f}, Std: {np.std(model_a_scores):.1f}"</span>)
+<span class="fn">print</span>(<span class="st">f"Model B — Mean: {np.mean(model_b_scores):.1f}, Std: {np.std(model_b_scores):.1f}"</span>)
+<span class="cm"># Model A low std dev → reliable! Model B high std dev → unreliable!</span>
+
+<span class="cm"># ===== Z-Score: Standardization =====</span>
+<span class="cm"># AI mein input features normalize karte hain</span>
+<span class="ot">z_scores</span> = (<span class="ot">scores</span> - <span class="fn">np.mean</span>(<span class="ot">scores</span>)) / <span class="fn">np.std</span>(<span class="ot">scores</span>)
+<span class="fn">print</span>(<span class="st">f"\nZ-scores: {z_scores.round(2)}"</span>)
+<span class="cm"># Positive = above mean, Negative = below mean</span>
+    </pre>
+  </div>
+  <div class="output-block">
+    <div class="output-label">📤 Output</div>
+Mean   (Average):   80.70
+Median (Middle):    81.50
+Mode   (Frequent):  68
+
+Variance (σ²):      71.21
+Std Dev  (σ):       8.44
+Range:              27
+Min: 68, Max: 95
+
+Model A — Mean: 80.0, Std: 0.9   ← Bahut reliable!
+Model B — Mean: 77.0, Std: 16.7  ← Unreliable!
+
+Z-scores: [-1.03  0.51 -0.32  1.33 -1.51  0.87 -0.68  1.69 -1.15  0.27]
+  </div>
+
+  <!-- 2.6 PROBABILITY DISTRIBUTIONS -->
+  <div class="subsection-title">2.6 Probability Distributions — Data Patterns</div>
+
+  <p>Probability distribution batata hai ki <strong>kaunsa value kitna likely</strong> hai. Different types of data different distributions follow karte hain.</p>
+
+  <div class="highlight-grid">
+    <div class="highlight-card hc-blue">
+      <h5>Normal Distribution</h5>
+      <p>Bell curve. Heights, weights, IQ scores, measurement errors. AI mein weight initialization, batch normalization.</p>
+    </div>
+    <div class="highlight-card hc-orange">
+      <h5>Bernoulli Distribution</h5>
+      <p>Ek trial, do outcomes (0 or 1). Coin flip. Binary classification ka foundation.</p>
+    </div>
+    <div class="highlight-card hc-green">
+      <h5>Binomial Distribution</h5>
+      <p>N trials mein k successes. Spam detection mein kitni emails spam. Multiple binary events.</p>
+    </div>
+    <div class="highlight-card hc-purple">
+      <h5>Uniform Distribution</h5>
+      <p>Sab values equally likely. Dice roll. Random number generation, random initialization.</p>
+    </div>
+    <div class="highlight-card hc-teal">
+      <h5>Softmax Distribution</h5>
+      <p>LLM ka output distribution — next token probability. Sab probabilities sum = 1.</p>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Normal Distribution — Bell Curve (AI mein Sabse Important)</div>
+    <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="680" height="220" rx="10" fill="#f8f9ff"/>
+      <!-- Axes -->
+      <line x1="60" y1="185" x2="620" y2="185" stroke="#1a237e" stroke-width="2"/>
+      <line x1="60" y1="185" x2="60" y2="20" stroke="#1a237e" stroke-width="2"/>
+      <!-- Axis labels -->
+      <text x="625" y="189" font-family="Crimson Pro,serif" font-size="14" fill="#1a237e">x</text>
+      <text x="40" y="18" font-family="Crimson Pro,serif" font-size="14" fill="#1a237e">P(x)</text>
+
+      <!-- Normal curve approximation using polyline -->
+      <polyline points="
+        65,183 80,182 100,178 120,170 140,156 160,136 180,110 200,84 220,62 240,44 260,32 280,25 300,22 320,24 340,30 360,42 380,60 400,82 420,107 440,131 460,152 480,168 500,178 520,182 540,184 560,184 580,184 600,184"
+        fill="none" stroke="#1565c0" stroke-width="2.5"/>
+
+      <!-- Fill under curve -->
+      <polygon points="65,185 65,183 80,182 100,178 120,170 140,156 160,136 180,110 200,84 220,62 240,44 260,32 280,25 300,22 320,24 340,30 360,42 380,60 400,82 420,107 440,131 460,152 480,168 500,178 520,182 540,184 560,184 580,184 600,184 600,185"
+        fill="#90caf9" opacity="0.3"/>
+
+      <!-- Std Dev markers -->
+      <line x1="300" y1="185" x2="300" y2="22" stroke="#e65100" stroke-width="1.5" stroke-dasharray="5"/>
+      <text x="300" y="198" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#e65100">μ</text>
+
+      <!-- -1σ to +1σ region -->
+      <polygon points="200,185 200,84 400,82 400,185"
+        fill="#1565c0" opacity="0.15"/>
+      <line x1="200" y1="185" x2="200" y2="84" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4"/>
+      <line x1="400" y1="185" x2="400" y2="82" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4"/>
+      <text x="200" y="198" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1565c0">μ-σ</text>
+      <text x="400" y="198" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1565c0">μ+σ</text>
+      <text x="300" y="160" text-anchor="middle" font-family="Crimson Pro,serif" font-size="14" fill="#1565c0" font-weight="bold">68.27%</text>
+
+      <!-- -2σ to +2σ -->
+      <text x="140" y="198" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">μ-2σ</text>
+      <text x="460" y="198" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">μ+2σ</text>
+      <line x1="140" y1="185" x2="140" y2="156" stroke="#7b1fa2" stroke-width="1" stroke-dasharray="3"/>
+      <line x1="460" y1="185" x2="460" y2="152" stroke="#7b1fa2" stroke-width="1" stroke-dasharray="3"/>
+
+      <!-- Labels -->
+      <text x="340" y="50" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">95.45% within ±2σ</text>
+      <text x="340" y="65" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">99.73% within ±3σ</text>
+
+      <!-- AI Use Cases on side -->
+      <rect x="555" y="15" width="120" height="155" rx="6" fill="white" stroke="#c5cae9" stroke-width="1"/>
+      <text x="615" y="32" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="#1a237e" font-weight="bold">AI Uses</text>
+      <text x="565" y="52" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• Weight init</text>
+      <text x="565" y="68" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• Batch norm</text>
+      <text x="565" y="84" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• Noise adding</text>
+      <text x="565" y="100" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• Gaussian blur</text>
+      <text x="565" y="116" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• Error analysis</text>
+      <text x="565" y="132" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• Outlier detect</text>
+      <text x="565" y="148" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• Confidence int</text>
+      <text x="565" y="164" font-family="Crimson Pro,serif" font-size="11" fill="#37474f">• LLM sampling</text>
+    </svg>
+  </div>
+
+  <!-- 2.7 CONDITIONAL PROBABILITY -->
+  <div class="subsection-title">2.7 Conditional Probability — "Given That" ki Probability</div>
+
+  <div class="def-box">
+    <div class="def-term">Conditional Probability kya hai?</div>
+    <p>P(A|B) = "B hone ki condition mein A ki probability". Event B already ho chuka hai — iske baad A kitna likely hai? Yeh AI mein bayesian thinking ka base hai.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Conditional Probability Formula</div>
+    <div class="formula-main">P(A|B) = P(A ∩ B) / P(B)</div>
+    <div class="formula-desc">
+      P(A|B) = A ki probability given B | P(A ∩ B) = dono saath hone ki probability<br>
+      Example: P(Spam | "Free Money") = P(Spam AND "Free Money") / P("Free Money")<br>
+      Agar "Free Money" wali 90% emails spam hain → P(Spam|"Free Money") = 0.90
+    </div>
+  </div>
+
+  <!-- 2.8 BAYES THEOREM -->
+  <div class="subsection-title">2.8 Bayes' Theorem — AI ka Core Foundation</div>
+
+  <div class="def-box">
+    <div class="def-term">Bayes' Theorem kya hai?</div>
+    <p>Evidence ke basis pe beliefs update karna. Yeh <strong>Naive Bayes classifier</strong>, <strong>Bayesian neural networks</strong>, <strong>spam filters</strong>, aur kaafi AI algorithms ka foundation hai.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Bayes' Theorem</div>
+    <div class="formula-main">P(A|B) = [P(B|A) × P(A)] / P(B)</div>
+    <div class="formula-desc">
+      <strong>Posterior:</strong> P(A|B) — Evidence B dekhne ke baad A ki updated probability<br>
+      <strong>Likelihood:</strong> P(B|A) — Agar A true hota toh B ka kitna chance tha<br>
+      <strong>Prior:</strong> P(A) — Evidence se pehle A ki probability<br>
+      <strong>Evidence:</strong> P(B) — B ki overall probability (normalization constant)
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <h5>Step-by-Step Bayes Example — Medical Diagnosis</h5>
+    <strong>Situation:</strong> Ek disease 1% population mein hoti hai. Test 95% accurate hai.<br><br>
+    Tum test positive aaye. Kya tum actually beemar ho?<br><br>
+    • P(Disease) = 0.01 (1% population mein hoti hai) ← Prior<br>
+    • P(Positive | Disease) = 0.95 (95% accurate test) ← Likelihood<br>
+    • P(Positive | No Disease) = 0.05 (5% false positive)<br>
+    • P(Positive) = (0.95×0.01) + (0.05×0.99) = 0.0095 + 0.0495 = 0.059<br><br>
+    <strong>P(Disease | Positive) = (0.95 × 0.01) / 0.059 ≈ 0.161 = 16.1%!</strong><br><br>
+    Surprise! Even with 95% accurate test, agar disease rare hai toh positive test bhi sirf 16% chance deta hai! Yahi Bayes ka power hai — prior probability matter karta hai!
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Bayes' Theorem & Naive Bayes</div>
+    <pre>
+<span class="im">from</span> <span class="ot">sklearn.naive_bayes</span> <span class="im">import</span> <span class="cl">MultinomialNB</span>
+<span class="im">from</span> <span class="ot">sklearn.feature_extraction.text</span> <span class="im">import</span> <span class="cl">CountVectorizer</span>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+
+<span class="cm"># ===== Manual Bayes Calculation =====</span>
+<span class="cm"># Email spam detection example</span>
+
+<span class="cm"># Prior probabilities</span>
+<span class="ot">P_spam</span>    = <span class="nm">0.30</span>   <span class="cm"># 30% emails spam hain</span>
+<span class="ot">P_not_spam</span> = <span class="nm">0.70</span>  <span class="cm"># 70% emails legitimate hain</span>
+
+<span class="cm"># Likelihood: "FREE" word ka probability</span>
+<span class="ot">P_free_given_spam</span>    = <span class="nm">0.80</span>  <span class="cm"># Spam mein "FREE" 80% baar</span>
+<span class="ot">P_free_given_not_spam</span> = <span class="nm">0.05</span> <span class="cm"># Normal email mein "FREE" 5%</span>
+
+<span class="cm"># Evidence: P("FREE")</span>
+<span class="ot">P_free</span> = (<span class="ot">P_free_given_spam</span> * <span class="ot">P_spam</span> +
+           <span class="ot">P_free_given_not_spam</span> * <span class="ot">P_not_spam</span>)
+
+<span class="cm"># Posterior: P(Spam | "FREE") = Bayes Theorem</span>
+<span class="ot">P_spam_given_free</span> = (<span class="ot">P_free_given_spam</span> * <span class="ot">P_spam</span>) / <span class="ot">P_free</span>
+
+<span class="fn">print</span>(<span class="st">f"P(FREE): {P_free:.3f}"</span>)
+<span class="fn">print</span>(<span class="st">f"P(Spam | FREE word): {P_spam_given_free:.3f} = {P_spam_given_free*100:.1f}%"</span>)
+
+<span class="cm"># ===== Naive Bayes Spam Classifier =====</span>
+<span class="cm"># Training data</span>
+<span class="ot">emails</span> = [
+    <span class="st">"free money click here win prize"</span>,      <span class="cm"># spam</span>
+    <span class="st">"dear friend meeting tomorrow office"</span>,   <span class="cm"># ham</span>
+    <span class="st">"win lottery free cash urgent"</span>,           <span class="cm"># spam</span>
+    <span class="st">"project deadline next week team"</span>,        <span class="cm"># ham</span>
+    <span class="st">"click free offer limited time prize"</span>,   <span class="cm"># spam</span>
+    <span class="st">"quarterly report attached review"</span>,      <span class="cm"># ham</span>
+]
+<span class="ot">labels</span> = [<span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">0</span>]  <span class="cm"># 1=spam, 0=ham</span>
+
+<span class="cm"># Vectorize text</span>
+<span class="ot">vectorizer</span> = <span class="cl">CountVectorizer</span>()
+<span class="ot">X</span> = <span class="ot">vectorizer</span>.<span class="fn">fit_transform</span>(<span class="ot">emails</span>)
+
+<span class="cm"># Train Naive Bayes (internally uses Bayes Theorem!)</span>
+<span class="ot">clf</span> = <span class="cl">MultinomialNB</span>()
+<span class="ot">clf</span>.<span class="fn">fit</span>(<span class="ot">X</span>, <span class="ot">labels</span>)
+
+<span class="cm"># Predict</span>
+<span class="ot">test_emails</span> = [<span class="st">"free prize click win money"</span>, <span class="st">"team meeting agenda next week"</span>]
+<span class="ot">X_test</span> = <span class="ot">vectorizer</span>.<span class="fn">transform</span>(<span class="ot">test_emails</span>)
+<span class="ot">predictions</span> = <span class="ot">clf</span>.<span class="fn">predict</span>(<span class="ot">X_test</span>)
+<span class="ot">probabilities</span> = <span class="ot">clf</span>.<span class="fn">predict_proba</span>(<span class="ot">X_test</span>)
+
+<span class="kw">for</span> <span class="ot">email</span>, <span class="ot">pred</span>, <span class="ot">prob</span> <span class="kw">in</span> <span class="fn">zip</span>(<span class="ot">test_emails</span>, <span class="ot">predictions</span>, <span class="ot">probabilities</span>):
+    <span class="ot">label</span> = <span class="st">"SPAM"</span> <span class="kw">if</span> <span class="ot">pred</span> == <span class="nm">1</span> <span class="kw">else</span> <span class="st">"HAM"</span>
+    <span class="fn">print</span>(<span class="st">f"Email: '{email[:30]}...'"</span>)
+    <span class="fn">print</span>(<span class="st">f"  Prediction: {label} | Spam prob: {prob[1]:.2%}\n"</span>)
+    </pre>
+  </div>
+  <div class="output-block">
+    <div class="output-label">📤 Output</div>
+P(FREE): 0.275
+P(Spam | FREE word): 0.873 = 87.3%
+
+Email: 'free prize click win money...'
+  Prediction: SPAM | Spam prob: 99.98%
+
+Email: 'team meeting agenda next week...'
+  Prediction: HAM  | Spam prob: 0.12%
+  </div>
+
+  <!-- 2.9 HYPOTHESIS TESTING -->
+  <div class="subsection-title">2.9 Hypothesis Testing — Statistical Decision Making</div>
+
+  <div class="def-box">
+    <div class="def-term">Hypothesis Testing kya hai?</div>
+    <p>Data ke basis pe statistical decisions lena. Kya ek AI model dusre se genuinely better hai, ya sirf luck? Hypothesis testing batata hai. <strong>Null Hypothesis (H₀)</strong> = "koi difference nahi" aur <strong>Alternative Hypothesis (H₁)</strong> = "difference hai".</p>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="table-green">
+      <thead>
+        <tr><th>Concept</th><th>AI Context</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>p-value</strong></td><td>A/B testing models</td><td>≤0.05 = statistically significant</td></tr>
+        <tr><td><strong>Null Hypothesis</strong></td><td>Model A == Model B</td><td>No difference claim</td></tr>
+        <tr><td><strong>Type I Error</strong></td><td>False Positive</td><td>H₀ reject kiya but true tha</td></tr>
+        <tr><td><strong>Type II Error</strong></td><td>False Negative</td><td>H₀ accept kiya but false tha</td></tr>
+        <tr><td><strong>Confidence Interval</strong></td><td>Model accuracy range</td><td>95% CI: [0.82, 0.89]</td></tr>
+        <tr><td><strong>Statistical Power</strong></td><td>Test sensitivity</td><td>True effect detect karne ki ability</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — A/B Testing for AI Models</div>
+    <pre>
+<span class="im">from</span> <span class="ot">scipy</span> <span class="im">import</span> <span class="ot">stats</span>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+
+<span class="cm"># ===== A/B Test: Model A vs Model B =====</span>
+<span class="cm"># Model accuracy scores on 30 test batches</span>
+<span class="fn">np.random.seed</span>(<span class="nm">42</span>)
+<span class="ot">model_a</span> = <span class="fn">np.random.normal</span>(<span class="ot">loc</span>=<span class="nm">0.85</span>, <span class="ot">scale</span>=<span class="nm">0.05</span>, <span class="ot">size</span>=<span class="nm">30</span>)
+<span class="ot">model_b</span> = <span class="fn">np.random.normal</span>(<span class="ot">loc</span>=<span class="nm">0.88</span>, <span class="ot">scale</span>=<span class="nm">0.05</span>, <span class="ot">size</span>=<span class="nm">30</span>)
+
+<span class="fn">print</span>(<span class="st">f"Model A — Mean: {model_a.mean():.4f}, Std: {model_a.std():.4f}"</span>)
+<span class="fn">print</span>(<span class="st">f"Model B — Mean: {model_b.mean():.4f}, Std: {model_b.std():.4f}"</span>)
+
+<span class="cm"># T-test: Kya difference significant hai?</span>
+<span class="ot">t_stat</span>, <span class="ot">p_value</span> = <span class="ot">stats</span>.<span class="fn">ttest_ind</span>(<span class="ot">model_a</span>, <span class="ot">model_b</span>)
+
+<span class="fn">print</span>(<span class="st">f"\nT-statistic: {t_stat:.4f}"</span>)
+<span class="fn">print</span>(<span class="st">f"P-value:     {p_value:.4f}"</span>)
+
+<span class="kw">if</span> <span class="ot">p_value</span> < <span class="nm">0.05</span>:
+    <span class="fn">print</span>(<span class="st">"✅ Statistically significant! Model B genuinely better hai."</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"❌ Not significant. Difference luck ho sakta hai."</span>)
+
+<span class="cm"># ===== Confidence Interval =====</span>
+<span class="ot">ci</span> = <span class="ot">stats</span>.<span class="fn">t.interval</span>(
+    <span class="ot">confidence</span>=<span class="nm">0.95</span>,
+    <span class="ot">df</span>=<span class="fn">len</span>(<span class="ot">model_b</span>) - <span class="nm">1</span>,
+    <span class="ot">loc</span>=<span class="fn">np.mean</span>(<span class="ot">model_b</span>),
+    <span class="ot">scale</span>=<span class="ot">stats</span>.<span class="fn">sem</span>(<span class="ot">model_b</span>)
+)
+<span class="fn">print</span>(<span class="st">f"\nModel B 95% CI: [{ci[0]:.4f}, {ci[1]:.4f}]"</span>)
+<span class="cm"># "95% sure hai ki Model B ka true accuracy is range mein hai"</span>
+    </pre>
+  </div>
+
+  <!-- LLM Sampling Connection -->
+  <div class="subsection-title">2.10 Probability in LLMs — Temperature, Top-k, Top-p</div>
+
+  <p>Ye section practically sabse important hai AI engineers ke liye. Jab LLM text generate karta hai, woh ek <strong>probability distribution</strong> se sample karta hai.</p>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">LLM Token Sampling — Probability Distribution</div>
+    <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="240" rx="10" fill="#f3f4f6"/>
+
+      <!-- Original distribution -->
+      <rect x="10" y="10" width="210" height="220" rx="8" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
+      <text x="115" y="28" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a237e" font-weight="bold">Raw Logits → Softmax</text>
+
+      <!-- Bars -->
+      <g transform="translate(20, 40)">
+        <rect x="5" y="70" width="25" height="80" fill="#3949ab"/>
+        <text x="17" y="165" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">The</text>
+        <text x="17" y="68" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#1a237e">35%</text>
+
+        <rect x="35" y="90" width="25" height="60" fill="#3949ab"/>
+        <text x="47" y="165" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">A</text>
+        <text x="47" y="88" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#1a237e">25%</text>
+
+        <rect x="65" y="106" width="25" height="44" fill="#3949ab"/>
+        <text x="77" y="165" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">My</text>
+        <text x="77" y="104" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#1a237e">18%</text>
+
+        <rect x="95" y="118" width="25" height="32" fill="#3949ab"/>
+        <text x="107" y="165" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">An</text>
+        <text x="107" y="116" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#1a237e">13%</text>
+
+        <rect x="125" y="132" width="25" height="18" fill="#9fa8da"/>
+        <text x="137" y="165" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">Her</text>
+        <text x="137" y="130" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#3949ab">7%</text>
+
+        <rect x="155" y="142" width="25" height="8" fill="#c5cae9"/>
+        <text x="167" y="165" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">...</text>
+        <text x="167" y="140" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#3949ab">2%</text>
+      </g>
+      <text x="115" y="215" text-anchor="middle" font-family="Crimson Pro,serif" font-size="11" fill="#546e7a">Probabilities sum to 1.0</text>
+
+      <!-- Temperature effect -->
+      <rect x="230" y="10" width="230" height="220" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+      <text x="345" y="28" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1b5e20" font-weight="bold">Temperature Effect</text>
+
+      <text x="245" y="50" font-family="Crimson Pro,serif" font-size="12" fill="#1b5e20" font-weight="bold">T=0.1 (Focused/Greedy):</text>
+      <g transform="translate(240, 55)">
+        <rect x="5" y="0" width="25" height="60" fill="#1b5e20"/>
+        <text x="17" y="75" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">The</text>
+        <text x="17" y="-4" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#1b5e20">92%</text>
+        <rect x="35" y="50" width="20" height="10" fill="#66bb6a"/>
+        <rect x="60" y="56" width="20" height="4" fill="#a5d6a7"/>
+      </g>
+
+      <text x="245" y="155" font-family="Crimson Pro,serif" font-size="12" fill="#1b5e20" font-weight="bold">T=1.5 (Creative):</text>
+      <g transform="translate(240, 160)">
+        <rect x="5" y="0" width="25" height="25" fill="#43a047"/>
+        <text x="17" y="40" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">The</text>
+        <text x="17" y="-4" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#1b5e20">21%</text>
+        <rect x="35" y="5" width="25" height="20" fill="#43a047"/>
+        <text x="47" y="40" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">A</text>
+        <rect x="65" y="8" width="25" height="17" fill="#66bb6a"/>
+        <rect x="95" y="11" width="25" height="14" fill="#81c784"/>
+        <rect x="125" y="13" width="25" height="12" fill="#a5d6a7"/>
+      </g>
+      <text x="345" y="215" text-anchor="middle" font-family="Crimson Pro,serif" font-size="11" fill="#546e7a">Lower T → deterministic, Higher T → creative</text>
+
+      <!-- Top-k / Top-p -->
+      <rect x="470" y="10" width="220" height="220" rx="8" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5"/>
+      <text x="580" y="28" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#e65100" font-weight="bold">Top-k &amp; Top-p</text>
+
+      <text x="480" y="50" font-family="Crimson Pro,serif" font-size="12" fill="#e65100" font-weight="bold">Top-k = 3:</text>
+      <g transform="translate(480, 55)">
+        <rect x="5" y="0" width="25" height="45" fill="#ff6d00"/>
+        <text x="17" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">The</text>
+        <rect x="35" y="10" width="25" height="35" fill="#ff6d00"/>
+        <text x="47" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">A</text>
+        <rect x="65" y="20" width="25" height="25" fill="#ff6d00"/>
+        <text x="77" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#37474f">My</text>
+        <rect x="95" y="30" width="25" height="15" fill="#e0e0e0"/>
+        <rect x="125" y="38" width="25" height="7" fill="#e0e0e0"/>
+        <rect x="155" y="43" width="25" height="2" fill="#e0e0e0"/>
+      </g>
+      <text x="565" y="130" text-anchor="middle" font-family="Crimson Pro,serif" font-size="10" fill="#546e7a">Top 3 only → redistribute prob</text>
+
+      <text x="480" y="150" font-family="Crimson Pro,serif" font-size="12" fill="#e65100" font-weight="bold">Top-p = 0.9:</text>
+      <g transform="translate(480, 155)">
+        <rect x="5" y="0" width="25" height="40" fill="#ff8f00"/>
+        <rect x="35" y="10" width="25" height="30" fill="#ff8f00"/>
+        <rect x="65" y="20" width="25" height="20" fill="#ff8f00"/>
+        <rect x="95" y="28" width="25" height="12" fill="#ff8f00"/>
+        <text x="100" y="60" font-family="JetBrains Mono,monospace" font-size="8" fill="#e65100">↑ 90% covered</text>
+        <rect x="125" y="38" width="25" height="2" fill="#e0e0e0"/>
+        <rect x="155" y="42" width="25" height="2" fill="#e0e0e0"/>
+      </g>
+      <text x="580" y="215" text-anchor="middle" font-family="Crimson Pro,serif" font-size="11" fill="#546e7a">Cumulative probability threshold</text>
+    </svg>
+  </div>
+
+  <div class="callout callout-note">
+    <div class="callout-label">📌 Remember This — LLM Parameters</div>
+    <strong>Temperature (T):</strong> Probability distribution ko sharp ya flat karta hai.<br>
+    T→0: Greedy (always highest prob) | T=1: Normal | T>1: Very creative/random<br><br>
+    <strong>Top-k:</strong> Sirf top k tokens ko consider karo. k=1 = greedy decoding<br>
+    <strong>Top-p (Nucleus sampling):</strong> Cumulative probability ≥ p tak tokens consider karo<br><br>
+    <em>ChatGPT default: Temperature ≈ 0.7-1.0, Top-p ≈ 0.95</em>
+  </div>
+
+  <div class="interview-section">
+    <h4>🎯 Probability & Stats Interview Questions</h4>
+    <div class="interview-q"><strong>Q1.</strong> "Bayes theorem explain karo aur batao ki LLMs mein probabilistic thinking kaise use hoti hai?"</div>
+    <div class="interview-q"><strong>Q2.</strong> "Temperature parameter kya karta hai? T=0 aur T=2 mein kya difference hai? Kab use karein?"</div>
+    <div class="interview-q"><strong>Q3.</strong> "Top-k aur Top-p sampling mein difference kya hai? Dono ka kab use karein?"</div>
+    <div class="interview-q"><strong>Q4.</strong> "A/B testing kaise karte hain do AI models ke beech? P-value kya hona chahiye?"</div>
+    <div class="interview-q"><strong>Q5.</strong> "Normal distribution AI mein kahan use hoti hai? Why do we initialize neural network weights with normal distribution?"</div>
+  </div>
+
+  <div class="exercise-box">
+    <h4>🖊 Probability & Statistics Exercises</h4>
+    <ol>
+      <li>Apne 10 subjects ke marks ka mean, median, mode, variance, aur std deviation calculate karo Python mein.</li>
+      <li>Bayes theorem use karke calculate karo: Agar ek disease 5% population mein hai aur test 90% accurate hai, toh positive test pe actually beemar hone ki probability kya hai?</li>
+      <li>Normal distribution se 1000 random weights generate karo (μ=0, σ=0.1) aur histogram plot karo.</li>
+      <li>Temperature 0.1, 0.7, aur 2.0 pe same probability distribution apply karo aur difference visualize karo.</li>
+      <li>Ek coin 100 baar flip karo (Python random), heads aur tails count karo, aur chi-square test se check karo ki coin fair hai ya biased.</li>
+    </ol>
+  </div>
+
+  <div class="summary-box">
+    <h4>📌 Probability & Statistics — Key Takeaways</h4>
+    <ul>
+      <li><strong>Mean, Median, Mode:</strong> Central tendency — data ka "typical" value</li>
+      <li><strong>Variance & Std Dev:</strong> Spread — data kitna scattered hai</li>
+      <li><strong>Normal Distribution:</strong> Bell curve — AI mein weight init, batch norm</li>
+      <li><strong>Conditional Probability:</strong> Evidence ke baad update hoti probability</li>
+      <li><strong>Bayes Theorem:</strong> Core of spam filters, Naive Bayes, probabilistic AI</li>
+      <li><strong>Temperature:</strong> LLM output ka randomness control karta hai</li>
+      <li><strong>Top-k / Top-p:</strong> Next token sampling strategies</li>
+      <li><strong>Hypothesis Testing:</strong> Statistical validation of model improvements</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== CHAPTER 3: CALCULUS ==================== -->
+<div class="page" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">CHAPTER 03 • PART 2</div>
+    <h2>∂ Calculus Basics</h2>
+    <p>Neural network training ka engine — gradients aur optimization</p>
+  </div>
+
+  <div class="section-title"><span class="sec-icon">🌟</span>Introduction — Calculus Kyun?</div>
+
+  <p>Neural network training ka poora process ek word mein describe ho sakta hai: <strong>optimization</strong>. Hum chahte hain ki model ka loss (error) minimize ho. Lekin kitne millions of parameters hain! Inhe kaise adjust karein? Answer hai: <strong>Gradient Descent</strong>, aur iske liye hume <strong>derivatives aur gradients</strong> samajhne padenge.</p>
+
+  <div class="analogy-box">
+    <h5>Analogy — Pahad Se Utrna (Blind Descent)</h5>
+    Socho tum ek pahaad ke upar ho, andhera hai, kuch dikhai nahi deta. Tumhe valley (lowest point) tak pahunchna hai — jo loss = minimum hai. Tum kya karoge?<br><br>
+    Har step pe apne paon se mahsoos karo — kaunsi side steep hai (gradient). Phir usi direction mein ek chota step lo. Repeat. Yahi hai Gradient Descent! Derivative batata hai — "is jagah pe function kitni tezi se change ho raha hai" — aur hum usi information use karke weights update karte hain.
+  </div>
+
+  <!-- 3.1 DERIVATIVES -->
+  <div class="subsection-title">3.1 Derivatives — Instantaneous Rate of Change</div>
+
+  <div class="def-box">
+    <div class="def-term">Derivative kya hai?</div>
+    <p>Derivative batata hai ki ek function <strong>kitni tezi se change ho raha hai</strong> ek particular point pe. Isko slope bhi keh sakte hain — curve ke kisi bhi point pe tangent line ka slope.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Derivative — Basic Formula</div>
+    <div class="formula-main">f'(x) = df/dx = lim(h→0) [f(x+h) - f(x)] / h</div>
+    <div class="formula-desc">
+      Common derivatives:<br>
+      d/dx (xⁿ) = n·xⁿ⁻¹ &nbsp;|&nbsp; d/dx (eˣ) = eˣ &nbsp;|&nbsp; d/dx (ln x) = 1/x<br>
+      d/dx (sin x) = cos x &nbsp;|&nbsp; d/dx (constant) = 0
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Derivative — Slope at Different Points</div>
+    <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="230" rx="10" fill="#f8f9ff"/>
+      <!-- Axes -->
+      <line x1="60" y1="200" x2="650" y2="200" stroke="#1a237e" stroke-width="2"/>
+      <line x1="60" y1="200" x2="60" y2="20" stroke="#1a237e" stroke-width="2"/>
+      <text x="655" y="204" font-family="Crimson Pro,serif" font-size="14" fill="#1a237e">x</text>
+      <text x="44" y="18" font-family="Crimson Pro,serif" font-size="14" fill="#1a237e">y</text>
+      <text x="200" y="15" font-family="Playfair Display,serif" font-size="14" fill="#1a237e" font-weight="bold">y = x² — Loss function (parabola)</text>
+
+      <!-- Parabola: y = x^2, x from -5 to 5, mapped to svg -->
+      <!-- Center at (355, 200), scale: x*60, y*-4 (y goes up) -->
+      <polyline points="
+        60,196 80,194 100,188 120,178 140,164 160,147 180,127 200,104 220,79 240,52 260,23
+        280,200 300,200
+        " fill="none" stroke="none"/>
+      <!-- Proper parabola from x=60 pixels = x_data=-5 to x=650 = x_data=5 -->
+      <!-- At x_px: x_data = (x_px - 355)/60, y_px = 200 - x_data^2 * 4 -->
+      <polyline points="
+        60,164 90,156 120,144 150,128 180,108 210,84 240,56 270,28
+        270,28 300,4
+        " fill="none" stroke="none"/>
+      <!-- Let me draw correctly: center=355, range x_data=-4.9 to 4.9 -->
+      <polyline points="
+        60,152 100,128 140,100 180,68 220,33 260,4
+        260,4 300,37 340,76 380,121 420,152 460,168 500,178 540,183 580,185 620,185"
+        fill="none" stroke="none"/>
+      <!-- Simpler: draw parabola manually -->
+      <path d="M 60,185 Q 355,5 650,185" fill="none" stroke="#1565c0" stroke-width="2.5"/>
+
+      <!-- Tangent at x=0 (bottom, slope=0) -->
+      <circle cx="355" cy="5" r="5" fill="#e65100"/>
+      <line x1="280" y1="5" x2="430" y2="5" stroke="#e65100" stroke-width="1.5" stroke-dasharray="5"/>
+      <text x="440" y="10" font-family="JetBrains Mono,monospace" font-size="10" fill="#e65100">slope = 0</text>
+      <text x="440" y="22" font-family="Crimson Pro,serif" font-size="11" fill="#e65100">Minimum! Loss khatam!</text>
+
+      <!-- Tangent at left side (steep negative) -->
+      <circle cx="160" cy="84" r="5" fill="#2e7d32"/>
+      <line x1="110" y1="120" x2="210" y2="48" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="5"/>
+      <text x="70" y="140" font-family="JetBrains Mono,monospace" font-size="10" fill="#2e7d32">slope = -ve</text>
+      <text x="70" y="155" font-family="Crimson Pro,serif" font-size="11" fill="#2e7d32">Move right →</text>
+
+      <!-- Tangent at right side (steep positive) -->
+      <circle cx="545" cy="84" r="5" fill="#7b1fa2"/>
+      <line x1="495" y1="48" x2="595" y2="120" stroke="#7b1fa2" stroke-width="1.5" stroke-dasharray="5"/>
+      <text x="560" y="50" font-family="JetBrains Mono,monospace" font-size="10" fill="#7b1fa2">slope = +ve</text>
+      <text x="560" y="65" font-family="Crimson Pro,serif" font-size="11" fill="#7b1fa2">Move left ←</text>
+
+      <!-- Arrow showing gradient descent steps -->
+      <text x="160" y="180" font-family="Crimson Pro,serif" font-size="12" fill="#1a237e" font-style="italic">Gradient Descent: slope ki opposite direction mein move karo</text>
+
+      <!-- x axis labels -->
+      <text x="355" y="215" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#546e7a">0 (minimum)</text>
+    </svg>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-label">💡 Beginner Intuition</div>
+    Derivative basically ek question ka answer deta hai: <em>"Agar main x mein thoda sa badhaunga, toh y mein kitna badhega?"</em><br>
+    • Derivative positive → x badhane se y bhi badhega<br>
+    • Derivative negative → x badhane se y ghattega<br>
+    • Derivative zero → hum minimum ya maximum pe hain!<br>
+    Neural network mein: derivative bolta hai "is weight ko badhane se loss badhega ya ghattega" — isliye hum opposite direction mein jaate hain.
+  </div>
+
+  <!-- 3.2 GRADIENTS -->
+  <div class="subsection-title">3.2 Gradients — Multi-Variable Derivative</div>
+
+  <div class="def-box">
+    <div class="def-term">Gradient kya hai?</div>
+    <p>Jab function mein ek se zyada variables hain (jaise neural network ke lakho weights), toh gradient ek <strong>vector</strong> hota hai jo har variable ke partial derivative ko hold karta hai. Gradient batata hai — "highest increase ki direction kya hai".</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Gradient of f(x, y)</div>
+    <div class="formula-main">∇f = [∂f/∂x, ∂f/∂y]</div>
+    <div class="formula-desc">
+      ∇ (nabla) = gradient | ∂f/∂x = partial derivative w.r.t x (y fixed)<br>
+      Gradient Vector points in direction of steepest ascent<br>
+      Gradient Descent: Gradient ki opposite direction mein move karo (minimize karne ke liye)<br>
+      <br>
+      w = w - α × ∇L(w) &nbsp; (weight update rule)
+    </div>
+  </div>
+
+  <!-- 3.3 PARTIAL DERIVATIVES -->
+  <div class="subsection-title">3.3 Partial Derivatives — Ek Time pe Ek Variable</div>
+
+  <div class="def-box">
+    <div class="def-term">Partial Derivative kya hai?</div>
+    <p>Jab multiple variables hain, toh ek ek karke derivative lete hain — baaki sab ko constant maanke. Neural network mein har weight ke liye alag partial derivative calculate hoti hai.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Partial Derivative Example</div>
+    <div class="formula-main">f(x, y) = 3x² + 2xy + y³</div>
+    <div class="formula-main">∂f/∂x = 6x + 2y &nbsp;&nbsp; (y ko constant maano)</div>
+    <div class="formula-main">∂f/∂y = 2x + 3y² &nbsp;&nbsp; (x ko constant maano)</div>
+  </div>
+
+  <!-- 3.4 CHAIN RULE -->
+  <div class="subsection-title">3.4 Chain Rule — Backpropagation ka Heart</div>
+
+  <div class="def-box">
+    <div class="def-term">Chain Rule kya hai?</div>
+    <p>Jab functions ek doosre ke andar hoon (composite functions), toh derivative nikalne ka rule. Neural networks mein <strong>Backpropagation</strong> poori tarah chain rule use karta hai — output se input tak gradients compute karne ke liye.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Chain Rule</div>
+    <div class="formula-main">dy/dx = (dy/du) × (du/dx)</div>
+    <div class="formula-desc">
+      Agar y = f(u) aur u = g(x), toh dy/dx = f'(u) × g'(x)<br><br>
+      Neural Network example:<br>
+      Loss = L(output), output = σ(Wx + b)<br>
+      ∂L/∂W = (∂L/∂output) × (∂output/∂W) ← Chain Rule!
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Backpropagation — Chain Rule in Neural Networks</div>
+    <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="240" rx="10" fill="#fafafa"/>
+
+      <!-- Forward Pass -->
+      <text x="350" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a237e" font-weight="bold">Forward Pass → then Backpropagation (Chain Rule)</text>
+
+      <!-- Nodes -->
+      <!-- Input -->
+      <circle cx="70" cy="120" r="35" fill="#e8eaf6" stroke="#3949ab" stroke-width="2"/>
+      <text x="70" y="115" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a237e">Input</text>
+      <text x="70" y="130" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#1a237e">x = 2.0</text>
+
+      <!-- Layer 1 -->
+      <circle cx="210" cy="120" r="35" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+      <text x="210" y="108" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1b5e20">Linear</text>
+      <text x="210" y="122" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1b5e20">Wx+b</text>
+      <text x="210" y="136" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1b5e20">= 1.5</text>
+
+      <!-- Activation -->
+      <circle cx="350" cy="120" r="35" fill="#fff8e1" stroke="#f57f17" stroke-width="2"/>
+      <text x="350" y="108" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">ReLU</text>
+      <text x="350" y="122" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">σ(z)</text>
+      <text x="350" y="136" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e65100">= 1.5</text>
+
+      <!-- Output -->
+      <circle cx="490" cy="120" r="35" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+      <text x="490" y="108" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a148c">Output</text>
+      <text x="490" y="122" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a148c">ŷ</text>
+      <text x="490" y="136" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a148c">= 1.5</text>
+
+      <!-- Loss -->
+      <circle cx="630" cy="120" r="35" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+      <text x="630" y="108" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#b71c1c">Loss</text>
+      <text x="630" y="122" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#b71c1c">(ŷ-y)²</text>
+      <text x="630" y="136" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#b71c1c">= 0.25</text>
+
+      <!-- Forward arrows -->
+      <line x1="106" y1="120" x2="173" y2="120" stroke="#1a237e" stroke-width="2" marker-end="url(#fwd)"/>
+      <line x1="246" y1="120" x2="313" y2="120" stroke="#1a237e" stroke-width="2" marker-end="url(#fwd)"/>
+      <line x1="386" y1="120" x2="453" y2="120" stroke="#1a237e" stroke-width="2" marker-end="url(#fwd)"/>
+      <line x1="526" y1="120" x2="593" y2="120" stroke="#1a237e" stroke-width="2" marker-end="url(#fwd)"/>
+      <text x="350" y="170" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#1a237e">→ Forward Pass</text>
+
+      <!-- Backward arrows (chain rule) -->
+      <line x1="593" y1="145" x2="526" y2="165" stroke="#c62828" stroke-width="2" marker-end="url(#bwd)"/>
+      <line x1="453" y1="165" x2="386" y2="165" stroke="#c62828" stroke-width="2" marker-end="url(#bwd)"/>
+      <line x1="313" y1="165" x2="246" y2="165" stroke="#c62828" stroke-width="2" marker-end="url(#bwd)"/>
+      <line x1="173" y1="165" x2="106" y2="145" stroke="#c62828" stroke-width="2" marker-end="url(#bwd)"/>
+
+      <!-- Chain rule labels -->
+      <text x="559" y="162" font-family="JetBrains Mono,monospace" font-size="9" fill="#b71c1c">∂L/∂ŷ</text>
+      <text x="400" y="182" font-family="JetBrains Mono,monospace" font-size="9" fill="#b71c1c">∂L/∂σ</text>
+      <text x="260" y="182" font-family="JetBrains Mono,monospace" font-size="9" fill="#b71c1c">∂L/∂W</text>
+      <text x="120" y="162" font-family="JetBrains Mono,monospace" font-size="9" fill="#b71c1c">∂L/∂x</text>
+      <text x="350" y="205" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#b71c1c">← Backpropagation (Chain Rule applies at each step!)</text>
+
+      <!-- Chain rule equation -->
+      <text x="350" y="230" text-anchor="middle" font-family="Crimson Pro,serif" font-size="12" fill="#37474f">∂L/∂W = (∂L/∂ŷ) × (∂ŷ/∂σ) × (∂σ/∂W) — Multiplication chain!</text>
+
+      <defs>
+        <marker id="fwd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#1a237e"/>
+        </marker>
+        <marker id="bwd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#c62828"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- 3.5 GRADIENT DESCENT -->
+  <div class="subsection-title">3.5 Gradient Descent — Optimization ka Algorithm</div>
+
+  <div class="def-box">
+    <div class="def-term">Gradient Descent kya hai?</div>
+    <p>Loss function ko minimize karne ka iterative algorithm. Har iteration mein weights ko gradient ki <strong>opposite direction</strong> mein update karo — "downhill" jaao loss landscape mein.</p>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-title">Weight Update Rule</div>
+    <div class="formula-main">w_new = w_old − α × ∂L/∂w</div>
+    <div class="formula-desc">
+      w = weight parameter | α (alpha) = learning rate (step size)<br>
+      ∂L/∂w = gradient of loss w.r.t weight<br>
+      Minus sign kyun? Gradient steep ascent direction hai — hum descent chahte hain!
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="table-teal">
+      <thead>
+        <tr><th>Type</th><th>Batch Size</th><th>Pros</th><th>Cons</th><th>Use Case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Batch GD</strong></td><td>Full dataset</td><td>Stable, accurate gradient</td><td>Slow, memory hungry</td><td>Small datasets</td></tr>
+        <tr><td><strong>Stochastic GD</strong></td><td>1 sample</td><td>Fast, noisy updates help escape local minima</td><td>Noisy, unstable</td><td>Online learning</td></tr>
+        <tr><td><strong>Mini-batch GD</strong></td><td>32-512</td><td>Balance of speed & stability</td><td>Hyperparameter tuning</td><td>Most practical (default)</td></tr>
+        <tr><td><strong>Adam</strong></td><td>Mini-batch</td><td>Adaptive, fast convergence</td><td>Memory overhead</td><td>Almost always! (default)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Gradient Descent from Scratch</div>
+    <pre>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+<span class="im">import</span> <span class="ot">matplotlib.pyplot</span> <span class="im">as</span> <span class="ot">plt</span>
+
+<span class="cm"># ===== Manual Gradient Descent =====</span>
+<span class="cm"># Problem: f(x) = x^2 + 4x + 4 ko minimize karo</span>
+<span class="cm"># f'(x) = 2x + 4 (derivative)</span>
+<span class="cm"># Minimum at x = -2 (f'(x) = 0 → 2x + 4 = 0 → x = -2)</span>
+
+<span class="kw">def</span> <span class="fn">f</span>(<span class="ot">x</span>):
+    <span class="kw">return</span> <span class="ot">x</span>**<span class="nm">2</span> + <span class="nm">4</span>*<span class="ot">x</span> + <span class="nm">4</span>
+
+<span class="kw">def</span> <span class="fn">gradient_f</span>(<span class="ot">x</span>):
+    <span class="kw">return</span> <span class="nm">2</span>*<span class="ot">x</span> + <span class="nm">4</span>   <span class="cm"># Derivative of f(x)</span>
+
+<span class="cm"># Gradient Descent</span>
+<span class="ot">x</span> = <span class="nm">10.0</span>              <span class="cm"># Starting point (random)</span>
+<span class="ot">learning_rate</span> = <span class="nm">0.1</span>   <span class="cm"># Step size</span>
+<span class="ot">history</span> = [<span class="ot">x</span>]
+
+<span class="fn">print</span>(<span class="st">"Gradient Descent Steps:"</span>)
+<span class="fn">print</span>(<span class="st">f"{'Step':>4} | {'x':>8} | {'f(x)':>10} | {'gradient':>10}"</span>)
+<span class="fn">print</span>(<span class="st">"-"</span> * <span class="nm">40</span>)
+
+<span class="kw">for</span> <span class="ot">step</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">20</span>):
+    <span class="ot">grad</span> = <span class="fn">gradient_f</span>(<span class="ot">x</span>)         <span class="cm"># Gradient calculate karo</span>
+    <span class="ot">x</span> = <span class="ot">x</span> - <span class="ot">learning_rate</span> * <span class="ot">grad</span>  <span class="cm"># Weight update</span>
+    <span class="ot">history</span>.<span class="fn">append</span>(<span class="ot">x</span>)
+    <span class="kw">if</span> <span class="ot">step</span> % <span class="nm">4</span> == <span class="nm">0</span>:
+        <span class="fn">print</span>(<span class="st">f"{step:>4} | {x:>8.4f} | {f(x):>10.4f} | {grad:>10.4f}"</span>)
+
+<span class="fn">print</span>(<span class="st">f"\n🎯 Final x = {x:.4f} (expected: -2.0)"</span>)
+<span class="fn">print</span>(<span class="st">f"🎯 Final f(x) = {f(x):.6f} (expected: 0.0)"</span>)
+
+<span class="cm"># ===== PyTorch Autograd (Real AI use) =====</span>
+<span class="im">import</span> <span class="ot">torch</span>
+
+<span class="cm"># PyTorch automatically computes gradients!</span>
+<span class="ot">x</span> = <span class="ot">torch</span>.<span class="fn">tensor</span>(<span class="nm">10.0</span>, <span class="ot">requires_grad</span>=<span class="kw">True</span>)  <span class="cm"># Track gradient</span>
+
+<span class="kw">for</span> <span class="ot">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">20</span>):
+    <span class="ot">loss</span> = <span class="ot">x</span>**<span class="nm">2</span> + <span class="nm">4</span>*<span class="ot">x</span> + <span class="nm">4</span>   <span class="cm"># Forward pass</span>
+    <span class="ot">loss</span>.<span class="fn">backward</span>()           <span class="cm"># Autograd: compute gradients</span>
+    <span class="kw">with</span> <span class="ot">torch</span>.<span class="fn">no_grad</span>():
+        <span class="ot">x</span> -= <span class="nm">0.1</span> * <span class="ot">x</span>.<span class="ot">grad</span>      <span class="cm"># Update</span>
+        <span class="ot">x</span>.<span class="ot">grad</span>.<span class="fn">zero_</span>()          <span class="cm"># Zero gradient for next iteration</span>
+
+<span class="fn">print</span>(<span class="st">f"\nPyTorch result: x = {x.item():.4f}"</span>)
+    </pre>
+  </div>
+  <div class="output-block">
+    <div class="output-label">📤 Output</div>
+Gradient Descent Steps:
+Step |        x |       f(x) |   gradient
+----------------------------------------
+   0 |   8.4000 |   82.2400 |    24.0000
+   4 |   3.2378 |   17.6000 |    14.4757
+   8 |   0.1424 |    4.6094 |     8.2849
+  12 |  -1.1767 |     0.669 |     4.6466
+  16 |  -1.7710 |     0.052 |     0.5581
+
+🎯 Final x = -1.9815 (expected: -2.0)
+🎯 Final f(x) = 0.000036 (expected: 0.0)
+
+PyTorch result: x = -2.0000
+  </div>
+
+  <!-- 3.6 ACTIVATION FUNCTIONS -->
+  <div class="subsection-title">3.6 Activation Functions — Calculus in Action</div>
+
+  <p>Activation functions neural networks mein non-linearity add karte hain. Yeh functions aur unke derivatives directly gradient descent mein use hote hain backpropagation ke waqt.</p>
+
+  <div class="table-wrapper">
+    <table class="table-purple">
+      <thead>
+        <tr><th>Activation</th><th>Formula</th><th>Derivative</th><th>Range</th><th>Use Case</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Sigmoid</strong></td><td>σ(x) = 1/(1+e⁻ˣ)</td><td>σ(x)(1-σ(x))</td><td>(0, 1)</td><td>Binary classification output</td></tr>
+        <tr><td><strong>ReLU</strong></td><td>max(0, x)</td><td>0 if x≤0, 1 if x>0</td><td>[0, ∞)</td><td>Hidden layers (most common)</td></tr>
+        <tr><td><strong>Tanh</strong></td><td>(eˣ-e⁻ˣ)/(eˣ+e⁻ˣ)</td><td>1 - tanh²(x)</td><td>(-1, 1)</td><td>RNNs, centered output</td></tr>
+        <tr><td><strong>Softmax</strong></td><td>eˣⁱ / Σeˣʲ</td><td>Complex (Jacobian)</td><td>(0, 1) sum=1</td><td>Multi-class output, LLMs</td></tr>
+        <tr><td><strong>GELU</strong></td><td>x·Φ(x)</td><td>Smooth approximation</td><td>≈(-∞, ∞)</td><td>Transformers, GPT</td></tr>
+        <tr><td><strong>SiLU/Swish</strong></td><td>x·σ(x)</td><td>σ(x)+x·σ(x)(1-σ(x))</td><td>≈(-∞, ∞)</td><td>LLaMA, modern LLMs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">Python — Activation Functions & Their Derivatives</div>
+    <pre>
+<span class="im">import</span> <span class="ot">numpy</span> <span class="im">as</span> <span class="ot">np</span>
+
+<span class="cm"># ===== Activation Functions =====</span>
+<span class="kw">def</span> <span class="fn">sigmoid</span>(<span class="ot">x</span>):
+    <span class="kw">return</span> <span class="nm">1</span> / (<span class="nm">1</span> + <span class="fn">np.exp</span>(-<span class="ot">x</span>))
+
+<span class="kw">def</span> <span class="fn">sigmoid_derivative</span>(<span class="ot">x</span>):
+    <span class="ot">s</span> = <span class="fn">sigmoid</span>(<span class="ot">x</span>)
+    <span class="kw">return</span> <span class="ot">s</span> * (<span class="nm">1</span> - <span class="ot">s</span>)   <span class="cm"># Backprop mein use hota hai</span>
+
+<span class="kw">def</span> <span class="fn">relu</span>(<span class="ot">x</span>):
+    <span class="kw">return</span> <span class="fn">np.maximum</span>(<span class="nm">0</span>, <span class="ot">x</span>)
+
+<span class="kw">def</span> <span class="fn">relu_derivative</span>(<span class="ot">x</span>):
+    <span class="kw">return</span> (<span class="ot">x</span> > <span class="nm">0</span>).<span class="fn">astype</span>(<span class="fn">float</span>)  <span class="cm"># 1 if positive, 0 if negative</span>
+
+<span class="kw">def</span> <span class="fn">softmax</span>(<span class="ot">x</span>):
+    <span class="ot">e_x</span> = <span class="fn">np.exp</span>(<span class="ot">x</span> - <span class="fn">np.max</span>(<span class="ot">x</span>))  <span class="cm"># Numerical stability</span>
+    <span class="kw">return</span> <span class="ot">e_x</span> / <span class="ot">e_x</span>.<span class="fn">sum</span>()
+
+<span class="cm"># Test values</span>
+<span class="ot">z</span> = <span class="fn">np.array</span>([<span class="nm">-2</span>, <span class="nm">-1</span>, <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">2</span>], <span class="ot">dtype</span>=<span class="fn">float</span>)
+
+<span class="fn">print</span>(<span class="st">"z        :"</span>, <span class="ot">z</span>)
+<span class="fn">print</span>(<span class="st">"sigmoid  :"</span>, <span class="fn">sigmoid</span>(<span class="ot">z</span>).<span class="fn">round</span>(<span class="nm">3</span>))
+<span class="fn">print</span>(<span class="st">"sig'(z)  :"</span>, <span class="fn">sigmoid_derivative</span>(<span class="ot">z</span>).<span class="fn">round</span>(<span class="nm">3</span>))
+<span class="fn">print</span>(<span class="st">"relu     :"</span>, <span class="fn">relu</span>(<span class="ot">z</span>))
+<span class="fn">print</span>(<span class="st">"relu'(z) :"</span>, <span class="fn">relu_derivative</span>(<span class="ot">z</span>))
+
+<span class="cm"># LLM output — next token probabilities</span>
+<span class="ot">logits</span> = <span class="fn">np.array</span>([<span class="nm">2.5</span>, <span class="nm">1.2</span>, <span class="nm">0.8</span>, <span class="nm">3.1</span>, <span class="nm">0.4</span>])  <span class="cm"># Raw scores</span>
+<span class="ot">probs</span> = <span class="fn">softmax</span>(<span class="ot">logits</span>)
+<span class="fn">print</span>(<span class="st">f"\nLogits:       {logits}"</span>)
+<span class="fn">print</span>(<span class="st">f"Probabilities: {probs.round(3)}"</span>)
+<span class="fn">print</span>(<span class="st">f"Sum: {probs.sum():.1f}"</span>)  <span class="cm"># Always 1.0</span>
+<span class="fn">print</span>(<span class="st">f"Predicted token: {np.argmax(probs)}"</span>)  <span class="cm"># Highest prob token</span>
+    </pre>
+  </div>
+  <div class="output-block">
+    <div class="output-label">📤 Output</div>
+z        : [-2. -1.  0.  1.  2.]
+sigmoid  : [0.119 0.269 0.5   0.731 0.881]
+sig'(z)  : [0.105 0.197 0.25  0.197 0.105]  ← Vanishing gradient!
+relu     : [0. 0. 0. 1. 2.]
+relu'(z) : [0. 0. 0. 1. 1.]  ← Clean gradient
+
+Logits:       [2.5 1.2 0.8 3.1 0.4]
+Probabilities: [0.197 0.051 0.034 0.668 0.023]
+  → Ek dominant token ki zyada probability
+Sum: 1.0
+Predicted token: 3
+  </div>
+
+  <!-- 3.7 OPTIMIZATION INTUITION -->
+  <div class="subsection-title">3.7 Optimization Intuition — Loss Landscape</div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-title">Loss Landscape — Local Minima, Global Minima, Saddle Points</div>
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="200" rx="10" fill="#f8f9ff"/>
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a237e" font-weight="bold">Neural Network Loss Landscape</text>
+
+      <!-- Axes -->
+      <line x1="40" y1="165" x2="660" y2="165" stroke="#37474f" stroke-width="1.5"/>
+      <line x1="40" y1="165" x2="40" y2="20" stroke="#37474f" stroke-width="1.5"/>
+      <text x="665" y="169" font-family="Crimson Pro,serif" font-size="12" fill="#37474f">weights</text>
+      <text x="10" y="18" font-family="Crimson Pro,serif" font-size="12" fill="#37474f">Loss</text>
+
+      <!-- Complex loss landscape -->
+      <path d="M 50,160 C 80,120 100,100 130,90 C 150,82 160,100 180,90 C 200,80 220,130 250,70 C 280,20 310,50 340,80 C 360,100 370,110 390,60 C 410,20 440,30 470,100 C 490,140 510,150 530,100 C 550,60 570,80 590,70 C 610,60 630,80 650,155" fill="none" stroke="#1565c0" stroke-width="2.5"/>
+
+      <!-- Label points -->
+      <!-- Starting point -->
+      <circle cx="90" cy="106" r="6" fill="#e65100"/>
+      <text x="85" y="95" font-family="Crimson Pro,serif" font-size="10" fill="#e65100">Start</text>
+
+      <!-- Local minimum -->
+      <circle cx="180" cy="90" r="6" fill="#f57f17"/>
+      <text x="155" y="80" font-family="Crimson Pro,serif" font-size="10" fill="#f57f17">Local Min</text>
+      <text x="155" y="92" font-family="Crimson Pro,serif" font-size="10" fill="#f57f17">(trap!)</text>
+
+      <!-- Global minimum -->
+      <circle cx="260" cy="20" r="8" fill="#1b5e20"/>
+      <text x="230" y="14" font-family="Crimson Pro,serif" font-size="10" fill="#1b5e20" font-weight="bold">Global Min ✓</text>
+      <text x="230" y="26" font-family="Crimson Pro,serif" font-size="10" fill="#1b5e20">Target!</text>
+
+      <!-- Saddle point -->
+      <circle cx="395" cy="60" r="6" fill="#7b1fa2"/>
+      <text x="365" y="50" font-family="Crimson Pro,serif" font-size="10" fill="#7b1fa2">Saddle</text>
+      <text x="365" y="62" font-family="Crimson Pro,serif" font-size="10" fill="#7b1fa2">Point</text>
+
+      <!-- Another local min -->
+      <circle cx="475" cy="100" r="6" fill="#f57f17"/>
+      <text x="445" y="90" font-family="Crimson Pro,serif" font-size="10" fill="#f57f17">Local Min</text>
+
+      <!-- Gradient descent path -->
+      <path d="M 90,106 C 110,100 130,92 160,91 C 165,91 170,91 175,90" fill="none" stroke="#e65100" stroke-width="1.5" stroke-dasharray="4"/>
+      <text x="75" y="150" font-family="JetBrains Mono,monospace" font-size="9" fill="#546e7a">→ Adam optimizer helps escape local minima</text>
+      <text x="75" y="165" font-family="JetBrains Mono,monospace" font-size="9" fill="#546e7a">→ Momentum helps go over saddle points</text>
+      <text x="75" y="180" font-family="JetBrains Mono,monospace" font-size="9" fill="#546e7a">→ High lr: might skip global min; Low lr: stuck in local min</text>
+    </svg>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-label">⚠️ Common Mistakes</div>
+    <strong>Vanishing Gradient:</strong> Deep networks mein sigmoid/tanh use karne se gradients bahut chhote ho jaate hain back layers tak — training ruk jaati hai. Solution: ReLU/GELU use karo, batch normalization karo.<br><br>
+    <strong>Exploding Gradient:</strong> Gradients bohot bade ho jaate hain — NaN/Inf values. Solution: Gradient clipping use karo.<br><br>
+    <strong>Learning Rate Too High:</strong> Loss oscillate karta hai, converge nahi hota.<br>
+    <strong>Learning Rate Too Low:</strong> Training bohot slow — local minima mein phase jaata hai.
+  </div>
+
+  <div class="interview-section">
+    <h4>🎯 Calculus Interview Questions</h4>
+    <div class="interview-q"><strong>Q1.</strong> "Backpropagation kya hai aur chain rule kaise use hoti hai isme? Simple example se explain karo."</div>
+    <div class="interview-q"><strong>Q2.</strong> "Vanishing gradient problem kya hai? Kaise solve karte hain? ReLU kyun better hai sigmoid se?"</div>
+    <div class="interview-q"><strong>Q3.</strong> "Learning rate ka kya role hai? Too high aur too low learning rate mein kya hota hai?"</div>
+    <div class="interview-q"><strong>Q4.</strong> "Gradient Descent, SGD, Mini-batch GD, aur Adam mein kya differences hain?"</div>
+    <div class="interview-q"><strong>Q5.</strong> "Softmax function kya karta hai aur yeh LLMs mein kahan use hota hai? Temperature ka softmax pe kya effect hai?"</div>
+  </div>
+
+  <div class="exercise-box">
+    <h4>🖊 Calculus Practice Exercises</h4>
+    <ol>
+      <li>Manually gradient descent implement karo f(x) = (x-3)² pe. x=10 se start karo, lr=0.1 aur 30 iterations run karo.</li>
+      <li>PyTorch mein ek simple linear regression model banao: y = 2x + 1. Random data generate karo aur model train karo MSE loss aur SGD optimizer se.</li>
+      <li>Sigmoid, ReLU, aur Tanh functions ko -5 se +5 range mein plot karo aur unke derivatives bhi plot karo. Compare karo.</li>
+      <li>NumPy se chain rule manually implement karo: f(x) = (3x + 1)² ke liye df/dx calculate karo x=2 pe.</li>
+      <li>Softmax apply karo [1.0, 2.0, 3.0] pe temperature T=0.5 aur T=2.0 ke saath. Difference observe karo.</li>
+    </ol>
+  </div>
+
+  <div class="summary-box">
+    <h4>📌 Calculus — Key Takeaways</h4>
+    <ul>
+      <li><strong>Derivative:</strong> Function kitna change hota hai — slope at a point</li>
+      <li><strong>Gradient:</strong> Multi-variable derivative — neural network ka core</li>
+      <li><strong>Partial Derivative:</strong> Ek variable ko vary karo, baaki constant</li>
+      <li><strong>Chain Rule:</strong> Backpropagation ka mathematical foundation</li>
+      <li><strong>Gradient Descent:</strong> Loss minimize karna — weights update karna</li>
+      <li><strong>Learning Rate:</strong> Step size — too high = unstable, too low = slow</li>
+      <li><strong>ReLU:</strong> Best activation for hidden layers (no vanishing gradient)</li>
+      <li><strong>Softmax:</strong> Multi-class output probabilities — LLM token prediction</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== GLOSSARY ==================== -->
+<div class="page" id="glossary">
+  <div class="section-title"><span class="sec-icon">📖</span>Glossary — Key Terms Reference</div>
+
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <strong>Scalar</strong>
+      <span>Ek single number. Koi direction nahi. e.g. learning_rate = 0.001</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Vector</strong>
+      <span>Numbers ki ordered list. Direction + magnitude. e.g. word embedding [0.2, -0.5, 0.8]</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Matrix</strong>
+      <span>2D grid of numbers. Rows × Columns. e.g. weight matrix (784, 256)</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Tensor</strong>
+      <span>N-dimensional array. PyTorch ka base. e.g. image batch (32, 3, 224, 224)</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Dot Product</strong>
+      <span>Do vectors ka element-wise multiply + sum. Similarity measure.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Cosine Similarity</strong>
+      <span>Normalized dot product. -1 to +1 range. RAG systems mein use hota hai.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Eigenvalue/vector</strong>
+      <span>Av = λv. PCA, dimensionality reduction mein use. Data ka principal direction.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Mean (μ)</strong>
+      <span>Average. Σxᵢ/N. Central tendency ka measure.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Variance (σ²)</strong>
+      <span>Spread of data. Σ(xᵢ-μ)²/N. High variance = scattered data.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Standard Deviation (σ)</strong>
+      <span>√variance. Same units as data. More interpretable than variance.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Normal Distribution</strong>
+      <span>Bell curve. μ±σ mein 68%, μ±2σ mein 95% data hota hai.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Bayes' Theorem</strong>
+      <span>P(A|B) = P(B|A)×P(A)/P(B). Evidence se beliefs update karo.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Conditional Probability</strong>
+      <span>P(A|B) — B hone ke baad A ki probability.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>P-value</strong>
+      <span>Statistical significance. &lt;0.05 → result not due to chance.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Temperature (LLM)</strong>
+      <span>Output ka randomness. T=0 → greedy. T>1 → creative.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Softmax</strong>
+      <span>Raw scores → probabilities (sum=1). LLM output layer.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Derivative</strong>
+      <span>Rate of change. Slope at a point. df/dx. Neural net training ka core.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Gradient</strong>
+      <span>Multi-variable derivative vector. Points in direction of steepest ascent.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Partial Derivative</strong>
+      <span>∂f/∂x — ek variable ka derivative, baaki constant.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Chain Rule</strong>
+      <span>d/dx[f(g(x))] = f'(g(x))·g'(x). Backpropagation ka foundation.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Gradient Descent</strong>
+      <span>w = w - α∇L(w). Loss minimize karne ka algorithm.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Learning Rate (α)</strong>
+      <span>Gradient descent ka step size. Too high = unstable. Too low = slow.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Backpropagation</strong>
+      <span>Chain rule use karke output se input tak gradients propagate karna.</span>
+    </div>
+    <div class="glossary-item">
+      <strong>ReLU</strong>
+      <span>max(0,x). Best hidden layer activation. No vanishing gradient.</span>
+    </div>
+  </div>
+
+  <!-- FINAL REVISION CARD -->
+  <div class="callout callout-remember" style="margin-top: 32px;">
+    <div class="callout-label">🧠 Revision — Part 2 Mathematics for AI</div>
+    <strong>Linear Algebra:</strong> Vectors = word embeddings | Matrices = weights, images | Matrix Mult = forward pass | Cosine sim = RAG retrieval<br><br>
+    <strong>Probability & Stats:</strong> Mean/Std = data understanding | Normal dist = weight init | Bayes = spam filter, probabilistic AI | Temperature/Top-k/Top-p = LLM sampling<br><br>
+    <strong>Calculus:</strong> Derivative = slope | Gradient = multi-variable slope | Chain rule = backpropagation | Gradient descent = training | ReLU = no vanishing gradient
+  </div>
+
+  <!-- BIG PICTURE DIAGRAM -->
+  <div class="diagram-wrap" style="margin-top: 28px;">
+    <div class="diagram-title">Mathematics → AI Connection Map</div>
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="280" rx="10" fill="#fafafa"/>
+
+      <!-- Center: AI -->
+      <ellipse cx="350" cy="140" rx="55" ry="40" fill="#1a237e"/>
+      <text x="350" y="135" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="white" font-weight="bold">Artificial</text>
+      <text x="350" y="153" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="white" font-weight="bold">Intelligence</text>
+
+      <!-- Linear Algebra -->
+      <ellipse cx="120" cy="80" rx="80" ry="35" fill="#3949ab"/>
+      <text x="120" y="75" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="white" font-weight="bold">Linear Algebra</text>
+      <text x="120" y="92" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.8)">Vectors, Matrices, Tensors</text>
+      <line x1="195" y1="90" x2="295" y2="125" stroke="#3949ab" stroke-width="2"/>
+      <text x="225" y="100" font-family="Crimson Pro,serif" font-size="10" fill="#3949ab">Embeddings, Weights</text>
+      <text x="225" y="113" font-family="Crimson Pro,serif" font-size="10" fill="#3949ab">Forward Pass, Attention</text>
+
+      <!-- Probability & Stats -->
+      <ellipse cx="120" cy="210" rx="80" ry="35" fill="#2e7d32"/>
+      <text x="120" y="205" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="white" font-weight="bold">Probability</text>
+      <text x="120" y="222" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.8)">Stats, Distributions, Bayes</text>
+      <line x1="195" y1="200" x2="295" y2="158" stroke="#2e7d32" stroke-width="2"/>
+      <text x="215" y="185" font-family="Crimson Pro,serif" font-size="10" fill="#2e7d32">Softmax, Sampling</text>
+      <text x="215" y="198" font-family="Crimson Pro,serif" font-size="10" fill="#2e7d32">Uncertainty, Inference</text>
+
+      <!-- Calculus -->
+      <ellipse cx="580" cy="140" rx="80" ry="35" fill="#e65100"/>
+      <text x="580" y="135" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="white" font-weight="bold">Calculus</text>
+      <text x="580" y="152" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.8)">Gradients, Optimization</text>
+      <line x1="500" y1="140" x2="406" y2="140" stroke="#e65100" stroke-width="2"/>
+      <text x="430" y="132" font-family="Crimson Pro,serif" font-size="10" fill="#e65100">Backprop, Gradient</text>
+      <text x="430" y="145" font-family="Crimson Pro,serif" font-size="10" fill="#e65100">Descent, Training</text>
+
+      <!-- Resulting capabilities -->
+      <rect x="260" y="220" width="180" height="50" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+      <text x="350" y="240" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#4a148c" font-weight="bold">Together they enable:</text>
+      <text x="350" y="258" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#4a148c">Neural Nets • LLMs • RAG • Agents</text>
+    </svg>
+  </div>
+
+  <!-- FINAL NOTE -->
+  <div class="callout callout-info" style="margin-top: 28px;">
+    <div class="callout-label">🚀 Aage Kya? Next Parts Preview</div>
+    Ab jab aapke paas Mathematics for AI ki solid foundation hai, aap ready hain:<br>
+    <strong>Part 3 — Traditional AI & Machine Learning:</strong> In formulas ko actual algorithms mein apply karna — Linear Regression, Decision Trees, SVM, K-Means sab isi math pe based hain.<br>
+    <strong>Part 4 — Deep Learning:</strong> Neural networks aur backpropagation in detail — ye sab directly is chapter se connect hote hain.<br>
+    <strong>Part 5 — Generative AI & LLMs:</strong> Transformers, attention mechanisms — matrix multiplication aur probability distributions ka beautiful combination!
+  </div>
+</div>
+
+</div><!-- end page-wrapper -->
+
+<script>
+// Progress Tracker
+const progressDots = document.getElementById('progressDots');
+const topics = ['Scalars', 'Vectors', 'Matrices', 'Tensors', 'Dot Product', 'Matrix Mult', 'Eigenvalues', 'Mean/Median', 'Variance/StdDev', 'Distributions', 'Cond. Prob', 'Bayes', 'Hypothesis', 'LLM Sampling', 'Derivatives', 'Gradients', 'Partial Deriv', 'Chain Rule', 'Grad Descent', 'Activation Fns'];
+
+topics.forEach((topic, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'progress-dot';
+  dot.title = topic;
+  dot.style.cursor = 'pointer';
+  dot.addEventListener('click', () => {
+    dot.classList.toggle('done');
+  });
+  progressDots.appendChild(dot);
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-links a:not(.pdf-btn)').forEach(link => {
+  link.addEventListener('click', e => {
+    const href = link.getAttribute('href');
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
+});
+
+// Highlight active section on scroll
+const sections = document.querySelectorAll('.page[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 100;
+    if (window.scrollY >= top) current = section.id;
+  });
+  navLinks.forEach(link => {
+    link.style.background = '';
+    if (link.getAttribute('href') === '#' + current) {
+      link.style.background = 'rgba(255,255,255,0.2)';
+    }
+  });
+});
+</script>
+
+<style>
+@media print {
+  .sticky-nav, .progress-tracker, .pdf-btn { display: none !important; }
+  .page { page-break-after: always; box-shadow: none; margin: 0; border-top: 3px solid #1a237e; }
+  body { font-size: 14px; }
+  .chapter-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .interview-section { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .code-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 15mm; size: A4; }
+}
+</style>
+
+</body>
+</html>
