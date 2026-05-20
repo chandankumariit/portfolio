@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 1 — Programming Foundations | AI Agent Engineering Masterbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&family=Source+Code+Pro:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* ===== ROOT & RESET ===== */
+:root{
+  --black:#0a0a0a; --ink:#1a1a2e; --body:#2d2d2d;
+  --muted:#666; --faint:#999;
+  --saffron:#e8671a; --saffron-light:#fff0e6; --saffron-dark:#c4540f;
+  --green:#1a7a4a; --green-light:#e8f5ee;
+  --blue:#1a3a6e; --blue-light:#e8eef8;
+  --red:#b5201a; --red-light:#fde8e8;
+  --yellow:#f0c030; --yellow-light:#fffbe8;
+  --purple:#5a1a7a; --purple-light:#f2e8f8;
+  --page:#fff; --rule:#d0c8b8; --rule-light:#ece5d8;
+  --sidebar:#faf8f4; --code-bg:#f4f2ee;
+  --a4:794px; --margin-h:64px; --margin-v:54px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;line-height:1.7;background:#c8bfb2;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+body{font-family:"Source Sans 3",sans-serif;color:var(--body);background:#c8bfb2}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ===== PRINT / A4 PAGES ===== */
+.page{
+  width:var(--a4); min-height:1123px;
+  margin:22px auto; padding:var(--margin-v) var(--margin-h);
+  background:var(--page); box-shadow:0 4px 28px rgba(0,0,0,.18);
+  position:relative; overflow:hidden;
+}
+.page::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:7px;
+  background:repeating-linear-gradient(90deg,var(--saffron) 0 48%,var(--yellow) 48% 52%,var(--green) 52% 100%);
+}
+.page-number{
+  position:absolute; bottom:28px; right:var(--margin-h);
+  font-size:11px; color:var(--muted); font-family:"Lora",serif;
+}
+.page-number::before{content:'— '}
+.page-number::after{content:' —'}
+
+/* ===== COVER PAGE ===== */
+.cover{background:var(--ink);color:#fff;min-height:1123px}
+.cover::before{background:repeating-linear-gradient(90deg,var(--saffron) 0 33%,var(--white) 33% 66%,var(--green) 66% 100%)}
+.cover-inner{padding:80px var(--margin-h) 60px;display:flex;flex-direction:column;min-height:1100px}
+.cover-stripe{display:flex;gap:0;margin-bottom:48px}
+.stripe{height:8px;flex:1}
+.s1{background:var(--saffron)} .s2{background:#fff;opacity:.4} .s3{background:var(--green)}
+.cover-emblem{font-size:64px;margin-bottom:16px}
+.cover-series{font-family:"Source Sans 3",sans-serif;font-weight:300;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:12px}
+.cover-part{font-family:"Lora",serif;font-weight:700;font-size:15px;color:var(--saffron);letter-spacing:1px;margin-bottom:8px}
+.cover-title{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(38px,7vw,64px);line-height:1.05;color:#fff;margin-bottom:16px}
+.cover-subtitle{font-family:"Lora",serif;font-style:italic;font-size:18px;color:rgba(255,255,255,.65);margin-bottom:40px}
+.cover-desc{max-width:480px;font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:auto}
+.cover-meta{border-top:1px solid rgba(255,255,255,.15);padding-top:20px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+.cover-meta-text{font-size:12px;color:rgba(255,255,255,.4);line-height:2}
+.cover-badge{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cover-badge .num{font-family:"Playfair Display",serif;font-size:48px;font-weight:900;color:var(--saffron);line-height:1}
+.cover-badge .label{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.4);text-transform:uppercase}
+.cover-chapters{margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cover-ch{border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 12px;font-size:11px;color:rgba(255,255,255,.6)}
+.cover-ch strong{display:block;color:rgba(255,255,255,.9);font-size:12px;margin-bottom:2px}
+
+/* ===== TOC ===== */
+.toc-heading{font-family:"Playfair Display",serif;font-size:28px;font-weight:900;color:var(--ink);margin-bottom:6px;border-bottom:3px solid var(--saffron);padding-bottom:8px;display:inline-block}
+.toc-intro{font-size:13px;color:var(--muted);margin-bottom:28px;font-style:italic}
+.toc-part{margin-bottom:22px}
+.toc-part-title{font-family:"Lora",serif;font-size:14px;font-weight:700;color:var(--saffron);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;border-left:4px solid var(--saffron);padding-left:10px}
+.toc-row{display:flex;align-items:baseline;gap:0;padding:4px 0;border-bottom:1px dotted var(--rule-light);font-size:13px}
+.toc-row .ch-no{min-width:40px;font-family:"Source Code Pro",monospace;font-size:11px;font-weight:600;color:var(--saffron);flex-shrink:0}
+.toc-row .ch-name{flex:1;color:var(--body)}
+.toc-row .dots{flex:1;border-bottom:1px dotted var(--rule);margin:0 8px;position:relative;top:-4px}
+.toc-row .pg{min-width:28px;text-align:right;font-family:"Lora",serif;font-size:12px;color:var(--muted);font-style:italic}
+.toc-row.sub{padding-left:20px;font-size:12px;color:var(--muted)}
+
+/* ===== CHAPTER HEADERS ===== */
+.chapter-header{margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid var(--rule-light)}
+.ch-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--saffron);margin-bottom:8px}
+.ch-number{font-family:"Playfair Display",serif;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:4px}
+.ch-title{font-family:"Playfair Display",serif;font-weight:900;font-size:38px;line-height:1.1;color:var(--ink);margin-bottom:10px}
+.ch-subtitle{font-family:"Lora",serif;font-style:italic;font-size:16px;color:var(--muted);margin-bottom:16px}
+.ch-intro{font-size:14.5px;line-height:1.8;color:var(--body);max-width:680px;background:var(--saffron-light);border-left:4px solid var(--saffron);padding:14px 16px;border-radius:0 8px 8px 0}
+
+/* ===== SECTION TYPOGRAPHY ===== */
+h2.sec{font-family:"Playfair Display",serif;font-size:24px;font-weight:900;color:var(--ink);margin:32px 0 14px;padding-bottom:6px;border-bottom:2px solid var(--saffron)}
+h3.sub{font-family:"Lora",serif;font-size:18px;font-weight:700;color:var(--blue);margin:24px 0 10px}
+h4.mini{font-family:"Source Sans 3",sans-serif;font-size:14.5px;font-weight:700;color:var(--ink);margin:18px 0 7px;text-transform:uppercase;letter-spacing:.8px}
+p{margin-bottom:12px;font-size:14.5px;line-height:1.8}
+ul,ol{margin:8px 0 14px;padding-left:22px}
+li{font-size:14px;line-height:1.8;margin-bottom:3px}
+strong{color:var(--ink)}
+em{font-style:italic;color:var(--body)}
+
+/* ===== BOXES ===== */
+.box{border-radius:8px;padding:14px 16px;margin:16px 0;font-size:13.5px;line-height:1.75}
+.box-title{font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.box.definition{background:var(--blue-light);border-left:4px solid var(--blue)}
+.box.definition .box-title{color:var(--blue)}
+.box.example{background:var(--green-light);border-left:4px solid var(--green)}
+.box.example .box-title{color:var(--green)}
+.box.warning{background:var(--red-light);border-left:4px solid var(--red)}
+.box.warning .box-title{color:var(--red)}
+.box.tip{background:var(--yellow-light);border-left:4px solid var(--yellow)}
+.box.tip .box-title{color:var(--saffron-dark)}
+.box.remember{background:var(--purple-light);border-left:4px solid var(--purple)}
+.box.remember .box-title{color:var(--purple)}
+.box.hinglish{background:#f8f4ff;border-left:4px solid var(--purple);font-style:italic}
+.box.hinglish .box-title{color:var(--purple)}
+
+/* ===== CODE ===== */
+code{font-family:"Source Code Pro",monospace;font-size:12.5px;background:var(--code-bg);padding:2px 6px;border-radius:4px;color:var(--red)}
+pre{background:var(--ink);color:#e8e8e8;border-radius:10px;padding:18px;margin:14px 0;overflow-x:auto;font-family:"Source Code Pro",monospace;font-size:12px;line-height:1.6;position:relative}
+pre .comment{color:#6a9955}
+pre .keyword{color:#569cd6}
+pre .string{color:#ce9178}
+pre .number{color:#b5cea8}
+pre .func{color:#dcdcaa}
+pre .label{position:absolute;top:8px;right:12px;font-size:10px;color:rgba(255,255,255,.35);letter-spacing:1px;text-transform:uppercase}
+
+/* ===== TABLES ===== */
+table.std{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+table.std th{background:var(--ink);color:#fff;padding:9px 12px;text-align:left;font-family:"Source Sans 3",sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px}
+table.std td{padding:8px 12px;border:1px solid var(--rule);vertical-align:top;line-height:1.6}
+table.std tr:nth-child(even) td{background:var(--sidebar)}
+table.std td:first-child{font-weight:600;color:var(--ink);font-family:"Source Code Pro",monospace;font-size:12px}
+
+/* ===== DIAGRAMS (CSS-only) ===== */
+.diagram{background:var(--sidebar);border:1px solid var(--rule);border-radius:10px;padding:20px;margin:16px 0;text-align:center}
+.diagram-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:8px 0}
+.flow-box{background:#fff;border:2px solid var(--blue);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--blue);white-space:nowrap;min-width:80px;text-align:center}
+.flow-box.saffron{border-color:var(--saffron);color:var(--saffron-dark)}
+.flow-box.green{border-color:var(--green);color:var(--green)}
+.flow-box.red{border-color:var(--red);color:var(--red)}
+.flow-box.filled{background:var(--blue);color:#fff;border-color:var(--blue)}
+.flow-box.filled.saffron{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.flow-box.filled.green{background:var(--green);border-color:var(--green);color:#fff}
+.flow-arrow{padding:0 6px;color:var(--saffron);font-weight:700;font-size:18px;flex-shrink:0}
+.flow-down{text-align:center;color:var(--saffron);font-size:18px;margin:4px 0}
+.flow-grid{display:grid;gap:10px;margin:8px 0}
+.flow-grid.col2{grid-template-columns:1fr 1fr}
+.flow-grid.col3{grid-template-columns:1fr 1fr 1fr}
+.flow-grid.col4{grid-template-columns:1fr 1fr 1fr 1fr}
+.node{border:2px solid var(--rule);border-radius:8px;padding:10px;text-align:center;background:#fff;font-size:12px}
+.node strong{display:block;font-size:13px;margin-bottom:4px}
+.node.highlight{border-color:var(--saffron);background:var(--saffron-light)}
+.node.highlight strong{color:var(--saffron-dark)}
+.connector{display:flex;align-items:center;justify-content:center;padding:4px}
+.connector::after{content:'↓';color:var(--saffron);font-size:20px}
+.memory-layout{display:flex;flex-direction:column;gap:0;margin:8px auto;max-width:220px;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
+.mem-row{display:flex;border-bottom:1px solid var(--rule);font-size:11px}
+.mem-row:last-child{border-bottom:none}
+.mem-addr{width:70px;background:var(--ink);color:#fff;padding:5px 8px;font-family:"Source Code Pro",monospace;font-size:10px;flex-shrink:0}
+.mem-val{flex:1;padding:5px 8px;font-family:"Source Code Pro",monospace;font-size:11px;background:#fff}
+.mem-label{width:80px;padding:5px 8px;color:var(--muted);font-size:10px;background:var(--sidebar);border-left:1px solid var(--rule)}
+
+/* ===== STEP-BY-STEP ===== */
+.steps{counter-reset:step;margin:14px 0}
+.step{display:grid;grid-template-columns:40px 1fr;gap:12px;margin-bottom:12px;align-items:start}
+.step-num{counter-increment:step;width:36px;height:36px;background:var(--saffron);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:900;font-size:16px;flex-shrink:0;margin-top:2px}
+.step-content{padding-top:4px}
+.step-content strong{display:block;font-size:14px;color:var(--ink);margin-bottom:3px}
+.step-content p{margin:0;font-size:13.5px;color:var(--body)}
+
+/* ===== TYPES GRID ===== */
+.types-grid{display:grid;gap:10px;margin:14px 0}
+.types-grid.col2{grid-template-columns:1fr 1fr}
+.types-grid.col3{grid-template-columns:1fr 1fr 1fr}
+.type-card{border:1px solid var(--rule);border-radius:8px;padding:12px;background:#fff}
+.type-card .type-name{font-family:"Source Code Pro",monospace;font-size:12px;font-weight:600;color:var(--saffron-dark);background:var(--saffron-light);display:inline-block;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+.type-card p{font-size:13px;margin:0;color:var(--body)}
+
+/* ===== EXERCISE / ACTIVITY ===== */
+.exercise{border:2px solid var(--saffron);border-radius:10px;padding:16px 18px;margin:20px 0;background:var(--saffron-light)}
+.exercise-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--saffron-dark);margin-bottom:8px}
+.exercise ol{margin:0;padding-left:18px}
+.exercise li{font-size:13.5px;margin-bottom:6px;color:var(--body)}
+
+/* ===== COMPARISON TABLE ===== */
+.compare{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+.compare th{padding:9px 12px;text-align:left;font-size:12px;font-weight:700;letter-spacing:.5px}
+.compare td{padding:8px 12px;border:1px solid var(--rule);vertical-align:top}
+.compare .header-row th:first-child{background:var(--ink);color:#fff;border-radius:0}
+.compare .header-row th{background:var(--saffron);color:#fff}
+.compare tr:nth-child(even) td{background:var(--sidebar)}
+
+/* ===== SIDE NOTE ===== */
+.sidenote{float:right;width:170px;margin:0 0 12px 16px;background:var(--yellow-light);border:1px solid var(--yellow);border-radius:8px;padding:10px;font-size:12px;line-height:1.6;color:var(--body)}
+.sidenote .sn-title{font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--saffron-dark);margin-bottom:5px}
+
+/* ===== TOP NAV BAR (screen only) ===== */
+.topbar{position:fixed;top:0;left:0;right:0;height:48px;background:var(--ink);display:flex;align-items:center;padding:0 24px;gap:20px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.topbar-title{font-family:"Playfair Display",serif;font-size:16px;color:#fff;font-weight:900;margin-right:auto}
+.topbar-link{font-size:12px;color:rgba(255,255,255,.6);text-decoration:none;padding:4px 10px;border-radius:6px;transition:.15s}
+.topbar-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.topbar-btn{font-size:12px;font-weight:600;background:var(--saffron);color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;margin-left:8px}
+.spacer{height:60px}
+
+/* ===== PART DIVIDER ===== */
+.part-divider{background:var(--ink);color:#fff;min-height:140px;display:flex;align-items:center;gap:24px;padding:0 var(--margin-h);margin-bottom:0}
+.part-divider .pd-num{font-family:"Playfair Display",serif;font-size:80px;font-weight:900;color:rgba(255,255,255,.08);line-height:1;flex-shrink:0}
+.part-divider .pd-text{}
+.part-divider .pd-part{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--saffron)}
+.part-divider .pd-title{font-family:"Playfair Display",serif;font-size:32px;font-weight:900}
+.part-divider .pd-desc{font-size:14px;color:rgba(255,255,255,.55);margin-top:6px}
+
+/* ===== CALLOUT PANEL ===== */
+.callout-panel{background:var(--ink);color:#fff;border-radius:10px;padding:20px;margin:16px 0}
+.callout-panel .cp-title{font-family:"Lora",serif;font-size:16px;font-weight:700;color:var(--saffron);margin-bottom:10px}
+.callout-panel p{font-size:13.5px;color:rgba(255,255,255,.8);margin:0}
+
+/* ===== CHAPTER NAV ===== */
+.ch-nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.ch-nav a{font-size:12px;padding:5px 12px;border:1px solid var(--rule);border-radius:999px;color:var(--body);background:#fff;transition:.15s}
+.ch-nav a:hover{border-color:var(--saffron);color:var(--saffron);background:var(--saffron-light);text-decoration:none}
+
+/* ===== TWO-COLUMN LAYOUT ===== */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:14px 0}
+.two-col.ratio13{grid-template-columns:1fr 3fr}
+.two-col.ratio31{grid-template-columns:3fr 1fr}
+.two-col.ratio12{grid-template-columns:1fr 2fr}
+
+/* ===== PRINT STYLES ===== */
+@media print{
+  .topbar,.spacer{display:none!important}
+  body{background:#fff}
+  .page{margin:0;box-shadow:none;page-break-after:always;min-height:0}
+  pre{white-space:pre-wrap}
+  .sidenote{float:none;width:100%;margin:10px 0}
+  @page{size:A4;margin:.4in}
+}
+@media(max-width:830px){
+  :root{--a4:100%;--margin-h:22px;--margin-v:32px}
+  .flow-grid.col3,.flow-grid.col4,.types-grid.col3{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+  .topbar{flex-wrap:wrap;height:auto;padding:10px}
+}
+
+/* ===== SYNTAX HIGHLIGHT (manual) ===== */
+.kw{color:#569cd6} .fn{color:#dcdcaa} .st{color:#ce9178} .cm{color:#6a9955} .nm{color:#b5cea8} .tp{color:#4ec9b0}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAVIGATION BAR ===== -->
+<nav class="topbar">
+  <div class="topbar-title">📘 AI Agent Engineering Masterbook</div>
+  <a class="topbar-link" href="#toc">Contents</a>
+  <a class="topbar-link" href="#ch1">Ch 1</a>
+  <a class="topbar-link" href="#ch2">Ch 2</a>
+  <a class="topbar-link" href="#ch3">Ch 3</a>
+  <a class="topbar-link" href="#ch4">Ch 4</a>
+  <a class="topbar-link" href="#ch5">Ch 5</a>
+  <a class="topbar-link" href="#ch6">Ch 6</a>
+  <a class="topbar-link" href="#ch7">Ch 7</a>
+  <a class="topbar-link" href="#ch8">Ch 8</a>
+  <a class="topbar-link" href="#ch9">Ch 9</a>
+  <a class="topbar-link" href="#ch10">Ch 10</a>
+  <a class="topbar-link" href="#ch11">Ch 11</a>
+  <a class="topbar-link" href="#ch12">Ch 12</a>
+  <button class="topbar-btn" onclick="window.print()">⬇ Download PDF</button>
+</nav>
+<div class="spacer"></div>
+
+<!-- ==================== COVER PAGE ==================== -->
+<div class="page cover" id="cover">
+  <div class="cover-inner">
+    <div class="cover-stripe">
+      <div class="stripe s1"></div>
+      <div class="stripe s2"></div>
+      <div class="stripe s3"></div>
+    </div>
+    <div class="cover-emblem">🤖</div>
+    <div class="cover-series">AI Agent Engineering Masterbook · Hinglish Edition</div>
+    <div class="cover-part">Part 1 of 15</div>
+    <h1 class="cover-title">Programming<br>Foundations</h1>
+    <div class="cover-subtitle">Code, data, control flow, APIs, databases, async aur tools — agent engineering ka base</div>
+    <div class="cover-desc">
+      Yeh chapter un sabhi programming concepts ko cover karta hai jo ek AI agent engineer ko day-1 se pata hone chahiye. Har topic ko NCERT style mein — definition, diagram, step-by-step, code example, aur practice exercise ke saath — explain kiya gaya hai. Hinglish mein padho, samjho, aur build karo.
+    </div>
+
+    <div class="cover-chapters">
+      <div class="cover-ch"><strong>Ch 1.1</strong>Programming Basics</div>
+      <div class="cover-ch"><strong>Ch 1.2</strong>Data Types</div>
+      <div class="cover-ch"><strong>Ch 1.3</strong>Control Flow</div>
+      <div class="cover-ch"><strong>Ch 1.4</strong>Functions</div>
+      <div class="cover-ch"><strong>Ch 1.5</strong>OOP</div>
+      <div class="cover-ch"><strong>Ch 1.6</strong>Error Handling</div>
+      <div class="cover-ch"><strong>Ch 1.7</strong>File Handling</div>
+      <div class="cover-ch"><strong>Ch 1.8</strong>DSA</div>
+      <div class="cover-ch"><strong>Ch 1.9</strong>APIs & Networking</div>
+      <div class="cover-ch"><strong>Ch 1.10</strong>Databases</div>
+      <div class="cover-ch"><strong>Ch 1.11</strong>Async Programming</div>
+      <div class="cover-ch"><strong>Ch 1.12</strong>Dev Tools</div>
+    </div>
+
+    <div class="cover-meta">
+      <div class="cover-meta-text">
+        Beginners ke liye · Python-first · Production-ready<br>
+        Topics: 82 · Code Examples: 45+ · Diagrams: 30+
+      </div>
+      <div class="cover-badge">
+        <div class="num">1</div>
+        <div class="label">Part</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-number">Cover</div>
+</div>
+
+<!-- ==================== TABLE OF CONTENTS ==================== -->
+<div class="page" id="toc">
+  <div class="ch-eyebrow">AI Agent Engineering Masterbook · Part 1</div>
+  <h1 style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--ink);margin-bottom:6px">Table of Contents</h1>
+  <p class="toc-intro">Har chapter ek practical skill hai. Sequence follow karo — ye sab ek dusre pe build karta hai.</p>
+
+  <div class="toc-part">
+    <div class="toc-part-title">Part 1 — Programming Foundations</div>
+
+    <div class="toc-row">
+      <span class="ch-no">1.1</span><span class="ch-name">Programming Basics</span><span class="dots"></span><span class="pg">3</span>
+    </div>
+    <div class="toc-row sub">
+      <span class="ch-no">•</span><span class="ch-name">What is programming? Variables, Operators, I/O, Keywords</span><span class="dots"></span><span class="pg">3</span>
+    </div>
+    <div class="toc-row sub">
+      <span class="ch-no">•</span><span class="ch-name">Type conversion, String formatting, Expressions</span><span class="dots"></span><span class="pg">5</span>
+    </div>
+
+    <div class="toc-row">
+      <span class="ch-no">1.2</span><span class="ch-name">Data Types</span><span class="dots"></span><span class="pg">7</span>
+    </div>
+    <div class="toc-row sub">
+      <span class="ch-no">•</span><span class="ch-name">Integer, Float, Boolean, String, List, Tuple, Set, Dict, None</span><span class="dots"></span><span class="pg">7</span>
+    </div>
+    <div class="toc-row sub">
+      <span class="ch-no">•</span><span class="ch-name">Mutable vs Immutable · Memory layout</span><span class="dots"></span><span class="pg">9</span>
+    </div>
+
+    <div class="toc-row">
+      <span class="ch-no">1.3</span><span class="ch-name">Control Flow</span><span class="dots"></span><span class="pg">11</span>
+    </div>
+    <div class="toc-row sub">
+      <span class="ch-no">•</span><span class="ch-name">if/else, for/while loops, break/continue, Iterators, Generators</span><span class="dots"></span><span class="pg">11</span>
+    </div>
+
+    <div class="toc-row">
+      <span class="ch-no">1.4</span><span class="ch-name">Functions</span><span class="dots"></span><span class="pg">14</span>
+    </div>
+    <div class="toc-row sub">
+      <span class="ch-no">•</span><span class="ch-name">Declaration, Parameters, Return, Lambdas, Recursion, Closures, Decorators</span><span class="dots"></span><span class="pg">14</span>
+    </div>
+
+    <div class="toc-row">
+      <span class="ch-no">1.5</span><span class="ch-name">Object-Oriented Programming</span><span class="dots"></span><span class="pg">17</span>
+    </div>
+    <div class="toc-row sub">
+      <span class="ch-no">•</span><span class="ch-name">Classes, Objects, Inheritance, Polymorphism, Encapsulation, Magic methods</span><span class="dots"></span><span class="pg">17</span>
+    </div>
+
+    <div class="toc-row">
+      <span class="ch-no">1.6</span><span class="ch-name">Error Handling</span><span class="dots"></span><span class="pg">20</span>
+    </div>
+    <div class="toc-row">
+      <span class="ch-no">1.7</span><span class="ch-name">File Handling</span><span class="dots"></span><span class="pg">22</span>
+    </div>
+    <div class="toc-row">
+      <span class="ch-no">1.8</span><span class="ch-name">Data Structures & Algorithms</span><span class="dots"></span><span class="pg">24</span>
+    </div>
+    <div class="toc-row">
+      <span class="ch-no">1.9</span><span class="ch-name">APIs & Networking</span><span class="dots"></span><span class="pg">28</span>
+    </div>
+    <div class="toc-row">
+      <span class="ch-no">1.10</span><span class="ch-name">Databases</span><span class="dots"></span><span class="pg">31</span>
+    </div>
+    <div class="toc-row">
+      <span class="ch-no">1.11</span><span class="ch-name">Async Programming</span><span class="dots"></span><span class="pg">34</span>
+    </div>
+    <div class="toc-row">
+      <span class="ch-no">1.12</span><span class="ch-name">Development Tools</span><span class="dots"></span><span class="pg">37</span>
+    </div>
+  </div>
+
+  <div class="box tip" style="margin-top:24px">
+    <div class="box-title">📌 Padhai ka tarika</div>
+    Har chapter mein pehle <strong>Definition box</strong> padho, phir <strong>Diagram</strong> dekho, phir <strong>Code example</strong> khud likhkar run karo. Exercise end mein hai — use skip mat karo. Yahi NCERT ka mantra hai: <em>Read → Understand → Practice → Apply.</em>
+  </div>
+  <div class="page-number">2</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.1 — PROGRAMMING BASICS ==================== -->
+<div class="page" id="ch1">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.1</div>
+    <div class="ch-number">Part 1 — Programming Foundations</div>
+    <h1 class="ch-title">Programming Basics</h1>
+    <div class="ch-subtitle">"Code likhna seekhne se pehle, programming soochna seekho."</div>
+    <div class="ch-intro">
+      Programming ek tarika hai computer ko <strong>step-by-step instructions</strong> dene ka taaki woh koi kaam kar sake. Jaise tum ek recipe follow karte ho, computer bhi exactly waisi hi instructions follow karta hai — na zyada, na kam. Yeh chapter programming ki sabse zaroori building blocks cover karta hai jo AI agent development ke har step mein kaam aate hain.
+    </div>
+  </div>
+
+  <nav class="ch-nav">
+    <a href="#prog-what">What is Programming?</a>
+    <a href="#prog-compiler">Compiler vs Interpreter</a>
+    <a href="#prog-vars">Variables</a>
+    <a href="#prog-ops">Operators</a>
+    <a href="#prog-io">Input / Output</a>
+    <a href="#prog-types">Type Conversion</a>
+    <a href="#prog-strings">String Formatting</a>
+  </nav>
+
+  <!-- 1.1.1 What is Programming -->
+  <h2 class="sec" id="prog-what">1.1.1 Programming Kya Hai?</h2>
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>Programming</strong> ek process hai jisme hum ek <em>programming language</em> ka use karke computer ko specific tasks perform karne ke liye instructions likhte hain. Yeh instructions collectively ek <strong>program</strong> ya <strong>software</strong> kehlaate hain.
+  </div>
+
+  <p>Ek AI agent likhna ho ya ek simple calculator — dono mein yahi basic flow hoti hai:</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.1 — Programming ka Basic Flow</div>
+    <div class="flow-row">
+      <div class="flow-box saffron">Problem<br><small>(real world)</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box filled saffron">Algorithm<br><small>(logic design)</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Code<br><small>(language mein)</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box green">Run &amp; Test<br><small>(computer pe)</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box filled green">Output<br><small>(result)</small></div>
+    </div>
+  </div>
+
+  <h3 class="sub" id="prog-compiler">1.1.2 Compiler vs Interpreter</h3>
+  <p>Code ko computer nahi samajhta — use pehle <strong>machine language</strong> mein translate karna padta hai. Yeh kaam do tarike se hota hai:</p>
+
+  <table class="std">
+    <tr><th>Feature</th><th>Compiler</th><th>Interpreter</th></tr>
+    <tr><td>Kaise kaam karta hai</td><td>Pura code ek saath translate karta hai</td><td>Line by line translate karta hai</td></tr>
+    <tr><td>Speed</td><td>Fast (already compiled)</td><td>Slow (real-time translate)</td></tr>
+    <tr><td>Error kab milta hai</td><td>Compilation ke baad</td><td>Execution ke time</td></tr>
+    <tr><td>Examples</td><td>C, C++, Rust, Go</td><td>Python, JavaScript, Ruby</td></tr>
+    <tr><td>AI/ML use</td><td>Performance-critical parts</td><td>Rapid prototyping, ML models</td></tr>
+  </table>
+
+  <div class="box hinglish">
+    <div class="box-title">💬 Hinglish mein samjho</div>
+    Compiler ek <em>translator</em> jaisa hai jo pehle poora book translate karta hai, phir publish karta hai. Interpreter ek <em>simultaneous interpreter</em> jaisa hai jo sentence-by-sentence translate karta hai — jaise UN mein hota hai.
+  </div>
+
+  <!-- Variables -->
+  <h2 class="sec" id="prog-vars">1.1.3 Variables — Data Store Karna</h2>
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>Variable</strong> ek named memory location hai jisme program data store karta hai. Name ek label hai, value actual data hai.
+  </div>
+
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.2 — Variable Memory Model</div>
+    <div class="memory-layout">
+      <div class="mem-row"><div class="mem-addr">0x001A</div><div class="mem-val">25</div><div class="mem-label">age</div></div>
+      <div class="mem-row"><div class="mem-addr">0x001B</div><div class="mem-val">"Alice"</div><div class="mem-label">name</div></div>
+      <div class="mem-row"><div class="mem-addr">0x001C</div><div class="mem-val">3.14</div><div class="mem-label">pi</div></div>
+      <div class="mem-row"><div class="mem-addr">0x001D</div><div class="mem-val">True</div><div class="mem-label">is_active</div></div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">RAM mein har variable ek address pe store hota hai. Python ye automatically manage karta hai.</p>
+  </div>
+
+<pre><span class="kw">## Variable Declaration in Python</span>
+
+<span class="cm"># Integer variable</span>
+age = <span class="nm">25</span>
+
+<span class="cm"># String variable</span>
+name = <span class="st">"Alice"</span>
+
+<span class="cm"># Float variable</span>
+salary = <span class="nm">50000.50</span>
+
+<span class="cm"># Boolean variable</span>
+is_agent_running = <span class="kw">True</span>
+
+<span class="cm"># Multiple assignment</span>
+x, y, z = <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>
+
+<span class="cm"># Constant (convention: UPPER_CASE)</span>
+MAX_TOKENS = <span class="nm">4096</span>
+
+<span class="fn">print</span>(<span class="st">f"Agent {name} is {age} years old, max tokens: {MAX_TOKENS}"</span>)
+<span class="label">Python</span></pre>
+
+  <h4 class="mini">Naming Rules (Variable Name ke Rules)</h4>
+  <div class="two-col">
+    <div class="box example">
+      <div class="box-title">✅ Sahi Naamkaran</div>
+      <code>user_name</code>, <code>_private</code>, <code>score2</code>, <code>myAgent</code>, <code>MAX_SIZE</code>
+    </div>
+    <div class="box warning">
+      <div class="box-title">❌ Galat Naamkaran</div>
+      <code>2score</code> (digit se shuru), <code>my-var</code> (hyphen), <code>for</code> (keyword), <code>my var</code> (space)
+    </div>
+  </div>
+  <div class="page-number">3</div>
+</div>
+
+<!-- ==================== PAGE 2 of Ch 1.1 ==================== -->
+<div class="page" id="ch1-p2">
+
+  <!-- Operators -->
+  <h2 class="sec" id="prog-ops">1.1.4 Operators — Kaam Karna Data pe</h2>
+  <p>Operators ek kaam karte hain: ek ya zyada operands pe operation perform karte hain aur ek result return karte hain. AI agents mein operators har jagah hain — scoring, comparison, boolean logic, string concatenation.</p>
+
+  <table class="std">
+    <tr><th>Type</th><th>Operators</th><th>Example</th><th>Result</th></tr>
+    <tr><td>Arithmetic</td><td><code>+ - * / // % **</code></td><td><code>10 // 3</code></td><td><code>3</code> (floor div)</td></tr>
+    <tr><td>Comparison</td><td><code>== != > < >= <=</code></td><td><code>5 >= 3</code></td><td><code>True</code></td></tr>
+    <tr><td>Logical</td><td><code>and or not</code></td><td><code>True and False</code></td><td><code>False</code></td></tr>
+    <tr><td>Assignment</td><td><code>= += -= *= /=</code></td><td><code>x += 5</code></td><td>x = x+5</td></tr>
+    <tr><td>Identity</td><td><code>is is not</code></td><td><code>x is None</code></td><td><code>True/False</code></td></tr>
+    <tr><td>Membership</td><td><code>in not in</code></td><td><code>"a" in "agent"</code></td><td><code>True</code></td></tr>
+    <tr><td>Bitwise</td><td><code>&amp; | ^ ~ << >></code></td><td><code>5 &amp; 3</code></td><td><code>1</code></td></tr>
+  </table>
+
+  <div class="box tip">
+    <div class="box-title">⚡ AI Agent mein Operator Use</div>
+    <strong>Comparison operators</strong> → tool selection logic mein. <strong>Logical operators</strong> → guardrail conditions mein. <strong>Membership <code>in</code></strong> → context window check mein. <strong>Modulo <code>%</code></strong> → rate limiting, pagination mein.
+  </div>
+
+  <!-- Input / Output -->
+  <h2 class="sec" id="prog-io">1.1.5 Input aur Output</h2>
+
+  <div class="two-col">
+    <div>
+      <h4 class="mini">Input</h4>
+      <p>User se ya file se data lena. Python mein <code>input()</code>; real AI apps mein API request body ya file upload.</p>
+<pre>name = <span class="fn">input</span>(<span class="st">"Apna naam batao: "</span>)
+<span class="fn">print</span>(<span class="st">f"Hello, {name}!"</span>)
+<span class="label">Python</span></pre>
+    </div>
+    <div>
+      <h4 class="mini">Output</h4>
+      <p>Screen pe ya file mein result dikhana. <code>print()</code> basic hai; production mein <code>logging</code> module use karo.</p>
+<pre><span class="kw">import</span> logging
+logging.basicConfig(level=logging.INFO)
+logging.info(<span class="st">"Agent started"</span>)
+<span class="fn">print</span>(<span class="st">"Result:"</span>, <span class="nm">42</span>)
+<span class="label">Python</span></pre>
+    </div>
+  </div>
+
+  <!-- Keywords -->
+  <h3 class="sub">1.1.6 Keywords — Reserved Words</h3>
+  <p><strong>Keywords</strong> woh words hain jo Python ne apne liye reserve kar rakhe hain. Inhe variable names ke roop mein use nahi kar sakte.</p>
+  <div class="box remember">
+    <div class="box-title">🧠 Python Keywords (35 total)</div>
+    <code>False True None and or not if elif else for while break continue pass return def class import from as try except finally raise with lambda yield del global nonlocal in is</code>
+  </div>
+
+  <!-- Type Conversion -->
+  <h2 class="sec" id="prog-types">1.1.7 Type Conversion — Data Ka Roop Badalna</h2>
+
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>Type Conversion</strong> ek data type ke value ko doosre data type mein convert karna hai. Do types hote hain: <em>Implicit</em> (Python khud karta hai) aur <em>Explicit</em> (hum manually karte hain).
+  </div>
+
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.3 — Type Conversion Paths</div>
+    <div class="flow-grid col4">
+      <div class="node highlight"><strong>int()</strong>→ 42<br><small>float, str, bool se</small></div>
+      <div class="node highlight"><strong>float()</strong>→ 3.14<br><small>int, str se</small></div>
+      <div class="node highlight"><strong>str()</strong>→ "42"<br><small>any type se</small></div>
+      <div class="node highlight"><strong>bool()</strong>→ True<br><small>0 = False, else True</small></div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">⚠️ Incorrect type conversion se ValueError aata hai — production mein hamesha try/except lagao.</p>
+  </div>
+
+<pre><span class="cm"># Explicit Type Conversion — AI Agent context</span>
+
+user_input = <span class="st">"100"</span>          <span class="cm"># API se aaya string</span>
+tokens = <span class="fn">int</span>(user_input)    <span class="cm"># int mein convert karo</span>
+
+temperature = <span class="st">"0.7"</span>
+temp_float = <span class="fn">float</span>(temperature)
+
+<span class="cm"># Safe conversion — production best practice</span>
+<span class="kw">def</span> <span class="fn">safe_int</span>(value, default=<span class="nm">0</span>):
+    <span class="kw">try</span>:
+        <span class="kw">return</span> <span class="fn">int</span>(value)
+    <span class="kw">except</span> (<span class="tp">ValueError</span>, <span class="tp">TypeError</span>):
+        <span class="kw">return</span> default
+
+result = <span class="fn">safe_int</span>(<span class="st">"abc"</span>)   <span class="cm"># Returns 0 instead of crashing</span>
+<span class="label">Python</span></pre>
+
+  <!-- String Formatting -->
+  <h2 class="sec" id="prog-strings">1.1.8 String Formatting — Text ka Jugaad</h2>
+  <p>AI agents mein prompts, responses, logs — sab kuch text hai. String formatting ek core skill hai.</p>
+
+  <table class="std">
+    <tr><th>Method</th><th>Example</th><th>Kab Use Karein</th></tr>
+    <tr><td>f-strings (best)</td><td><code>f"Hello {name}"</code></td><td>Har jagah — fastest & readable</td></tr>
+    <tr><td>.format()</td><td><code>"Hello {}".format(name)</code></td><td>Dynamic templates mein</td></tr>
+    <tr><td>% (old)</td><td><code>"Hello %s" % name</code></td><td>Legacy code mein</td></tr>
+    <tr><td>Template strings</td><td><code>Template("$name")</code></td><td>User input se templates mein (safer)</td></tr>
+  </table>
+
+<pre><span class="cm"># AI Agent ke liye prompt template</span>
+system_prompt = <span class="st">"""
+You are a helpful assistant.
+User query: {query}
+Max tokens: {max_tokens}
+Temperature: {temp}
+"""</span>
+
+<span class="cm"># f-string version — production mein prefer karo</span>
+query = <span class="st">"What is RAG?"</span>
+max_tokens = <span class="nm">512</span>
+temp = <span class="nm">0.7</span>
+
+prompt = <span class="st">f"""You are a helpful assistant.
+User query: {query}
+Max tokens: {max_tokens}
+Temperature: {temp}"""</span>
+
+<span class="fn">print</span>(prompt)
+<span class="label">Python</span></pre>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.1 — Mini Exercises</div>
+    <ol>
+      <li>Ek variable <code>agent_name</code> banao jisme apna naam ho. Ek variable <code>task_count</code> banao jisme <code>5</code> ho. Dono ko f-string se print karo.</li>
+      <li>User se ek number input lo, usse <code>int</code> mein convert karo, aur uska square print karo. Safe conversion use karo.</li>
+      <li>Ek prompt template banao jo model_name, temperature, aur system_instruction le aur ek formatted string return kare.</li>
+      <li>Ek expression likhao: agar tokens 512 se zyada ho <strong>aur</strong> model "gpt-4" ho, to <code>True</code> return karo. Logical operators use karo.</li>
+    </ol>
+  </div>
+  <div class="page-number">5</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.2 — DATA TYPES ==================== -->
+<div class="page" id="ch2">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.2</div>
+    <h1 class="ch-title">Data Types</h1>
+    <div class="ch-subtitle">"Data ka type pata hoga toh kya karna hai woh bhi pata hoga."</div>
+    <div class="ch-intro">
+      Data types Python ko batate hain ki ek value ke saath <strong>kya operation</strong> kiya ja sakta hai aur woh value <strong>memory mein kaise store</strong> hogi. AI agent mein text, numbers, booleans, lists, dictionaries — sabka different role hai. Is chapter mein har type ko deeply samjhenge.
+    </div>
+  </div>
+
+  <h2 class="sec">1.2.1 Primitive Data Types</h2>
+
+  <h3 class="sub">Integer (<code>int</code>)</h3>
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>Integer</strong> ek poora number hai — koi decimal nahi. Positive, negative, ya zero. Python mein integers ka size unlimited hai (memory ke hisaab se).
+  </div>
+<pre>age = <span class="nm">25</span>
+negative = <span class="nm">-100</span>
+big_num = <span class="nm">1_000_000</span>   <span class="cm"># Underscore readability ke liye</span>
+hex_val = <span class="nm">0xFF</span>          <span class="cm"># Hexadecimal → 255</span>
+bin_val = <span class="nm">0b1010</span>        <span class="cm"># Binary → 10</span>
+<span class="fn">print</span>(<span class="fn">type</span>(age))         <span class="cm"># &lt;class 'int'&gt;</span>
+<span class="label">Python</span></pre>
+
+  <h3 class="sub">Float (<code>float</code>)</h3>
+  <p>Decimal numbers. AI mein temperature, probability scores, loss values sab floats hain.</p>
+<pre>temp = <span class="nm">0.7</span>
+pi = <span class="nm">3.14159</span>
+scientific = <span class="nm">1.5e-3</span>    <span class="cm"># = 0.0015 (scientific notation)</span>
+
+<span class="cm"># Float precision issue — ye jaanna zaroori hai!</span>
+<span class="fn">print</span>(<span class="nm">0.1</span> + <span class="nm">0.2</span>)        <span class="cm"># 0.30000000000000004 ← floating point error!</span>
+<span class="kw">from</span> decimal <span class="kw">import</span> Decimal
+<span class="fn">print</span>(Decimal(<span class="st">'0.1'</span>) + Decimal(<span class="st">'0.2'</span>))  <span class="cm"># 0.3 ← sahi</span>
+<span class="label">Python</span></pre>
+
+  <div class="box warning">
+    <div class="box-title">⚠️ Float Precision Warning</div>
+    AI models mein confidence scores compare karte waqt <code>round()</code> ya <code>math.isclose()</code> use karo — direct <code>==</code> mat karo floats pe.
+  </div>
+
+  <h3 class="sub">Boolean (<code>bool</code>)</h3>
+  <p>Sirf <code>True</code> ya <code>False</code>. Internally <code>int</code> ka subclass hai — <code>True == 1</code>, <code>False == 0</code>.</p>
+<pre>is_running = <span class="kw">True</span>
+has_memory = <span class="kw">False</span>
+
+<span class="cm"># Truthy / Falsy values — AI mein bahut important!</span>
+<span class="cm"># Falsy: False, 0, 0.0, "", [], {}, None</span>
+<span class="cm"># Truthy: Everything else</span>
+
+context = []  <span class="cm"># empty list</span>
+<span class="kw">if</span> context:
+    <span class="fn">print</span>(<span class="st">"Context hai"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"Context empty hai — retrieve karo"</span>)
+<span class="label">Python</span></pre>
+
+  <h3 class="sub">String (<code>str</code>)</h3>
+  <p>Text data. AI engineering mein <strong>sab kuch string se start hota hai</strong> — user query, prompt, LLM output, tool result. String ek immutable sequence of characters hai.</p>
+<pre><span class="cm"># String creation</span>
+single = <span class="st">'Hello'</span>
+double = <span class="st">"World"</span>
+multi = <span class="st">"""Yeh ek
+multiline string hai"""</span>
+
+<span class="cm"># Important string operations</span>
+s = <span class="st">"AI Agent Engineering"</span>
+<span class="fn">print</span>(s.<span class="fn">upper</span>())           <span class="cm"># AI AGENT ENGINEERING</span>
+<span class="fn">print</span>(s.<span class="fn">lower</span>())           <span class="cm"># ai agent engineering</span>
+<span class="fn">print</span>(s.<span class="fn">split</span>())           <span class="cm"># ['AI', 'Agent', 'Engineering']</span>
+<span class="fn">print</span>(s.<span class="fn">replace</span>(<span class="st">"AI"</span>, <span class="st">"ML"</span>)) <span class="cm"># ML Agent Engineering</span>
+<span class="fn">print</span>(<span class="fn">len</span>(s))              <span class="cm"># 20</span>
+
+<span class="cm"># Slicing — prompt engineering mein use hota hai</span>
+<span class="fn">print</span>(s[<span class="nm">0</span>:<span class="nm">8</span>])             <span class="cm"># "AI Agent"</span>
+<span class="fn">print</span>(s[<span class="nm">-11</span>:])            <span class="cm"># "Engineering"</span>
+<span class="label">Python</span></pre>
+
+  <div class="page-number">7</div>
+</div>
+
+<!-- ==================== PAGE 2 of Ch 1.2 ==================== -->
+<div class="page" id="ch2-p2">
+  <h2 class="sec">1.2.2 Collection Data Types</h2>
+
+  <h3 class="sub">List (<code>list</code>) — Ordered, Mutable</h3>
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>List</strong> ek ordered collection hai jo multiple values store karta hai. Mutable hai — matlab change ho sakta hai. AI mein: conversation history, search results, tool names, retrieved chunks.
+  </div>
+<pre>tools = [<span class="st">"search"</span>, <span class="st">"calculator"</span>, <span class="st">"browser"</span>]
+tools.<span class="fn">append</span>(<span class="st">"email"</span>)    <span class="cm"># Add at end</span>
+tools.<span class="fn">insert</span>(<span class="nm">0</span>, <span class="st">"memory"</span>) <span class="cm"># Add at index 0</span>
+tools.<span class="fn">remove</span>(<span class="st">"browser"</span>) <span class="cm"># Remove by value</span>
+<span class="fn">print</span>(tools[<span class="nm">-1</span>])         <span class="cm"># Last element: "email"</span>
+
+<span class="cm"># Conversation history (AI agent use case)</span>
+messages = [
+    {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"Hello"</span>},
+    {<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: <span class="st">"Hi! How can I help?"</span>}
+]
+messages.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"What is RAG?"</span>})
+<span class="label">Python</span></pre>
+
+  <h3 class="sub">Tuple (<code>tuple</code>) — Ordered, Immutable</h3>
+  <p>List jaisa hai par <strong>change nahi ho sakta</strong>. Use karo jab data constant rakhna ho — jaise coordinates, RGB colors, config settings.</p>
+<pre>model_config = (<span class="st">"gpt-4"</span>, <span class="nm">0.7</span>, <span class="nm">512</span>)  <span class="cm"># (name, temp, max_tokens)</span>
+model, temp, tokens = model_config  <span class="cm"># Tuple unpacking</span>
+<span class="fn">print</span>(model)  <span class="cm"># gpt-4</span>
+<span class="label">Python</span></pre>
+
+  <h3 class="sub">Set (<code>set</code>) — Unordered, Unique Values</h3>
+  <p>Duplicate values automatically remove ho jaate hain. Set operations (union, intersection) bahut fast hain — O(1) lookup.</p>
+<pre>allowed_tools = {<span class="st">"search"</span>, <span class="st">"calculator"</span>, <span class="st">"email"</span>}
+requested = {<span class="st">"calculator"</span>, <span class="st">"browser"</span>}
+
+<span class="cm"># Kaunse tools allowed hain?</span>
+valid = allowed_tools &amp; requested      <span class="cm"># Intersection: {'calculator'}</span>
+blocked = requested - allowed_tools    <span class="cm"># Difference: {'browser'}</span>
+<span class="fn">print</span>(<span class="st">f"Valid: {valid}, Blocked: {blocked}"</span>)
+<span class="label">Python</span></pre>
+
+  <h3 class="sub">Dictionary (<code>dict</code>) — Key-Value Pairs</h3>
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>Dictionary</strong> key-value pairs store karta hai. Keys unique honi chahiye. AI agent ka state, tool arguments, API responses — sab dict mein aate hain.
+  </div>
+<pre>agent_state = {
+    <span class="st">"name"</span>: <span class="st">"ResearchBot"</span>,
+    <span class="st">"tools"</span>: [<span class="st">"search"</span>, <span class="st">"summarize"</span>],
+    <span class="st">"memory"</span>: [],
+    <span class="st">"iteration"</span>: <span class="nm">0</span>,
+    <span class="st">"is_complete"</span>: <span class="kw">False</span>
+}
+
+<span class="cm"># Access, update, delete</span>
+<span class="fn">print</span>(agent_state[<span class="st">"name"</span>])          <span class="cm"># ResearchBot</span>
+agent_state[<span class="st">"iteration"</span>] += <span class="nm">1</span>      <span class="cm"># Update</span>
+agent_state.<span class="fn">get</span>(<span class="st">"timeout"</span>, <span class="nm">30</span>)     <span class="cm"># Safe access with default</span>
+
+<span class="cm"># Dict comprehension — tools ko filter karo</span>
+tool_status = {k: <span class="kw">True</span> <span class="kw">for</span> k <span class="kw">in</span> agent_state[<span class="st">"tools"</span>]}
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.2.3 None — Kuch Nahi Ka Value</h2>
+  <p><code>None</code> Python mein "koi value nahi" represent karta hai. Null, nil, undefined — yahi sab ka equivalent hai Python mein.</p>
+
+  <h2 class="sec">1.2.4 Mutable vs Immutable</h2>
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.4 — Mutable vs Immutable Types</div>
+    <div class="flow-grid col2">
+      <div class="node">
+        <strong style="color:var(--green)">✅ Mutable (Change ho sakta)</strong>
+        <p style="font-size:12px;margin:6px 0 0">list, dict, set, bytearray<br><br>AI use: conversation history, agent state, retrieved chunks</p>
+      </div>
+      <div class="node">
+        <strong style="color:var(--red)">🔒 Immutable (Change nahi ho sakta)</strong>
+        <p style="font-size:12px;margin:6px 0 0">int, float, bool, str, tuple, frozenset<br><br>AI use: config values, model name, API keys (should be constant)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="box tip">
+    <div class="box-title">⚡ Performance Tip</div>
+    Loop mein string concatenation (<code>s += "text"</code>) mat karo — ye har baar new string banata hai (O(n²)). Bajaye iske <code>list.append()</code> karo phir <code>"".join()</code> karo — ye O(n) hai. Prompt building mein yeh matter karta hai.
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.2 — Mini Exercises</div>
+    <ol>
+      <li>Ek list banao jisme 5 AI tools ke naam ho. <code>append</code>, <code>remove</code>, aur <code>sort</code> karke print karo.</li>
+      <li>Ek <code>agent_config</code> dict banao jisme <code>model</code>, <code>temperature</code>, <code>max_tokens</code>, <code>tools</code> keys ho. <code>.get()</code> se safely values access karo.</li>
+      <li>Ek string ko <code>split()</code> karke words ki list banao, phir duplicates hataane ke liye <code>set()</code> mein convert karo.</li>
+      <li>Float precision problem demonstrate karo: <code>0.1 + 0.2 == 0.3</code> check karo aur explain karo result kyon aisa hai.</li>
+    </ol>
+  </div>
+  <div class="page-number">9</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.3 — CONTROL FLOW ==================== -->
+<div class="page" id="ch3">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.3</div>
+    <h1 class="ch-title">Control Flow</h1>
+    <div class="ch-subtitle">"Program ko batao: kab ruko, kab chalo, kab ulto wapas jao."</div>
+    <div class="ch-intro">
+      Control flow wo mechanism hai jisse program decide karta hai ki <strong>kaun si line execute hogi</strong> aur <strong>kitni baar</strong>. Without control flow, program ek straight line mein chalta — koi decision nahi, koi loop nahi. AI agents ki decision making, retry logic, tool selection — sab control flow pe based hai.
+    </div>
+  </div>
+
+  <h2 class="sec">1.3.1 Conditional Statements — if / elif / else</h2>
+
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.5 — if/elif/else Flowchart</div>
+    <div style="max-width:400px;margin:0 auto">
+      <div class="flow-row"><div class="flow-box filled saffron">Start</div></div>
+      <div class="flow-down">↓</div>
+      <div class="flow-row"><div class="flow-box">Condition 1<br><small>if tokens &lt; 100</small></div></div>
+      <div class="flow-row" style="gap:40px">
+        <div style="text-align:center"><div style="font-size:11px;color:var(--green);font-weight:700">TRUE</div><div class="flow-arrow">↙</div></div>
+        <div style="text-align:center"><div style="font-size:11px;color:var(--red);font-weight:700">FALSE</div><div class="flow-arrow">↘</div></div>
+      </div>
+      <div class="flow-grid col2">
+        <div class="flow-box green">Block 1<br><small>retrieve more</small></div>
+        <div class="flow-box">Condition 2<br><small>elif tokens &gt; 4000</small></div>
+      </div>
+      <div class="flow-down">↓ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+      <div class="flow-grid col2">
+        <div class="flow-box filled green">Continue</div>
+        <div class="flow-box red">Truncate<br><small>else: proceed</small></div>
+      </div>
+    </div>
+  </div>
+
+<pre><span class="cm"># AI Agent mein tool selection logic</span>
+<span class="kw">def</span> <span class="fn">decide_action</span>(user_query, context_tokens):
+    <span class="kw">if</span> context_tokens > <span class="nm">3500</span>:
+        <span class="kw">return</span> <span class="st">"summarize_context"</span>
+    <span class="kw">elif</span> <span class="st">"search"</span> <span class="kw">in</span> user_query.<span class="fn">lower</span>():
+        <span class="kw">return</span> <span class="st">"web_search"</span>
+    <span class="kw">elif</span> <span class="st">"calculate"</span> <span class="kw">in</span> user_query.<span class="fn">lower</span>():
+        <span class="kw">return</span> <span class="st">"calculator"</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="st">"respond_directly"</span>
+
+action = <span class="fn">decide_action</span>(<span class="st">"search for RAG papers"</span>, <span class="nm">1200</span>)
+<span class="fn">print</span>(action)  <span class="cm"># web_search</span>
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.3.2 Loops — Kaam Baar Baar Karna</h2>
+
+  <h3 class="sub">for Loop</h3>
+  <p>Kisi sequence (list, string, range, dict) ke har element pe operation karo.</p>
+<pre>tools = [<span class="st">"search"</span>, <span class="st">"summarize"</span>, <span class="st">"email"</span>]
+<span class="kw">for</span> i, tool <span class="kw">in</span> <span class="fn">enumerate</span>(tools):
+    <span class="fn">print</span>(<span class="st">f"{i+1}. Tool: {tool}"</span>)
+
+<span class="cm"># Agent retry loop</span>
+<span class="kw">for</span> attempt <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">3</span>):    <span class="cm"># 0, 1, 2</span>
+    <span class="fn">print</span>(<span class="st">f"Attempt {attempt+1}/3"</span>)
+
+<span class="cm"># Dict loop</span>
+config = {<span class="st">"model"</span>: <span class="st">"gpt-4"</span>, <span class="st">"temp"</span>: <span class="nm">0.7</span>}
+<span class="kw">for</span> key, value <span class="kw">in</span> config.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="st">f"{key}: {value}"</span>)
+<span class="label">Python</span></pre>
+
+  <h3 class="sub">while Loop</h3>
+  <p>Jab tak condition <code>True</code> ho, chalta rahe. AI agent ka main execution loop yahi hota hai!</p>
+<pre><span class="cm"># AI Agent main loop — while loop ka perfect example</span>
+max_iterations = <span class="nm">10</span>
+iteration = <span class="nm">0</span>
+task_complete = <span class="kw">False</span>
+
+<span class="kw">while</span> <span class="kw">not</span> task_complete <span class="kw">and</span> iteration < max_iterations:
+    iteration += <span class="nm">1</span>
+    <span class="fn">print</span>(<span class="st">f"Agent iteration {iteration}"</span>)
+    <span class="cm"># action = agent.step()</span>
+    <span class="cm"># if action == "FINISH": task_complete = True</span>
+    task_complete = (iteration == <span class="nm">3</span>)   <span class="cm"># Simulated</span>
+
+<span class="fn">print</span>(<span class="st">f"Done in {iteration} iterations"</span>)
+<span class="label">Python</span></pre>
+
+  <h3 class="sub">break, continue, pass</h3>
+  <table class="std">
+    <tr><th>Keyword</th><th>Kya karta hai</th><th>Use case</th></tr>
+    <tr><td>break</td><td>Loop turant band karta hai</td><td>Answer mil gaya — loop band karo</td></tr>
+    <tr><td>continue</td><td>Current iteration skip karta hai</td><td>Invalid input skip karo, next pe jao</td></tr>
+    <tr><td>pass</td><td>Kuch nahi karta (placeholder)</td><td>Empty class/function ka syntax fill</td></tr>
+  </table>
+
+  <h2 class="sec">1.3.3 Iterators aur Generators</h2>
+  <div class="two-col">
+    <div>
+      <h4 class="mini">Iterator</h4>
+      <p>Object jo <code>__iter__</code> aur <code>__next__</code> implement karta hai. <code>for</code> loop internally iterator use karta hai.</p>
+    </div>
+    <div>
+      <h4 class="mini">Generator — Memory Efficient!</h4>
+      <p><code>yield</code> use karta hai. Lazy evaluation — sab data ek saath memory mein nahi laata. Large datasets ke liye perfect.</p>
+    </div>
+  </div>
+<pre><span class="cm"># Generator — large document processing ke liye</span>
+<span class="kw">def</span> <span class="fn">chunk_text</span>(text, size=<span class="nm">512</span>):
+    <span class="st">"""Text ko chunks mein yield karo — memory efficient"""</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">0</span>, <span class="fn">len</span>(text), size):
+        <span class="kw">yield</span> text[i:i+size]
+
+document = <span class="st">"A" * <span class="nm">5000</span></span>  <span class="cm"># 5000 character document</span>
+<span class="kw">for</span> chunk <span class="kw">in</span> <span class="fn">chunk_text</span>(document):
+    <span class="fn">print</span>(<span class="st">f"Processing chunk of {len(chunk)} chars"</span>)
+<span class="label">Python</span></pre>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.3 — Mini Exercises</div>
+    <ol>
+      <li>Ek <code>while</code> loop likho jo agent ke iterations count kare aur max 5 pe rok le.</li>
+      <li><code>for</code> loop se ek list of numbers ka sum nikalo — <code>sum()</code> built-in use mat karo.</li>
+      <li>Ek generator <code>fibonacci(n)</code> banao jo n Fibonacci numbers yield kare.</li>
+      <li>Ek if/elif/else chain banao jo LLM response ko classify kare: "error", "empty", "too_long" (>2000 chars), "normal".</li>
+    </ol>
+  </div>
+  <div class="page-number">12</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.4 — FUNCTIONS ==================== -->
+<div class="page" id="ch4">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.4</div>
+    <h1 class="ch-title">Functions</h1>
+    <div class="ch-subtitle">"Code ko reusable banao — ek baar likho, baar baar use karo."</div>
+    <div class="ch-intro">
+      Function ek reusable block of code hai jise ek naam diya gaya hai. Jab bhi wo kaam karna ho, function ka naam leke call karo. AI agent mein har operation — retrieve, summarize, call_tool, format_prompt — ek function hona chahiye. Yahi clean code ka pehla rule hai.
+    </div>
+  </div>
+
+  <h2 class="sec">1.4.1 Function Declaration aur Call</h2>
+<pre><span class="cm"># Basic function — input leta hai, output return karta hai</span>
+<span class="kw">def</span> <span class="fn">format_prompt</span>(query: <span class="tp">str</span>, context: <span class="tp">str</span> = <span class="st">""</span>) -> <span class="tp">str</span>:
+    <span class="st">"""
+    User query aur context ko combine karke prompt banao.
+
+    Args:
+        query: User ka sawal
+        context: Retrieved knowledge (optional)
+    Returns:
+        Formatted prompt string
+    """</span>
+    <span class="kw">if</span> context:
+        <span class="kw">return</span> <span class="st">f"Context:\n{context}\n\nQuestion: {query}"</span>
+    <span class="kw">return</span> <span class="st">f"Question: {query}"</span>
+
+<span class="cm"># Function call</span>
+prompt = <span class="fn">format_prompt</span>(<span class="st">"What is RAG?"</span>, <span class="st">"RAG means Retrieval Augmented Generation..."</span>)
+<span class="fn">print</span>(prompt)
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.4.2 Parameters ke Types</h2>
+  <table class="std">
+    <tr><th>Type</th><th>Syntax</th><th>Example</th></tr>
+    <tr><td>Positional</td><td><code>def f(a, b)</code></td><td><code>f(1, 2)</code></td></tr>
+    <tr><td>Default</td><td><code>def f(a, b=10)</code></td><td><code>f(5)</code> → b=10</td></tr>
+    <tr><td>Keyword</td><td><code>def f(a, b)</code></td><td><code>f(b=2, a=1)</code></td></tr>
+    <tr><td>*args</td><td><code>def f(*args)</code></td><td>Variable positional args</td></tr>
+    <tr><td>**kwargs</td><td><code>def f(**kwargs)</code></td><td>Variable keyword args (dict)</td></tr>
+  </table>
+
+<pre><span class="cm"># *args aur **kwargs — agent tool caller mein use hota hai</span>
+<span class="kw">def</span> <span class="fn">call_tool</span>(tool_name: <span class="tp">str</span>, *args, **kwargs):
+    <span class="fn">print</span>(<span class="st">f"Calling tool: {tool_name}"</span>)
+    <span class="fn">print</span>(<span class="st">f"Positional args: {args}"</span>)
+    <span class="fn">print</span>(<span class="st">f"Keyword args: {kwargs}"</span>)
+
+<span class="fn">call_tool</span>(<span class="st">"web_search"</span>, <span class="st">"RAG"</span>, <span class="st">"2024"</span>, max_results=<span class="nm">5</span>, lang=<span class="st">"en"</span>)
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.4.3 Lambda Functions</h2>
+  <p>Ek-line anonymous functions. Filtering, sorting, mapping mein use hoti hain.</p>
+<pre><span class="cm"># Sort tool results by score</span>
+results = [
+    {<span class="st">"text"</span>: <span class="st">"RAG intro"</span>, <span class="st">"score"</span>: <span class="nm">0.87</span>},
+    {<span class="st">"text"</span>: <span class="st">"RAG advanced"</span>, <span class="st">"score"</span>: <span class="nm">0.94</span>},
+    {<span class="st">"text"</span>: <span class="st">"Vector DBs"</span>, <span class="st">"score"</span>: <span class="nm">0.76</span>}
+]
+sorted_results = <span class="fn">sorted</span>(results, key=<span class="kw">lambda</span> x: x[<span class="st">"score"</span>], reverse=<span class="kw">True</span>)
+<span class="fn">print</span>(sorted_results[<span class="nm">0</span>][<span class="st">"text"</span>])  <span class="cm"># RAG advanced</span>
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.4.4 Recursion</h2>
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>Recursion</strong> tab hoti hai jab ek function khud ko call karta hai. Har recursive call ek smaller problem solve karta hai. Ek <strong>base case</strong> zaroori hai — warna infinite loop.
+  </div>
+<pre><span class="cm"># Recursive agent — task decompose karo sub-tasks mein</span>
+<span class="kw">def</span> <span class="fn">decompose_task</span>(task: <span class="tp">str</span>, depth: <span class="tp">int</span> = <span class="nm">0</span>, max_depth: <span class="tp">int</span> = <span class="nm">3</span>):
+    indent = <span class="st">"  "</span> * depth
+    <span class="fn">print</span>(<span class="st">f"{indent}Task: {task}"</span>)
+    <span class="kw">if</span> depth >= max_depth:              <span class="cm"># Base case — ruk jao</span>
+        <span class="fn">print</span>(<span class="st">f"{indent}→ Execute directly"</span>)
+        <span class="kw">return</span>
+    <span class="cm"># Sub-tasks (simplified for demo)</span>
+    subtasks = [<span class="st">f"{task}_step{i}"</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">1</span>, <span class="nm">3</span>)]
+    <span class="kw">for</span> sub <span class="kw">in</span> subtasks:
+        <span class="fn">decompose_task</span>(sub, depth + <span class="nm">1</span>, max_depth)  <span class="cm"># Recursive call</span>
+
+<span class="fn">decompose_task</span>(<span class="st">"Research AI agents"</span>)
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.4.5 Closures aur Decorators</h2>
+
+  <div class="two-col">
+    <div>
+      <h4 class="mini">Closure</h4>
+      <p>Inner function jo outer function ke variables "remember" rakhti hai — even after outer function return ho chuki ho.</p>
+<pre><span class="kw">def</span> <span class="fn">make_counter</span>(start=<span class="nm">0</span>):
+    count = [start]
+    <span class="kw">def</span> <span class="fn">increment</span>():
+        count[<span class="nm">0</span>] += <span class="nm">1</span>
+        <span class="kw">return</span> count[<span class="nm">0</span>]
+    <span class="kw">return</span> increment  <span class="cm"># Closure</span>
+
+api_calls = <span class="fn">make_counter</span>()
+<span class="fn">print</span>(<span class="fn">api_calls</span>())  <span class="cm"># 1</span>
+<span class="fn">print</span>(<span class="fn">api_calls</span>())  <span class="cm"># 2</span>
+<span class="label">Python</span></pre>
+    </div>
+    <div>
+      <h4 class="mini">Decorator</h4>
+      <p>Function ko wrap karta hai — bina original function change kiye behavior add karna. Logging, retry, auth mein use.</p>
+<pre><span class="kw">def</span> <span class="fn">log_call</span>(func):
+    <span class="kw">def</span> <span class="fn">wrapper</span>(*args, **kwargs):
+        <span class="fn">print</span>(<span class="st">f"Calling {func.__name__}"</span>)
+        result = <span class="fn">func</span>(*args, **kwargs)
+        <span class="fn">print</span>(<span class="st">f"Done: {func.__name__}"</span>)
+        <span class="kw">return</span> result
+    <span class="kw">return</span> wrapper
+
+<span class="nm">@log_call</span>
+<span class="kw">def</span> <span class="fn">search_web</span>(query):
+    <span class="kw">return</span> <span class="st">f"Results for {query}"</span>
+
+<span class="fn">search_web</span>(<span class="st">"RAG"</span>)
+<span class="label">Python</span></pre>
+    </div>
+  </div>
+
+  <div class="box tip">
+    <div class="box-title">⚡ Production Decorator — Retry Logic</div>
+<pre style="margin:6px 0"><span class="kw">import</span> time
+<span class="kw">def</span> <span class="fn">retry</span>(max_attempts=<span class="nm">3</span>, delay=<span class="nm">1</span>):
+    <span class="kw">def</span> <span class="fn">decorator</span>(func):
+        <span class="kw">def</span> <span class="fn">wrapper</span>(*args, **kwargs):
+            <span class="kw">for</span> attempt <span class="kw">in</span> <span class="fn">range</span>(max_attempts):
+                <span class="kw">try</span>: <span class="kw">return</span> <span class="fn">func</span>(*args, **kwargs)
+                <span class="kw">except</span> <span class="tp">Exception</span> <span class="kw">as</span> e:
+                    <span class="kw">if</span> attempt == max_attempts - <span class="nm">1</span>: <span class="kw">raise</span>
+                    time.<span class="fn">sleep</span>(delay * (<span class="nm">2</span>**attempt))  <span class="cm"># Exponential backoff</span>
+        <span class="kw">return</span> wrapper
+    <span class="kw">return</span> decorator
+
+<span class="nm">@retry</span>(max_attempts=<span class="nm">3</span>, delay=<span class="nm">2</span>)
+<span class="kw">def</span> <span class="fn">call_llm_api</span>(prompt): <span class="kw">pass</span>  <span class="cm"># Real API call yahan aayega</span>
+<span class="label">Python</span></pre>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.4 — Mini Exercises</div>
+    <ol>
+      <li>Ek function <code>calculate_tokens(text)</code> likho jo approximate token count return kare (words × 1.3).</li>
+      <li>Ek <code>@timer</code> decorator banao jo function execution time measure kare.</li>
+      <li>Lambda use karke tool results ko score ke basis pe filter karo (sirf score > 0.8 wale).</li>
+      <li>Ek recursive function <code>flatten(nested_list)</code> banao jo deeply nested list ko flat kare.</li>
+    </ol>
+  </div>
+  <div class="page-number">16</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.5 — OOP ==================== -->
+<div class="page" id="ch5">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.5</div>
+    <h1 class="ch-title">Object-Oriented Programming</h1>
+    <div class="ch-subtitle">"Real world ki cheezein classes mein bandho, code organize ho jayega."</div>
+    <div class="ch-intro">
+      OOP ek programming paradigm hai jisme hum code ko <strong>objects</strong> ke around organize karte hain — real world entities ki tarah. Ek AI agent khud ek object hai jiske paas state (memory, tools) aur behavior (plan, execute, reflect) hai. LangChain, CrewAI jaise sare frameworks OOP pe based hain.
+    </div>
+  </div>
+
+  <h2 class="sec">1.5.1 Class aur Object</h2>
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.6 — Class vs Object</div>
+    <div class="flow-grid col2">
+      <div class="node highlight">
+        <strong>Class (Blueprint)</strong>
+        <p style="font-size:12px;margin:6px 0 0">Template / Design<br>
+        class Agent:<br>
+        &nbsp;&nbsp;name, tools, memory<br>
+        &nbsp;&nbsp;plan(), execute(), reflect()</p>
+      </div>
+      <div class="node">
+        <strong>Objects (Instances)</strong>
+        <p style="font-size:12px;margin:6px 0 0">research_bot = Agent("ResearchBot")<br>
+        code_bot = Agent("CodeBot")<br>
+        email_bot = Agent("EmailBot")<br>
+        (Har ek alag state ke saath)</p>
+      </div>
+    </div>
+  </div>
+
+<pre><span class="kw">class</span> <span class="tp">Agent</span>:
+    <span class="st">"""AI Agent base class"""</span>
+
+    <span class="cm"># Class variable (shared by all instances)</span>
+    agent_count = <span class="nm">0</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name: <span class="tp">str</span>, tools: <span class="tp">list</span>):
+        <span class="st">"""Constructor — object create hote waqt chalta hai"""</span>
+        self.name = name                 <span class="cm"># Instance variable</span>
+        self.tools = tools
+        self.memory = []
+        self.iteration = <span class="nm">0</span>
+        <span class="tp">Agent</span>.agent_count += <span class="nm">1</span>          <span class="cm"># Class variable update</span>
+
+    <span class="kw">def</span> <span class="fn">think</span>(self, query: <span class="tp">str</span>) -> <span class="tp">str</span>:
+        <span class="st">"""LLM se reasoning"""</span>
+        self.memory.<span class="fn">append</span>({<span class="st">"thought"</span>: query})
+        <span class="kw">return</span> <span class="st">f"[{self.name}] Thinking about: {query}"</span>
+
+    <span class="kw">def</span> <span class="fn">act</span>(self, tool_name: <span class="tp">str</span>, *args) -> <span class="tp">str</span>:
+        <span class="kw">if</span> tool_name <span class="kw">not in</span> self.tools:
+            <span class="kw">return</span> <span class="st">f"Error: Tool {tool_name} not available"</span>
+        <span class="kw">return</span> <span class="st">f"[{self.name}] Using {tool_name} with {args}"</span>
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(self) -> <span class="tp">str</span>:
+        <span class="st">"""Object ka string representation"""</span>
+        <span class="kw">return</span> <span class="st">f"Agent(name={self.name!r}, tools={self.tools})"</span>
+
+<span class="cm"># Object creation</span>
+bot = <span class="tp">Agent</span>(<span class="st">"ResearchBot"</span>, [<span class="st">"search"</span>, <span class="st">"summarize"</span>])
+<span class="fn">print</span>(bot.<span class="fn">think</span>(<span class="st">"What is RAG?"</span>))
+<span class="fn">print</span>(bot.<span class="fn">act</span>(<span class="st">"search"</span>, <span class="st">"RAG papers 2024"</span>))
+<span class="fn">print</span>(<span class="tp">Agent</span>.agent_count)  <span class="cm"># 1</span>
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.5.2 Inheritance — Parent se Sikhna</h2>
+<pre><span class="kw">class</span> <span class="tp">ResearchAgent</span>(<span class="tp">Agent</span>):   <span class="cm"># Agent se inherit kar raha hai</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name: <span class="tp">str</span>):
+        <span class="fn">super</span>().__init__(name, tools=[<span class="st">"search"</span>, <span class="st">"arxiv"</span>, <span class="st">"summarize"</span>])
+        self.papers_found = []
+
+    <span class="kw">def</span> <span class="fn">research</span>(self, topic: <span class="tp">str</span>) -> <span class="tp">str</span>:
+        self.<span class="fn">think</span>(f<span class="st">"Researching: {topic}"</span>)      <span class="cm"># Parent method</span>
+        result = self.<span class="fn">act</span>(<span class="st">"search"</span>, topic)        <span class="cm"># Parent method</span>
+        self.papers_found.<span class="fn">append</span>(topic)
+        <span class="kw">return</span> result
+
+<span class="kw">class</span> <span class="tp">CodingAgent</span>(<span class="tp">Agent</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name: <span class="tp">str</span>):
+        <span class="fn">super</span>().__init__(name, tools=[<span class="st">"code_interpreter"</span>, <span class="st">"debugger"</span>])
+
+    <span class="kw">def</span> <span class="fn">code</span>(self, task: <span class="tp">str</span>) -> <span class="tp">str</span>:
+        <span class="kw">return</span> self.<span class="fn">act</span>(<span class="st">"code_interpreter"</span>, task)
+
+researcher = <span class="tp">ResearchAgent</span>(<span class="st">"ResearchBot"</span>)
+<span class="fn">print</span>(researcher.<span class="fn">research</span>(<span class="st">"LLM fine-tuning"</span>))
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.5.3 Key OOP Concepts</h2>
+  <table class="std">
+    <tr><th>Concept</th><th>Definition</th><th>AI Agent Example</th></tr>
+    <tr><td>Encapsulation</td><td>Data aur methods ek saath band karna; private data se protect karna</td><td>Agent ki internal state (API key) ko private rakhna</td></tr>
+    <tr><td>Inheritance</td><td>Parent class ke properties/methods child ko milna</td><td>BaseAgent → ResearchAgent → SpecializedAgent</td></tr>
+    <tr><td>Polymorphism</td><td>Same method ka alag alag objects mein alag behavior</td><td>Har agent ka alag <code>execute()</code> implementation</td></tr>
+    <tr><td>Abstraction</td><td>Complex implementation hide karo, simple interface do</td><td><code>agent.run(task)</code> — andar kya ho raha nahi pata</td></tr>
+  </table>
+
+  <h2 class="sec">1.5.4 Magic Methods (Dunder Methods)</h2>
+  <p>Methods jo double underscore se shuru aur khatam hote hain. Python inhe automatic call karta hai specific situations mein.</p>
+  <table class="std">
+    <tr><th>Method</th><th>Kab call hota hai</th><th>Use</th></tr>
+    <tr><td><code>__init__</code></td><td>Object create hone pe</td><td>Instance variables set karo</td></tr>
+    <tr><td><code>__str__</code></td><td><code>str(obj)</code> ya <code>print(obj)</code></td><td>Human-readable string</td></tr>
+    <tr><td><code>__repr__</code></td><td>Debug/REPL mein</td><td>Developer-facing string</td></tr>
+    <tr><td><code>__len__</code></td><td><code>len(obj)</code></td><td>Memory/context size</td></tr>
+    <tr><td><code>__call__</code></td><td><code>obj(args)</code></td><td>Object ko function ki tarah call karo</td></tr>
+    <tr><td><code>__enter__/__exit__</code></td><td><code>with</code> statement</td><td>Resource management (DB connection)</td></tr>
+  </table>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.5 — Mini Exercises</div>
+    <ol>
+      <li>Ek <code>Tool</code> class banao jisme <code>name</code>, <code>description</code>, aur <code>execute(input)</code> method ho.</li>
+      <li><code>Tool</code> se inherit karke <code>SearchTool</code> aur <code>CalculatorTool</code> banao, <code>execute()</code> override karo.</li>
+      <li><code>__call__</code> implement karo taaki <code>tool("query")</code> ki tarah call kar sako.</li>
+      <li>Ek <code>Memory</code> class banao jo conversation history store kare aur <code>__len__</code> se message count return kare.</li>
+    </ol>
+  </div>
+  <div class="page-number">19</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.6 — ERROR HANDLING ==================== -->
+<div class="page" id="ch6">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.6</div>
+    <h1 class="ch-title">Error Handling</h1>
+    <div class="ch-subtitle">"Galat input, network fail, API error — expect the unexpected."</div>
+    <div class="ch-intro">
+      Production AI systems crash nahi karte — wo gracefully handle karte hain. Ek agent 24/7 run kar raha hai — network fail ho, API timeout ho, user galat input de — agent ko har situation handle karni aani chahiye. Error handling isi ke liye hai.
+    </div>
+  </div>
+
+  <h2 class="sec">1.6.1 try / except / else / finally</h2>
+
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.7 — Exception Handling Flow</div>
+    <div style="max-width:450px;margin:0 auto">
+      <div class="flow-row"><div class="flow-box filled saffron">try: block</div></div>
+      <div class="flow-down">↓</div>
+      <div class="flow-row" style="gap:30px">
+        <div style="text-align:center"><small style="color:var(--green)">No Error</small><div class="flow-arrow" style="transform:rotate(30deg)">↙</div></div>
+        <div style="text-align:center"><small style="color:var(--red)">Error Raised</small><div class="flow-arrow" style="transform:rotate(-30deg)">↘</div></div>
+      </div>
+      <div class="flow-grid col2">
+        <div class="flow-box green">else: block<br><small>Success path</small></div>
+        <div class="flow-box red">except: block<br><small>Handle error</small></div>
+      </div>
+      <div class="flow-down">↓ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+      <div class="flow-row"><div class="flow-box filled">finally: block<br><small>HAMESHA chalta hai</small></div></div>
+    </div>
+  </div>
+
+<pre><span class="kw">import</span> requests
+<span class="kw">import</span> logging
+
+<span class="kw">def</span> <span class="fn">call_llm_api</span>(prompt: <span class="tp">str</span>, timeout: <span class="tp">int</span> = <span class="nm">30</span>) -> <span class="tp">dict</span>:
+    <span class="st">"""Robust LLM API call with proper error handling"""</span>
+    <span class="kw">try</span>:
+        response = requests.<span class="fn">post</span>(
+            <span class="st">"https://api.openai.com/v1/chat/completions"</span>,
+            json={<span class="st">"model"</span>: <span class="st">"gpt-4"</span>, <span class="st">"messages"</span>: [{<span class="st">"role"</span>:<span class="st">"user"</span>,<span class="st">"content"</span>:prompt}]},
+            timeout=timeout
+        )
+        response.<span class="fn">raise_for_status</span>()       <span class="cm"># 4xx/5xx pe exception raise karo</span>
+        <span class="kw">return</span> response.<span class="fn">json</span>()
+
+    <span class="kw">except</span> requests.exceptions.<span class="tp">Timeout</span>:
+        logging.<span class="fn">error</span>(<span class="st">"API timeout after %ds"</span>, timeout)
+        <span class="kw">return</span> {<span class="st">"error"</span>: <span class="st">"timeout"</span>, <span class="st">"retry"</span>: <span class="kw">True</span>}
+
+    <span class="kw">except</span> requests.exceptions.<span class="tp">HTTPError</span> <span class="kw">as</span> e:
+        <span class="kw">if</span> e.response.status_code == <span class="nm">429</span>:   <span class="cm"># Rate limit</span>
+            <span class="kw">return</span> {<span class="st">"error"</span>: <span class="st">"rate_limit"</span>, <span class="st">"retry"</span>: <span class="kw">True</span>}
+        <span class="kw">return</span> {<span class="st">"error"</span>: str(e), <span class="st">"retry"</span>: <span class="kw">False</span>}
+
+    <span class="kw">except</span> <span class="tp">Exception</span> <span class="kw">as</span> e:
+        logging.<span class="fn">exception</span>(<span class="st">"Unexpected error in LLM call"</span>)
+        <span class="kw">return</span> {<span class="st">"error"</span>: str(e), <span class="st">"retry"</span>: <span class="kw">False</span>}
+
+    <span class="kw">finally</span>:
+        logging.<span class="fn">info</span>(<span class="st">"LLM API call completed"</span>)    <span class="cm"># Hamesha log karo</span>
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.6.2 Custom Exceptions</h2>
+<pre><span class="kw">class</span> <span class="tp">AgentError</span>(<span class="tp">Exception</span>):
+    <span class="st">"""Base exception for all agent errors"""</span>
+    <span class="kw">pass</span>
+
+<span class="kw">class</span> <span class="tp">ToolNotFoundError</span>(<span class="tp">AgentError</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, tool_name: <span class="tp">str</span>):
+        <span class="fn">super</span>().__init__(<span class="st">f"Tool '{tool_name}' not registered"</span>)
+        self.tool_name = tool_name
+
+<span class="kw">class</span> <span class="tp">ContextLimitError</span>(<span class="tp">AgentError</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, current: <span class="tp">int</span>, limit: <span class="tp">int</span>):
+        <span class="fn">super</span>().__init__(<span class="st">f"Context {current} exceeds limit {limit}"</span>)
+        self.current, self.limit = current, limit
+
+<span class="cm"># Usage</span>
+<span class="kw">try</span>:
+    <span class="kw">raise</span> <span class="tp">ToolNotFoundError</span>(<span class="st">"web_scraper"</span>)
+<span class="kw">except</span> <span class="tp">ToolNotFoundError</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="st">f"Handled: {e} — using fallback tool"</span>)
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.6.3 Logging — print() Mat Karo Production Mein</h2>
+<pre><span class="kw">import</span> logging
+
+<span class="cm"># Production logging setup</span>
+logging.<span class="fn">basicConfig</span>(
+    level=logging.INFO,
+    format=<span class="st">'%(asctime)s [%(levelname)s] %(name)s: %(message)s'</span>,
+    handlers=[
+        logging.<span class="tp">StreamHandler</span>(),              <span class="cm"># Console</span>
+        logging.<span class="tp">FileHandler</span>(<span class="st">'agent.log'</span>)    <span class="cm"># File</span>
+    ]
+)
+logger = logging.<span class="fn">getLogger</span>(<span class="st">'agent.main'</span>)
+
+logger.<span class="fn">debug</span>(<span class="st">"Debug: tool input = %s"</span>, tool_input)    <span class="cm"># Dev only</span>
+logger.<span class="fn">info</span>(<span class="st">"Agent started iteration %d"</span>, iteration)   <span class="cm"># Normal ops</span>
+logger.<span class="fn">warning</span>(<span class="st">"Context near limit: %d tokens"</span>, tokens) <span class="cm"># Watch out</span>
+logger.<span class="fn">error</span>(<span class="st">"Tool failed: %s"</span>, error_msg)             <span class="cm"># Error</span>
+logger.<span class="fn">critical</span>(<span class="st">"Agent crashed — shutting down"</span>)       <span class="cm"># Fatal</span>
+<span class="label">Python</span></pre>
+
+  <div class="box remember">
+    <div class="box-title">🧠 Exception Hierarchy — Yaad Rakho</div>
+    <code>BaseException → Exception → (ValueError, TypeError, KeyError, IndexError, AttributeError, RuntimeError, OSError, ...)</code><br>
+    Hamesha specific exception pakdo — <code>except Exception</code> last resort hai, <code>except BaseException</code> kabhi mat karo production mein.
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.6 — Mini Exercises</div>
+    <ol>
+      <li>Ek function likho jo user se number input le, <code>ValueError</code> handle kare agar number nahi diya.</li>
+      <li>Custom exception <code>MaxRetriesError</code> banao. Ek retry loop mein 3 attempts ke baad ise raise karo.</li>
+      <li>Ek JSON file read karo — file missing aur invalid JSON dono errors handle karo with proper logging.</li>
+    </ol>
+  </div>
+  <div class="page-number">21</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.7 — FILE HANDLING ==================== -->
+<div class="page" id="ch7">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.7</div>
+    <h1 class="ch-title">File Handling</h1>
+    <div class="ch-subtitle">"Data disk pe hai — use padho, process karo, wapas likho."</div>
+    <div class="ch-intro">
+      AI agents ko data kahin se toh leni hogi — local files, PDFs, CSVs, JSON configs. File handling ek essential skill hai. Context mein bataya gaya har document — agent ke liye ek file hi thi pehle.
+    </div>
+  </div>
+
+  <h2 class="sec">1.7.1 Text Files — Read, Write, Append</h2>
+<pre><span class="cm"># Context manager use karo — auto-close guaranteed</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"knowledge_base.txt"</span>, <span class="st">"r"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    content = f.<span class="fn">read</span>()         <span class="cm"># Poora file</span>
+    lines = f.<span class="fn">readlines</span>()     <span class="cm"># List of lines</span>
+
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"output.txt"</span>, <span class="st">"w"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="st">"Agent response here\n"</span>)
+
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"log.txt"</span>, <span class="st">"a"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="st">"New entry appended\n"</span>)
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.7.2 JSON — Agent ka Sab Se Zaroori Format</h2>
+<pre><span class="kw">import</span> json
+
+<span class="cm"># Read JSON — API responses, configs</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"config.json"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    config = json.<span class="fn">load</span>(f)     <span class="cm"># dict mein convert</span>
+
+<span class="cm"># Write JSON — agent state save karo</span>
+agent_state = {<span class="st">"iteration"</span>: <span class="nm">5</span>, <span class="st">"tasks_done"</span>: [<span class="st">"search"</span>, <span class="st">"summarize"</span>]}
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"state.json"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    json.<span class="fn">dump</span>(agent_state, f, indent=<span class="nm">2</span>)
+
+<span class="cm"># String se/ko convert karna</span>
+json_str = json.<span class="fn">dumps</span>(agent_state)     <span class="cm"># dict → string</span>
+parsed = json.<span class="fn">loads</span>(json_str)          <span class="cm"># string → dict</span>
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.7.3 CSV — Tabular Data</h2>
+<pre><span class="kw">import</span> csv
+
+<span class="cm"># Read CSV — dataset processing</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"results.csv"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    reader = csv.<span class="fn">DictReader</span>(f)
+    <span class="kw">for</span> row <span class="kw">in</span> reader:
+        <span class="fn">print</span>(row[<span class="st">"query"</span>], row[<span class="st">"score"</span>])
+
+<span class="cm"># Write CSV — evaluation results save karo</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"eval.csv"</span>, <span class="st">"w"</span>, newline=<span class="st">""</span>) <span class="kw">as</span> f:
+    writer = csv.<span class="fn">DictWriter</span>(f, fieldnames=[<span class="st">"query"</span>, <span class="st">"response"</span>, <span class="st">"score"</span>])
+    writer.<span class="fn">writeheader</span>()
+    writer.<span class="fn">writerow</span>({<span class="st">"query"</span>: <span class="st">"What is RAG?"</span>, <span class="st">"response"</span>: <span class="st">"..."</span>, <span class="st">"score"</span>: <span class="nm">0.9</span>})
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.7.4 pathlib — Modern File Paths</h2>
+<pre><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+data_dir = Path(<span class="st">"./data"</span>)
+data_dir.<span class="fn">mkdir</span>(exist_ok=<span class="kw">True</span>)     <span class="cm"># Directory banao</span>
+
+<span class="cm"># All JSON files list karo</span>
+<span class="kw">for</span> file <span class="kw">in</span> data_dir.<span class="fn">glob</span>(<span class="st">"*.json"</span>):
+    <span class="fn">print</span>(file.name, file.<span class="fn">stat</span>().st_size)
+
+config_path = Path(<span class="st">"config"</span>) / <span class="st">"agent.json"</span>  <span class="cm"># OS-safe path joining</span>
+<span class="label">Python</span></pre>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.7 — Mini Exercises</div>
+    <ol>
+      <li>Agent conversation history ko JSON file mein save karo aur wapas load karo.</li>
+      <li>Ek directory ke sare <code>.txt</code> files count karo aur unka total size print karo.</li>
+      <li>CSV file padho, scores ko filter karo (> 0.8), aur result nayi CSV mein save karo.</li>
+    </ol>
+  </div>
+  <div class="page-number">23</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.8 — DATA STRUCTURES & ALGORITHMS ==================== -->
+<div class="page" id="ch8">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.8</div>
+    <h1 class="ch-title">Data Structures & Algorithms</h1>
+    <div class="ch-subtitle">"Sahi data structure = fast code. Galat data structure = production mein rona."</div>
+    <div class="ch-intro">
+      Data structures batate hain data ko organize kaise karo. Algorithms batate hain problem solve kaise karo. AI agent mein retrieval speed, memory lookup, task queue — sab DSA pe depend karta hai. Interview mein bhi yahi puchha jata hai!
+    </div>
+  </div>
+
+  <h2 class="sec">1.8.1 Core Data Structures</h2>
+
+  <div class="types-grid col2">
+    <div class="type-card">
+      <div class="type-name">Array / List — O(1) access</div>
+      <p>Index pe direct access. Insert/delete at end: O(1). Middle mein: O(n). AI use: token sequences, retrieved chunks.</p>
+    </div>
+    <div class="type-card">
+      <div class="type-name">Stack (LIFO) — O(1) push/pop</div>
+      <p>Last In, First Out. Function call stack, undo operations, DFS traversal. Python mein list use karo.</p>
+    </div>
+    <div class="type-card">
+      <div class="type-name">Queue (FIFO) — O(1) enqueue/dequeue</div>
+      <p>First In, First Out. Task queues, BFS, message queues. <code>collections.deque</code> use karo.</p>
+    </div>
+    <div class="type-card">
+      <div class="type-name">HashMap / Dict — O(1) avg lookup</div>
+      <p>Key-value pairs. Tool registry, cache, memoization. Python dict hash-table backed hai.</p>
+    </div>
+    <div class="type-card">
+      <div class="type-name">Tree — O(log n) operations</div>
+      <p>Hierarchical data. File systems, decision trees, task decomposition trees.</p>
+    </div>
+    <div class="type-card">
+      <div class="type-name">Graph — O(V+E) traversal</div>
+      <p>Nodes aur edges. Knowledge graphs, multi-agent communication, LangGraph.</p>
+    </div>
+  </div>
+
+<pre><span class="kw">from</span> collections <span class="kw">import</span> deque, defaultdict
+
+<span class="cm"># Stack — agent reasoning trace</span>
+reasoning_stack = []
+reasoning_stack.<span class="fn">append</span>(<span class="st">"Understand query"</span>)
+reasoning_stack.<span class="fn">append</span>(<span class="st">"Search for context"</span>)
+reasoning_stack.<span class="fn">append</span>(<span class="st">"Generate response"</span>)
+last_step = reasoning_stack.<span class="fn">pop</span>()   <span class="cm"># "Generate response"</span>
+
+<span class="cm"># Queue — task queue for agent</span>
+task_queue = deque([<span class="st">"task1"</span>, <span class="st">"task2"</span>, <span class="st">"task3"</span>])
+task_queue.<span class="fn">appendleft</span>(<span class="st">"urgent_task"</span>)  <span class="cm"># High priority task</span>
+current_task = task_queue.<span class="fn">popleft</span>()  <span class="cm"># "urgent_task"</span>
+
+<span class="cm"># HashMap — tool registry</span>
+tool_registry = {}
+tool_registry[<span class="st">"search"</span>] = <span class="kw">lambda</span> q: <span class="st">f"Search results for {q}"</span>
+tool_registry[<span class="st">"calc"</span>] = <span class="kw">lambda</span> expr: <span class="fn">eval</span>(expr)
+
+<span class="cm"># Memoization — expensive computations cache karo</span>
+embedding_cache = {}
+<span class="kw">def</span> <span class="fn">get_embedding</span>(text: <span class="tp">str</span>) -> <span class="tp">list</span>:
+    <span class="kw">if</span> text <span class="kw">not in</span> embedding_cache:
+        embedding_cache[text] = [<span class="nm">0.1</span>, <span class="nm">0.2</span>, <span class="nm">0.3</span>]   <span class="cm"># API call yahan</span>
+    <span class="kw">return</span> embedding_cache[text]
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.8.2 Big O Notation — Performance Socho</h2>
+  <table class="std">
+    <tr><th>Notation</th><th>Name</th><th>Example</th><th>10 items → 1000 items</th></tr>
+    <tr><td><code>O(1)</code></td><td>Constant</td><td>Dict lookup</td><td>Same speed</td></tr>
+    <tr><td><code>O(log n)</code></td><td>Logarithmic</td><td>Binary search</td><td>10x → 30x slower</td></tr>
+    <tr><td><code>O(n)</code></td><td>Linear</td><td>Linear search</td><td>100x slower</td></tr>
+    <tr><td><code>O(n log n)</code></td><td>Linearithmic</td><td>Merge sort</td><td>~330x slower</td></tr>
+    <tr><td><code>O(n²)</code></td><td>Quadratic</td><td>Bubble sort</td><td>10,000x slower</td></tr>
+  </table>
+
+  <h2 class="sec">1.8.3 Searching</h2>
+<pre><span class="cm"># Linear Search — O(n)</span>
+<span class="kw">def</span> <span class="fn">linear_search</span>(arr, target):
+    <span class="kw">for</span> i, val <span class="kw">in</span> <span class="fn">enumerate</span>(arr):
+        <span class="kw">if</span> val == target:
+            <span class="kw">return</span> i
+    <span class="kw">return</span> <span class="nm">-1</span>
+
+<span class="cm"># Binary Search — O(log n) — sorted array pe</span>
+<span class="kw">def</span> <span class="fn">binary_search</span>(arr, target):
+    left, right = <span class="nm">0</span>, <span class="fn">len</span>(arr) - <span class="nm">1</span>
+    <span class="kw">while</span> left <= right:
+        mid = (left + right) // <span class="nm">2</span>
+        <span class="kw">if</span> arr[mid] == target: <span class="kw">return</span> mid
+        <span class="kw">elif</span> arr[mid] < target: left = mid + <span class="nm">1</span>
+        <span class="kw">else</span>: right = mid - <span class="nm">1</span>
+    <span class="kw">return</span> <span class="nm">-1</span>
+<span class="label">Python</span></pre>
+
+  <div class="box tip">
+    <div class="box-title">⚡ RAG mein DSA Connection</div>
+    Vector similarity search (cosine similarity) essentially nearest-neighbor search hai. FAISS, Pinecone internally special index structures (HNSW, IVF) use karte hain jo O(log n) pe kaam karte hain — O(n) brute force se zyada fast.
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.8 — Mini Exercises</div>
+    <ol>
+      <li><code>deque</code> use karke ek task queue banao: tasks add karo, execute karo (popleft), aur done tasks track karo.</li>
+      <li>Memoization decorator <code>@memoize</code> banao jo kisi bhi function ke results cache kare.</li>
+      <li>Binary search implement karo aur test karo — 1000 elements mein kitne steps lage vs linear search.</li>
+      <li>Ek graph (dict of lists) represent karo jo agents ke beech communication channels dikhaye. BFS se traversal karo.</li>
+    </ol>
+  </div>
+  <div class="page-number">25</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.9 — APIs & NETWORKING ==================== -->
+<div class="page" id="ch9">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.9</div>
+    <h1 class="ch-title">APIs & Networking</h1>
+    <div class="ch-subtitle">"AI agent sirf apne andar nahi rehta — woh duniya se baat karta hai APIs ke zariye."</div>
+    <div class="ch-intro">
+      AI agents external services se baat karte hain — LLM APIs, search APIs, database APIs, tool APIs. Networking ka basic samajhna zaroori hai taaki errors debug ho sakein, timeouts handle ho sakein, authentication set ho sake.
+    </div>
+  </div>
+
+  <h2 class="sec">1.9.1 HTTP Basics</h2>
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.8 — HTTP Request/Response Cycle</div>
+    <div class="flow-row">
+      <div class="flow-box filled saffron">AI Agent<br><small>(Client)</small></div>
+      <div class="flow-arrow">→ HTTP Request →</div>
+      <div class="flow-box filled">Server<br><small>(OpenAI/Anthropic)</small></div>
+    </div>
+    <div style="text-align:center;margin:8px 0;font-size:12px;color:var(--muted)">Request: Method + URL + Headers + Body</div>
+    <div class="flow-row">
+      <div class="flow-box filled saffron">Agent processes<br>response</div>
+      <div class="flow-arrow">← HTTP Response ←</div>
+      <div class="flow-box filled">Status + Body<br><small>(JSON)</small></div>
+    </div>
+  </div>
+
+  <table class="std">
+    <tr><th>HTTP Method</th><th>Use</th><th>AI Agent Example</th></tr>
+    <tr><td>GET</td><td>Data retrieve karo</td><td>Tool results fetch karo, model list lo</td></tr>
+    <tr><td>POST</td><td>Data bhejo / create karo</td><td>LLM completion request, embedding generate</td></tr>
+    <tr><td>PUT</td><td>Data update karo (replace)</td><td>Agent config update karo</td></tr>
+    <tr><td>PATCH</td><td>Partial update</td><td>Specific field update</td></tr>
+    <tr><td>DELETE</td><td>Delete karo</td><td>Conversation history delete</td></tr>
+  </table>
+
+  <h2 class="sec">1.9.2 Status Codes — Jo Samajhne Chahiye</h2>
+  <table class="std">
+    <tr><th>Code</th><th>Meaning</th><th>Agent Action</th></tr>
+    <tr><td>200 OK</td><td>Success</td><td>Response process karo</td></tr>
+    <tr><td>201 Created</td><td>Resource created</td><td>New ID save karo</td></tr>
+    <tr><td>400 Bad Request</td><td>Galat input</td><td>Request fix karo, retry</td></tr>
+    <tr><td>401 Unauthorized</td><td>Auth fail</td><td>API key check karo</td></tr>
+    <tr><td>403 Forbidden</td><td>Permission nahi</td><td>Permissions verify karo</td></tr>
+    <tr><td>404 Not Found</td><td>Resource nahi mila</td><td>URL check karo</td></tr>
+    <tr><td>429 Too Many Requests</td><td>Rate limit</td><td>Backoff lagao, wait karo</td></tr>
+    <tr><td>500 Server Error</td><td>Server crash</td><td>Retry with backoff</td></tr>
+  </table>
+
+  <h2 class="sec">1.9.3 REST API Call — Python mein</h2>
+<pre><span class="kw">import</span> requests
+<span class="kw">import</span> os
+
+<span class="kw">def</span> <span class="fn">chat_completion</span>(messages: <span class="tp">list</span>, model: <span class="tp">str</span> = <span class="st">"gpt-4o"</span>) -> <span class="tp">str</span>:
+    <span class="st">"""OpenAI Chat Completion API call"""</span>
+    api_key = os.<span class="fn">getenv</span>(<span class="st">"OPENAI_API_KEY"</span>)   <span class="cm"># Key env mein rakho!</span>
+    <span class="kw">if</span> <span class="kw">not</span> api_key:
+        <span class="kw">raise</span> <span class="tp">ValueError</span>(<span class="st">"OPENAI_API_KEY not set"</span>)
+
+    headers = {
+        <span class="st">"Authorization"</span>: <span class="st">f"Bearer {api_key}"</span>,
+        <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span>
+    }
+    payload = {
+        <span class="st">"model"</span>: model,
+        <span class="st">"messages"</span>: messages,
+        <span class="st">"temperature"</span>: <span class="nm">0.7</span>,
+        <span class="st">"max_tokens"</span>: <span class="nm">1024</span>
+    }
+    response = requests.<span class="fn">post</span>(
+        <span class="st">"https://api.openai.com/v1/chat/completions"</span>,
+        headers=headers, json=payload, timeout=<span class="nm">60</span>
+    )
+    response.<span class="fn">raise_for_status</span>()
+    <span class="kw">return</span> response.<span class="fn">json</span>()[<span class="st">"choices"</span>][<span class="nm">0</span>][<span class="st">"message"</span>][<span class="st">"content"</span>]
+
+<span class="cm"># Usage</span>
+reply = <span class="fn">chat_completion</span>([{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"What is RAG?"</span>}])
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.9.4 Authentication Methods</h2>
+  <table class="std">
+    <tr><th>Method</th><th>How</th><th>Use Case</th></tr>
+    <tr><td>API Key</td><td>Header: <code>Authorization: Bearer key</code></td><td>OpenAI, Anthropic, most LLM APIs</td></tr>
+    <tr><td>OAuth 2.0</td><td>Access token via flow</td><td>Google, GitHub, enterprise apps</td></tr>
+    <tr><td>JWT</td><td>Signed token in header</td><td>Your own backend APIs</td></tr>
+    <tr><td>Basic Auth</td><td>Base64(user:pass) in header</td><td>Legacy systems (avoid in prod)</td></tr>
+  </table>
+
+  <div class="box warning">
+    <div class="box-title">⚠️ Security — API Keys Kabhi Hardcode Mat Karo!</div>
+    <code>api_key = "sk-abc..."</code> — YEH GALAT HAI. Hamesha environment variables use karo: <code>os.getenv("API_KEY")</code>. Production mein secrets manager (AWS Secrets Manager, HashiCorp Vault) use karo.
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.9 — Mini Exercises</div>
+    <ol>
+      <li>Free API (e.g., <code>https://api.agify.io/?name=Alice</code>) pe GET request karo aur response print karo.</li>
+      <li>Status code 429 ke liye exponential backoff retry function likho (1s, 2s, 4s, 8s delays).</li>
+      <li>Ek <code>APIClient</code> class banao jisme <code>get()</code>, <code>post()</code> methods hon jo headers automatically add kare aur errors handle kare.</li>
+    </ol>
+  </div>
+  <div class="page-number">29</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.10 — DATABASES ==================== -->
+<div class="page" id="ch10">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.10</div>
+    <h1 class="ch-title">Databases</h1>
+    <div class="ch-subtitle">"Memory RAM mein hoti hai, data disk pe — database dono ke beech bridge hai."</div>
+    <div class="ch-intro">
+      AI agents ko persistent data chahiye — user preferences, conversation history, knowledge base, evaluation results. SQL databases structured data ke liye hain, NoSQL flexible/unstructured data ke liye. Vector databases embeddings ke liye hain (Part 7 mein detail se).
+    </div>
+  </div>
+
+  <h2 class="sec">1.10.1 SQL Basics — Structured Query Language</h2>
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.9 — Relational Database Concept</div>
+    <div class="flow-grid col3">
+      <div class="node highlight"><strong>Table: users</strong><br><small>id | name | email<br>1 | Alice | ...<br>2 | Bob | ...</small></div>
+      <div class="node highlight"><strong>Table: conversations</strong><br><small>id | user_id | text<br>1 | 1 | Hello...<br>2 | 1 | Tell me...</small></div>
+      <div class="node highlight"><strong>Table: memories</strong><br><small>id | user_id | fact<br>1 | 1 | Likes Python<br>2 | 1 | Engineer</small></div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">Tables aapas mein foreign keys se judi hain. SQL se join karke related data ek saath lao.</p>
+  </div>
+
+<pre><span class="cm">-- CRUD Operations — Create, Read, Update, Delete</span>
+
+<span class="cm">-- Create table</span>
+<span class="kw">CREATE TABLE</span> agent_memories (
+    id <span class="tp">INTEGER PRIMARY KEY AUTOINCREMENT</span>,
+    user_id <span class="tp">INTEGER NOT NULL</span>,
+    fact <span class="tp">TEXT NOT NULL</span>,
+    created_at <span class="tp">DATETIME DEFAULT CURRENT_TIMESTAMP</span>
+);
+
+<span class="cm">-- Insert (Create)</span>
+<span class="kw">INSERT INTO</span> agent_memories (user_id, fact) <span class="kw">VALUES</span> (<span class="nm">1</span>, <span class="st">'User prefers Python'</span>);
+
+<span class="cm">-- Select (Read)</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> agent_memories <span class="kw">WHERE</span> user_id = <span class="nm">1</span> <span class="kw">ORDER BY</span> created_at <span class="kw">DESC</span>;
+
+<span class="cm">-- Update</span>
+<span class="kw">UPDATE</span> agent_memories <span class="kw">SET</span> fact = <span class="st">'User prefers Python 3.11'</span> <span class="kw">WHERE</span> id = <span class="nm">1</span>;
+
+<span class="cm">-- Delete</span>
+<span class="kw">DELETE FROM</span> agent_memories <span class="kw">WHERE</span> id = <span class="nm">1</span>;
+
+<span class="cm">-- JOIN — user info ke saath memories fetch karo</span>
+<span class="kw">SELECT</span> u.name, m.fact
+<span class="kw">FROM</span> users u
+<span class="kw">JOIN</span> agent_memories m <span class="kw">ON</span> u.id = m.user_id
+<span class="kw">WHERE</span> u.id = <span class="nm">1</span>;
+<span class="label">SQL</span></pre>
+
+  <h2 class="sec">1.10.2 Python se SQLite</h2>
+<pre><span class="kw">import</span> sqlite3
+<span class="kw">from</span> contextlib <span class="kw">import</span> contextmanager
+
+<span class="nm">@contextmanager</span>
+<span class="kw">def</span> <span class="fn">get_db</span>(path=<span class="st">"agent.db"</span>):
+    conn = sqlite3.<span class="fn">connect</span>(path)
+    conn.row_factory = sqlite3.Row   <span class="cm"># dict-like rows</span>
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> conn
+        conn.<span class="fn">commit</span>()
+    <span class="kw">except</span> <span class="tp">Exception</span>:
+        conn.<span class="fn">rollback</span>()
+        <span class="kw">raise</span>
+    <span class="kw">finally</span>:
+        conn.<span class="fn">close</span>()
+
+<span class="cm"># Usage</span>
+<span class="kw">with</span> <span class="fn">get_db</span>() <span class="kw">as</span> db:
+    db.<span class="fn">execute</span>(<span class="st">"CREATE TABLE IF NOT EXISTS memories (id INTEGER PRIMARY KEY, fact TEXT)"</span>)
+    db.<span class="fn">execute</span>(<span class="st">"INSERT INTO memories (fact) VALUES (?)"</span>, (<span class="st">"User likes Python",</span>))
+
+<span class="kw">with</span> <span class="fn">get_db</span>() <span class="kw">as</span> db:
+    rows = db.<span class="fn">execute</span>(<span class="st">"SELECT * FROM memories"</span>).<span class="fn">fetchall</span>()
+    <span class="kw">for</span> row <span class="kw">in</span> rows:
+        <span class="fn">print</span>(<span class="tp">dict</span>(row))
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.10.3 SQL vs NoSQL</h2>
+  <table class="std">
+    <tr><th>Feature</th><th>SQL (PostgreSQL, SQLite)</th><th>NoSQL (MongoDB, Redis)</th></tr>
+    <tr><td>Data structure</td><td>Tables with fixed schema</td><td>Documents, key-value, graphs</td></tr>
+    <tr><td>Schema</td><td>Rigid — define pehle karo</td><td>Flexible — kuch bhi store karo</td></tr>
+    <tr><td>ACID transactions</td><td>Full support</td><td>Limited (Redis: atomic ops)</td></tr>
+    <tr><td>Best for</td><td>User data, financial records</td><td>Conversation history, cache, logs</td></tr>
+    <tr><td>AI Agent use</td><td>User profiles, eval results</td><td>Session state, fast memory</td></tr>
+  </table>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.10 — Mini Exercises</div>
+    <ol>
+      <li>SQLite mein ek <code>conversations</code> table banao. Messages insert karo, phir ek user ke sare messages fetch karo.</li>
+      <li>SQL JOIN likhao jo conversations ko user name ke saath dikhaye.</li>
+      <li>Ek <code>ConversationDB</code> class banao jo <code>save_message()</code>, <code>get_history(user_id)</code>, <code>clear_history()</code> methods provide kare.</li>
+    </ol>
+  </div>
+  <div class="page-number">32</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.11 — ASYNC PROGRAMMING ==================== -->
+<div class="page" id="ch11">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.11</div>
+    <h1 class="ch-title">Async Programming</h1>
+    <div class="ch-subtitle">"Wait mat karo — dusra kaam shuru karo. Yahi async ka funda hai."</div>
+    <div class="ch-intro">
+      AI agents bahut API calls karte hain — LLM API, search API, tool APIs. Synchronous code ek request ka wait karta hai phir agle ko — slow. Async code multiple requests concurrently bhejta hai — fast. Production agents ko async aana hi chahiye.
+    </div>
+  </div>
+
+  <h2 class="sec">1.11.1 Sync vs Async</h2>
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.10 — Synchronous vs Asynchronous Execution</div>
+    <div class="flow-grid col2">
+      <div class="node">
+        <strong>Synchronous (Slow)</strong>
+        <div style="font-size:11px;text-align:left;margin-top:8px">
+          ▶ API Call 1 (2s wait)<br>
+          ▶ API Call 2 (2s wait)<br>
+          ▶ API Call 3 (2s wait)<br>
+          <strong>Total: 6 seconds</strong>
+        </div>
+      </div>
+      <div class="node highlight">
+        <strong>Asynchronous (Fast)</strong>
+        <div style="font-size:11px;text-align:left;margin-top:8px">
+          ▶ API Call 1 (start) ──┐<br>
+          ▶ API Call 2 (start) ──┤ Concurrent<br>
+          ▶ API Call 3 (start) ──┘<br>
+          <strong>Total: ~2 seconds ✅</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<pre><span class="kw">import</span> asyncio
+<span class="kw">import</span> aiohttp
+
+<span class="cm"># Async function — 'async def' se define hoti hai</span>
+<span class="kw">async def</span> <span class="fn">fetch_tool_result</span>(session: aiohttp.ClientSession, tool_url: <span class="tp">str</span>) -> <span class="tp">dict</span>:
+    <span class="st">"""Single tool API call"""</span>
+    <span class="kw">async with</span> session.<span class="fn">get</span>(tool_url) <span class="kw">as</span> response:
+        <span class="kw">return await</span> response.<span class="fn">json</span>()   <span class="cm"># await se wait karo</span>
+
+<span class="kw">async def</span> <span class="fn">run_parallel_tools</span>(tool_urls: <span class="tp">list</span>) -> <span class="tp">list</span>:
+    <span class="st">"""Multiple tools concurrently chalao"""</span>
+    <span class="kw">async with</span> aiohttp.<span class="tp">ClientSession</span>() <span class="kw">as</span> session:
+        tasks = [<span class="fn">fetch_tool_result</span>(session, url) <span class="kw">for</span> url <span class="kw">in</span> tool_urls]
+        results = <span class="kw">await</span> asyncio.<span class="fn">gather</span>(*tasks)  <span class="cm"># Sab ek saath</span>
+        <span class="kw">return</span> results
+
+<span class="cm"># Synchronous context se async function call karna</span>
+urls = [<span class="st">"https://api.tool1.com"</span>, <span class="st">"https://api.tool2.com"</span>]
+results = asyncio.<span class="fn">run</span>(<span class="fn">run_parallel_tools</span>(urls))
+<span class="label">Python</span></pre>
+
+  <h2 class="sec">1.11.2 asyncio Key Concepts</h2>
+  <table class="std">
+    <tr><th>Concept</th><th>Definition</th><th>Code</th></tr>
+    <tr><td>Coroutine</td><td>Async function jo yield kar sakti hai</td><td><code>async def func()</code></td></tr>
+    <tr><td>await</td><td>Coroutine complete hone ka wait karo</td><td><code>result = await coro()</code></td></tr>
+    <tr><td>Task</td><td>Background mein run hone wali coroutine</td><td><code>asyncio.create_task()</code></td></tr>
+    <tr><td>gather()</td><td>Multiple coroutines concurrently run karo</td><td><code>await asyncio.gather(*coros)</code></td></tr>
+    <tr><td>Event Loop</td><td>Async tasks ko manage karne wala engine</td><td><code>asyncio.run(main())</code></td></tr>
+  </table>
+
+  <h2 class="sec">1.11.3 Threads vs Processes vs Async</h2>
+  <table class="std">
+    <tr><th>Model</th><th>Best For</th><th>Python hai?</th></tr>
+    <tr><td>Async/Await</td><td>I/O bound: API calls, file ops, DB</td><td>✅ asyncio</td></tr>
+    <tr><td>Threads</td><td>I/O bound, legacy code integration</td><td>✅ threading — GIL limitation</td></tr>
+    <tr><td>Processes</td><td>CPU bound: ML inference, image processing</td><td>✅ multiprocessing — true parallel</td></tr>
+  </table>
+
+  <div class="box tip">
+    <div class="box-title">⚡ Agent Framework mein Async</div>
+    LangChain, LlamaIndex, CrewAI sab async support karte hain. FastAPI automatically async handle karta hai. <code>asyncio.gather()</code> se multiple LLM calls parallel karo — latency 3x-5x reduce hoti hai.
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.11 — Mini Exercises</div>
+    <ol>
+      <li><code>asyncio.sleep()</code> use karke 3 "API calls" (simulated) ko concurrent run karo. Total time measure karo.</li>
+      <li><code>asyncio.gather()</code> vs sequential <code>await</code> ka time compare karo.</li>
+      <li>Ek async function <code>with_timeout(coro, seconds)</code> banao jo <code>asyncio.wait_for</code> use kare.</li>
+    </ol>
+  </div>
+  <div class="page-number">35</div>
+</div>
+
+
+<!-- ==================== CHAPTER 1.12 — DEVELOPMENT TOOLS ==================== -->
+<div class="page" id="ch12">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Chapter 1.12</div>
+    <h1 class="ch-title">Development Tools</h1>
+    <div class="ch-subtitle">"Sahi tools se kaam double fast hota hai — ek din setup mein lagao, lifetime bacchao."</div>
+    <div class="ch-intro">
+      Ek professional AI engineer sirf code nahi likhta — wo tools use karta hai jo code ko manage, test, containerize, aur deploy karte hain. Yeh tools industry standard hain — inke bina production pe jaana mushkil hai.
+    </div>
+  </div>
+
+  <h2 class="sec">1.12.1 Git & GitHub — Version Control</h2>
+  <div class="diagram">
+    <div class="diagram-title">Diagram 1.11 — Git Workflow</div>
+    <div class="flow-row">
+      <div class="flow-box">Working<br>Directory</div>
+      <div class="flow-arrow">git add →</div>
+      <div class="flow-box saffron">Staging<br>Area</div>
+      <div class="flow-arrow">git commit →</div>
+      <div class="flow-box">Local<br>Repo</div>
+      <div class="flow-arrow">git push →</div>
+      <div class="flow-box filled green">GitHub<br>(Remote)</div>
+    </div>
+  </div>
+
+<pre><span class="cm"># Essential Git commands — AI project workflow</span>
+git init                            <span class="cm"># Naya project initialize</span>
+git clone https://github.com/...   <span class="cm"># Existing project download</span>
+
+git add .                           <span class="cm"># Sab files stage karo</span>
+git commit -m "feat: add RAG pipeline"  <span class="cm"># Commit</span>
+git push origin main               <span class="cm"># GitHub pe upload</span>
+
+git checkout -b feature/agent-memory   <span class="cm"># Naya branch banao</span>
+git merge feature/agent-memory         <span class="cm"># Branch merge karo</span>
+
+<span class="cm"># .gitignore — sensitive files commit mat karo!</span>
+echo ".env" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "*.pyc" >> .gitignore
+<span class="label">Bash</span></pre>
+
+  <h2 class="sec">1.12.2 Virtual Environment — Dependencies Isolate Karo</h2>
+<pre><span class="cm"># Create virtual environment</span>
+python -m venv .venv
+
+<span class="cm"># Activate (Windows)</span>
+.venv\Scripts\activate
+
+<span class="cm"># Activate (Mac/Linux)</span>
+source .venv/bin/activate
+
+<span class="cm"># Install packages</span>
+pip install langchain openai chromadb python-dotenv
+
+<span class="cm"># Requirements file — reproducibility ke liye</span>
+pip freeze > requirements.txt
+pip install -r requirements.txt    <span class="cm"># Kisi aur machine pe install</span>
+<span class="label">Bash</span></pre>
+
+  <h2 class="sec">1.12.3 Docker — "Mere machine pe chalta tha" wali problem solve</h2>
+  <div class="box definition">
+    <div class="box-title">📖 Definition</div>
+    <strong>Docker</strong> containers banata hai — lightweight, isolated environments jisme application aur uski saari dependencies pack hoti hain. Kisi bhi machine pe same way mein run karta hai.
+  </div>
+
+<pre><span class="cm"># Dockerfile — AI Agent ke liye</span>
+<span class="kw">FROM</span> python:3.11-slim
+
+<span class="kw">WORKDIR</span> /app
+
+<span class="cm"># Dependencies pehle copy karo (caching ke liye)</span>
+<span class="kw">COPY</span> requirements.txt .
+<span class="kw">RUN</span> pip install --no-cache-dir -r requirements.txt
+
+<span class="cm"># Code copy karo</span>
+<span class="kw">COPY</span> . .
+
+<span class="cm"># Environment variables</span>
+<span class="kw">ENV</span> PYTHONUNBUFFERED=1
+
+<span class="cm"># App start command</span>
+<span class="kw">CMD</span> ["python", "agent.py"]
+<span class="label">Dockerfile</span></pre>
+
+<pre><span class="cm"># Docker commands</span>
+docker build -t my-agent .          <span class="cm"># Image build karo</span>
+docker run -e OPENAI_API_KEY=$KEY my-agent  <span class="cm"># Run karo</span>
+docker ps                           <span class="cm"># Running containers dekho</span>
+docker logs container_id            <span class="cm"># Logs dekho</span>
+<span class="label">Bash</span></pre>
+
+  <h2 class="sec">1.12.4 .env Files — Secrets Ka Sahi Jagah</h2>
+<pre><span class="cm"># .env file (KABHI GITHUB PE PUSH MAT KARO!)</span>
+OPENAI_API_KEY=sk-abc123...
+ANTHROPIC_API_KEY=ant-xyz...
+DATABASE_URL=postgresql://user:pass@localhost/db
+DEBUG=True
+<span class="label">.env</span></pre>
+
+<pre><span class="kw">from</span> dotenv <span class="kw">import</span> load_dotenv
+<span class="kw">import</span> os
+
+<span class="fn">load_dotenv</span>()  <span class="cm"># .env file load karo</span>
+api_key = os.<span class="fn">getenv</span>(<span class="st">"OPENAI_API_KEY"</span>)
+db_url = os.<span class="fn">getenv</span>(<span class="st">"DATABASE_URL"</span>, <span class="st">"sqlite:///default.db"</span>)
+<span class="label">Python</span></pre>
+
+  <table class="std">
+    <tr><th>Tool</th><th>Purpose</th><th>Install / Use</th></tr>
+    <tr><td>VS Code</td><td>Code editor — Python, AI plugins</td><td>code.visualstudio.com</td></tr>
+    <tr><td>Jupyter Notebook</td><td>Interactive Python — experiments</td><td><code>pip install jupyter</code></td></tr>
+    <tr><td>Postman</td><td>API testing — LLM APIs test karo</td><td>postman.com</td></tr>
+    <tr><td>Git</td><td>Version control</td><td><code>sudo apt install git</code></td></tr>
+    <tr><td>Docker</td><td>Containerization</td><td>docker.com</td></tr>
+    <tr><td>pyenv</td><td>Multiple Python versions</td><td><code>curl pyenv.run | bash</code></td></tr>
+  </table>
+
+  <div class="exercise">
+    <div class="exercise-title">📝 Chapter 1.12 — Mini Exercises</div>
+    <ol>
+      <li>Ek naya Python project setup karo: virtual env, <code>.env</code> file, <code>.gitignore</code>, aur <code>requirements.txt</code>.</li>
+      <li>Git se ek feature branch banao, 3 commits karo, aur main mein merge karo. Log dekho.</li>
+      <li>Ek simple "Hello Agent" Python script ke liye Dockerfile likho. Build aur run karo.</li>
+    </ol>
+  </div>
+  <div class="page-number">38</div>
+</div>
+
+
+<!-- ==================== PART 1 SUMMARY PAGE ==================== -->
+<div class="page" id="summary">
+  <div class="chapter-header">
+    <div class="ch-eyebrow">Part 1 — Summary</div>
+    <h1 class="ch-title">Programming Foundations</h1>
+    <div class="ch-subtitle">Poora part ek baar mein revise karo</div>
+  </div>
+
+  <div class="callout-panel">
+    <div class="cp-title">🧠 The Big Picture</div>
+    <p>Programming ek <strong>language</strong> hai jisme hum machines se baat karte hain. Data types values ko represent karte hain. Control flow decisions aur loops manage karta hai. Functions code ko reusable banate hain. OOP real-world concepts ko model karta hai. Error handling production ko reliable banata hai. File/DB/API handling data aur external systems se connect karta hai. Async speed deta hai. Dev tools sab kuch organized rakhte hain.</p>
+  </div>
+
+  <h2 class="sec">Chapter-wise Key Takeaways</h2>
+  <table class="std">
+    <tr><th>Chapter</th><th>Core Concept</th><th>AI Agent Relevance</th></tr>
+    <tr><td>1.1 Programming Basics</td><td>Variables, operators, I/O, type conversion, f-strings</td><td>Prompt building, config management</td></tr>
+    <tr><td>1.2 Data Types</td><td>int, float, bool, str, list, dict, set, tuple, None</td><td>Messages list, agent state dict, tool set</td></tr>
+    <tr><td>1.3 Control Flow</td><td>if/elif/else, for, while, break, generators</td><td>Agent loop, tool selection, chunk processing</td></tr>
+    <tr><td>1.4 Functions</td><td>Parameters, lambdas, recursion, closures, decorators</td><td>Retry decorator, tool functions, task decomposition</td></tr>
+    <tr><td>1.5 OOP</td><td>Classes, inheritance, polymorphism, magic methods</td><td>Agent class, Tool class, Memory class</td></tr>
+    <tr><td>1.6 Error Handling</td><td>try/except, custom exceptions, logging</td><td>API failures, timeout handling, graceful degradation</td></tr>
+    <tr><td>1.7 File Handling</td><td>Text, JSON, CSV, pathlib</td><td>Knowledge base, config files, eval results</td></tr>
+    <tr><td>1.8 DSA</td><td>List, Stack, Queue, HashMap, Big O</td><td>Task queues, embedding cache, tool registry</td></tr>
+    <tr><td>1.9 APIs & Networking</td><td>HTTP, REST, status codes, auth</td><td>LLM API calls, tool integrations</td></tr>
+    <tr><td>1.10 Databases</td><td>SQL CRUD, joins, Python-SQLite, NoSQL</td><td>Conversation history, user memory, eval store</td></tr>
+    <tr><td>1.11 Async</td><td>async/await, asyncio.gather, event loop</td><td>Parallel tool calls, fast LLM responses</td></tr>
+    <tr><td>1.12 Dev Tools</td><td>Git, venv, Docker, .env, VS Code</td><td>Production deployment, team collaboration</td></tr>
+  </table>
+
+  <h2 class="sec">🏗️ Mini Project — Simple AI Agent Shell</h2>
+  <p>Yeh project Part 1 ke sab concepts ek saath use karta hai:</p>
+<pre><span class="kw">import</span> asyncio, json, os, logging
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+<span class="kw">from</span> dotenv <span class="kw">import</span> load_dotenv
+
+<span class="fn">load_dotenv</span>()
+logging.<span class="fn">basicConfig</span>(level=logging.INFO)
+
+<span class="kw">class</span> <span class="tp">SimpleAgent</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name: <span class="tp">str</span>):
+        self.name = name
+        self.history: <span class="tp">list</span> = []
+        self.tools: <span class="tp">dict</span> = {}
+
+    <span class="kw">def</span> <span class="fn">register_tool</span>(self, name: <span class="tp">str</span>, func):
+        self.tools[name] = func
+
+    <span class="kw">async def</span> <span class="fn">run</span>(self, query: <span class="tp">str</span>) -> <span class="tp">str</span>:
+        logging.<span class="fn">info</span>(<span class="st">"[%s] Processing: %s"</span>, self.name, query)
+        self.history.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: query})
+        <span class="kw">try</span>:
+            <span class="cm"># Tool selection (simple keyword matching)</span>
+            tool = <span class="st">"echo"</span>  <span class="cm"># Real: LLM decides</span>
+            <span class="kw">if</span> tool <span class="kw">in</span> self.tools:
+                result = self.tools[tool](query)
+            <span class="kw">else</span>:
+                result = <span class="st">f"Processed: {query}"</span>
+            self.history.<span class="fn">append</span>({<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: result})
+            <span class="kw">return</span> result
+        <span class="kw">except</span> <span class="tp">Exception</span> <span class="kw">as</span> e:
+            logging.<span class="fn">error</span>(<span class="st">"Agent error: %s"</span>, e)
+            <span class="kw">return</span> <span class="st">f"Error: {e}"</span>
+
+    <span class="kw">def</span> <span class="fn">save_history</span>(self, path: <span class="tp">str</span> = <span class="st">"history.json"</span>):
+        <span class="kw">with</span> <span class="fn">open</span>(path, <span class="st">"w"</span>) <span class="kw">as</span> f:
+            json.<span class="fn">dump</span>(self.history, f, indent=<span class="nm">2</span>)
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    agent = <span class="tp">SimpleAgent</span>(<span class="st">"MyFirstAgent"</span>)
+    agent.<span class="fn">register_tool</span>(<span class="st">"echo"</span>, <span class="kw">lambda</span> q: <span class="st">f"Echo: {q}"</span>)
+    result = <span class="kw">await</span> agent.<span class="fn">run</span>(<span class="st">"Hello, Agent!"</span>)
+    <span class="fn">print</span>(result)
+    agent.<span class="fn">save_history</span>()
+
+asyncio.<span class="fn">run</span>(<span class="fn">main</span>())
+<span class="label">Python — Part 1 Mini Project</span></pre>
+
+  <div class="box remember">
+    <div class="box-title">🧠 Part 1 Interview Checklist</div>
+    <ul style="margin:0;padding-left:18px;font-size:13px">
+      <li>Mutable vs Immutable types examples de sako</li>
+      <li>List, Dict, Set ka time complexity yaad ho (lookup, insert, delete)</li>
+      <li>Decorator aur closure explain kar sako with code</li>
+      <li><code>async/await</code> ko simple words mein explain kar sako</li>
+      <li>Custom exception hierarchy bana sako</li>
+      <li>API call ke sab common error codes handle kar sako</li>
+      <li>Docker aur .env ka purpose explain kar sako</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:28px;padding:16px;background:var(--saffron-light);border-radius:10px;text-align:center">
+    <p style="margin:0;font-size:14px;color:var(--saffron-dark)"><strong>Part 1 Complete! 🎉</strong></p>
+    <p style="margin:6px 0 0;font-size:13px;color:var(--body)">Next: <strong>Part 2 — Mathematics for AI</strong> (Vectors, Probability, Calculus, Statistics)</p>
+    <p style="margin:4px 0 0;font-size:12px;color:var(--muted)">Say <strong>"continue"</strong> for Part 2</p>
+  </div>
+  <div class="page-number">40</div>
+</div>
+
+</body>
+</html>
