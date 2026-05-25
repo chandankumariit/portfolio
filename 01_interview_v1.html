@@ -4318,6 +4318,1105 @@ table { table-layout: fixed; width: 100%; word-break: break-word; }
 td, th { padding: 9px 12px; vertical-align: top; word-break: break-word; }
 table th:first-child { width: 25%; }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   HIGH-VISIBILITY MASTER FIX — v9
+   Addresses every low-contrast / invisible element across all pages
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* 1 ── ROOT VARIABLE OVERRIDE: all muted shades → high contrast */
+:root {
+  --ink-muted:   #1e2d42 !important;  /* was #7a8aa8 → ≥ 10:1 on white */
+  --ink-light:   #1a2a3d !important;  /* was #3d4a65 → ≥ 10:1 on white */
+  --ink:         #0d1117 !important;
+  --ink-mid:     #1c2333 !important;
+}
+
+/* 2 ── QUESTION TEXT: ensure q-text is always vivid navy, large, bold */
+.q-text,
+.q-title,
+.q-block > .q-text,
+.q-block .q-text,
+.question-block .q-text {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 13.5pt !important;
+  color: #0f2244 !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+  margin-bottom: 14px !important;
+}
+
+/* 3 ── Q-HEADER: strong dark background, white text, never invisible */
+.q-header,
+.question-header,
+.q-block .q-header,
+.question-block .question-header {
+  background: linear-gradient(135deg, #0d1117 0%, #1a3a6b 100%) !important;
+  color: #ffffff !important;
+  padding: 14px 20px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  border-radius: 8px 8px 0 0 !important;
+  border-bottom: 3px solid #c9922a !important;
+}
+
+/* q-text inside header = white */
+.q-header .q-text,
+.q-header .q-title,
+.question-header .q-text,
+.question-header .q-title {
+  color: #ffffff !important;
+  font-size: 13pt !important;
+}
+
+/* 4 ── Q-NUMBER BADGE: always vivid gold on dark */
+.q-num,
+.q-number,
+.q-number-badge,
+.q-header .q-num,
+.q-header .q-number {
+  background: #c9922a !important;
+  color: #ffffff !important;
+  font-size: 9.5pt !important;
+  font-weight: 700 !important;
+  padding: 4px 10px !important;
+  border-radius: 5px !important;
+  border: none !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+/* 5 ── DIFFICULTY BADGES: high-contrast pill labels */
+.q-level,
+.diff-badge,
+.q-level.level-beginner,
+.diff-badge.diff-beginner {
+  background: #dcfce7 !important;
+  color: #14532d !important;
+  border: 1.5px solid #16a34a !important;
+  font-size: 9.5pt !important;
+  font-weight: 700 !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  display: inline-block !important;
+}
+.q-level.level-inter,
+.diff-badge.diff-inter {
+  background: #fef9c3 !important;
+  color: #713f12 !important;
+  border: 1.5px solid #ca8a04 !important;
+}
+.q-level.level-adv,
+.diff-badge.diff-advanced,
+.q-level[class*="adv"],
+.diff-badge[class*="adv"] {
+  background: #fff1f2 !important;
+  color: #9f1239 !important;
+  border: 1.5px solid #e11d48 !important;
+}
+.q-level.level-expert,
+.diff-badge.diff-expert {
+  background: #f3e8ff !important;
+  color: #4a1d96 !important;
+  border: 1.5px solid #7c3aed !important;
+}
+
+/* 6 ── Q-BODY / QUESTION BODY: white bg, full ink contrast */
+.q-body,
+.question-body {
+  background: #ffffff !important;
+  padding: 18px 20px 20px !important;
+  color: #0d1117 !important;
+  border-radius: 0 0 8px 8px !important;
+}
+.q-body p,
+.question-body p,
+.q-body li,
+.question-body li {
+  color: #0d1117 !important;
+  font-size: 11.5pt !important;
+  line-height: 1.75 !important;
+}
+
+/* 7 ── Q-BLOCK CARD: give it a visible border + shadow so each Q stands out */
+.q-block,
+.q-card,
+.question-block {
+  border: none !important;
+  border-top: 3px solid #c9922a !important;
+  border-radius: 0 !important;
+  margin: 24px 0 !important;
+  padding: 0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07) !important;
+  overflow: visible !important;
+}
+.q-block:first-child { border-top: none !important; }
+
+/* 8 ── WHY INTERVIEWERS ASK THIS box — purple/lavender, strong text */
+.why-ask,
+.why-interviewers-ask,
+div[class*="why-ask"],
+div[class*="interviewer"] {
+  background: #ede9fe !important;
+  border-left: 5px solid #7c3aed !important;
+  border-radius: 8px !important;
+  padding: 14px 18px !important;
+  margin: 10px 0 14px !important;
+  color: #2e1065 !important;
+}
+.why-ask .box-title,
+.why-ask .section-label,
+.why-ask strong {
+  color: #5b21b6 !important;
+  font-weight: 700 !important;
+}
+
+/* 9 ── CALLOUT BOXES: stronger backgrounds, vivid bar + text */
+.callout,
+.box,
+.section-what,
+.section-why,
+.section-how,
+.section-tip,
+.section-remember {
+  padding: 14px 18px !important;
+  margin: 12px 0 !important;
+  border-radius: 8px !important;
+}
+
+/* What is the problem — bright blue */
+.box-what,
+.section-what,
+.callout-blue {
+  background: #dbeafe !important;
+  border-left: 5px solid #1d4ed8 !important;
+  color: #1e3a5f !important;
+}
+.box-what .box-title,
+.box-what .section-label,
+.callout-blue .callout-title,
+.section-what > .section-label {
+  color: #1d4ed8 !important;
+  font-weight: 700 !important;
+}
+.box-what p, .section-what p, .callout-blue p { color: #1e3a5f !important; }
+
+/* Why — bright green */
+.box-why,
+.section-why,
+.callout-green {
+  background: #dcfce7 !important;
+  border-left: 5px solid #15803d !important;
+  color: #14532d !important;
+}
+.box-why .box-title, .callout-green .callout-title { color: #15803d !important; font-weight: 700 !important; }
+.box-why p, .section-why p, .callout-green p { color: #14532d !important; }
+
+/* How — bright orange */
+.box-how,
+.section-how,
+.callout-orange {
+  background: #ffedd5 !important;
+  border-left: 5px solid #c2410c !important;
+  color: #7c2d12 !important;
+}
+.box-how .box-title, .callout-orange .callout-title { color: #c2410c !important; font-weight: 700 !important; }
+.box-how p, .section-how p, .callout-orange p { color: #7c2d12 !important; }
+
+/* Tip / gold */
+.box-tip,
+.section-tip,
+.callout-yellow {
+  background: #fef9c3 !important;
+  border-left: 5px solid #b45309 !important;
+  color: #713f12 !important;
+}
+.box-tip .box-title, .callout-yellow .callout-title { color: #b45309 !important; font-weight: 700 !important; }
+
+/* Warning / red */
+.box-warn,
+.box-tricky,
+.warning-box,
+.callout-red {
+  background: #ffe4e6 !important;
+  border-left: 5px solid #be123c !important;
+  color: #881337 !important;
+}
+.box-warn .box-title, .callout-red .callout-title { color: #be123c !important; font-weight: 700 !important; }
+
+/* Purple */
+.callout-purple,
+.box-purple {
+  background: #f3e8ff !important;
+  border-left: 5px solid #6d28d9 !important;
+  color: #3b0764 !important;
+}
+.callout-purple .callout-title { color: #6d28d9 !important; font-weight: 700 !important; }
+
+/* 10 ── ALL SECTION LABELS: bold, clear, uppercase */
+.section-label,
+.box-label,
+.box-title,
+.block-label,
+.sec-head,
+.section-head {
+  font-size: 10pt !important;
+  font-weight: 800 !important;
+  letter-spacing: 1.8px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+/* 11 ── BODY TEXT: paragraph and list text always full contrast */
+p, li, .q-body, .question-body, .box p, .callout p {
+  color: #0d1117 !important;
+}
+
+/* 12 ── INLINE STYLES using var(--ink-muted) / var(--ink-light) */
+[style*="color:var(--ink-muted)"],
+[style*="color: var(--ink-muted)"],
+[style*="color:var(--ink-light)"],
+[style*="color: var(--ink-light)"] {
+  color: #1e2d42 !important;
+}
+p[style*="ink-muted"],
+div[style*="ink-muted"],
+span[style*="ink-muted"],
+p[style*="ink-light"],
+div[style*="ink-light"],
+span[style*="ink-light"] {
+  color: #1e2d42 !important;
+}
+
+/* 13 ── INLINE rgba(255,255,255,0.45) labels on dark bg — boost to 0.95 */
+[style*="color:rgba(255,255,255,0.45)"],
+[style*="color: rgba(255,255,255,0.45)"] {
+  color: rgba(255,255,255,0.95) !important;
+}
+[style*="color:rgba(255,255,255,0.5)"],
+[style*="color: rgba(255,255,255,0.5)"] {
+  color: rgba(255,255,255,0.92) !important;
+}
+
+/* 14 ── COVER STAT / CARD labels (dark bg) — full white */
+.cover-stat .lbl,
+.stat .lbl,
+.cover-card .lbl,
+.wstat .wl {
+  color: rgba(255,255,255,0.92) !important;
+  font-weight: 600 !important;
+  font-size: 9.5pt !important;
+}
+
+/* 15 ── CHAPTER HEADER text */
+.chapter-header p,
+.chapter-subtitle,
+.chapter-intro {
+  color: #1a2a3d !important;
+  font-size: 11.5pt !important;
+}
+
+/* 16 ── TOC text */
+.toc-entry,
+.toc-item,
+.toc-title,
+.toc-page-num,
+.toc-dots,
+.toc-qs,
+.toc-time {
+  color: #1e2d42 !important;
+}
+.toc-title em { color: #2e3d55 !important; }
+
+/* 17 ── FIGURE CAPTIONS & LABELS */
+.diagram figcaption,
+figure figcaption,
+.fig-caption,
+.diagram-caption,
+.diagram-title,
+.diagram-label,
+.code-label,
+.formula .f-name {
+  color: #2e3d55 !important;
+  font-weight: 600 !important;
+}
+
+/* 18 ── CODE BLOCKS: ensure token colors pop */
+.cm, .code-comment {
+  color: #8b9ab8 !important;  /* slightly lighter for italics; still readable on #0d1117 bg */
+}
+
+/* 19 ── TABLE header cells: always high contrast */
+th {
+  background: #0f2244 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 10.5pt !important;
+}
+td {
+  color: #0d1117 !important;
+  font-size: 10.5pt !important;
+}
+tr:nth-child(even) td { background: #f4f6fa !important; }
+
+/* 20 ── CHAPTER DIVIDER: must be visible and full-width */
+.chapter-divider {
+  background: linear-gradient(135deg, #0d1117 0%, #0f2244 60%, #1a1035 100%) !important;
+  color: #ffffff !important;
+  padding: 28px 80px !important;
+  border-bottom: 3px solid #c9922a !important;
+}
+.chapter-divider .chapter-tag,
+.chapter-divider .ch-eyebrow,
+.chapter-divider .ch-desc {
+  color: rgba(255,255,255,0.88) !important;
+  font-size: 10.5pt !important;
+  font-weight: 500 !important;
+}
+
+/* 21 ── SECTION-SEPARATOR question numbers */
+.master-section-sep .sec-count {
+  color: rgba(255,255,255,0.92) !important;
+  background: rgba(255,255,255,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+}
+
+/* 22 ── ANALOGY BOX: readable dark text on warm bg */
+.analogy,
+.analogy-box,
+.box-analogy,
+.box-think {
+  background: linear-gradient(135deg, #fdf8e8, #fef3c7) !important;
+  border: 2px dashed #b45309 !important;
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+}
+.analogy p, .analogy-box p { color: #431407 !important; }
+
+/* 23 ── VERBAL TEMPLATE */
+.vt-script {
+  color: rgba(255,255,255,0.95) !important;
+  font-style: italic !important;
+}
+
+/* 24 ── FLOW ARROW */
+.flow-arrow {
+  color: #374151 !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+
+/* 25 ── MEMORY SENTENCE highlight */
+.memory-sentence {
+  border-left: 5px solid #b45309 !important;
+  background: linear-gradient(135deg, #fdf4e3, #fef9f0) !important;
+  color: #431407 !important;
+  font-size: 11.5pt !important;
+  font-weight: 600 !important;
+}
+
+/* 26 ── PROGRESS / SIDEBAR LABELS (if shown) */
+.sb-section-label {
+  color: rgba(255,255,255,0.75) !important;
+  font-size: 9.5px !important;
+}
+.sb-section {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+/* 27 ── INLINE BOLD/STRONG in body copy: gold accent */
+.q-body strong, .question-body strong,
+.section-what strong, .section-why strong,
+.section-how strong, .box strong {
+  color: #0f2244 !important;
+}
+
+/* 28 ── KEYWORD SPANS: blue/orange inline pills */
+strong[style*="color:var(--blue)"],
+strong[style*="color: var(--blue)"],
+b[style*="color:var(--blue)"] {
+  color: #1d4ed8 !important;
+}
+strong[style*="color:var(--orange)"],
+b[style*="color:var(--orange)"] {
+  color: #c2410c !important;
+}
+strong[style*="color:var(--red)"],
+b[style*="color:var(--red)"] {
+  color: #be123c !important;
+}
+strong[style*="color:var(--green)"],
+b[style*="color:var(--green)"] {
+  color: #15803d !important;
+}
+
+/* 29 ── DEFINITION BOX */
+.definition-box {
+  background: #dbeafe !important;
+  border-left: 5px solid #1d4ed8 !important;
+  color: #1e3a5f !important;
+}
+.definition-box p, .definition-box li { color: #1e3a5f !important; }
+
+/* 30 ── GLOSSARY */
+.gterm .gt-analogy {
+  color: #2e3d55 !important;
+  font-size: 10pt !important;
+}
+
+/* 31 ── SECTION-HEADER (h2 as topic title) */
+h2.section-head, h2.section-header {
+  color: #0f2244 !important;
+  font-size: 15pt !important;
+}
+
+/* 32 ── ENSURE q-level badge is always visible (override opacity rules) */
+.q-level,
+.diff-badge {
+  opacity: 1 !important;
+}
+
+/* 33 ── TAKEAWAY / REMEMBER SECTION */
+.section-remember,
+.box-remember,
+.takeaway,
+.key-point {
+  background: linear-gradient(135deg, #fdf4e3, #fef9f0) !important;
+  border-left: 5px solid #c9922a !important;
+  color: #431407 !important;
+  padding: 14px 18px !important;
+  border-radius: 8px !important;
+}
+.section-remember .section-label,
+.takeaway .section-label {
+  color: #92400e !important;
+}
+.section-remember p,
+.takeaway p,
+.key-point p {
+  color: #431407 !important;
+}
+
+/* 34 ── EXAMPLE BOX */
+.example-box { color: #14532d !important; }
+.example-box p, .example-box li { color: #14532d !important; }
+
+/* 35 ── ANSWER BOX */
+.answer-box { color: #1e3a5f !important; }
+.answer-box p, .answer-box li { color: #1e3a5f !important; }
+
+/* 36 ── SCENARIO / SITUATION BOX */
+.scenario-box, .scenario, .situation-box, .box-situation {
+  color: #431407 !important;
+}
+.scenario-box p, .situation-box p { color: #431407 !important; }
+.scenario-title, .sc-label { color: #7c2d12 !important; }
+
+/* 37 ── STEP ITEMS */
+.step-list li, .steps li {
+  color: #0d1117 !important;
+  font-size: 11.5pt !important;
+}
+
+/* 38 ── col-head, card-head, metric headers */
+.col-head, .card-head, .metric-card h4 {
+  color: #0f2244 !important;
+  font-weight: 700 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FLOW DIAGRAM FIX — v9.1
+   Fixes all .flow / .flow-step / .flow-arrow / .flow-row / .flow-box
+   so every pipeline renders as a proper visual diagram, never plain text
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── VERTICAL FLOW (class="flow") ── */
+/* Used for step-by-step pipelines like MCP / RLHF */
+div.flow {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0 !important;
+  margin: 16px 0 !important;
+  padding: 18px 20px !important;
+  background: #f8faff !important;
+  border: 1.5px solid #c7d7f0 !important;
+  border-radius: 12px !important;
+  position: relative !important;
+}
+
+/* Each step box inside vertical .flow */
+div.flow > .flow-step {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  background: #ffffff !important;
+  border: 2px solid #1d4ed8 !important;
+  border-radius: 8px !important;
+  padding: 12px 18px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  font-size: 11.5pt !important;
+  font-weight: 600 !important;
+  color: #0f2244 !important;
+  box-shadow: 0 2px 6px rgba(29,78,216,0.10) !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Auto-number each step with a blue circle */
+div.flow > .flow-step {
+  counter-increment: flow-counter !important;
+}
+div.flow {
+  counter-reset: flow-counter !important;
+}
+div.flow > .flow-step::before {
+  content: counter(flow-counter) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  font-size: 10pt !important;
+  font-weight: 700 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  flex-shrink: 0 !important;
+}
+
+/* Arrow BETWEEN steps in vertical .flow */
+div.flow > .flow-arrow {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;      /* align with step counter circle */
+  height: 24px !important;
+  font-size: 18px !important;
+  color: #1d4ed8 !important;
+  font-weight: 900 !important;
+  margin: 2px 0 2px 0 !important;
+  flex-shrink: 0 !important;
+  text-align: center !important;
+  line-height: 1 !important;
+}
+
+/* ── HORIZONTAL FLOW-ROW ── */
+/* Used for left-to-right pipeline diagrams */
+.flow-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0 !important;
+  margin: 16px 0 !important;
+  flex-wrap: wrap !important;
+  padding: 14px 16px !important;
+  background: #f8faff !important;
+  border: 1.5px solid #c7d7f0 !important;
+  border-radius: 12px !important;
+}
+
+/* Each box in horizontal flow-row */
+.flow-row .flow-box {
+  flex: 1 !important;
+  min-width: 90px !important;
+  background: #ffffff !important;
+  border: 2px solid #1d4ed8 !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  text-align: center !important;
+  font-size: 10.5pt !important;
+  font-weight: 600 !important;
+  color: #0f2244 !important;
+  box-shadow: 0 2px 6px rgba(29,78,216,0.10) !important;
+}
+.flow-row .flow-box small {
+  display: block !important;
+  font-size: 9pt !important;
+  font-weight: 400 !important;
+  color: #4b5e7a !important;
+  margin-top: 3px !important;
+}
+
+/* Colour variants */
+.flow-row .flow-box.safe {
+  background: #dcfce7 !important;
+  border-color: #15803d !important;
+  color: #14532d !important;
+}
+.flow-row .flow-box.danger {
+  background: #ffe4e6 !important;
+  border-color: #be123c !important;
+  color: #881337 !important;
+}
+.flow-row .flow-box.highlight {
+  background: #fef9c3 !important;
+  border-color: #b45309 !important;
+  color: #451a03 !important;
+}
+
+/* Arrow between boxes in flow-row */
+.flow-row .flow-arrow {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 6px !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  color: #1d4ed8 !important;
+  flex-shrink: 0 !important;
+  min-width: 28px !important;
+}
+
+/* "vs" separator style */
+.flow-row .flow-arrow[style*="font-size:20px"] {
+  font-size: 13pt !important;
+  font-weight: 800 !important;
+  color: #7c3aed !important;
+  padding: 0 10px !important;
+  background: #f3e8ff !important;
+  border-radius: 6px !important;
+  border: 1.5px solid #7c3aed !important;
+}
+
+/* ── FLOW-STEP with numbered children (RLHF style) ── */
+/* .flow > .flow-step that ALREADY has .step-num child — don't double-number */
+div.flow > .flow-step:has(.step-num)::before {
+  display: none !important;
+}
+div.flow > .flow-step .step-num {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  background: linear-gradient(135deg, #0f2244, #1d4ed8) !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  font-size: 11pt !important;
+  font-weight: 700 !important;
+  flex-shrink: 0 !important;
+}
+div.flow > .flow-step .step-content {
+  flex: 1 !important;
+  color: #0d1117 !important;
+  font-size: 11.5pt !important;
+  line-height: 1.65 !important;
+}
+div.flow > .flow-step .step-content strong {
+  color: #0f2244 !important;
+}
+
+/* ── VERTICAL FLOW: add connector line between steps ── */
+div.flow > .flow-step + .flow-arrow + .flow-step {
+  border-top: none !important;
+}
+
+/* ── STANDALONE flow-step / flow-arrow NOT inside .flow wrapper ── */
+/* These appear in some sections without a wrapper */
+.flow-step:not(div.flow > .flow-step):not(.flow-row .flow-step) {
+  background: #ffffff !important;
+  border: 2px solid #1d4ed8 !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  margin: 4px 0 !important;
+  font-size: 11pt !important;
+  font-weight: 600 !important;
+  color: #0f2244 !important;
+}
+.flow-arrow:not(div.flow > .flow-arrow):not(.flow-row .flow-arrow) {
+  display: block !important;
+  text-align: left !important;
+  padding-left: 16px !important;
+  font-size: 18px !important;
+  color: #1d4ed8 !important;
+  font-weight: 900 !important;
+  line-height: 1.4 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   IMAGE-3 FIX — GLOSSARY TERM CARDS (dl / dt / dd / .glossary-term)
+   The Key Glossary uses <dl> with <div class="glossary-term"><dt>..<dd>..
+   No card styling existed — terms rendered as unstyled inline text
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Outer dl wrapper */
+dl {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  list-style: none !important;
+}
+
+/* Each term card */
+div.glossary-term {
+  background: #ffffff !important;
+  border: 1.5px solid #c7d7f0 !important;
+  border-left: 5px solid #1d4ed8 !important;
+  border-radius: 8px !important;
+  padding: 13px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  box-shadow: 0 1px 4px rgba(29,78,216,0.08) !important;
+}
+
+/* Term (dt) — bold navy title */
+div.glossary-term dt {
+  font-family: 'DM Sans', system-ui, sans-serif !important;
+  font-size: 11.5pt !important;
+  font-weight: 800 !important;
+  color: #0f2244 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+/* Definition (dd) — readable body text */
+div.glossary-term dd {
+  font-size: 10.5pt !important;
+  color: #1e2d42 !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+/* Hover state */
+div.glossary-term:hover {
+  border-left-color: #c9922a !important;
+  background: #f8faff !important;
+}
+
+/* ── ALSO FIX: plain dl/dt/dd without .glossary-term wrapper ── */
+dl > dt {
+  font-weight: 700 !important;
+  color: #0f2244 !important;
+  font-size: 11pt !important;
+}
+dl > dd {
+  color: #1e2d42 !important;
+  font-size: 10.5pt !important;
+  margin-left: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   IMAGE-2 FIX — MCP ARCHITECTURE SVG OVERLAP
+   The LLM→Client arrow labels "tool req" / "result" overlap with box edges
+   Fix: wrap the SVG in a container that gives it proper breathing room
+   and ensure the diagram-box doesn't clip content
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Give all diagram-box containers proper overflow handling */
+.diagram-box {
+  overflow: visible !important;
+  padding: 16px !important;
+}
+
+/* Ensure SVGs inside diagrams render fully without clipping */
+.diagram-box svg,
+.diagram svg,
+.diagram-wrap svg,
+.svg-wrap svg {
+  overflow: visible !important;
+  display: block !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TERM-CARD ENHANCEMENT (Section 2 Key Terms Glossary)
+   .term-card / .term-grid — upgrade to proper card style like glossary-term
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.term-card {
+  background: #ffffff !important;
+  border: 1.5px solid #c7d7f0 !important;
+  border-left: 5px solid #0f2244 !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  box-shadow: 0 1px 4px rgba(15,34,68,0.08) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.term-card .term {
+  font-size: 11pt !important;
+  font-weight: 800 !important;
+  color: #0f2244 !important;
+  margin-bottom: 2px !important;
+}
+
+.term-card .def {
+  font-size: 10pt !important;
+  color: #1e2d42 !important;
+  line-height: 1.55 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GTERM GRID (Beginner Glossary page) — full card treatment
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.glossary-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  margin: 0 !important;
+}
+
+.gterm {
+  background: #ffffff !important;
+  border: 1.5px solid #dde5f5 !important;
+  border-left: 5px solid #1d4ed8 !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  box-shadow: 0 1px 4px rgba(29,78,216,0.07) !important;
+}
+
+.gterm .gt-name {
+  font-size: 11.5pt !important;
+  font-weight: 800 !important;
+  color: #0f2244 !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+}
+
+.gterm .gt-def {
+  font-size: 10.5pt !important;
+  color: #1e2d42 !important;
+  line-height: 1.6 !important;
+  display: block !important;
+}
+
+.gterm .gt-analogy {
+  font-size: 10pt !important;
+  color: #4b5e7a !important;
+  font-style: italic !important;
+  margin-top: 5px !important;
+  padding-top: 5px !important;
+  border-top: 1px dashed #c7d7f0 !important;
+  display: block !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SECTION-HEADER (used as h2 container above glossary)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.section-header {
+  margin-bottom: 14px !important;
+}
+.section-header h2 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 16pt !important;
+  color: #0f2244 !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #c7d7f0 !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 4px !important;
+}
+.section-header p {
+  font-size: 11pt !important;
+  color: #1e2d42 !important;
+  margin: 6px 0 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ADDITIONAL SIMILAR PATTERNS FOUND IN AUDIT
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* cs-terms grid (Cheat Sheets) */
+.cs-terms {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 8px !important;
+}
+.cs-term {
+  background: #ffffff !important;
+  border: 1.5px solid #dde5f5 !important;
+  border-left: 4px solid #c9922a !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-size: 10.5pt !important;
+  color: #0d1117 !important;
+}
+.cs-term strong {
+  color: #0f2244 !important;
+  font-weight: 700 !important;
+  display: block !important;
+  margin-bottom: 2px !important;
+}
+
+/* type-card grid */
+.type-card {
+  background: #ffffff !important;
+  border: 1.5px solid #dde5f5 !important;
+  border-radius: 8px !important;
+  padding: 14px !important;
+}
+.type-card h4 {
+  color: #0f2244 !important;
+  font-weight: 700 !important;
+}
+
+/* mini-card upgrade */
+.mini-card {
+  background: #ffffff !important;
+  border: 1.5px solid #dde5f5 !important;
+  border-left: 4px solid #1d4ed8 !important;
+  border-radius: 8px !important;
+  padding: 14px 16px !important;
+  color: #0d1117 !important;
+}
+.mini-card .card-head {
+  font-size: 11pt !important;
+  font-weight: 800 !important;
+  color: #0f2244 !important;
+  margin-bottom: 6px !important;
+}
+.mini-card p, .mini-card div {
+  color: #1e2d42 !important;
+  font-size: 10.5pt !important;
+  line-height: 1.6 !important;
+}
+
+/* metric-card upgrade */
+.metric-card {
+  background: #ffffff !important;
+  border: 1.5px solid #dde5f5 !important;
+  border-radius: 8px !important;
+  padding: 14px !important;
+}
+.metric-card h4 {
+  color: #0f2244 !important;
+  font-weight: 700 !important;
+}
+
+/* followup-box fu-item lines */
+.fu-item {
+  color: #0f2244 !important;
+  font-size: 11pt !important;
+  font-weight: 500 !important;
+  padding: 5px 0 5px 22px !important;
+  border-bottom: 1px solid #e8eef8 !important;
+}
+.fu-item:last-child { border-bottom: none !important; }
+
+/* explain-block */
+.explain-block {
+  background: #f8faff !important;
+  border: 1px solid #dde5f5 !important;
+  border-radius: 8px !important;
+  padding: 14px 18px !important;
+  color: #0d1117 !important;
+}
+
+/* key-point */
+.key-point {
+  background: linear-gradient(135deg, #fdf4e3, #fef9f0) !important;
+  border-left: 5px solid #c9922a !important;
+  border-radius: 8px !important;
+  padding: 14px 18px !important;
+  color: #431407 !important;
+}
+.key-point strong { color: #7c2d12 !important; }
+
+/* interview-why box */
+.interview-why {
+  background: #f3e8ff !important;
+  border-left: 5px solid #6d28d9 !important;
+  border-radius: 8px !important;
+  padding: 14px 18px !important;
+}
+.iw-label {
+  font-size: 9pt !important;
+  font-weight: 800 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  color: #5b21b6 !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+.interview-why p, .interview-why div {
+  color: #3b0764 !important;
+  font-size: 11pt !important;
+}
+
+/* followup-box */
+.followup-box {
+  background: #f0f9ff !important;
+  border: 1.5px solid #bae6fd !important;
+  border-left: 5px solid #0369a1 !important;
+  border-radius: 8px !important;
+  padding: 14px 18px !important;
+}
+.fu-label {
+  font-size: 9pt !important;
+  font-weight: 800 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  color: #0369a1 !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* compare-table: stronger header + alternating rows */
+.compare-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border: 1.5px solid #c7d7f0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  font-size: 10.5pt !important;
+}
+.compare-table th {
+  background: #0f2244 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 10px 14px !important;
+  text-align: left !important;
+}
+.compare-table td {
+  color: #0d1117 !important;
+  padding: 9px 14px !important;
+  border-top: 1px solid #e8eef8 !important;
+}
+.compare-table tr:nth-child(even) td {
+  background: #f4f6fa !important;
+}
+
+/* 39 ── SECTION BANNER (dark header above topic) */
+.section-head-banner,
+.page-header {
+  background: linear-gradient(135deg, #0d1117, #1a3a6b) !important;
+  color: #ffffff !important;
+}
+
+/* 40 ── OVERRIDES for any inline style color values that are too pale */
+/* Muted gray text on white - common in meta rows */
+[style*="color:#9"] {
+  color: #374151 !important;
+}
+[style*="color: #9"] {
+  color: #374151 !important;
+}
+/* Override #aaa and similar grays to a readable dark */
+[style*="color:#aaa"],
+[style*="color: #aaa"],
+[style*="color:#bbb"],
+[style*="color: #bbb"],
+[style*="color:#ccc"],
+[style*="color: #ccc"] {
+  color: #374151 !important;
+}
+
 </style>
 </head>
 <body>
@@ -15908,59 +17007,85 @@ tools: [{
 <p>Imagine a restaurant. The <strong>LLM is the customer</strong> who wants food. The <strong>MCP Client is the waiter</strong> who takes orders and brings food back. The <strong>MCP Server is the kitchen</strong> that actually cooks the food. The customer never goes into the kitchen — the waiter handles everything!</p>
 </div>
 <div class="diagram-box">
-<svg font-family="'DM Sans', sans-serif" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" width="100%" height="auto">
-<!-- Host box -->
-<rect fill="none" height="170" rx="8" stroke="#1A4FA0" stroke-dasharray="6,4" stroke-width="1.5" width="280" x="10" y="20"></rect>
-<text fill="#1A4FA0" font-size="9" font-weight="700" text-anchor="middle" x="150" y="14">MCP HOST (e.g. Claude Desktop)</text>
-<!-- LLM box -->
-<rect fill="#1A4FA0" height="70" rx="6" width="110" x="30" y="35"></rect>
-<text fill="white" font-size="10" font-weight="700" text-anchor="middle" x="85" y="62">🧠 LLM</text>
-<text fill="#A8C8FF" font-size="8" text-anchor="middle" x="85" y="78">(Claude, GPT)</text>
-<text fill="#C8D8FF" font-size="8" text-anchor="middle" x="85" y="95">Thinks &amp; decides</text>
-<!-- Client box -->
-<rect fill="#0B7D6E" height="70" rx="6" width="110" x="160" y="35"></rect>
-<text fill="white" font-size="10" font-weight="700" text-anchor="middle" x="215" y="62">🔌 Client</text>
-<text fill="#A8EEE8" font-size="8" text-anchor="middle" x="215" y="78">(MCP Client)</text>
-<text fill="#C8F0EC" font-size="8" text-anchor="middle" x="215" y="95">Manages connections</text>
-<!-- Arrow LLM → Client -->
-<line marker-end="url(#arr)" stroke="#FFD700" stroke-width="2" x1="140" x2="160" y1="70" y2="70"></line>
-<text fill="#8B6914" font-size="7" text-anchor="middle" x="150" y="65">tool req</text>
-<line marker-end="url(#arr2)" stroke="#48CFAD" stroke-width="2" x1="160" x2="140" y1="82" y2="82"></line>
-<text fill="#0B7D6E" font-size="7" text-anchor="middle" x="150" y="96">result</text>
-<!-- Client → Server arrows -->
-<line stroke="#FFD700" stroke-width="2" x1="270" x2="330" y1="62" y2="80"></line>
-<line stroke="#FFD700" stroke-width="2" x1="270" x2="330" y1="75" y2="100"></line>
-<text fill="#8B6914" font-size="7" text-anchor="middle" x="295" y="72">JSON-RPC</text>
-<!-- Server 1 -->
-<rect fill="#D4600A" height="45" rx="6" width="95" x="330" y="35"></rect>
-<text fill="white" font-size="9.5" font-weight="700" text-anchor="middle" x="377" y="55">🔧 Server 1</text>
-<text fill="#FFD0A8" font-size="8" text-anchor="middle" x="377" y="72">GitHub Tools</text>
-<!-- Server 2 -->
-<rect fill="#6B3FA0" height="45" rx="6" width="95" x="330" y="90"></rect>
-<text fill="white" font-size="9.5" font-weight="700" text-anchor="middle" x="377" y="110">🔧 Server 2</text>
-<text fill="#D8B8FF" font-size="8" text-anchor="middle" x="377" y="127">Database Tools</text>
-<!-- Server 3 -->
-<rect fill="#1E7E4A" height="38" rx="6" width="95" x="330" y="145"></rect>
-<text fill="white" font-size="9.5" font-weight="700" text-anchor="middle" x="377" y="161">🔧 Server N</text>
-<text fill="#A8E8C0" font-size="8" text-anchor="middle" x="377" y="176">Any Tool...</text>
-<!-- Return arrows from servers -->
-<line stroke="#48CFAD" stroke-width="2" x1="330" x2="270" y1="60" y2="75"></line>
+<svg font-family="'DM Sans', sans-serif" viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg" width="100%" height="auto">
 <defs>
-<marker id="arr" markerheight="6" markerwidth="6" orient="auto" refx="6" refy="3">
-<path d="M0,0 L6,3 L0,6 Z" fill="#FFD700"></path>
-</marker>
-<marker id="arr2" markerheight="6" markerwidth="6" orient="auto" refx="6" refy="3">
-<path d="M0,0 L6,3 L0,6 Z" fill="#48CFAD"></path>
-</marker>
+  <!-- Gold arrowhead (LLM→Client, Client→Server) -->
+  <marker id="arrGold" markerHeight="8" markerWidth="10" orient="auto" refX="9" refY="4">
+    <path d="M0,0 L10,4 L0,8 Z" fill="#e6a800"></path>
+  </marker>
+  <!-- Teal arrowhead (Client→LLM result) -->
+  <marker id="arrTeal" markerHeight="8" markerWidth="10" orient="auto" refX="9" refY="4">
+    <path d="M0,0 L10,4 L0,8 Z" fill="#1aaa94"></path>
+  </marker>
+  <!-- Drop shadow filter -->
+  <filter id="ds" x="-5%" y="-5%" width="110%" height="110%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000018"/>
+  </filter>
 </defs>
-<!-- Memory store -->
-<rect fill="#F0F4FF" height="55" rx="6" stroke="#A0AECE" stroke-width="1" width="240" x="30" y="120"></rect>
-<text fill="#1A4FA0" font-size="9" font-weight="700" text-anchor="middle" x="150" y="140">💾 Shared State / Session Memory</text>
-<text fill="#555577" font-size="8" text-anchor="middle" x="150" y="157">Conversation history, tool results, context</text>
-<text fill="#555577" font-size="8" text-anchor="middle" x="150" y="170">Both LLM and Client can read this</text>
+
+<!-- ══ HOST dashed border ══ -->
+<rect fill="none" height="180" rx="10" stroke="#1A4FA0" stroke-dasharray="7,4" stroke-width="2" width="340" x="12" y="30" filter="url(#ds)"></rect>
+<text fill="#1A4FA0" font-size="11" font-weight="700" text-anchor="middle" x="182" y="22">MCP HOST (e.g. Claude Desktop)</text>
+
+<!-- ══ LLM box (x=22, w=130) ends at x=152 ══ -->
+<rect fill="#1A4FA0" height="80" rx="8" width="130" x="25" y="48" filter="url(#ds)"></rect>
+<text fill="white" font-size="13" font-weight="700" text-anchor="middle" x="90" y="74">🧠 LLM</text>
+<text fill="#b8d0ff" font-size="9" text-anchor="middle" x="90" y="90">(Claude, GPT)</text>
+<text fill="#ccdaff" font-size="9" text-anchor="middle" x="90" y="106">Thinks &amp; decides</text>
+
+<!-- ══ Client box (x=210, w=130) ══ -->
+<rect fill="#0B7D6E" height="80" rx="8" width="130" x="210" y="48" filter="url(#ds)"></rect>
+<text fill="white" font-size="13" font-weight="700" text-anchor="middle" x="275" y="74">🔌 Client</text>
+<text fill="#a0ede5" font-size="9" text-anchor="middle" x="275" y="90">(MCP Client)</text>
+<text fill="#c0f0ea" font-size="9" text-anchor="middle" x="275" y="106">Manages connections</text>
+
+<!-- ══ GAP between boxes: x=155 to x=210 (55px gap) ══ -->
+<!-- Arrow 1: LLM → Client  (tool request, upper lane y=68) -->
+<line marker-end="url(#arrGold)" stroke="#e6a800" stroke-width="3" x1="155" x2="207" y1="68" y2="68"></line>
+<!-- Label on a white pill above the arrow -->
+<rect fill="#fffbe6" height="14" rx="4" stroke="#e6a800" stroke-width="1" width="46" x="157" y="50"></rect>
+<text fill="#7c4800" font-size="8.5" font-weight="700" text-anchor="middle" x="180" y="61">tool req</text>
+
+<!-- Arrow 2: Client → LLM  (result, lower lane y=90) -->
+<line marker-end="url(#arrTeal)" stroke="#1aaa94" stroke-width="3" x1="210" x2="158" y1="90" y2="90"></line>
+<!-- Label on a white pill below the arrow -->
+<rect fill="#e6faf7" height="14" rx="4" stroke="#1aaa94" stroke-width="1" width="40" x="163" y="93"></rect>
+<text fill="#065f52" font-size="8.5" font-weight="700" text-anchor="middle" x="183" y="104">result</text>
+
+<!-- ══ Client → Servers  (x=340 → x=425) ══ -->
+<!-- Arrow to Server 1 (y≈62) -->
+<line marker-end="url(#arrGold)" stroke="#e6a800" stroke-width="2.5" x1="340" x2="422" y1="65" y2="55"></line>
+<!-- Arrow to Server 2 (y≈115) -->
+<line marker-end="url(#arrGold)" stroke="#e6a800" stroke-width="2.5" x1="340" x2="422" y1="82" y2="120"></line>
+<!-- JSON-RPC label -->
+<rect fill="#fffbe6" height="14" rx="4" stroke="#e6a800" stroke-width="1" width="56" x="355" y="56"></rect>
+<text fill="#7c4800" font-size="8.5" font-weight="700" text-anchor="middle" x="383" y="67">JSON-RPC</text>
+
+<!-- ══ Server 1 (orange) ══ -->
+<rect fill="#D4600A" height="52" rx="8" width="110" x="425" y="32" filter="url(#ds)"></rect>
+<text fill="white" font-size="11" font-weight="700" text-anchor="middle" x="480" y="54">🔧 Server 1</text>
+<text fill="#ffd0a0" font-size="9" text-anchor="middle" x="480" y="72">GitHub Tools</text>
+
+<!-- ══ Server 2 (purple) ══ -->
+<rect fill="#6B3FA0" height="52" rx="8" width="110" x="425" y="100" filter="url(#ds)"></rect>
+<text fill="white" font-size="11" font-weight="700" text-anchor="middle" x="480" y="122">🔧 Server 2</text>
+<text fill="#d8b8ff" font-size="9" text-anchor="middle" x="480" y="140">Database Tools</text>
+
+<!-- ══ Server N (green) ══ -->
+<rect fill="#1E7E4A" height="44" rx="8" width="110" x="425" y="168" filter="url(#ds)"></rect>
+<text fill="white" font-size="11" font-weight="700" text-anchor="middle" x="480" y="188">🔧 Server N</text>
+<text fill="#a8e8c0" font-size="9" text-anchor="middle" x="480" y="204">Any Tool...</text>
+
+<!-- ══ Shared Memory box (inside host) ══ -->
+<rect fill="#EEF3FF" height="56" rx="8" stroke="#9ab0d8" stroke-width="1.5" width="290" x="25" y="148"></rect>
+<text fill="#1A4FA0" font-size="10" font-weight="700" text-anchor="middle" x="170" y="168">💾 Shared State / Session Memory</text>
+<text fill="#2a2a55" font-size="8.5" text-anchor="middle" x="170" y="184">Conversation history, tool results, context</text>
+<text fill="#2a2a55" font-size="8.5" text-anchor="middle" x="170" y="198">Both LLM and Client can read this</text>
 </svg>
 <div class="diagram-caption">Fig 2. MCP Architecture — Host contains LLM + Client; Servers are external</div>
-</div>
+</div><!-- -->
+
+
 <h3>🎭 The Three Core Roles</h3>
 <h4>1. 🧠 The LLM (Language Model)</h4>
 <p><strong>Who it is:</strong> Claude, GPT-4, Gemini, or any AI model</p>
