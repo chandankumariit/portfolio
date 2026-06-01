@@ -167,7 +167,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 @media print{
   .toolbar{display:none!important;}
   .page-wrapper{padding-top:0!important;display:block;background:#fff;}
-  body{background:#fff;font-size:8px;line-height:1.26;}
+  body{background:#fff;font-size:8px;line-height:1.28;}
   .resume{width:100%;border:none;border-radius:0;box-shadow:none;margin:0;padding:0;}
 
   /* HEADER */
@@ -182,7 +182,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 
   /* BODY */
   .resume-body{padding:4px 11px 4px;}
-  .section{margin-bottom:3.5px;}
+  .section{margin-bottom:4px;}
 
   /* SECTION TITLES — 0.4px letter-spacing prevents spaced-out rendering */
   .section-title{font-size:6.8px;letter-spacing:0.4px;padding:2px 7px;margin-bottom:2.5px;border-bottom:1px solid var(--border);}
@@ -214,7 +214,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
   .proj-sub-label{font-size:6.3px;}
 
   /* BULLETS — uniform */
-  .bullet-list li{font-size:7.4px;line-height:1.28;margin-bottom:1.5px;padding-left:10px;}
+  .bullet-list li{font-size:7.4px;line-height:1.28;margin-bottom:2px;padding-left:10px;}
   .bullet-list li::before{top:4px;width:2.5px;height:2.5px;left:1px;}
   .bullet-list li .num{font-size:7.4px;}
   .bk-challenge,.bk-contrib,.bk-impact,.bk{font-size:7.4px;}
@@ -569,17 +569,28 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 <script>
 async function downloadPDF(){
   const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:false});
   const el=document.getElementById('resumeContent');
   const btn=document.getElementById('pdfBtn');
   const orig=btn.innerHTML;
   try{
     btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating…';
     btn.disabled=true;
-    const canvas=await html2canvas(el,{scale:3.5,useCORS:true,backgroundColor:'#ffffff',windowHeight:el.scrollHeight,logging:false});
-    doc.addImage(canvas.toDataURL('image/jpeg',.88),'JPEG',0,0,210,297,undefined,'FAST');
+    // scale:5 → ~300dpi equivalent; PNG preserves text sharpness at full quality
+    const canvas=await html2canvas(el,{
+      scale:5,
+      useCORS:true,
+      allowTaint:true,
+      backgroundColor:'#ffffff',
+      windowWidth:794,
+      windowHeight:el.scrollHeight,
+      logging:false
+    });
+    // PNG = lossless, no JPEG blurring on text; compress:false keeps full fidelity
+    const imgData=canvas.toDataURL('image/png');
+    doc.addImage(imgData,'PNG',0,0,210,297,undefined,'NONE');
     doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
-  }catch(e){alert('PDF failed — use Print → Save as PDF');}
+  }catch(e){alert('PDF failed — use Print → Save as PDF instead');}
   finally{btn.innerHTML=orig;btn.disabled=false;}
 }
 </script>
