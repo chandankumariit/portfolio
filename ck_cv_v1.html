@@ -37,7 +37,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 
 /* PAGE */
 .page-wrapper{padding-top:48px;display:flex;justify-content:center;min-height:100vh;}
-.resume{width:var(--page-w);background:#fff;border-radius:4px;box-shadow:0 12px 50px rgba(11,29,58,.15),0 2px 8px rgba(0,0,0,.06);overflow:hidden;margin:4px 0 36px;}
+.resume{width:var(--page-w);background:#fff;border-radius:4px;box-shadow:0 12px 50px rgba(11,29,58,.15),0 2px 8px rgba(0,0,0,.06);overflow:visible;margin:4px 0 36px;}
 
 /* HEADER */
 .resume-header{background:#fff;padding:5px 16px 7px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;border-bottom:2.5px solid var(--navy);position:relative;}
@@ -163,67 +163,83 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 /* proj sub-label — replaces hardcoded inline style so print CSS can control it */
 .proj-sub-label{font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;}
 
-/* PRINT — SINGLE PAGE A4 — FULL PAGE FILL */
+/* PRINT — SINGLE PAGE A4 — FULL FILL */
 @media print{
   .toolbar{display:none!important;}
   .page-wrapper{padding-top:0!important;display:block;background:#fff;}
-  body{background:#fff;font-size:7.8px;line-height:1.28;}
-  .resume{width:100%;border:none;border-radius:0;box-shadow:none;margin:0;padding:0;}
+  body{background:#fff;font-size:8.4px;line-height:1.3;}
+  .resume{width:100%;border:none;border-radius:0;box-shadow:none;margin:0;padding:0;overflow:hidden;}
+
   /* HEADER */
-  .resume-header{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;padding:5px 11px 5px!important;margin:0!important;border-top:none!important;}
+  .resume-header{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;padding:6px 12px 7px!important;margin:0!important;border-top:none!important;}
   .hdr-left{flex:1;}
-  .hdr-right{display:flex!important;flex-direction:column!important;align-items:flex-end!important;flex-shrink:0;gap:3px!important;}
-  .hdr-name{font-size:19px;line-height:1.0;}
-  .hdr-subtitle{font-size:6.8px;margin-top:2px;}
-  .hdr-subtitle .sub-role{font-size:7.2px;}
-  .contact-row{font-size:7.2px;white-space:nowrap;gap:4px;}
-  .contact-row i{font-size:6.5px;}
+  .hdr-right{display:flex!important;flex-direction:column!important;align-items:flex-end!important;flex-shrink:0;gap:3.5px!important;}
+  .hdr-name{font-size:21px;line-height:1.0;}
+  .hdr-subtitle{font-size:7.2px;margin-top:2px;}
+  .hdr-subtitle .sub-role{font-size:7.8px;}
+  .contact-row{font-size:7.4px;white-space:nowrap;gap:4px;}
+  .contact-row i{font-size:6.8px;}
+
   /* BODY */
-  .resume-body{padding:4px 11px 4px;}
-  .section{margin-bottom:3.5px;}
-  .section-title{font-size:6.5px;letter-spacing:1px;padding:2px 7px;margin-bottom:2.5px;border-bottom:1px solid var(--border);}
-  .section-title i{font-size:6.5px;}
+  .resume-body{padding:5px 12px 5px;}
+  .section{margin-bottom:4.5px;}
+
+  /* SECTION TITLES — 0.4px prevents spaced-out letter rendering in PDF */
+  .section-title{font-size:7px;letter-spacing:0.4px;padding:2.5px 7px;margin-bottom:3px;border-bottom:1px solid var(--border);}
+  .section-title i{font-size:7px;}
+
   /* SUMMARY */
-  .summary-block{padding:3.5px 7px 3.5px 9px;}
-  .summary-lines{gap:1.5px;}
-  .sum-line{font-size:7.2px;line-height:1.28;padding-left:10px;}
-  .sum-line::before{top:4px;width:2.5px;height:2.5px;}
+  .summary-block{padding:4px 8px 4px 10px;}
+  .summary-lines{gap:2px;}
+  .sum-line{font-size:7.6px;line-height:1.3;padding-left:10px;}
+  .sum-line::before{top:4px;width:2.5px;height:2.5px;left:1px;}
+
   /* CERTS */
   .cert-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:0 5px;}
-  .cert-item{font-size:6.6px;padding:1.5px 0;line-height:1.3;align-items:baseline;}
+  .cert-item{font-size:6.8px;padding:2px 0;line-height:1.32;align-items:baseline;}
   .cert-bullet{font-size:5px;}
+
   /* EXPERIENCE */
-  .job{padding:2.5px 0 2.5px 7px;border-left:none!important;}
-  .job-company{font-size:8.8px;}
-  .job-role{font-size:7.4px;}
-  .job-location{font-size:6.5px;}
-  .job-period{font-size:6.5px;}
-  .job-header{margin-bottom:1.5px;}
-  .proj-card{padding:1.5px 0 2px 5px;border-left:none!important;}
-  .proj-card-name{font-size:7px;}
-  .proj-sub-label{font-size:6.3px;}
-  /* BULLETS — unified dot position */
-  .bullet-list li{font-size:7.2px;line-height:1.28;margin-bottom:1.5px;padding-left:10px;}
+  .job{padding:3px 0 3px 7px;border-left:none!important;}
+  .job-company{font-size:9.5px;}
+  .job-role{font-size:7.8px;}
+  .job-location{font-size:6.8px;}
+  .job-period{font-size:6.8px;}
+  .job-dot{font-size:7.8px;}
+  .job-header{margin-bottom:2px;}
+
+  /* PROJ CARDS */
+  .proj-card{padding:2px 0 2.5px 5px;border-left:none!important;}
+  .proj-card-name{font-size:7.4px;}
+  .proj-sub-label{font-size:6.5px;}
+
+  /* BULLETS — uniform */
+  .bullet-list li{font-size:7.6px;line-height:1.3;margin-bottom:2px;padding-left:10px;}
   .bullet-list li::before{top:4px;width:2.5px;height:2.5px;left:1px;}
-  .sum-line::before{top:4px;width:2.5px;height:2.5px;left:1px;}
+  .bullet-list li .num{font-size:7.6px;}
+  .bk-challenge,.bk-contrib,.bk-impact,.bk{font-size:7.6px;}
+
+  /* SKILL CHIPS — plain comma text in print */
+  .skill-chips{display:block!important;padding-left:10px;margin-top:2px;font-size:6.8px;line-height:1.3;}
   .skill-chips::before{top:4px;width:2.5px;height:2.5px;left:1px;}
-  /* bk label sizes in print */
-  .bk-challenge,.bk-contrib,.bk-impact,.bk{font-size:7.2px;}
-  /* SKILL CHIPS in print — revert to plain comma list */
-  .skill-chips{display:block;padding-left:10px;margin-top:1.5px;font-size:6.5px;}
-  .sk{display:inline;background:none;border:none;padding:0;font-size:6.5px;border-radius:0;white-space:normal;}
-  .sk::after{content:", ";}
-  .sk:last-child::after{content:"";}
+  .sk{display:inline!important;background:none!important;border:none!important;padding:0!important;font-size:6.8px!important;border-radius:0!important;white-space:normal!important;}
+  .sk::after{content:", "!important;}
+  .sk:last-child::after{content:""!important;}
+  .sk-label{font-size:6.8px;}
+
   /* EDUCATION */
-  .edu-row{padding:2.5px 7px;}
-  .edu-inst{font-size:8px;}
-  .edu-degree{font-size:6.8px;}
-  .edu-year{font-size:6.8px;}
-  /* SKILLS TABLE */
-  .skill-cat{font-size:6px;min-width:97px;max-width:97px;padding:2px 5px;letter-spacing:0.2px;}
-  .skill-vals{font-size:6.8px;line-height:1.3;padding:2px 6px;}
-  /* PAGE — no forced breaks */
+  .edu-row{padding:3px 7px;}
+  .edu-inst{font-size:8.5px;}
+  .edu-degree{font-size:7px;}
+  .edu-year{font-size:7px;}
+
+  /* SKILLS TABLE — 96px col width avoids text wrapping in category labels */
+  .skill-cat{font-size:6px;min-width:96px;max-width:96px;padding:2px 4px;letter-spacing:0.2px;}
+  .skill-vals{font-size:7px;line-height:1.32;padding:2px 6px;}
+
+  /* NO FORCED PAGE BREAKS */
   .job{page-break-inside:auto;}
+  .proj-card{page-break-inside:auto;}
   .project{border-left:none!important;padding-left:6px;}
   @page{size:A4 portrait;margin:3.5mm 5mm;}
 }
@@ -278,7 +294,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
   <div class="section-title"><i class="fa-regular fa-address-card"></i>Professional Summary</div>
   <div class="summary-block">
     <div class="summary-lines">
-      <div class="sum-line">An <span class="kw">IIT graduate and Super 30 alumnus</span> with <span class="num">8+ years</span> of deep AI/ML &amp; Data Science experience, currently serving as Lead Data Scientist at <span class="kw">IBM Lab</span> — architecting the agentic AI systems at the heart of IBM Watsonx, engineering ideas into enterprise infrastructure running at global scale, in production. Before IBM: led AI consulting for NatWest Group at Accenture; built mission-critical ML at Fortune 500 Clean Harbors. Three arenas — R&amp;D, consulting, enterprise product — one through-line: <span class="kw">AI that moves from whiteboard to measurable business outcome.</span></div>
+      <div class="sum-line">An <span class="kw">IIT graduate</span> with <span class="num">8+ years</span> of deep AI/ML &amp; Data Science experience, currently serving as Lead Data Scientist at <span class="kw">IBM Lab</span> — architecting the agentic AI systems at the heart of IBM Watsonx, engineering ideas into enterprise infrastructure running at global scale, in production. Before IBM: led AI consulting for NatWest Group at Accenture; built mission-critical ML at Fortune 500 Clean Harbors. Three arenas — R&amp;D, consulting, enterprise product — one through-line: <span class="kw">AI that moves from whiteboard to measurable business outcome.</span></div>
       <div class="sum-line">Architect of production AI where failure is not an option — regulated industries, mission-critical systems, enterprise-scale orchestration designed from first principles. From architecture blueprint to live deployment to C-suite impact readout, I own the full arc. The numbers speak: <span class="num">$4M+</span> in verified business impact. <span class="kw">Core stack:</span> Agentic AI &amp; Multi-Agent Orchestration · LLM Fine-Tuning (LoRA / RLHF / DPO) · MCP Architecture · Enterprise RAG · MLOps &amp; Drift-Aware Systems · Responsible AI · IBM Watsonx · AWS Bedrock &amp; SageMaker · Azure ML · LangGraph · Python. <span class="kw">If you need GenAI stress-tested in production — not just demoed in a notebook — I'd welcome a conversation.</span></div>
     </div>
   </div>
@@ -339,7 +355,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ watsonx.governance — Enterprise AI Risk &amp; Compliance Platform &nbsp;<span class="proj-sub-label">IBM Product</span></span>
+          <span class="proj-card-name">↳ watsonx.governance — Enterprise AI Risk &amp; Compliance Platform &nbsp;<span class="proj-sub-label">· IBM Product</span></span>
         </div>
       </div>
       <ul class="bullet-list">
@@ -530,7 +546,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     </div>
 
     <div class="skill-row">
-      <span class="skill-cat">Data Engineering</span>
+      <span class="skill-cat">Data &amp; Engineering</span>
       <span class="skill-vals">
         <span class="sk2">Python (Expert)</span><span class="sk2">SQL</span><span class="sk2">PySpark</span><span class="sk2">FastAPI</span><span class="sk2">Snowflake</span><span class="sk2">Databricks</span><span class="sk2">Delta Lake</span><span class="sk2">dbt</span><span class="sk2">Apache Airflow</span><span class="sk2">Kafka</span><span class="sk2">Redis</span>
       </span>
