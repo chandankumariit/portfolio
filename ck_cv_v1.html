@@ -164,17 +164,59 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .sk2::after{content:", ";}
 .sk2:last-child::after{content:"";}
 
-/* PRINT */
+/* PRINT — SINGLE PAGE A4 */
 @media print{
   .toolbar{display:none!important;}
   .page-wrapper{padding-top:0;display:block;background:#fff;}
-  body{background:#fff;}
+  body{background:#fff;font-size:7.6px;line-height:1.25;}
   .resume{width:100%;border:none;border-radius:0;box-shadow:none;margin:0;}
-  .section,.job,.project{page-break-inside:avoid;}
-  /* FIX-10: remove left border waste in print */
-  .job,.project{border-left:none!important;padding-left:8px;}
-  /* FIX-12: proper A4 margins — was 5mm/6mm, now 10mm/8mm */
-  @page{size:A4;margin:10mm 8mm;}
+  .section{margin-bottom:2.5px;}
+  .section-title{font-size:6.2px;letter-spacing:1px;padding:1.5px 6px;margin-bottom:2px;border-bottom:1px solid var(--border);}
+  .section-title i{font-size:6.2px;}
+  /* header compact */
+  .resume-header{padding:5px 10px 4px;}
+  .hdr-name{font-size:17px;}
+  .hdr-subtitle{font-size:6.5px;margin-top:2px;}
+  .hdr-subtitle .sub-role{font-size:7px;}
+  .contact-row{font-size:7px;}
+  /* summary */
+  .summary-block{padding:3px 6px 3px 8px;}
+  .summary-lines{gap:1.5px;}
+  .sum-line{font-size:7.4px;line-height:1.25;padding-left:10px;}
+  .sum-line::before{top:4px;width:2.5px;height:2.5px;}
+  /* certs */
+  .cert-grid{gap:0 5px;}
+  .cert-item{font-size:6.5px;padding:1px 0;line-height:1.3;}
+  .cert-bullet{font-size:4px;}
+  /* experience */
+  .job{padding:2px 0 2px 6px;border-left:none!important;}
+  .job-company{font-size:8.5px;}
+  .job-role{font-size:7.2px;}
+  .job-location{font-size:6.2px;}
+  .job-period{font-size:6.2px;}
+  .job-header{margin-bottom:1px;}
+  /* proj cards */
+  .proj-card{padding:1.5px 0 2px 4px;}
+  .proj-card-name{font-size:6.8px;}
+  /* bullets */
+  .bullet-list li{font-size:7.4px;line-height:1.25;margin-bottom:1px;padding-left:10px;}
+  .bullet-list li::before{top:4px;width:2.5px;height:2.5px;}
+  /* skill chips */
+  .skill-chips{font-size:6.5px;margin-top:1px;padding-left:10px;}
+  .skill-chips::before{top:4px;width:2.5px;height:2.5px;}
+  /* education */
+  .edu-row{padding:2px 6px;}
+  .edu-inst{font-size:7.8px;}
+  .edu-degree{font-size:6.5px;}
+  .edu-year{font-size:6.5px;}
+  /* skills table */
+  .skill-cat{font-size:5.8px;min-width:96px;max-width:96px;padding:2px 4px;letter-spacing:.3px;}
+  .skill-vals{font-size:6.8px;line-height:1.3;padding:1.5px 5px;}
+  /* project cards no page break except jobs */
+  .job{page-break-inside:avoid;}
+  .project{border-left:none!important;padding-left:6px;}
+  /* tight page margins */
+  @page{size:A4;margin:6mm 7mm;}
 }
 /* FIX-3: print guidance label on PDF button */
 .btn-print::after{content:" (Best Quality)";}
