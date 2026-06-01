@@ -569,16 +569,17 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 <script>
 async function downloadPDF(){
   const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:false});
   const el=document.getElementById('resumeContent');
   const btn=document.getElementById('pdfBtn');
   const orig=btn.innerHTML;
   try{
     btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating…';
     btn.disabled=true;
-    // scale:5 → ~300dpi equivalent; PNG preserves text sharpness at full quality
+
+    // scale:3 = ~216 DPI — sharp text, ~1MB output
+    // JPEG quality 0.95 = near-lossless for text/graphics, avoids 100MB+ PNG
     const canvas=await html2canvas(el,{
-      scale:5,
+      scale:3,
       useCORS:true,
       allowTaint:true,
       backgroundColor:'#ffffff',
@@ -586,9 +587,10 @@ async function downloadPDF(){
       windowHeight:el.scrollHeight,
       logging:false
     });
-    // PNG = lossless, no JPEG blurring on text; compress:false keeps full fidelity
-    const imgData=canvas.toDataURL('image/png');
-    doc.addImage(imgData,'PNG',0,0,210,297,undefined,'NONE');
+
+    const imgData=canvas.toDataURL('image/jpeg',0.95);
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    doc.addImage(imgData,'JPEG',0,0,210,297,undefined,'FAST');
     doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
   }catch(e){alert('PDF failed — use Print → Save as PDF instead');}
   finally{btn.innerHTML=orig;btn.disabled=false;}
