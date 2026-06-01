@@ -8,19 +8,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{
   --navy:#0B1D3A; --navy-mid:#12316A; --blue:#1A4FA0; --blue-light:#2563EB;
   --teal:#0EA5C2; --amber:#F59E0B; --ink:#111827; --ink-mid:#374151;
   --ink-soft:#6B7280; --border:#E5E9F2; --border-mid:#CBD5E1;
-  /* FIX-15: stronger bg-wash so it survives html2canvas rendering */
   --bg-wash:#EEF3FA; --r:3px; --page-w:210mm;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-/* FIX-1: body font up to 9.5px; FIX-11: line-height down to 1.4 */
 body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(--ink);background:#E0E7F0;}
 
 /* TOOLBAR */
@@ -31,9 +27,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .btn-tool{display:flex;align-items:center;gap:5px;padding:5px 14px;border:none;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;transition:all .18s;}
 .btn-print{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);}
 .btn-print:hover{background:rgba(255,255,255,.2);}
-.btn-pdf{background:var(--amber);color:var(--navy);}
-.btn-pdf:hover{background:#D97706;color:#fff;}
-.btn-pdf:disabled{opacity:.6;cursor:not-allowed;}
 
 /* PAGE */
 .page-wrapper{padding-top:48px;display:flex;justify-content:center;min-height:100vh;}
@@ -41,7 +34,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 
 /* HEADER */
 .resume-header{background:#fff;padding:5px 16px 7px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;border-bottom:2.5px solid var(--navy);position:relative;}
-/* FIX-8: taller teal accent — 4px height, more visible in PDF */
 .resume-header::after{content:'';position:absolute;left:0;bottom:-4px;width:72px;height:4px;background:var(--teal);}
 .hdr-name{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);letter-spacing:.3px;line-height:1.0;}
 .hdr-name em{color:var(--blue-light);font-style:normal;}
@@ -49,7 +41,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .hdr-subtitle .sub-role{font-weight:700;color:var(--navy);font-size:8.5px;}
 .hdr-subtitle .sub-sep{color:var(--border-mid);margin:0 5px;}
 .hdr-right{display:flex;flex-direction:column;gap:3px;align-items:flex-end;flex-shrink:0;}
-/* FIX-7: contact rows bumped to 8.5px */
 .contact-row{display:flex;align-items:center;gap:5px;font-size:8.5px;color:var(--ink-mid);white-space:nowrap;}
 .contact-row i{color:var(--blue-light);font-size:7.5px;width:11px;text-align:center;}
 .contact-row a{color:var(--ink-mid);text-decoration:none;}
@@ -63,20 +54,12 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .section-title i{font-size:8px;opacity:.85;}
 
 /* SUMMARY */
-/* FIX-15: stronger tinted bg + left teal bar so it renders in PDF */
 .summary-block{padding:4px 8px 5px 10px;background:var(--bg-wash);border-radius:var(--r);border-left:3px solid var(--teal);}
 .summary-lines{display:flex;flex-direction:column;gap:3px;}
-/* FIX-1: summary text up to 9px */
 .sum-line{font-size:9px;line-height:1.4;color:var(--ink);padding-left:12px;position:relative;}
-/* FIX-14: bullet dot top:5px for better alignment */
 .sum-line::before{content:"";position:absolute;left:1px;top:5px;width:3px;height:3px;background:#111827;border-radius:50%;}
 .sum-line .kw{font-weight:700;color:var(--navy);}
 .sum-line .num{font-family:'Fira Code',monospace;font-size:8.6px;font-weight:700;}
-
-/* COMPETENCIES — kept for future use */
-.comp-strip{display:flex;flex-wrap:wrap;gap:0;padding:3px 6px;background:var(--navy);margin-bottom:5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-.comp-item{font-size:7.4px;font-weight:600;color:rgba(255,255,255,.92);letter-spacing:.4px;text-transform:uppercase;padding:1px 6px;border-right:1px solid rgba(255,255,255,.15);white-space:nowrap;}
-.comp-item:last-child{border-right:none;}
 
 /* CERTS */
 .cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 8px;}
@@ -99,11 +82,16 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .job-location{font-size:7.8px;color:var(--ink-soft);font-style:italic;}
 .job-period{font-size:7.8px;font-weight:600;color:var(--blue-light);font-family:'Fira Code',monospace;white-space:nowrap;}
 
-/* sub-project inside a job */
-.sub-proj{margin-bottom:3px;}
-.sub-proj-title{font-size:8.2px;font-weight:700;color:var(--blue-light);margin-bottom:1.5px;padding-left:0;letter-spacing:.1px;}
+/* proj cards */
+.proj-card{padding:3px 0 4px 6px;margin-bottom:0;border-bottom:.5px solid var(--border);border-left:2px solid var(--border);}
+.proj-card:last-child{border-bottom:none;}
+.proj-card:hover{border-left-color:var(--teal);}
+.proj-card-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5px;flex-wrap:wrap;gap:2px;}
+.proj-card-left{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;}
+.proj-card-name{font-size:8.2px;font-weight:700;color:var(--blue-light);letter-spacing:.1px;}
+.proj-sub-label{font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;}
 
-/* FIX-1: bullet list */
+/* BULLETS */
 .bullet-list{list-style:none;padding:0;margin:0;}
 .bullet-list li{font-size:9px;line-height:1.4;color:var(--ink);margin-bottom:1.5px;padding-left:12px;position:relative;}
 .bullet-list li::before{content:"";position:absolute;left:1px;top:5px;width:3px;height:3px;background:#111827;border-radius:50%;}
@@ -112,19 +100,12 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .bullet-list li .bk-contrib{font-weight:700;color:var(--navy);}
 .bullet-list li .bk-impact{font-weight:700;color:var(--teal);}
 .bullet-list li .num{font-family:'Fira Code',monospace;font-size:8.5px;font-weight:700;}
-.bullet-list li .tag{font-style:italic;color:var(--ink-soft);}
 
-/* PROJ */
-.proj-card{padding:3px 0 4px 6px;margin-bottom:0;border-bottom:.5px solid var(--border);border-left:2px solid var(--border);}
-.proj-card:last-child{border-bottom:none;}
-.proj-card:hover{border-left-color:var(--teal);}
-.proj-card-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5px;flex-wrap:wrap;gap:2px;}
-.proj-card-left{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;}
-.proj-card-name{font-size:8.2px;font-weight:700;color:var(--blue-light);letter-spacing:.1px;}
-.proj-card-co{font-size:7.8px;color:var(--ink-soft);font-style:italic;}
-.proj-card-period{font-size:7.5px;font-weight:500;color:var(--ink);font-family:'Fira Code',monospace;font-style:italic;white-space:nowrap;letter-spacing:.15px;}
-.proj-rows,.proj-row,.proj-row-content{display:contents;}
-.proj-row-label{display:none;}
+/* SKILL CHIPS */
+.skill-chips{padding-left:12px;position:relative;font-size:7.5px;color:var(--ink-soft);margin-top:3px;display:flex;flex-wrap:wrap;align-items:center;gap:2px;}
+.skill-chips::before{content:"";position:absolute;left:1px;top:5px;width:3px;height:3px;background:#111827;border-radius:50%;}
+.sk-label{font-weight:700;color:var(--navy);margin-right:3px;font-size:7.5px;}
+.sk{display:inline-block;background:var(--bg-wash);color:var(--ink-mid);border:0.5px solid var(--border-mid);border-radius:2px;padding:0 3px;font-size:6.8px;line-height:1.5;white-space:nowrap;}
 
 /* EDUCATION */
 .edu-row{display:flex;align-items:flex-start;justify-content:space-between;padding:3px 8px;border-bottom:.5px solid var(--border);}
@@ -132,23 +113,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .edu-left{display:flex;flex-direction:column;gap:1px;}
 .edu-inst{font-size:9.5px;font-weight:700;color:var(--navy);font-family:'DM Serif Display',Georgia,serif;}
 .edu-degree{font-size:8.2px;color:var(--ink-mid);}
-.edu-note{font-size:7.8px;font-weight:600;color:var(--teal);margin-top:0.5px;}
 .edu-year{font-size:7.8px;font-weight:600;color:var(--blue-light);font-family:'Fira Code',monospace;flex-shrink:0;padding-top:1px;}
-
-/* PROJECTS */
-.project{padding:4px 0 5px 10px;margin-bottom:0;border-bottom:.5px solid var(--border);border-left:3px solid transparent;}
-.project:hover{border-left-color:var(--amber);}
-.project:last-child{border-bottom:none;}
-.project-header{display:flex;align-items:baseline;gap:6px;margin-bottom:2px;flex-wrap:wrap;}
-.project-name{font-size:9px;font-weight:700;color:var(--ink);}
-.project-co{font-size:8px;color:var(--blue-light);font-style:italic;}
-
-/* SKILL CHIPS — pill tag style */
-.skill-chips{padding-left:12px;position:relative;font-size:7.5px;color:var(--ink-soft);margin-top:3px;display:flex;flex-wrap:wrap;align-items:center;gap:2px;}
-.skill-chips::before{content:"";position:absolute;left:1px;top:5px;width:3px;height:3px;background:#111827;border-radius:50%;}
-.sk-label{font-weight:700;color:var(--navy);margin-right:3px;font-size:7.5px;}
-.sk{display:inline-block;background:var(--bg-wash);color:var(--ink-mid);border:0.5px solid var(--border-mid);border-radius:2px;padding:0 3px;font-size:6.8px;line-height:1.5;white-space:nowrap;}
-.sk::after{content:"";}
 
 /* SKILLS TABLE */
 .skills-wrap{display:flex;flex-direction:column;gap:0;}
@@ -160,87 +125,98 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .sk2::after{content:", ";}
 .sk2:last-child::after{content:"";}
 
-/* proj sub-label — replaces hardcoded inline style so print CSS can control it */
-.proj-sub-label{font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;}
-
-/* PRINT — STRICT SINGLE PAGE A4 */
+/* ═══════════════════════════════════════════════════════
+   PRINT — FULL A4 PAGE FILL
+   Key change: fonts scaled UP significantly so content
+   expands to fill the entire A4 sheet naturally.
+   @page margin reduced to 3mm to maximize usable area.
+═══════════════════════════════════════════════════════ */
 @media print{
   .toolbar{display:none!important;}
   .page-wrapper{padding-top:0!important;display:block;background:#fff;}
-  body{background:#fff;font-size:7.5px;line-height:1.25;}
+  body{background:#fff;font-size:9px;line-height:1.35;}
   .resume{width:100%;border:none;border-radius:0;box-shadow:none;margin:0;padding:0;}
-  /* HEADER — flush, compact */
-  .resume-header{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;padding:4px 10px 5px!important;margin:0!important;border-top:none!important;}
+
+  /* HEADER */
+  .resume-header{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;padding:5px 12px 6px!important;margin:0!important;border-top:none!important;}
   .hdr-left{flex:1;}
-  .hdr-right{display:flex!important;flex-direction:column!important;align-items:flex-end!important;flex-shrink:0;gap:2.5px!important;}
-  .hdr-name{font-size:18px;line-height:1.0;}
-  .hdr-subtitle{font-size:6.5px;margin-top:1.5px;}
-  .hdr-subtitle .sub-role{font-size:7px;}
-  .contact-row{font-size:6.8px;white-space:nowrap;gap:4px;}
-  .contact-row i{font-size:6px;}
+  .hdr-right{display:flex!important;flex-direction:column!important;align-items:flex-end!important;flex-shrink:0;gap:3px!important;}
+  .hdr-name{font-size:20px;line-height:1.0;}
+  .hdr-subtitle{font-size:8px;margin-top:2px;}
+  .hdr-subtitle .sub-role{font-size:8.5px;}
+  .contact-row{font-size:8px;white-space:nowrap;gap:4px;}
+  .contact-row i{font-size:7px;}
+
   /* BODY */
-  .resume-body{padding:3px 10px 3px;}
-  .section{margin-bottom:3px;}
-  /* SECTION TITLES — letter-spacing 0.4px prevents spaced-out rendering */
-  .section-title{font-size:6.2px;letter-spacing:0.4px;padding:1.5px 6px;margin-bottom:2px;border-bottom:1px solid var(--border);}
-  .section-title i{font-size:6.2px;}
+  .resume-body{padding:4px 12px 4px;}
+  .section{margin-bottom:4px;}
+
+  /* SECTION TITLES */
+  .section-title{font-size:7.5px;letter-spacing:0.5px;padding:2px 7px;margin-bottom:3px;border-bottom:1px solid var(--border);}
+  .section-title i{font-size:7.5px;}
+
   /* SUMMARY */
-  .summary-block{padding:3px 6px 3px 8px;}
-  .summary-lines{gap:1px;}
-  .sum-line{font-size:6.8px;line-height:1.25;padding-left:9px;}
-  .sum-line::before{top:3.5px;width:2px;height:2px;left:1px;}
+  .summary-block{padding:4px 7px 4px 10px;}
+  .summary-lines{gap:2px;}
+  .sum-line{font-size:8px;line-height:1.35;padding-left:10px;}
+  .sum-line::before{top:4px;width:2.5px;height:2.5px;left:1px;}
+
   /* CERTS */
-  .cert-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:0 4px;}
-  .cert-item{font-size:6.2px;padding:1px 0;line-height:1.28;align-items:baseline;}
-  .cert-bullet{font-size:4.5px;}
+  .cert-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:0 5px;}
+  .cert-item{font-size:7.5px;padding:1.5px 0;line-height:1.35;align-items:baseline;}
+  .cert-bullet{font-size:5.5px;}
+
   /* EXPERIENCE */
-  .job{padding:2px 0 2px 6px;border-left:none!important;}
-  .job-company{font-size:8.5px;}
-  .job-role{font-size:7px;}
-  .job-location{font-size:6px;}
-  .job-period{font-size:6px;}
-  .job-dot{font-size:7px;}
-  .job-header{margin-bottom:1px;}
+  .job{padding:3px 0 3px 8px;border-left:none!important;}
+  .job-company{font-size:10px;}
+  .job-role{font-size:8px;}
+  .job-location{font-size:7px;}
+  .job-period{font-size:7px;}
+  .job-dot{font-size:8px;}
+  .job-header{margin-bottom:1.5px;}
+
   /* PROJ CARDS */
-  .proj-card{padding:1px 0 1.5px 4px;border-left:none!important;}
-  .proj-card-name{font-size:6.5px;}
-  .proj-sub-label{font-size:5.8px;}
-  /* BULLETS — all uniform */
-  .bullet-list li{font-size:6.8px;line-height:1.25;margin-bottom:1px;padding-left:9px;}
-  .bullet-list li::before{top:3.5px;width:2px;height:2px;left:1px;}
-  .bullet-list li .num{font-size:6.8px;}
-  .bk-challenge,.bk-contrib,.bk-impact,.bk{font-size:6.8px;}
-  /* SKILL CHIPS — plain comma text, no pills */
-  .skill-chips{display:block!important;padding-left:9px;margin-top:1px;font-size:6.2px;line-height:1.25;}
-  .skill-chips::before{top:3.5px;width:2px;height:2px;left:1px;}
-  .sk{display:inline!important;background:none!important;border:none!important;padding:0!important;font-size:6.2px!important;border-radius:0!important;white-space:normal!important;}
+  .proj-card{padding:2px 0 2.5px 5px;border-left:none!important;}
+  .proj-card-name{font-size:7.8px;}
+  .proj-sub-label{font-size:7px;}
+
+  /* BULLETS */
+  .bullet-list li{font-size:8px;line-height:1.35;margin-bottom:1.5px;padding-left:10px;}
+  .bullet-list li::before{top:4px;width:2.5px;height:2.5px;left:1px;}
+  .bullet-list li .num{font-size:8px;}
+  .bk-challenge,.bk-contrib,.bk-impact,.bk{font-size:8px;}
+
+  /* SKILL CHIPS — plain comma text */
+  .skill-chips{display:block!important;padding-left:10px;margin-top:2px;font-size:7.2px;line-height:1.3;}
+  .skill-chips::before{top:4px;width:2.5px;height:2.5px;left:1px;}
+  .sk{display:inline!important;background:none!important;border:none!important;padding:0!important;font-size:7.2px!important;border-radius:0!important;white-space:normal!important;}
   .sk::after{content:", "!important;}
   .sk:last-child::after{content:""!important;}
-  .sk-label{font-size:6.2px;}
+  .sk-label{font-size:7.2px;}
+
   /* EDUCATION */
-  .edu-row{padding:2px 6px;}
-  .edu-inst{font-size:7.5px;}
-  .edu-degree{font-size:6.2px;}
-  .edu-year{font-size:6.2px;}
+  .edu-row{padding:2.5px 7px;}
+  .edu-inst{font-size:9px;}
+  .edu-degree{font-size:7.5px;}
+  .edu-year{font-size:7.5px;}
+
   /* SKILLS TABLE */
-  .skill-cat{font-size:5.6px;min-width:90px;max-width:90px;padding:1.5px 4px;letter-spacing:0.15px;}
-  .skill-vals{font-size:6.5px;line-height:1.28;padding:1.5px 5px;}
-  /* NO FORCED BREAKS */
+  .skill-cat{font-size:6.8px;min-width:100px;max-width:100px;padding:2px 5px;letter-spacing:0.2px;}
+  .skill-vals{font-size:7.8px;line-height:1.35;padding:2px 6px;}
+
+  /* PAGE SETUP — minimal margins to maximise usable area */
   .job{page-break-inside:auto;}
   .proj-card{page-break-inside:auto;}
   .project{border-left:none!important;padding-left:5px;}
-  @page{size:A4 portrait;margin:3mm 4.5mm;}
+  @page{size:A4 portrait;margin:3mm 4mm;}
 }
-/* FIX-3: print guidance label on PDF button */
-.btn-print::after{content:" (Best Quality)";}
+
 @media(max-width:820px){
   .page-wrapper{padding-top:52px;}
   .resume{width:100%;border-radius:0;margin:0 0 20px;}
   .resume-header{flex-direction:column;align-items:flex-start;}
   .hdr-right{align-items:flex-start;}
   .cert-grid{grid-template-columns:repeat(2,1fr);}
-  .comp-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);}
-  .btn-print::after{content:"";}
 }
 </style>
 </head>
@@ -249,8 +225,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 <div class="toolbar">
   <span class="toolbar-brand"><i class="fas fa-microchip"></i>Chandan Kumar — Lead Data Scientist · IBM Lab</span>
   <div class="toolbar-actions">
-    <button class="btn-tool btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
-    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+    <button class="btn-tool btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print / Save as PDF</button>
   </div>
 </div>
 
@@ -270,7 +245,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
   </div>
   <div class="hdr-right">
     <div class="contact-row"><i class="fas fa-phone"></i><span>+91-9199000200</span></div>
-    <div class="contact-row"><i class="fas fa-envelope"></i><a href="mailto:chandaniitismg@gmail.com" style="color:var(--ink-mid);text-decoration:none;">chandaniitismg@gmail.com</a></div>
+    <div class="contact-row"><i class="fas fa-envelope"></i><a href="mailto:chandaniitismg@gmail.com">chandaniitismg@gmail.com</a></div>
     <div class="contact-row"><i class="fab fa-linkedin-in"></i><a href="https://www.linkedin.com/in/chandaniit" target="_blank">linkedin.com/in/chandaniit</a></div>
   </div>
 </header>
@@ -304,7 +279,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-course">Generative &amp; Agentic AI Foundation</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Duke University</span><span class="cert-sep">·</span><span class="cert-course">DevOps, DataOps, MLOps</span></div>
     <div class="cert-item"><span class="cert-bullet">●</span><span class="cert-inst">Microsoft</span><span class="cert-sep">·</span><span class="cert-course">Azure Machine Learning</span></div>
-
   </div>
 </div>
 
@@ -324,7 +298,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
       <span class="job-period">Mar 2024 – Present</span>
     </div>
 
-    <!-- Watsonx Orchestrate Weave -->
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
@@ -339,7 +312,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">IBM Watsonx Orchestrate</span><span class="sk">IBM Granite</span><span class="sk">LangGraph</span><span class="sk">AutoGen</span><span class="sk">MCP</span><span class="sk">OpenAPI</span><span class="sk">OAuth2 / SAML</span><span class="sk">IBM Cloud OpenShift</span><span class="sk">Kubernetes</span><span class="sk">Redis</span><span class="sk">OpenTelemetry</span><span class="sk">Python</span></div>
     </div>
 
-    <!-- Watsonx Governance -->
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
@@ -367,7 +339,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
       <span class="job-period">Apr 2021 – Feb 2024</span>
     </div>
 
-    <!-- ASK UB -->
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
@@ -382,7 +353,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">AWS Bedrock</span><span class="sk">AWS SageMaker</span><span class="sk">SageMaker Training Jobs</span><span class="sk">LoRA / PEFT</span><span class="sk">Hugging Face Transformers</span><span class="sk">LangChain</span><span class="sk">Amazon S3</span><span class="sk">AWS IAM</span><span class="sk">Python</span></div>
     </div>
 
-    <!-- ComplyRAG -->
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
@@ -397,7 +367,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">AWS Bedrock</span><span class="sk">Amazon OpenSearch</span><span class="sk">AWS Lambda</span><span class="sk">AWS API Gateway</span><span class="sk">AWS Glue</span><span class="sk">Amazon S3</span><span class="sk">LangChain</span><span class="sk">HyDE</span><span class="sk">BM25 + Dense Retrieval</span><span class="sk">Python</span></div>
     </div>
 
-    <!-- PulseSegment -->
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
@@ -441,7 +410,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
       <span class="job-period">Jun 2018 – Jan 2021</span>
     </div>
 
-    <!-- Waste Classification Code -->
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
@@ -456,7 +424,6 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">Azure ML Studio</span><span class="sk">Azure Data Factory</span><span class="sk">Azure App Service</span><span class="sk">Gradient Boosting (XGBoost)</span><span class="sk">SMOTE</span><span class="sk">Drift Detection</span><span class="sk">REST API</span><span class="sk">Power BI</span><span class="sk">Python</span></div>
     </div>
 
-    <!-- Invoice Audit -->
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
@@ -490,63 +457,38 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 <div class="section">
   <div class="section-title"><i class="fas fa-laptop-code"></i>Technical Skills</div>
   <div class="skills-wrap">
-
     <div class="skill-row">
       <span class="skill-cat">Agentic AI &amp; LLMs</span>
-      <span class="skill-vals">
-        <span class="sk2">IBM Watsonx Orchestrate</span><span class="sk2">LangGraph</span><span class="sk2">AutoGen</span><span class="sk2">CrewAI</span><span class="sk2">MCP (Model Context Protocol)</span><span class="sk2">LangChain</span><span class="sk2">LlamaIndex</span><span class="sk2">Semantic Kernel</span><span class="sk2">GPT-4o</span><span class="sk2">Claude 3.5/3.7 Sonnet</span><span class="sk2">Llama 3.x</span><span class="sk2">IBM Granite</span><span class="sk2">Multi-Agent Orchestration</span><span class="sk2">Hierarchical Planner-Executor Architecture</span><span class="sk2">DAG-Based Task Decomposition</span><span class="sk2">MCP Server Design &amp; OpenAPI Transpilation</span><span class="sk2">Tool Use &amp; Function Calling</span><span class="sk2">ReAct &amp; Chain-of-Thought</span><span class="sk2">Token Cost Optimization</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">IBM Watsonx Orchestrate</span><span class="sk2">LangGraph</span><span class="sk2">AutoGen</span><span class="sk2">CrewAI</span><span class="sk2">MCP (Model Context Protocol)</span><span class="sk2">LangChain</span><span class="sk2">LlamaIndex</span><span class="sk2">Semantic Kernel</span><span class="sk2">GPT-4o</span><span class="sk2">Claude 3.5/3.7 Sonnet</span><span class="sk2">Llama 3.x</span><span class="sk2">IBM Granite</span><span class="sk2">Multi-Agent Orchestration</span><span class="sk2">Hierarchical Planner-Executor Architecture</span><span class="sk2">DAG-Based Task Decomposition</span><span class="sk2">MCP Server Design &amp; OpenAPI Transpilation</span><span class="sk2">Tool Use &amp; Function Calling</span><span class="sk2">ReAct &amp; Chain-of-Thought</span><span class="sk2">Token Cost Optimization</span></span>
     </div>
-
     <div class="skill-row">
       <span class="skill-cat">RAG &amp; Knowledge Systems</span>
-      <span class="skill-vals">
-        <span class="sk2">Enterprise RAG Pipelines</span><span class="sk2">GraphRAG</span><span class="sk2">HyDE</span><span class="sk2">Hybrid Retrieval (BM25+Dense)</span><span class="sk2">Cross-Encoder Re-ranking</span><span class="sk2">Hallucination Guardrails</span><span class="sk2">Citation Grounding</span><span class="sk2">RAGAS</span><span class="sk2">LangSmith</span><span class="sk2">Langfuse</span><span class="sk2">Pinecone</span><span class="sk2">Weaviate</span><span class="sk2">FAISS</span><span class="sk2">Neo4j</span><span class="sk2">Amazon OpenSearch</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">Enterprise RAG Pipelines</span><span class="sk2">GraphRAG</span><span class="sk2">HyDE</span><span class="sk2">Hybrid Retrieval (BM25+Dense)</span><span class="sk2">Cross-Encoder Re-ranking</span><span class="sk2">Hallucination Guardrails</span><span class="sk2">Citation Grounding</span><span class="sk2">RAGAS</span><span class="sk2">LangSmith</span><span class="sk2">Langfuse</span><span class="sk2">Pinecone</span><span class="sk2">Weaviate</span><span class="sk2">FAISS</span><span class="sk2">Neo4j</span><span class="sk2">Amazon OpenSearch</span></span>
     </div>
-
     <div class="skill-row">
       <span class="skill-cat">LLM Fine-Tuning &amp; Alignment</span>
-      <span class="skill-vals">
-        <span class="sk2">LoRA / QLoRA</span><span class="sk2">RLHF</span><span class="sk2">DPO</span><span class="sk2">PEFT</span><span class="sk2">GPTQ/AWQ Quantization</span><span class="sk2">Supervised Fine-Tuning (SFT)</span><span class="sk2">Instruction Tuning</span><span class="sk2">Hugging Face Transformers</span><span class="sk2">FSDP / DeepSpeed</span><span class="sk2">vLLM</span><span class="sk2">Triton Inference Server</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">LoRA / QLoRA</span><span class="sk2">RLHF</span><span class="sk2">DPO</span><span class="sk2">PEFT</span><span class="sk2">GPTQ/AWQ Quantization</span><span class="sk2">Supervised Fine-Tuning (SFT)</span><span class="sk2">Instruction Tuning</span><span class="sk2">Hugging Face Transformers</span><span class="sk2">FSDP / DeepSpeed</span><span class="sk2">vLLM</span><span class="sk2">Triton Inference Server</span></span>
     </div>
-
     <div class="skill-row">
       <span class="skill-cat">ML &amp; Deep Learning</span>
-      <span class="skill-vals">
-        <span class="sk2">PyTorch</span><span class="sk2">TensorFlow</span><span class="sk2">Scikit-learn</span><span class="sk2">XGBoost</span><span class="sk2">LightGBM</span><span class="sk2">BERT/RoBERTa</span><span class="sk2">Vision Transformers (ViT)</span><span class="sk2">Diffusion Models</span><span class="sk2">Graph Neural Networks</span><span class="sk2">Time-Series Forecasting</span><span class="sk2">Feature Engineering</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">PyTorch</span><span class="sk2">TensorFlow</span><span class="sk2">Scikit-learn</span><span class="sk2">XGBoost</span><span class="sk2">LightGBM</span><span class="sk2">BERT/RoBERTa</span><span class="sk2">Vision Transformers (ViT)</span><span class="sk2">Diffusion Models</span><span class="sk2">Graph Neural Networks</span><span class="sk2">Time-Series Forecasting</span><span class="sk2">Feature Engineering</span></span>
     </div>
-
     <div class="skill-row">
       <span class="skill-cat">MLOps &amp; Infra</span>
-      <span class="skill-vals">
-        <span class="sk2">MLflow</span><span class="sk2">Kubeflow</span><span class="sk2">Weights &amp; Biases</span><span class="sk2">Azure Pipelines (CI/CD)</span><span class="sk2">Shadow Deployment</span><span class="sk2">A/B Testing</span><span class="sk2">Drift Detection &amp; Automated Retraining</span><span class="sk2">Docker</span><span class="sk2">Kubernetes / HPA</span><span class="sk2">Helm</span><span class="sk2">Terraform</span><span class="sk2">Multi-Region HA Architecture</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">MLflow</span><span class="sk2">Kubeflow</span><span class="sk2">Weights &amp; Biases</span><span class="sk2">Azure Pipelines (CI/CD)</span><span class="sk2">Shadow Deployment</span><span class="sk2">A/B Testing</span><span class="sk2">Drift Detection &amp; Automated Retraining</span><span class="sk2">Docker</span><span class="sk2">Kubernetes / HPA</span><span class="sk2">Helm</span><span class="sk2">Terraform</span><span class="sk2">Multi-Region HA Architecture</span></span>
     </div>
-
     <div class="skill-row">
       <span class="skill-cat">Cloud Platforms</span>
-      <span class="skill-vals">
-        <span class="sk2">IBM Watsonx.ai</span><span class="sk2">IBM Cloud Pak for Data</span><span class="sk2">IBM Cloud OpenShift</span><span class="sk2">IBM OpenScale</span><span class="sk2">AWS SageMaker</span><span class="sk2">AWS Bedrock</span><span class="sk2">AWS Glue</span><span class="sk2">Amazon Redshift</span><span class="sk2">Azure ML Studio</span><span class="sk2">Azure OpenAI</span><span class="sk2">Azure Databricks</span><span class="sk2">Google Cloud Platform</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">IBM Watsonx.ai</span><span class="sk2">IBM Cloud Pak for Data</span><span class="sk2">IBM Cloud OpenShift</span><span class="sk2">IBM OpenScale</span><span class="sk2">AWS SageMaker</span><span class="sk2">AWS Bedrock</span><span class="sk2">AWS Glue</span><span class="sk2">Amazon Redshift</span><span class="sk2">Azure ML Studio</span><span class="sk2">Azure OpenAI</span><span class="sk2">Azure Databricks</span><span class="sk2">Google Cloud Platform</span></span>
     </div>
-
     <div class="skill-row">
       <span class="skill-cat">Data &amp; Engineering</span>
-      <span class="skill-vals">
-        <span class="sk2">Python (Expert)</span><span class="sk2">SQL</span><span class="sk2">PySpark</span><span class="sk2">FastAPI</span><span class="sk2">Snowflake</span><span class="sk2">Databricks</span><span class="sk2">Delta Lake</span><span class="sk2">dbt</span><span class="sk2">Apache Airflow</span><span class="sk2">Kafka</span><span class="sk2">Redis</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">Python (Expert)</span><span class="sk2">SQL</span><span class="sk2">PySpark</span><span class="sk2">FastAPI</span><span class="sk2">Snowflake</span><span class="sk2">Databricks</span><span class="sk2">Delta Lake</span><span class="sk2">dbt</span><span class="sk2">Apache Airflow</span><span class="sk2">Kafka</span><span class="sk2">Redis</span></span>
     </div>
-
     <div class="skill-row">
       <span class="skill-cat">Responsible AI &amp; Observability</span>
-      <span class="skill-vals">
-        <span class="sk2">Explainable AI (SHAP/LIME)</span><span class="sk2">AI Governance</span><span class="sk2">Bias Detection (AIF360, Fairlearn)</span><span class="sk2">LLM Guardrails</span><span class="sk2">NeMo Guardrails</span><span class="sk2">GDPR/CCPA/EU AI Act</span><span class="sk2">Model Risk Management</span><span class="sk2">Prometheus</span><span class="sk2">Grafana</span><span class="sk2">LLM Observability (Langfuse, Arize AI)</span><span class="sk2">AI Strategy &amp; Roadmapping</span><span class="sk2">Power BI</span><span class="sk2">Tableau</span>
-      </span>
+      <span class="skill-vals"><span class="sk2">Explainable AI (SHAP/LIME)</span><span class="sk2">AI Governance</span><span class="sk2">Bias Detection (AIF360, Fairlearn)</span><span class="sk2">LLM Guardrails</span><span class="sk2">NeMo Guardrails</span><span class="sk2">GDPR/CCPA/EU AI Act</span><span class="sk2">Model Risk Management</span><span class="sk2">Prometheus</span><span class="sk2">Grafana</span><span class="sk2">LLM Observability (Langfuse, Arize AI)</span><span class="sk2">AI Strategy &amp; Roadmapping</span><span class="sk2">Power BI</span><span class="sk2">Tableau</span></span>
     </div>
-
   </div>
 </div>
 
@@ -554,22 +496,5 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 </div><!-- /resume -->
 </div><!-- /page-wrapper -->
 
-<script>
-async function downloadPDF(){
-  const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-  const el=document.getElementById('resumeContent');
-  const btn=document.getElementById('pdfBtn');
-  const orig=btn.innerHTML;
-  try{
-    btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating…';
-    btn.disabled=true;
-    const canvas=await html2canvas(el,{scale:3.5,useCORS:true,backgroundColor:'#ffffff',windowHeight:el.scrollHeight,logging:false});
-    doc.addImage(canvas.toDataURL('image/jpeg',.88),'JPEG',0,0,210,297,undefined,'FAST');
-    doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
-  }catch(e){alert('PDF failed — use Print → Save as PDF');}
-  finally{btn.innerHTML=orig;btn.disabled=false;}
-}
-</script>
 </body>
 </html>
