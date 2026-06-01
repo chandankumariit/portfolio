@@ -164,6 +164,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .sk2::after{content:", ";}
 .sk2:last-child::after{content:"";}
 
+/* proj sub-label — replaces hardcoded inline style so print CSS can control it */
+.proj-sub-label{font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;}
+
 /* PRINT — SINGLE PAGE A4 — FULL PAGE FILL */
 @media print{
   .toolbar{display:none!important;}
@@ -202,12 +205,14 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
   .job-header{margin-bottom:1.5px;}
   .proj-card{padding:1.5px 0 2px 5px;}
   .proj-card-name{font-size:7px;}
-  /* BULLETS */
+  .proj-sub-label{font-size:6.3px;}
+  /* BULLETS — unified dot position for all bullet types */
   .bullet-list li{font-size:7.2px;line-height:1.28;margin-bottom:1.5px;padding-left:10px;}
-  .bullet-list li::before{top:4px;width:2.5px;height:2.5px;}
+  .bullet-list li::before{top:4px;width:2.5px;height:2.5px;left:1px;}
+  .sum-line::before{top:4px;width:2.5px;height:2.5px;left:1px;}
+  .skill-chips::before{top:4px;width:2.5px;height:2.5px;left:1px;}
   /* TECH CHIPS */
   .skill-chips{font-size:6.5px;margin-top:1.5px;padding-left:10px;}
-  .skill-chips::before{top:4px;width:2.5px;height:2.5px;}
   /* EDUCATION */
   .edu-row{padding:2.5px 7px;}
   .edu-inst{font-size:8px;}
@@ -318,7 +323,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ watsonx Orchestrate — Weave &nbsp;<span style="font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;">Agentic AI Lifecycle Platform · IBM Product</span></span>
+          <span class="proj-card-name">↳ watsonx Orchestrate — Weave &nbsp;<span class="proj-sub-label">Agentic AI Lifecycle Platform · IBM Product</span></span>
         </div>
       </div>
       <ul class="bullet-list">
@@ -333,7 +338,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ watsonx.governance — Enterprise AI Risk &amp; Compliance Platform &nbsp;<span style="font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;">IBM Product</span></span>
+          <span class="proj-card-name">↳ watsonx.governance — Enterprise AI Risk &amp; Compliance Platform &nbsp;<span class="proj-sub-label">IBM Product</span></span>
         </div>
       </div>
       <ul class="bullet-list">
@@ -352,7 +357,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         <span class="job-company">Accenture</span>
         <span class="job-dot">◆</span>
         <span class="job-role">Data Science Analyst — Strategy &amp; Consulting</span>
-        <span class="job-location">· Bengaluru</span>
+        <span class="job-location">· Gurugram</span>
       </div>
       <span class="job-period">Apr 2021 – Feb 2024</span>
     </div>
@@ -361,7 +366,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ ASK UB &nbsp;<span style="font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;">Client: Ulster Bank (NatWest Group)</span></span>
+          <span class="proj-card-name">↳ ASK UB &nbsp;<span class="proj-sub-label">Client: Ulster Bank (NatWest Group)</span></span>
         </div>
       </div>
       <ul class="bullet-list">
@@ -376,7 +381,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ ComplyRAG &nbsp;<span style="font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;">Client: Ulster Bank (NatWest Group)</span></span>
+          <span class="proj-card-name">↳ ComplyRAG &nbsp;<span class="proj-sub-label">Client: Ulster Bank (NatWest Group)</span></span>
         </div>
       </div>
       <ul class="bullet-list">
@@ -391,7 +396,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ PulseSegment &nbsp;<span style="font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;">Client: Ulster Bank (NatWest Group)</span></span>
+          <span class="proj-card-name">↳ PulseSegment &nbsp;<span class="proj-sub-label">Client: Ulster Bank (NatWest Group)</span></span>
         </div>
       </div>
       <ul class="bullet-list">
@@ -426,7 +431,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         <span class="job-company">Clean Harbors</span>
         <span class="job-dot">◆</span>
         <span class="job-role">Data Scientist — AI/ML Engineering</span>
-        <span class="job-location">· Bengaluru</span>
+        <span class="job-location">· Hyderabad</span>
       </div>
       <span class="job-period">Jun 2018 – Jan 2021</span>
     </div>
@@ -435,7 +440,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ Waste Classification Code &nbsp;<span style="font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;">EPA-Compliant Hazardous Waste ML System</span></span>
+          <span class="proj-card-name">↳ Waste Classification Code &nbsp;<span class="proj-sub-label">EPA-Compliant Hazardous Waste ML System</span></span>
         </div>
       </div>
       <ul class="bullet-list">
@@ -450,7 +455,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="proj-card">
       <div class="proj-card-header">
         <div class="proj-card-left">
-          <span class="proj-card-name">↳ Invoice Audit &nbsp;<span style="font-weight:400;color:var(--ink-soft);font-size:7.6px;font-style:italic;">Intelligent Billing Prediction &amp; Revenue Leakage Protection</span></span>
+          <span class="proj-card-name">↳ Invoice Audit &nbsp;<span class="proj-sub-label">Intelligent Billing Prediction &amp; Revenue Leakage Protection</span></span>
         </div>
       </div>
       <ul class="bullet-list">
