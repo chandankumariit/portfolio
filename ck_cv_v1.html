@@ -59,8 +59,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 
 /* SECTION */
 .section{margin-bottom:5px;}
-/* FIX-5: section title up to 8px — readable in PDF */
-.section-title{display:flex;align-items:center;gap:6px;font-size:8px;font-weight:700;color:var(--navy);background:#fff;text-transform:uppercase;letter-spacing:1.2px;padding:2.5px 8px;margin-bottom:4px;border-bottom:1.5px solid var(--border);}
+.section-title{display:flex;align-items:center;gap:6px;font-size:8px;font-weight:700;color:var(--navy);background:#fff;text-transform:uppercase;letter-spacing:0.6px;padding:2.5px 8px;margin-bottom:4px;border-bottom:1.5px solid var(--border);}
 .section-title i{font-size:8px;opacity:.85;}
 
 /* SUMMARY */
@@ -81,45 +80,44 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 
 /* CERTS */
 .cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 8px;}
-/* FIX-2: cert font up slightly; allow wrap on course name */
-.cert-item{display:flex;align-items:flex-start;gap:3px;font-size:8px;line-height:1.45;padding:2px 0;border-bottom:.5px solid var(--border);}
+.cert-item{display:flex;align-items:baseline;gap:4px;font-size:8px;line-height:1.45;padding:2.5px 0;border-bottom:.5px solid var(--border);}
 .cert-item:nth-last-child(-n+3){border-bottom:none;}
-.cert-bullet{color:var(--teal);font-size:5px;flex-shrink:0;margin-top:3px;}
+.cert-bullet{color:var(--teal);font-size:6px;flex-shrink:0;line-height:1.45;}
 .cert-inst{font-weight:700;color:var(--navy);flex-shrink:0;}
 .cert-sep{color:var(--border-mid);margin:0 2px;}
-/* FIX-2: removed white-space:nowrap and text-overflow:ellipsis — allow wrapping */
 .cert-course{color:var(--ink-mid);overflow:hidden;}
 
 /* EXPERIENCE */
-/* FIX-10: remove transparent border-left; add it only on hover via outline trick */
 .job{padding:4px 0 5px 10px;margin-bottom:0;border-bottom:.5px solid var(--border);border-left:3px solid transparent;}
 .job:hover{border-left-color:var(--teal);}
 .job:last-child{border-bottom:none;}
 .job-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px;flex-wrap:wrap;gap:2px;}
 .job-left{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;}
-/* FIX-9: add system serif fallback for PDF font rendering */
 .job-company{font-size:10.5px;font-weight:700;color:var(--navy);font-family:'DM Serif Display',Georgia,serif;}
-.job-dot{color:var(--amber);font-size:7px;margin:0 1px;}
-.job-role{font-size:9px;font-weight:600;color:var(--ink);}
+.job-dot{color:var(--teal);font-size:8px;margin:0 2px;font-weight:400;}
+.job-role{font-size:9px;font-weight:600;color:var(--ink-mid);}
 .job-location{font-size:7.8px;color:var(--ink-soft);font-style:italic;}
-.job-period{font-size:7.8px;font-weight:600;color:var(--ink-soft);font-family:'Fira Code',monospace;white-space:nowrap;}
+.job-period{font-size:7.8px;font-weight:600;color:var(--blue-light);font-family:'Fira Code',monospace;white-space:nowrap;}
 
 /* sub-project inside a job */
 .sub-proj{margin-bottom:3px;}
 .sub-proj-title{font-size:8.2px;font-weight:700;color:var(--blue-light);margin-bottom:1.5px;padding-left:0;letter-spacing:.1px;}
 
-/* FIX-1: bullet list font up to 9px; FIX-11: line-height 1.4; FIX-14: bullet top:5px */
+/* FIX-1: bullet list */
 .bullet-list{list-style:none;padding:0;margin:0;}
 .bullet-list li{font-size:9px;line-height:1.4;color:var(--ink);margin-bottom:1.5px;padding-left:12px;position:relative;}
 .bullet-list li::before{content:"";position:absolute;left:1px;top:5px;width:3px;height:3px;background:#111827;border-radius:50%;}
 .bullet-list li .bk{font-weight:700;color:var(--navy);}
+.bullet-list li .bk-challenge{font-weight:700;color:var(--ink-soft);}
+.bullet-list li .bk-contrib{font-weight:700;color:var(--navy);}
+.bullet-list li .bk-impact{font-weight:700;color:var(--teal);}
 .bullet-list li .num{font-family:'Fira Code',monospace;font-size:8.5px;font-weight:700;}
 .bullet-list li .tag{font-style:italic;color:var(--ink-soft);}
 
 /* PROJ */
-/* FIX-13: reduced proj-card padding-left from 10px to 6px */
-.proj-card{padding:3px 0 4px 6px;margin-bottom:0;border-bottom:.5px solid var(--border);}
+.proj-card{padding:3px 0 4px 6px;margin-bottom:0;border-bottom:.5px solid var(--border);border-left:2px solid var(--border);}
 .proj-card:last-child{border-bottom:none;}
+.proj-card:hover{border-left-color:var(--teal);}
 .proj-card-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5px;flex-wrap:wrap;gap:2px;}
 .proj-card-left{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;}
 .proj-card-name{font-size:8.2px;font-weight:700;color:var(--blue-light);letter-spacing:.1px;}
@@ -128,6 +126,15 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .proj-rows,.proj-row,.proj-row-content{display:contents;}
 .proj-row-label{display:none;}
 
+/* EDUCATION */
+.edu-row{display:flex;align-items:flex-start;justify-content:space-between;padding:3px 8px;border-bottom:.5px solid var(--border);}
+.edu-row:last-child{border-bottom:none;}
+.edu-left{display:flex;flex-direction:column;gap:1px;}
+.edu-inst{font-size:9.5px;font-weight:700;color:var(--navy);font-family:'DM Serif Display',Georgia,serif;}
+.edu-degree{font-size:8.2px;color:var(--ink-mid);}
+.edu-note{font-size:7.8px;font-weight:600;color:var(--teal);margin-top:0.5px;}
+.edu-year{font-size:7.8px;font-weight:600;color:var(--blue-light);font-family:'Fira Code',monospace;flex-shrink:0;padding-top:1px;}
+
 /* PROJECTS */
 .project{padding:4px 0 5px 10px;margin-bottom:0;border-bottom:.5px solid var(--border);border-left:3px solid transparent;}
 .project:hover{border-left-color:var(--amber);}
@@ -135,30 +142,19 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 .project-header{display:flex;align-items:baseline;gap:6px;margin-bottom:2px;flex-wrap:wrap;}
 .project-name{font-size:9px;font-weight:700;color:var(--ink);}
 .project-co{font-size:8px;color:var(--blue-light);font-style:italic;}
-.skill-chips{padding-left:12px;position:relative;font-size:8px;color:var(--ink-soft);margin-top:2px;}
+
+/* SKILL CHIPS — pill tag style */
+.skill-chips{padding-left:12px;position:relative;font-size:7.5px;color:var(--ink-soft);margin-top:3px;display:flex;flex-wrap:wrap;align-items:center;gap:2px;}
 .skill-chips::before{content:"";position:absolute;left:1px;top:5px;width:3px;height:3px;background:#111827;border-radius:50%;}
-.sk-label{font-weight:700;color:var(--navy);margin-right:2px;}
-.sk{display:inline;}
-.sk::after{content:", ";}
-.sk:last-child::after{content:"";}
+.sk-label{font-weight:700;color:var(--navy);margin-right:3px;font-size:7.5px;}
+.sk{display:inline-block;background:var(--bg-wash);color:var(--ink-mid);border:0.5px solid var(--border-mid);border-radius:2px;padding:0 3px;font-size:6.8px;line-height:1.5;white-space:nowrap;}
+.sk::after{content:"";}
 
-/* EDUCATION */
-.edu-row{display:flex;align-items:flex-start;justify-content:space-between;padding:3px 8px;border-bottom:.5px solid var(--border);}
-.edu-row:last-child{border-bottom:none;}
-.edu-left{display:flex;flex-direction:column;gap:1px;}
-/* FIX-9: system serif fallback */
-.edu-inst{font-size:9.5px;font-weight:700;color:var(--navy);font-family:'DM Serif Display',Georgia,serif;}
-.edu-degree{font-size:8.2px;color:var(--ink-mid);}
-.edu-note{font-size:7.8px;font-weight:600;color:var(--teal);margin-top:0.5px;}
-.edu-year{font-size:7.8px;font-weight:600;color:var(--ink-soft);font-family:'Fira Code',monospace;flex-shrink:0;padding-top:1px;}
-
-/* SKILLS */
+/* SKILLS TABLE */
 .skills-wrap{display:flex;flex-direction:column;gap:0;}
 .skill-row{display:flex;align-items:stretch;border-bottom:.5px solid var(--border);}
 .skill-row:last-child{border-bottom:none;}
-/* FIX-4: skill-cat width up to 120px; font up to 7.2px */
-.skill-cat{font-weight:700;color:var(--navy);background:var(--bg-wash);font-size:7.2px;letter-spacing:.4px;padding:3px 6px;min-width:120px;max-width:120px;display:flex;align-items:center;justify-content:center;text-align:center;text-transform:uppercase;flex-shrink:0;border-right:1.5px solid var(--border-mid);}
-/* FIX-1: skill values font up to 8.5px */
+.skill-cat{font-weight:700;color:var(--navy);background:var(--bg-wash);font-size:7.2px;letter-spacing:0.3px;padding:3px 6px;min-width:120px;max-width:120px;display:flex;align-items:center;justify-content:center;text-align:center;text-transform:uppercase;flex-shrink:0;border-right:1.5px solid var(--border-mid);}
 .skill-vals{color:var(--ink-mid);flex:1;padding:2.5px 6px;font-size:8.5px;line-height:1.5;}
 .sk2{display:inline;}
 .sk2::after{content:", ";}
@@ -194,8 +190,8 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
   .sum-line::before{top:4px;width:2.5px;height:2.5px;}
   /* CERTS */
   .cert-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:0 5px;}
-  .cert-item{font-size:6.6px;padding:1.5px 0;line-height:1.3;align-items:flex-start;}
-  .cert-bullet{font-size:4.5px;margin-top:2.5px;}
+  .cert-item{font-size:6.6px;padding:1.5px 0;line-height:1.3;align-items:baseline;}
+  .cert-bullet{font-size:5px;}
   /* EXPERIENCE */
   .job{padding:2.5px 0 2.5px 7px;border-left:none!important;}
   .job-company{font-size:8.8px;}
@@ -203,23 +199,28 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
   .job-location{font-size:6.5px;}
   .job-period{font-size:6.5px;}
   .job-header{margin-bottom:1.5px;}
-  .proj-card{padding:1.5px 0 2px 5px;}
+  .proj-card{padding:1.5px 0 2px 5px;border-left:none!important;}
   .proj-card-name{font-size:7px;}
   .proj-sub-label{font-size:6.3px;}
-  /* BULLETS — unified dot position for all bullet types */
+  /* BULLETS — unified dot position */
   .bullet-list li{font-size:7.2px;line-height:1.28;margin-bottom:1.5px;padding-left:10px;}
   .bullet-list li::before{top:4px;width:2.5px;height:2.5px;left:1px;}
   .sum-line::before{top:4px;width:2.5px;height:2.5px;left:1px;}
   .skill-chips::before{top:4px;width:2.5px;height:2.5px;left:1px;}
-  /* TECH CHIPS */
-  .skill-chips{font-size:6.5px;margin-top:1.5px;padding-left:10px;}
+  /* bk label sizes in print */
+  .bk-challenge,.bk-contrib,.bk-impact,.bk{font-size:7.2px;}
+  /* SKILL CHIPS in print — revert to plain comma list */
+  .skill-chips{display:block;padding-left:10px;margin-top:1.5px;font-size:6.5px;}
+  .sk{display:inline;background:none;border:none;padding:0;font-size:6.5px;border-radius:0;white-space:normal;}
+  .sk::after{content:", ";}
+  .sk:last-child::after{content:"";}
   /* EDUCATION */
   .edu-row{padding:2.5px 7px;}
   .edu-inst{font-size:8px;}
   .edu-degree{font-size:6.8px;}
   .edu-year{font-size:6.8px;}
   /* SKILLS TABLE */
-  .skill-cat{font-size:6px;min-width:97px;max-width:97px;padding:2px 5px;letter-spacing:.3px;}
+  .skill-cat{font-size:6px;min-width:97px;max-width:97px;padding:2px 5px;letter-spacing:0.2px;}
   .skill-vals{font-size:6.8px;line-height:1.3;padding:2px 6px;}
   /* PAGE — no forced breaks */
   .job{page-break-inside:auto;}
@@ -258,7 +259,7 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
     <div class="hdr-name">CHANDAN <em>KUMAR</em></div>
     <div class="hdr-subtitle">
       <span class="sub-role">Lead Data Scientist · IBM Lab</span>
-      <span class="sub-sep">|</span>IIT &amp; Super30 Alumni
+      <span class="sub-sep">|</span>IIT Alumni
       <span class="sub-sep">|</span>8+ Years Exp
       <span class="sub-sep">|</span>Bengaluru, India
     </div>
@@ -327,9 +328,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         </div>
       </div>
       <ul class="bullet-list">
-        <li><span class="bk">Challenge:</span> No agentic AI framework existed at IBM — someone had to build it from scratch, own it end-to-end, and ship it before the market moved on.</li>
-        <li><span class="bk">Contribution:</span> Led core engineering of the <span class="bk">Weave framework</span> — designed the full Build → Validate → Deploy lifecycle: NL requirements parsed into workflow DAGs, automated agent &amp; tool generation with conditional routing, and <span class="bk">60+ enterprise MCP connectors</span> (SAP, Salesforce, ServiceNow, Workday) via OpenAPI transpilation with OAuth2/SAML. Owned testing, validation, and one-click deployment automation end-to-end.</li>
-        <li><span class="bk">Impact:</span> Concept → production in <span class="num">14 months</span> · <span class="num">10M+</span> daily API calls · <span class="num">p99 &lt;200ms</span> · <span class="num">99.9%</span> uptime · <span class="num">$1.5M+</span> enterprise productivity gains · <span class="num">40%</span> inference cost reduction · <span class="kw">adopted as IBM's reference multi-agent platform.</span></li>
+        <li><span class="bk-challenge">Challenge:</span> No agentic AI framework existed at IBM — someone had to build it from scratch, own it end-to-end, and ship it before the market moved on.</li>
+        <li><span class="bk-contrib">Contribution:</span> Led core engineering of the <span class="bk">Weave framework</span> — designed the full Build → Validate → Deploy lifecycle: NL requirements parsed into workflow DAGs, automated agent &amp; tool generation with conditional routing, and <span class="bk">60+ enterprise MCP connectors</span> (SAP, Salesforce, ServiceNow, Workday) via OpenAPI transpilation with OAuth2/SAML. Owned testing, validation, and one-click deployment automation end-to-end.</li>
+        <li><span class="bk-impact">Impact:</span> Concept → production in <span class="num">14 months</span> · <span class="num">10M+</span> daily API calls · <span class="num">p99 &lt;200ms</span> · <span class="num">99.9%</span> uptime · <span class="num">$1.5M+</span> enterprise productivity gains · <span class="num">40%</span> inference cost reduction · <span class="kw">adopted as IBM's reference multi-agent platform.</span></li>
       </ul>
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">IBM Watsonx Orchestrate</span><span class="sk">IBM Granite</span><span class="sk">LangGraph</span><span class="sk">AutoGen</span><span class="sk">MCP</span><span class="sk">OpenAPI</span><span class="sk">OAuth2 / SAML</span><span class="sk">IBM Cloud OpenShift</span><span class="sk">Kubernetes</span><span class="sk">Redis</span><span class="sk">OpenTelemetry</span><span class="sk">Python</span></div>
     </div>
@@ -342,9 +343,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         </div>
       </div>
       <ul class="bullet-list">
-        <li><span class="bk">Challenge:</span> Hundreds of AI models in production with no governance — bias, drift, and regulatory breaches accumulating silently, undetected, unreported.</li>
-        <li><span class="bk">Contribution:</span> Contributed to an integrated GRC stack — <span class="bk">IBM OpenPages</span> for policy-to-metric mapping and immutable audit trails; <span class="bk">IBM OpenScale</span> for real-time fairness, drift, and hallucination monitoring with automated retraining triggers; <span class="bk">AI FactSheets</span> for machine-readable model provenance. Designed a <span class="bk">Governance Graph</span> linking models, risk controls, and policies; extended multi-cloud coverage to AWS SageMaker and Azure ML.</li>
-        <li><span class="bk">Impact:</span> <span class="num">1,000+</span> models under governed reuse · audit prep time from weeks → hours · data review cycles <span class="num">−58%</span> · <span class="num">200+</span> regulatory frameworks mapped · <span class="kw">go-to platform for EU AI Act readiness</span> across FS, healthcare, and public-sector clients.</li>
+        <li><span class="bk-challenge">Challenge:</span> Hundreds of AI models in production with no governance — bias, drift, and regulatory breaches accumulating silently, undetected, unreported.</li>
+        <li><span class="bk-contrib">Contribution:</span> Contributed to an integrated GRC stack — <span class="bk">IBM OpenPages</span> for policy-to-metric mapping and immutable audit trails; <span class="bk">IBM OpenScale</span> for real-time fairness, drift, and hallucination monitoring with automated retraining triggers; <span class="bk">AI FactSheets</span> for machine-readable model provenance. Designed a <span class="bk">Governance Graph</span> linking models, risk controls, and policies; extended multi-cloud coverage to AWS SageMaker and Azure ML.</li>
+        <li><span class="bk-impact">Impact:</span> <span class="num">1,000+</span> models under governed reuse · audit prep time from weeks → hours · data review cycles <span class="num">−58%</span> · <span class="num">200+</span> regulatory frameworks mapped · <span class="kw">go-to platform for EU AI Act readiness</span> across FS, healthcare, and public-sector clients.</li>
       </ul>
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">IBM watsonx.governance</span><span class="sk">IBM OpenPages</span><span class="sk">IBM OpenScale</span><span class="sk">AI FactSheets</span><span class="sk">AIF360</span><span class="sk">SHAP / LIME</span><span class="sk">EU AI Act · NIST AI RMF · ISO 42001</span><span class="sk">AWS SageMaker</span><span class="sk">Azure ML</span><span class="sk">OpenTelemetry</span><span class="sk">Python</span></div>
     </div>
@@ -370,9 +371,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         </div>
       </div>
       <ul class="bullet-list">
-        <li><span class="bk">Challenge:</span> Advisors couldn't trust AI answers — every model hallucinated on bank-specific policy, and in a regulated bank, a hallucination is a liability, not a glitch.</li>
-        <li><span class="bk">Contribution:</span> Domain-adapted a base LLM on Ulster Bank's proprietary corpus (product manuals, policy docs, complaint transcripts) via <span class="bk">LoRA fine-tuning on AWS SageMaker Training Jobs</span>; served through <span class="bk">AWS Bedrock</span> with a downstream <span class="bk">LangChain RAG layer on Amazon S3</span> for real-time document grounding and hallucination guardrails — making the model institution-aware, not just generally capable.</li>
-        <li><span class="bk">Impact:</span> Advisor resolution time <span class="num">−45%</span> · <span class="num">zero</span> hallucination incidents post-deployment · <span class="kw">architecture licensed and reused across 3 additional Accenture engagements.</span></li>
+        <li><span class="bk-challenge">Challenge:</span> Advisors couldn't trust AI answers — every model hallucinated on bank-specific policy, and in a regulated bank, a hallucination is a liability, not a glitch.</li>
+        <li><span class="bk-contrib">Contribution:</span> Domain-adapted a base LLM on Ulster Bank's proprietary corpus (product manuals, policy docs, complaint transcripts) via <span class="bk">LoRA fine-tuning on AWS SageMaker Training Jobs</span>; served through <span class="bk">AWS Bedrock</span> with a downstream <span class="bk">LangChain RAG layer on Amazon S3</span> for real-time document grounding and hallucination guardrails — making the model institution-aware, not just generally capable.</li>
+        <li><span class="bk-impact">Impact:</span> Advisor resolution time <span class="num">−45%</span> · <span class="num">zero</span> hallucination incidents post-deployment · <span class="kw">architecture licensed and reused across 3 additional Accenture engagements.</span></li>
       </ul>
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">AWS Bedrock</span><span class="sk">AWS SageMaker</span><span class="sk">SageMaker Training Jobs</span><span class="sk">LoRA / PEFT</span><span class="sk">Hugging Face Transformers</span><span class="sk">LangChain</span><span class="sk">Amazon S3</span><span class="sk">AWS IAM</span><span class="sk">Python</span></div>
     </div>
@@ -385,9 +386,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         </div>
       </div>
       <ul class="bullet-list">
-        <li><span class="bk">Challenge:</span> Compliance team buried under FCA/PRA circulars — <span class="num">4+ hrs/day</span> of manual search, one missed update away from a reportable breach.</li>
-        <li><span class="bk">Contribution:</span> Engineered a <span class="bk">HyDE-RAG pipeline on AWS Bedrock</span> — model generates a hypothetical ideal answer first to sharpen retrieval intent, then executes hybrid BM25 + dense vector search across <span class="num">50K+</span> regulatory documents in <span class="bk">Amazon OpenSearch</span>; every response grounded with citation-level attribution and hallucination guardrails. Deployed serverlessly via <span class="bk">AWS Lambda + API Gateway</span>, auto-scaling through peak audit cycles.</li>
-        <li><span class="bk">Impact:</span> Compliance query time <span class="num">−70%</span> · responses under <span class="num">500ms</span> · <span class="num">zero</span> FCA/PRA violations for the entire post-deployment period.</li>
+        <li><span class="bk-challenge">Challenge:</span> Compliance team buried under FCA/PRA circulars — <span class="num">4+ hrs/day</span> of manual search, one missed update away from a reportable breach.</li>
+        <li><span class="bk-contrib">Contribution:</span> Engineered a <span class="bk">HyDE-RAG pipeline on AWS Bedrock</span> — model generates a hypothetical ideal answer first to sharpen retrieval intent, then executes hybrid BM25 + dense vector search across <span class="num">50K+</span> regulatory documents in <span class="bk">Amazon OpenSearch</span>; every response grounded with citation-level attribution and hallucination guardrails. Deployed serverlessly via <span class="bk">AWS Lambda + API Gateway</span>, auto-scaling through peak audit cycles.</li>
+        <li><span class="bk-impact">Impact:</span> Compliance query time <span class="num">−70%</span> · responses under <span class="num">500ms</span> · <span class="num">zero</span> FCA/PRA violations for the entire post-deployment period.</li>
       </ul>
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">AWS Bedrock</span><span class="sk">Amazon OpenSearch</span><span class="sk">AWS Lambda</span><span class="sk">AWS API Gateway</span><span class="sk">AWS Glue</span><span class="sk">Amazon S3</span><span class="sk">LangChain</span><span class="sk">HyDE</span><span class="sk">BM25 + Dense Retrieval</span><span class="sk">Python</span></div>
     </div>
@@ -400,9 +401,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         </div>
       </div>
       <ul class="bullet-list">
-        <li><span class="bk">Challenge:</span> A bank in wind-down, every customer a one-time opportunity — relationship managers flying blind with no data, no targeting, no second chance.</li>
-        <li><span class="bk">Contribution:</span> Built a full behavioural ML pipeline — engineered <span class="num">18 months</span> of transaction, product-holding, and engagement signals into clustering features via <span class="bk">AWS Glue + Amazon Redshift</span>; trained a <span class="bk">K-Means segmentation model on SageMaker</span> producing four actionable propensity buckets (first-time buyer, investment-ready, insurance gap, business expansion); surfaced next-best-action recommendations live in RM dashboards via <span class="bk">Amazon QuickSight</span>, orchestrated end-to-end by <span class="bk">AWS Step Functions</span>.</li>
-        <li><span class="bk">Impact:</span> Cross-sell conversion <span class="num">+28%</span> · <span class="num">$1M+</span> annual revenue recovered · <span class="kw">adopted as the standard CRM intelligence layer across the full Ulster Bank engagement.</span></li>
+        <li><span class="bk-challenge">Challenge:</span> A bank in wind-down, every customer a one-time opportunity — relationship managers flying blind with no data, no targeting, no second chance.</li>
+        <li><span class="bk-contrib">Contribution:</span> Built a full behavioural ML pipeline — engineered <span class="num">18 months</span> of transaction, product-holding, and engagement signals into clustering features via <span class="bk">AWS Glue + Amazon Redshift</span>; trained a <span class="bk">K-Means segmentation model on SageMaker</span> producing four actionable propensity buckets (first-time buyer, investment-ready, insurance gap, business expansion); surfaced next-best-action recommendations live in RM dashboards via <span class="bk">Amazon QuickSight</span>, orchestrated end-to-end by <span class="bk">AWS Step Functions</span>.</li>
+        <li><span class="bk-impact">Impact:</span> Cross-sell conversion <span class="num">+28%</span> · <span class="num">$1M+</span> annual revenue recovered · <span class="kw">adopted as the standard CRM intelligence layer across the full Ulster Bank engagement.</span></li>
       </ul>
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">Amazon Redshift</span><span class="sk">AWS Glue</span><span class="sk">AWS SageMaker</span><span class="sk">AWS Step Functions</span><span class="sk">Amazon S3</span><span class="sk">Amazon QuickSight</span><span class="sk">K-Means Clustering</span><span class="sk">Scikit-learn</span><span class="sk">Feature Engineering</span><span class="sk">Python</span></div>
     </div>
@@ -444,9 +445,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         </div>
       </div>
       <ul class="bullet-list">
-        <li><span class="bk">Challenge:</span> A single misclassified waste stream triggers a federal EPA violation — and every classification was being made manually, by hand, every time.</li>
-        <li><span class="bk">Contribution:</span> Built an end-to-end <span class="bk">Azure ML pipeline</span> — field operator inputs → <span class="bk">Azure Data Factory</span> orchestration → gradient-boosted classifier trained on <span class="num">30+</span> physico-chemical features with <span class="bk">SMOTE</span> to handle extreme class imbalance; deployed as a <span class="bk">REST API via Azure App Service</span> with automated drift detection, retraining triggers, and live compliance dashboards in <span class="bk">Power BI</span>.</li>
-        <li><span class="bk">Impact:</span> <span class="num">100%</span> manual classification eliminated · rare-category F1 score <span class="num">+28%</span> · misclassifications <span class="num">−40%</span> · <span class="num">$500K</span> annual regulatory savings · <span class="kw">zero EPA violations post-deployment.</span></li>
+        <li><span class="bk-challenge">Challenge:</span> A single misclassified waste stream triggers a federal EPA violation — and every classification was being made manually, by hand, every time.</li>
+        <li><span class="bk-contrib">Contribution:</span> Built an end-to-end <span class="bk">Azure ML pipeline</span> — field operator inputs → <span class="bk">Azure Data Factory</span> orchestration → gradient-boosted classifier trained on <span class="num">30+</span> physico-chemical features with <span class="bk">SMOTE</span> to handle extreme class imbalance; deployed as a <span class="bk">REST API via Azure App Service</span> with automated drift detection, retraining triggers, and live compliance dashboards in <span class="bk">Power BI</span>.</li>
+        <li><span class="bk-impact">Impact:</span> <span class="num">100%</span> manual classification eliminated · rare-category F1 score <span class="num">+28%</span> · misclassifications <span class="num">−40%</span> · <span class="num">$500K</span> annual regulatory savings · <span class="kw">zero EPA violations post-deployment.</span></li>
       </ul>
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">Azure ML Studio</span><span class="sk">Azure Data Factory</span><span class="sk">Azure App Service</span><span class="sk">Gradient Boosting (XGBoost)</span><span class="sk">SMOTE</span><span class="sk">Drift Detection</span><span class="sk">REST API</span><span class="sk">Power BI</span><span class="sk">Python</span></div>
     </div>
@@ -459,9 +460,9 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
         </div>
       </div>
       <ul class="bullet-list">
-        <li><span class="bk">Challenge:</span> Finance losing <span class="num">$750K+</span> a year to billing errors no one could see — every invoice hand-computed, every discrepancy hidden in plain sight.</li>
-        <li><span class="bk">Contribution:</span> Extended the Azure ML pipeline with a regression model trained on <span class="num">47</span> domain-engineered billing features (hours, truck count, service codes, contract tiers, seasonal cycles) to predict expected invoice totals and flag anomalous gaps; automated drift-triggered retraining via <span class="bk">Azure Data Factory</span> and surfaced executive-level anomaly dashboards in <span class="bk">Power BI</span> for finance and ops leadership.</li>
-        <li><span class="bk">Impact:</span> <span class="num">80%</span> of audit workflows fully automated · prediction accuracy sustained at <span class="num">&gt;94%</span> · <span class="num">$750K</span> annual revenue protected · dispute resolution time <span class="num">−50%</span>.</li>
+        <li><span class="bk-challenge">Challenge:</span> Finance losing <span class="num">$750K+</span> a year to billing errors no one could see — every invoice hand-computed, every discrepancy hidden in plain sight.</li>
+        <li><span class="bk-contrib">Contribution:</span> Extended the Azure ML pipeline with a regression model trained on <span class="num">47</span> domain-engineered billing features (hours, truck count, service codes, contract tiers, seasonal cycles) to predict expected invoice totals and flag anomalous gaps; automated drift-triggered retraining via <span class="bk">Azure Data Factory</span> and surfaced executive-level anomaly dashboards in <span class="bk">Power BI</span> for finance and ops leadership.</li>
+        <li><span class="bk-impact">Impact:</span> <span class="num">80%</span> of audit workflows fully automated · prediction accuracy sustained at <span class="num">&gt;94%</span> · <span class="num">$750K</span> annual revenue protected · dispute resolution time <span class="num">−50%</span>.</li>
       </ul>
       <div class="skill-chips"><span class="sk-label">Tech:</span><span class="sk">Azure ML Studio</span><span class="sk">Azure Data Factory</span><span class="sk">Azure App Service</span><span class="sk">Gradient Boosting (Regression)</span><span class="sk">Feature Engineering</span><span class="sk">Drift Detection</span><span class="sk">Automated Retraining</span><span class="sk">Power BI</span><span class="sk">Python</span></div>
     </div>
