@@ -568,32 +568,100 @@ body{font-family:'DM Sans',sans-serif;font-size:9.5px;line-height:1.4;color:var(
 
 <script>
 async function downloadPDF(){
-  const{jsPDF}=window.jspdf;
-  const el=document.getElementById('resumeContent');
   const btn=document.getElementById('pdfBtn');
   const orig=btn.innerHTML;
   try{
     btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating…';
     btn.disabled=true;
 
-    // scale:3 = ~216 DPI — sharp text, ~1MB output
-    // JPEG quality 0.95 = near-lossless for text/graphics, avoids 100MB+ PNG
+    // Inject a temporary <style> that replicates @media print rules for canvas capture
+    const printStyle=document.createElement('style');
+    printStyle.id='__pdf_override__';
+    printStyle.textContent=`
+      .toolbar{display:none!important;}
+      .page-wrapper{padding-top:0!important;background:#fff!important;}
+      body{font-size:8px!important;line-height:1.28!important;}
+      .resume{width:794px!important;border:none!important;border-radius:0!important;box-shadow:none!important;margin:0!important;padding:0!important;}
+      .resume-header{padding:5px 11px 6px!important;margin:0!important;border-top:none!important;}
+      .hdr-name{font-size:20px!important;line-height:1.0!important;}
+      .hdr-subtitle{font-size:7px!important;margin-top:2px!important;}
+      .hdr-subtitle .sub-role{font-size:7.5px!important;}
+      .contact-row{font-size:7.2px!important;}
+      .resume-body{padding:4px 11px 4px!important;}
+      .section{margin-bottom:4px!important;}
+      .section-title{font-size:6.8px!important;letter-spacing:0.4px!important;padding:2px 7px!important;margin-bottom:2.5px!important;}
+      .summary-block{padding:3.5px 7px 3.5px 9px!important;}
+      .sum-line{font-size:7.4px!important;line-height:1.28!important;padding-left:10px!important;}
+      .sum-line::before{top:4px!important;width:2.5px!important;height:2.5px!important;left:1px!important;}
+      .cert-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:0 5px!important;}
+      .cert-item{font-size:6.6px!important;padding:1.5px 0!important;line-height:1.3!important;align-items:baseline!important;}
+      .cert-bullet{font-size:4.8px!important;}
+      .job{padding:2.5px 0 2.5px 7px!important;border-left:none!important;}
+      .job-company{font-size:9px!important;}
+      .job-role{font-size:7.6px!important;}
+      .job-location{font-size:6.6px!important;}
+      .job-period{font-size:6.6px!important;}
+      .job-dot{font-size:7.6px!important;}
+      .job-header{margin-bottom:1.5px!important;}
+      .proj-card{padding:1.5px 0 2px 5px!important;border-left:none!important;}
+      .proj-card-name{font-size:7.1px!important;}
+      .proj-sub-label{font-size:6.3px!important;}
+      .bullet-list li{font-size:7.4px!important;line-height:1.28!important;margin-bottom:2px!important;padding-left:10px!important;}
+      .bullet-list li::before{top:4px!important;width:2.5px!important;height:2.5px!important;left:1px!important;}
+      .bk-challenge,.bk-contrib,.bk-impact,.bk{font-size:7.4px!important;}
+      .skill-chips{display:block!important;padding-left:10px!important;margin-top:1.5px!important;font-size:6.6px!important;line-height:1.26!important;}
+      .skill-chips::before{top:4px!important;width:2.5px!important;height:2.5px!important;left:1px!important;}
+      .sk{display:inline!important;background:none!important;border:none!important;padding:0!important;font-size:6.6px!important;border-radius:0!important;white-space:normal!important;}
+      .sk::after{content:", "!important;}
+      .sk:last-child::after{content:""!important;}
+      .sk-label{font-size:6.6px!important;}
+      .edu-row{padding:2.5px 7px!important;}
+      .edu-inst{font-size:8.2px!important;}
+      .edu-degree{font-size:6.8px!important;}
+      .edu-year{font-size:6.8px!important;}
+      .skill-cat{font-size:5.9px!important;min-width:102px!important;max-width:102px!important;padding:2px 4px!important;letter-spacing:0.2px!important;}
+      .skill-vals{font-size:6.9px!important;line-height:1.3!important;padding:2px 6px!important;}
+    `;
+    document.head.appendChild(printStyle);
+
+    // Wait for styles to apply
+    await new Promise(r=>setTimeout(r,400));
+
+    const el=document.getElementById('resumeContent');
     const canvas=await html2canvas(el,{
-      scale:3,
+      scale:2,
       useCORS:true,
       allowTaint:true,
       backgroundColor:'#ffffff',
       windowWidth:794,
       windowHeight:el.scrollHeight,
-      logging:false
+      logging:false,
+      onclone:(doc)=>{
+        // Hide toolbar in cloned doc too
+        const t=doc.getElementById('toolbar');
+        if(t)t.style.display='none';
+      }
     });
 
-    const imgData=canvas.toDataURL('image/jpeg',0.95);
+    // Remove override styles
+    document.head.removeChild(printStyle);
+
+    const{jsPDF}=window.jspdf;
     const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    // Fit canvas to A4 exactly
+    const imgData=canvas.toDataURL('image/jpeg',0.88);
     doc.addImage(imgData,'JPEG',0,0,210,297,undefined,'FAST');
     doc.save('Chandan_Kumar_LeadGenAI_Resume.pdf');
-  }catch(e){alert('PDF failed — use Print → Save as PDF instead');}
-  finally{btn.innerHTML=orig;btn.disabled=false;}
+
+  }catch(e){
+    console.error(e);
+    alert('PDF failed — use Print → Save as PDF instead');
+    const s=document.getElementById('__pdf_override__');
+    if(s)document.head.removeChild(s);
+  }finally{
+    btn.innerHTML=orig;
+    btn.disabled=false;
+  }
 }
 </script>
 </body>
