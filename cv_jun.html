@@ -561,7 +561,7 @@ async function downloadPDF(){
     `;
     document.head.appendChild(printStyle);
 
-    await new Promise(r=>setTimeout(r,400));
+    await new Promise(r=>setTimeout(r,800));
 
     const el=document.getElementById('resumeContent');
     const canvas=await html2canvas(el,{
@@ -573,8 +573,15 @@ async function downloadPDF(){
       windowHeight:el.scrollHeight,
       logging:false,
       onclone:(doc)=>{
-        const t=doc.getElementById('toolbar');
+        // Hide toolbar in clone
+        const t=doc.querySelector('.toolbar');
         if(t)t.style.display='none';
+        const pw=doc.querySelector('.page-wrapper');
+        if(pw){pw.style.paddingTop='0';pw.style.background='#fff';}
+        // Inject override styles into the cloned document's head
+        const s=doc.createElement('style');
+        s.textContent=document.getElementById('__pdf_override__').textContent;
+        doc.head.appendChild(s);
       }
     });
 
