@@ -518,11 +518,14 @@ async function downloadPDF(){
       .page-wrapper{padding-top:0!important;background:#fff!important;}
       body{font-size:8px!important;line-height:1.28!important;}
       .resume{width:794px!important;border:none!important;border-radius:0!important;box-shadow:none!important;margin:0!important;padding:0!important;}
-      .resume-header{padding:5px 11px 6px!important;margin:0!important;border-top:none!important;}
+      .resume-header{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:flex-start!important;padding:5px 11px 6px!important;margin:0!important;border-top:none!important;}
+      .hdr-left{flex:1!important;}
+      .hdr-right{display:flex!important;flex-direction:column!important;align-items:flex-end!important;justify-content:flex-start!important;flex-shrink:0!important;gap:3px!important;text-align:right!important;}
+      .contact-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-end!important;gap:5px!important;font-size:7.2px!important;white-space:nowrap!important;}
+      .contact-row i{font-size:6.6px!important;}
       .hdr-name{font-size:20px!important;line-height:1.0!important;}
       .hdr-subtitle{font-size:7px!important;margin-top:2px!important;}
       .hdr-subtitle .sub-role{font-size:7.5px!important;}
-      .contact-row{font-size:7.2px!important;}
       .resume-body{padding:4px 11px 4px!important;}
       .section{margin-bottom:4px!important;}
       .section-title{font-size:6.8px!important;letter-spacing:0.4px!important;padding:2px 7px!important;margin-bottom:2.5px!important;}
