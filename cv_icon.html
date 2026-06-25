@@ -4,685 +4,181 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="color-scheme" content="light only"/>
-<meta name="author"      content="Chandan Kumar"/>
-<meta name="description" content="Chandan Kumar — Lead Data Scientist at IBM Lab. IIT Graduate, Super 30 Alumni. 8+ years in GenAI, Agentic AI, MLOps, LLMs, and Cloud AI."/>
-<title>Chandan Kumar — Lead Data Scientist · IBM Lab</title>
-
-<!--
-  FONT STRATEGY
-  ─────────────────────────────────────────────────────────────────────
-  • display=swap → eliminates FOIT (flash of invisible text)
-  • DM Serif Display → name / company headings (high personality, small set)
-  • DM Sans → all body copy (optical range 9–40, weight 300–700)
-  • Fira Code → numbers, dates, code tokens (monospace metric numbers)
-  • Font Awesome 6.5.2 → icons (pinned version for reproducibility)
--->
+<meta name="author" content="Chandan Kumar"/>
+<meta name="description" content="Chandan Kumar — Lead Data Scientist at IBM Lab. IIT Graduate, Super 30 Alumni. 8+ years in GenAI, Agentic AI, NLP, MLOps, LLMs, and Cloud AI."/>
+<title>Chandan Kumar | Lead Data Scientist | IBM Lab</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Chandan Kumar",
+  "jobTitle": "Lead Data Scientist",
+  "email": "chandaniitismg@gmail.com",
+  "telephone": "+91-9199000200",
+  "url": "https://www.linkedin.com/in/chandaniit",
+  "sameAs": ["https://www.linkedin.com/in/chandaniit"],
+  "worksFor": { "@type": "Organization", "name": "IBM Lab" },
+  "alumniOf": { "@type": "EducationalOrganization", "name": "IIT (ISM) Dhanbad" },
+  "knowsAbout": ["Machine Learning","Deep Learning","NLP","Generative AI","LLMs","Agentic AI","RAG","MLOps","Python","AWS","Azure","GCP","IBM Watsonx"]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous"/>
-
-<!-- PDF libs — loaded async to not block initial paint -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <style>
-/* ═══════════════════════════════════════════════════════════════════════
-   § 1  DESIGN TOKENS
-   ─────────────────────────────────────────────────────────────────────
-   Single source of truth for every colour, size, and spacing decision.
-   A4 screen proxy: 210mm @ 96dpi = 793.7px → round to 794px.
-   Margins / padding on the resume card are expressed in px so the
-   print engine and the screen engine both see the same computed values.
-   ═══════════════════════════════════════════════════════════════════════ */
 :root {
-  /* Palette */
-  --c-navy:      #0B1D3A;   /* primary dark — headings, borders        */
-  --c-blue:      #1A4FA0;   /* secondary — accents                     */
-  --c-blue-v:    #2563EB;   /* vivid blue — dates, links, name em      */
-  --c-teal:      #0EA5C2;   /* accent — impact labels, left bars       */
-  --c-amber:     #F59E0B;   /* CTA amber — toolbar buttons             */
-  --c-ink:       #111827;   /* body text                               */
-  --c-ink-mid:   #374151;   /* secondary text                          */
-  --c-ink-soft:  #6B7280;   /* tertiary text                           */
-  --c-border:    #E5E9F2;   /* hairlines                               */
-  --c-border-m:  #CBD5E1;   /* mid borders                             */
-  --c-wash:      #EEF3FA;   /* tinted backgrounds                      */
-  --c-page:      #E0E7F0;   /* browser page background                 */
-
-  /* Radius */
+  --c-navy:     #0B1D3A;
+  --c-blue:     #1A4FA0;
+  --c-blue-v:   #2563EB;
+  --c-teal:     #0B7A93;
+  --c-teal-dec: #0EA5C2;
+  --c-amber:    #F59E0B;
+  --c-ink:      #111827;
+  --c-ink-mid:  #374151;
+  --c-ink-soft: #4B5563;
+  --c-border:   #E5E9F2;
+  --c-border-m: #CBD5E1;
+  --c-wash:     #EEF3FA;
+  --c-page:     #E0E7F0;
   --r-sm: 2px;
   --r-md: 3px;
-
-  /* A4 */
-  --a4-px: 794px;           /* screen proxy for A4 @ 96 dpi            */
-
-  /* Spacing scale (px) */
-  --sp-1: 2px;
-  --sp-2: 4px;
-  --sp-3: 6px;
-  --sp-4: 8px;
-  --sp-5: 10px;
-  --sp-6: 12px;
-  --sp-7: 14px;
-  --sp-8: 16px;
-
-  /* Type scale (screen) */
-  --t-xs:   6.8px;
-  --t-sm:   7.8px;
-  --t-base: 9px;
-  --t-md:   9.5px;
-  --t-lg:   10.5px;
-  --t-xl:   22px;
+  --a4-px: 794px;
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   § 2  RESET & BASE
-   ═══════════════════════════════════════════════════════════════════════ */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  /* Force exact colour reproduction in print engines */
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-  color-adjust: exact;
-  /* Prevent iOS/Android font inflation */
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  /* Opt out of dark-mode media queries for this document */
-  color-scheme: light only;
-}
-
-body {
-  font-family: 'DM Sans', system-ui, sans-serif;
-  font-size: var(--t-md);
-  line-height: 1.42;
-  color: var(--c-ink);
-  background: var(--c-page);
-  overflow-x: hidden;
-  /* Subpixel antialiasing for crisp small text */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; color-scheme: light only; }
+body { font-family: 'DM Sans', system-ui, sans-serif; font-size: 9.5px; line-height: 1.42; color: var(--c-ink); background: var(--c-page); overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+a { color: inherit; text-decoration: none; }
 a:hover { color: var(--c-blue-v); }
-a:focus-visible {
-  outline: 2px solid var(--c-teal);
-  outline-offset: 2px;
-  border-radius: var(--r-sm);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   § 3  TOOLBAR  (screen-only, hidden on print)
-   ═══════════════════════════════════════════════════════════════════════ */
-.toolbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
-  height: 46px;
-  background: var(--c-navy);
-  padding: 0 20px;
-  display: flex; align-items: center; justify-content: space-between;
-  box-shadow: 0 2px 16px rgba(0,0,0,.4);
-  /* Smooth dismissal on mobile when scrolling is locked */
-  will-change: transform;
-}
-
-.toolbar-brand {
-  display: flex; align-items: center; gap: 8px;
-  color: rgba(255,255,255,.9);
-  font-size: 10.5px; font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-}
+a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; border-radius: var(--r-sm); }
+.toolbar { position: fixed; top: 0; left: 0; right: 0; z-index: 300; height: 46px; background: var(--c-navy); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 16px rgba(0,0,0,.4); }
+.toolbar-brand { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.9); font-size: 10.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .toolbar-brand i { color: var(--c-amber); font-size: 13px; flex-shrink: 0; }
-
 .toolbar-actions { display: flex; gap: 7px; flex-shrink: 0; }
-
-.btn-tool {
-  display: inline-flex; align-items: center; gap: 5px;
-  height: 30px; padding: 0 13px;
-  border: none; border-radius: var(--r-md);
-  cursor: pointer;
-  font-family: inherit; font-size: 9.5px; font-weight: 600;
-  white-space: nowrap;
-  transition: background .16s ease, color .16s ease, transform .1s ease;
-}
+.btn-tool { display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 13px; border: none; border-radius: var(--r-md); cursor: pointer; font-family: inherit; font-size: 9.5px; font-weight: 600; white-space: nowrap; transition: background .16s ease, color .16s ease, transform .1s ease; }
 .btn-tool:active { transform: scale(.97); }
-
-.btn-print {
-  background: rgba(255,255,255,.13);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.28);
-}
+.btn-print { background: rgba(255,255,255,.13); color: #fff; border: 1px solid rgba(255,255,255,.28); }
 .btn-print:hover { background: rgba(255,255,255,.22); }
-
-.btn-pdf {
-  background: var(--c-amber);
-  color: var(--c-navy);
-}
-.btn-pdf:hover   { background: #D97706; color: #fff; }
-.btn-pdf:disabled {
-  opacity: .5; cursor: not-allowed;
-  pointer-events: none;
-}
-
-.btn-hint {
-  font-size: 8px; font-weight: 400;
-  opacity: .75; margin-left: 1px;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   § 4  PAGE WRAPPER & RESUME CARD
-   ═══════════════════════════════════════════════════════════════════════ */
-.page-wrapper {
-  padding-top: 54px;   /* toolbar height + 8px breathing room */
-  padding-bottom: 40px;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  overflow-x: hidden;
-}
-
-.resume {
-  width: var(--a4-px);
-  max-width: 100%;           /* graceful narrowing on small screens */
-  background: #fff;
-  border-radius: 5px;
-  box-shadow:
-    0 1px 3px rgba(11,29,58,.08),
-    0 6px 24px rgba(11,29,58,.12),
-    0 20px 56px rgba(11,29,58,.1);
-  overflow: hidden;          /* clip child border-radius overflows */
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   § 5  HEADER  — white background, matches body
-   ─────────────────────────────────────────────────────────────────────
-   White bg so the header feels continuous with the card.
-   A teal gradient accent line + navy bottom border gives a clean
-   visual separation without needing a dark background.
-   ═══════════════════════════════════════════════════════════════════════ */
-.resume-header {
-  padding: 9px 18px 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
-  background: #fff;
-  position: relative;
-  /* Bottom border: teal accent on top of a solid navy line */
-  border-bottom: 2.5px solid var(--c-navy);
-}
-
-/* Teal gradient accent sits on top of the navy border */
-.resume-header::after {
-  content: '';
-  position: absolute;
-  left: 0; bottom: -2.5px;
-  width: 80px;
-  height: 2.5px;
-  background: var(--c-teal);
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-
+.btn-pdf { background: var(--c-amber); color: var(--c-navy); }
+.btn-pdf:hover { background: #D97706; color: #fff; }
+.btn-pdf:disabled { opacity: .5; cursor: not-allowed; pointer-events: none; }
+.btn-hint { font-size: 8px; font-weight: 400; opacity: .75; margin-left: 1px; }
+.btn-tool::after { content: attr(data-label); }
+.btn-hint-css::after { content: attr(data-hint); font-size: 8px; font-weight: 400; opacity: .75; margin-left: 3px; }
+.brand-label::after { content: attr(data-label); }
+.page-wrapper { padding-top: 54px; padding-bottom: 40px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; overflow-x: hidden; }
+.resume { width: var(--a4-px); max-width: 100%; background: #fff; border-radius: 5px; box-shadow: 0 1px 3px rgba(11,29,58,.08), 0 6px 24px rgba(11,29,58,.12), 0 20px 56px rgba(11,29,58,.1); overflow: hidden; }
+.resume-header { padding: 9px 18px 8px; display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; background: #fff; position: relative; border-bottom: 2.5px solid var(--c-navy); }
+.resume-header::after { content: ''; position: absolute; left: 0; bottom: -2.5px; width: 80px; height: 2.5px; background: var(--c-teal-dec); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .hdr-left { flex: 1 1 auto; min-width: 0; }
-
-.hdr-name {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 24px;
-  font-weight: 400;
-  color: var(--c-navy);
-  letter-spacing: .5px;
-  line-height: 1.05;
-}
-/* Vivid blue accent on surname */
-.hdr-name em {
-  color: var(--c-blue-v);
-  font-style: normal;
-}
-
-.hdr-tagline {
-  margin-top: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0 6px;
-  font-size: 7.8px;
-  font-weight: 500;
-  color: var(--c-ink-mid);
-  letter-spacing: .15px;
-  line-height: 1.6;
-}
-.hdr-tagline .tag-role {
-  font-weight: 700;
-  color: var(--c-navy);
-  font-size: 8.5px;
-}
-.hdr-tagline .tag-sep {
-  color: var(--c-border-m);
-  font-weight: 300;
-}
-/* Pill badges — tinted wash bg with navy text for white header */
-.hdr-tagline .tag-badge {
-  display: inline-flex; align-items: center;
-  background: var(--c-wash);
-  border: .5px solid var(--c-border-m);
-  border-radius: 20px;
-  padding: 0 7px;
-  font-size: 7px;
-  font-weight: 600;
-  color: var(--c-navy);
-  white-space: nowrap;
-}
-.hdr-tagline .tag-badge i { font-size: 6px; color: var(--c-teal); }
-
-/* Right: contact block */
-.hdr-right {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  padding-top: 2px;
-}
-
-.contact-row {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 8px;
-  color: var(--c-ink-mid);
-  white-space: nowrap;
-}
-.contact-row i {
-  color: var(--c-blue-v);
-  font-size: 9px;
-  width: 13px;
-  text-align: center;
-  flex-shrink: 0;
-}
-.contact-row a {
-  color: var(--c-ink-mid);
-  transition: color .14s;
-}
+.hdr-name { font-family: 'DM Serif Display', Georgia, serif; font-size: 24px; font-weight: 400; color: var(--c-blue-v); letter-spacing: .5px; line-height: 1.05; text-transform: uppercase; }
+.hdr-name em { color: var(--c-blue-v); font-style: normal; }
+.hdr-tagline { margin-top: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; font-size: 7.8px; font-weight: 500; color: var(--c-ink-mid); letter-spacing: .15px; line-height: 1.6; }
+.hdr-tagline .tag-role { font-weight: 700; color: var(--c-navy); font-size: 8.5px; }
+.hdr-tagline .tag-sep  { color: var(--c-border-m); font-weight: 300; }
+.hdr-tagline .tag-badge { display: inline-flex; align-items: center; background: var(--c-wash); border: .5px solid var(--c-border-m); border-radius: 20px; padding: 0 7px; font-size: 7px; font-weight: 600; color: var(--c-navy); white-space: nowrap; }
+.hdr-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding-top: 2px; }
+.contact-row { display: flex; align-items: center; gap: 5px; font-size: 8px; color: var(--c-ink-mid); white-space: nowrap; }
+.contact-row i { color: var(--c-blue-v); font-size: 9px; width: 13px; text-align: center; flex-shrink: 0; }
+.contact-row a { color: var(--c-ink-mid); transition: color .14s; }
 .contact-row a:hover { color: var(--c-blue-v); }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   § 6  RESUME BODY
-   ═══════════════════════════════════════════════════════════════════════ */
-.resume-body {
-  padding: 7px 14px 10px;
-}
-
-/* ── Section chrome ── */
+.resume-body { padding: 7px 14px 10px; }
 .section { margin-bottom: 6px; }
 .section:last-child { margin-bottom: 0; }
-
-.section-hd {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 0 3px 8px;
-  margin-bottom: 4px;
-  border-bottom: 1.5px solid var(--c-border);
-  position: relative;
-}
-/* Left accent bar on section title */
-.section-hd::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 3px; bottom: 3px;
-  width: 3px;
-  background: var(--c-teal);
-  border-radius: 2px;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-.section-hd i {
-  font-size: 9px;
-  color: var(--c-teal);
-  width: 13px;
-  text-align: center;
-  flex-shrink: 0;
-  opacity: 1;
-}
-.section-hd span {
-  font-size: 7.5px;
-  font-weight: 700;
-  color: var(--c-navy);
-  text-transform: uppercase;
-  letter-spacing: .7px;
-}
-
-/* ── Professional Summary ── */
-.summary-block {
-  padding: 5px 10px 5px 10px;
-  background: var(--c-wash);
-  border-radius: var(--r-md);
-  border-left: 3px solid var(--c-teal);
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-.summary-lines { display: flex; flex-direction: column; gap: 4px; }
-
-.sum-line {
-  font-size: 8.5px;
-  line-height: 1.45;
-  color: var(--c-ink);
-  padding-left: 11px;
-  position: relative;
-}
-.sum-line::before {
-  content: '';
-  position: absolute;
-  left: 1px; top: 5px;
-  width: 3px; height: 3px;
-  background: var(--c-teal);
-  border-radius: 50%;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-.sum-line .kw  { font-weight: 700; color: var(--c-navy); }
-.sum-line .num { font-family: 'Fira Code', monospace; font-weight: 700; font-size: 8.4px; }
-
-/* ── Certifications ── */
-.cert-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0 10px;
-}
-.cert-item {
-  display: flex; align-items: baseline; gap: 4px;
-  font-size: 7.6px; line-height: 1.5;
-  padding: 2.5px 0;
-  border-bottom: .5px solid var(--c-border);
-}
+.section-hd { display: flex; align-items: center; gap: 6px; padding: 3px 0 3px 8px; margin-bottom: 4px; border-bottom: 1.5px solid var(--c-border); position: relative; }
+.section-hd::before { content: ''; position: absolute; left: 0; top: 3px; bottom: 3px; width: 3px; background: var(--c-teal-dec); border-radius: 2px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.section-hd i { font-size: 9px; color: var(--c-teal); width: 13px; text-align: center; flex-shrink: 0; }
+.section-hd span { font-size: 7.5px; font-weight: 700; color: var(--c-navy); text-transform: uppercase; letter-spacing: .7px; }
+.summary-block { padding: 5px 10px 5px 10px; background: var(--c-wash); border-radius: var(--r-md); border-left: 3px solid var(--c-teal-dec); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.summary-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.summary-list li { font-size: 8.5px; line-height: 1.45; color: var(--c-ink); padding-left: 11px; position: relative; }
+.summary-list li::before { content: ''; position: absolute; left: 1px; top: 5px; width: 3px; height: 3px; background: var(--c-teal-dec); border-radius: 50%; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.summary-list li .kw  { font-weight: 700; color: var(--c-navy); }
+.summary-list li .num { font-family: 'Fira Code', monospace; font-weight: 700; font-size: 8.4px; }
+.cert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 10px; }
+.cert-item { display: flex; align-items: baseline; gap: 4px; font-size: 7.6px; line-height: 1.5; padding: 2.5px 0; border-bottom: .5px solid var(--c-border); }
 .cert-item:nth-last-child(-n+3) { border-bottom: none; }
-
-.cert-dot  { color: var(--c-teal); font-size: 5px; flex-shrink: 0; margin-top: 1px; }
+.cert-dot  { color: var(--c-teal-dec); font-size: 5px; flex-shrink: 0; margin-top: 1px; }
 .cert-inst { font-weight: 700; color: var(--c-navy); flex-shrink: 0; }
 .cert-sep  { color: var(--c-border-m); margin: 0 2px; }
 .cert-name { color: var(--c-ink-mid); min-width: 0; }
-
-/* ── Experience ── */
-.job {
-  padding: 5px 0 5px 10px;
-  border-bottom: .5px solid var(--c-border);
-  border-left: 3px solid transparent;
-  transition: border-left-color .18s ease;
-}
-.job:hover { border-left-color: var(--c-teal); }
+.job { padding: 5px 0 5px 10px; border-bottom: .5px solid var(--c-border); border-left: 3px solid transparent; transition: border-left-color .18s ease; }
+.job:hover { border-left-color: var(--c-teal-dec); }
 .job:last-child { border-bottom: none; }
-
-.job-hd {
-  display: flex; align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 3px;
-  flex-wrap: wrap; gap: 2px;
-}
+.job-hd { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 3px; flex-wrap: wrap; gap: 2px; }
 .job-left { display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap; }
-.job-co   {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 11px; font-weight: 400; color: var(--c-navy);
-}
-.job-dot  { color: var(--c-teal); font-size: 7px; margin: 0 1px; }
+.job-co   { font-family: 'DM Serif Display', Georgia, serif; font-size: 11px; font-weight: 400; color: var(--c-navy); }
+.job-dot  { color: var(--c-ink-soft); font-size: 8px; margin: 0 1px; }
 .job-role { font-size: 8.5px; font-weight: 600; color: var(--c-ink-mid); }
 .job-loc  { font-size: 7.5px; color: var(--c-ink-soft); font-style: italic; }
-.job-when {
-  font-family: 'Fira Code', monospace;
-  font-size: 7.5px; font-weight: 500;
-  color: var(--c-blue-v);
-  white-space: nowrap; flex-shrink: 0;
-}
-
-/* ── Project cards ── */
-.proj {
-  padding: 3px 0 4px 7px;
-  border-bottom: .5px solid var(--c-border);
-  border-left: 2px solid var(--c-border);
-  transition: border-left-color .18s ease;
-  margin-top: 1px;
-}
+.job-when { font-family: 'Fira Code', monospace; font-size: 7.5px; font-weight: 500; color: var(--c-blue-v); white-space: nowrap; flex-shrink: 0; }
+.proj { padding: 3px 0 4px 7px; border-bottom: .5px solid var(--c-border); border-left: 2px solid var(--c-border); transition: border-left-color .18s ease; margin-top: 1px; }
 .proj:last-child { border-bottom: none; }
-.proj:hover      { border-left-color: var(--c-teal); }
-
-.proj-hd {
-  display: flex; align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 2px; flex-wrap: wrap; gap: 2px;
-}
-.proj-title {
-  font-size: 8px; font-weight: 700;
-  color: var(--c-blue-v); letter-spacing: .05px;
-}
-.proj-title .arrow {
-  color: var(--c-teal);
-  font-size: 8px;
-  margin-right: 3px;
-  display: inline-block;
-}
-.proj-sub {
-  font-size: 7.3px; font-weight: 400;
-  color: var(--c-ink-soft); font-style: italic;
-}
-
-/* ── Bullet lists ── */
+.proj:hover { border-left-color: var(--c-teal-dec); }
+.proj-hd { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2px; flex-wrap: wrap; gap: 2px; }
+.proj-title { font-size: 8px; font-weight: 700; color: var(--c-blue-v); letter-spacing: .05px; }
+.proj-title .arrow { color: var(--c-teal); font-size: 8px; margin-right: 3px; display: inline-block; }
+.proj-sub { font-size: 7.3px; font-weight: 400; color: var(--c-ink-soft); font-style: italic; }
 .blist { list-style: none; padding: 0; margin: 0; }
-.blist li {
-  font-size: 8.5px; line-height: 1.42; color: var(--c-ink);
-  margin-bottom: 2px;
-  padding-left: 11px; position: relative;
-}
-.blist li::before {
-  content: '';
-  position: absolute;
-  left: 1px; top: 5px;
-  width: 3px; height: 3px;
-  background: var(--c-ink);
-  border-radius: 50%;
-}
+.blist li { font-size: 8.5px; line-height: 1.42; color: var(--c-ink); margin-bottom: 2px; padding-left: 11px; position: relative; }
+.blist li::before { content: ''; position: absolute; left: 1px; top: 5px; width: 3px; height: 3px; background: var(--c-ink); border-radius: 50%; }
 .blist li:last-child { margin-bottom: 0; }
-
-/* Semantic label styles */
-.lbl-c  { font-weight: 700; color: var(--c-ink-mid);  } /* Challenge  */
-.lbl-co { font-weight: 700; color: var(--c-navy);     } /* Contribution */
-.lbl-i  { font-weight: 700; color: var(--c-teal);     } /* Impact     */
-.bk     { font-weight: 700; color: var(--c-navy);     } /* inline bold */
+.lbl-c  { font-weight: 700; color: var(--c-ink-mid); }
+.lbl-co { font-weight: 700; color: var(--c-navy); }
+.lbl-i  { font-weight: 700; color: var(--c-teal); }
+.bk     { font-weight: 700; color: var(--c-navy); }
 .num    { font-family: 'Fira Code', monospace; font-weight: 700; font-size: 8.4px; }
-
-/* ── Skill chip row (under each project) ── */
-.chips {
-  margin-top: 3px;
-  padding-left: 11px;
-  position: relative;
-  display: flex; flex-wrap: wrap;
-  align-items: center; gap: 2px;
-  font-size: 7px;
-}
-.chips::before {
-  content: '';
-  position: absolute;
-  left: 1px; top: 5px;
-  width: 3px; height: 3px;
-  background: var(--c-ink);
-  border-radius: 50%;
-}
-.chips-lbl {
-  font-weight: 700; font-size: 7px;
-  color: var(--c-navy); margin-right: 2px; flex-shrink: 0;
-}
-.chip {
-  display: inline-flex;
-  background: var(--c-wash);
-  color: var(--c-ink-mid);
-  border: .5px solid var(--c-border-m);
-  border-radius: var(--r-sm);
-  padding: 0.5px 4px;
-  font-size: 6.5px;
-  line-height: 1.55;
-  white-space: nowrap;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-
-/* ── Skills table ── */
-.sk-table { display: flex; flex-direction: column; }
-.sk-row {
-  display: flex; align-items: stretch;
-  border-bottom: .5px solid var(--c-border);
-}
+.chips { margin-top: 3px; padding-left: 11px; position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 2px; font-size: 7px; }
+.chips::before { content: ''; position: absolute; left: 1px; top: 5px; width: 3px; height: 3px; background: var(--c-ink); border-radius: 50%; }
+.chips-lbl { font-weight: 700; font-size: 7px; color: var(--c-navy); margin-right: 2px; flex-shrink: 0; }
+.chip { display: inline-flex; background: var(--c-wash); color: var(--c-ink-mid); border: .5px solid var(--c-border-m); border-radius: var(--r-sm); padding: 0.5px 4px; font-size: 6.5px; line-height: 1.55; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sk-table { display: flex; flex-direction: column; border: .5px solid var(--c-border); border-radius: var(--r-md); overflow: hidden; }
+.sk-row { display: flex; align-items: stretch; border-bottom: .5px solid var(--c-border); }
 .sk-row:last-child { border-bottom: none; }
-.sk-cat {
-  flex: 0 0 124px;
-  min-width: 124px; max-width: 124px;
-  display: flex; align-items: center;
-  padding: 3px 7px;
-  background: var(--c-wash);
-  border-right: 1.5px solid var(--c-border-m);
-  font-size: 7px;
-  font-weight: 700;
-  color: var(--c-navy);
-  text-transform: uppercase;
-  letter-spacing: .35px;
-  line-height: 1.3;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-.sk-vals {
-  flex: 1;
-  padding: 3px 7px;
-  font-size: 8px;
-  color: var(--c-ink-mid);
-  line-height: 1.55;
-}
+.sk-cat { flex: 0 0 152px; min-width: 152px; max-width: 152px; display: flex; align-items: center; padding: 4px 8px 4px 10px; background: var(--c-wash); -webkit-print-color-adjust: exact; print-color-adjust: exact; border-right: 1px solid var(--c-border-m); font-size: 7.2px; font-weight: 700; color: var(--c-navy); letter-spacing: .3px; line-height: 1.35; text-transform: uppercase; }
+.sk-cat-lbl { display: contents; }
+.sk-chips { display: block; }
+.sk-vals { flex: 1; padding: 4px 10px; font-size: 8px; color: var(--c-ink-mid); line-height: 1.65; }
 .sk-v { display: inline; }
-.sk-v::after       { content: ', '; }
+.sk-v::after { content: ',\00a0'; }
 .sk-v:last-child::after { content: ''; }
-
-/* ── Education ── */
-.edu-row {
-  display: flex; align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap; gap: 3px;
-  padding: 4px 8px;
-  border-bottom: .5px solid var(--c-border);
-}
+.edu-row { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 3px; padding: 4px 8px; border-bottom: .5px solid var(--c-border); }
 .edu-row:last-child { border-bottom: none; }
-.edu-left {
-  display: flex; align-items: baseline; gap: 6px;
-  flex-wrap: wrap;
-}
-.edu-inst   {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 10px; font-weight: 400; color: var(--c-navy);
-}
-.edu-sep    { color: var(--c-border-m); font-size: 7px; }
-.edu-deg    { font-size: 8px; color: var(--c-ink-mid); }
-.edu-yr     {
-  font-family: 'Fira Code', monospace;
-  font-size: 7.5px; font-weight: 500; color: var(--c-blue-v);
-  white-space: nowrap;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   § 7  RESPONSIVE (SCREEN ONLY)
-   ─────────────────────────────────────────────────────────────────────
-   Resume is a fixed-format A4 document. We don't reflow it fully on
-   mobile — we gracefully degrade so it remains readable without hscroll.
-   ═══════════════════════════════════════════════════════════════════════ */
+.edu-left { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.edu-inst { font-family: 'DM Serif Display', Georgia, serif; font-size: 10px; font-weight: 400; color: var(--c-navy); }
+.edu-sep  { color: var(--c-border-m); font-size: 7px; }
+.edu-deg  { font-size: 8px; color: var(--c-ink-mid); }
+.edu-meta { font-size: 7.5px; color: var(--c-ink-soft); }
+.edu-yr   { font-family: 'Fira Code', monospace; font-size: 7.5px; font-weight: 500; color: var(--c-blue-v); white-space: nowrap; }
 @media screen and (max-width: 860px) {
   .page-wrapper { padding-top: 52px; padding-bottom: 20px; }
   .resume       { border-radius: 0; }
-
-  /* Stack header on tablet */
-  .resume-header   { flex-direction: column; gap: 8px; }
-  .hdr-right       { align-items: flex-start; }
-
-  /* 2-col cert grid on tablet */
-  .cert-grid                       { grid-template-columns: repeat(2, 1fr); }
-  .cert-item:nth-last-child(-n+3)  { border-bottom: .5px solid var(--c-border); }
-  .cert-item:nth-last-child(-n+2)  { border-bottom: none; }
-
+  .resume-header { flex-direction: column; gap: 8px; }
+  .hdr-right    { align-items: flex-start; }
+  .cert-grid                      { grid-template-columns: repeat(2, 1fr); }
+  .cert-item:nth-last-child(-n+3) { border-bottom: .5px solid var(--c-border); }
+  .cert-item:nth-last-child(-n+2) { border-bottom: none; }
   body { font-size: clamp(7.5px, 1.8vw, 9.5px); }
   .btn-hint { display: none; }
 }
-
 @media screen and (max-width: 520px) {
-  /* 1-col certs on phone */
   .cert-grid                      { grid-template-columns: 1fr; }
   .cert-item:nth-last-child(-n+2) { border-bottom: .5px solid var(--c-border); }
   .cert-item:last-child           { border-bottom: none; }
-
-  .sk-cat  { flex: 0 0 86px; min-width: 86px; max-width: 86px; font-size: 6px; }
-  .sk-vals { font-size: 7px; }
-
-  /* Hide toolbar text on very small screen — keep icon */
+  .sk-cat  { flex: 0 0 110px; min-width: 110px; max-width: 110px; font-size: 6.2px; padding: 3px 5px 3px 7px; }
+  .sk-vals { font-size: 7px; padding: 3px 7px; }
   .toolbar-brand .brand-text { display: none; }
 }
-
-/* ═══════════════════════════════════════════════════════════════════════
-   § 8  PRINT / PDF  —  @page at root level (not inside @media print)
-   ─────────────────────────────────────────────────────────────────────
-   @page must be top-level. Safari and Firefox ignore it when nested
-   inside @media print. margin:0 ensures zero browser-imposed margins;
-   all white-space is controlled by the resume's own CSS.
-   ═══════════════════════════════════════════════════════════════════════ */
-@page {
-  size: A4 portrait;
-  margin: 0;
-}
-
+@page { size: A4 portrait; margin: 0; }
 @media print {
-  /* ── Kill screen chrome ─────────────────────────────────────── */
   .toolbar { display: none !important; }
-
-  body {
-    background: #fff !important;
-    font-size: 7.8px !important;
-    line-height: 1.28 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact !important;
-    -webkit-text-size-adjust: none !important;
-    text-size-adjust: none !important;
-  }
-
-  /* ── Wrapper — remove all screen-only spacing ──────────────── */
-  .page-wrapper {
-    display: block !important;
-    padding: 0 !important;
-    min-height: 0 !important;
-    overflow: visible !important;
-    background: #fff !important;
-  }
-
-  /* ── Resume card — explicit A4 width ───────────────────────── */
-  .resume {
-    width: 210mm !important;
-    max-width: 210mm !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    margin: 0 !important;
-    overflow: visible !important;
-  }
-
-  /* ── Header — restore side-by-side on print ────────────────── */
-  .resume-header {
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    padding: 6px 12px 7px !important;
-    gap: 12px !important;
-    background: #fff !important;
-    border-bottom: 2px solid var(--c-navy) !important;
-  }
-  .hdr-name { font-size: 20px !important; color: var(--c-navy) !important; }
+  body { background: #fff !important; font-size: 7.8px !important; line-height: 1.28 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; -webkit-text-size-adjust: none !important; text-size-adjust: none !important; }
+  .page-wrapper { display: block !important; padding: 0 !important; min-height: 0 !important; overflow: visible !important; background: #fff !important; }
+  .resume { width: 210mm !important; max-width: 210mm !important; border-radius: 0 !important; box-shadow: none !important; margin: 0 !important; overflow: visible !important; }
+  .resume-header { flex-direction: row !important; align-items: flex-start !important; padding: 6px 12px 7px !important; gap: 12px !important; background: #fff !important; border-bottom: 2px solid var(--c-navy) !important; }
+  .hdr-name { font-size: 20px !important; color: var(--c-blue-v) !important; }
   .hdr-name em { color: var(--c-blue-v) !important; }
   .hdr-tagline { font-size: 7px !important; color: var(--c-ink-mid) !important; }
   .hdr-tagline .tag-role { font-size: 7.8px !important; color: var(--c-navy) !important; }
@@ -691,592 +187,331 @@ a:focus-visible {
   .contact-row { font-size: 7px !important; gap: 4px !important; color: var(--c-ink-mid) !important; }
   .contact-row i { font-size: 8px !important; color: var(--c-blue-v) !important; }
   .contact-row a { color: var(--c-ink-mid) !important; }
-
-  /* ── Body ───────────────────────────────────────────────────── */
   .resume-body { padding: 4px 11px 4px !important; }
-  .section     { margin-bottom: 4px !important; }
-
-  .section-hd       { padding: 2px 0 2px 7px !important; margin-bottom: 2.5px !important; }
-  .section-hd i     { font-size: 8px !important; }
-  .section-hd span  { font-size: 6.5px !important; letter-spacing: .5px !important; }
+  .section { margin-bottom: 4px !important; }
+  .section-hd { padding: 2px 0 2px 7px !important; margin-bottom: 2.5px !important; page-break-after: avoid; break-after: avoid; }
+  .section-hd i { font-size: 8px !important; }
+  .section-hd span { font-size: 6.5px !important; letter-spacing: .5px !important; }
   .section-hd::before { top: 2px !important; bottom: 2px !important; }
-  .section-hd { page-break-after: avoid; break-after: avoid; }
-
-  /* ── Summary ────────────────────────────────────────────────── */
   .summary-block { padding: 3.5px 8px 3.5px 9px !important; }
-  .summary-lines { gap: 2px !important; }
-  .sum-line { font-size: 7.2px !important; line-height: 1.28 !important; padding-left: 10px !important; }
-  .sum-line::before { top: 3.5px !important; width: 2.5px !important; height: 2.5px !important; }
-
-  /* ── Certs ──────────────────────────────────────────────────── */
-  .cert-grid      { grid-template-columns: repeat(3, 1fr) !important; gap: 0 4px !important; }
-  .cert-item      { font-size: 6.4px !important; padding: 1.5px 0 !important; line-height: 1.3 !important; }
-  .cert-dot       { font-size: 4.5px !important; }
-
-  /* ── Jobs ───────────────────────────────────────────────────── */
-  .job {
-    padding: 2.5px 0 2.5px 7px !important;
-    border-left: none !important;
-    page-break-inside: avoid; break-inside: avoid;
-  }
+  .summary-list { gap: 2px !important; }
+  .summary-list li { font-size: 7.2px !important; line-height: 1.28 !important; padding-left: 10px !important; }
+  .summary-list li::before { top: 3.5px !important; width: 2.5px !important; height: 2.5px !important; }
+  .cert-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 0 4px !important; }
+  .cert-item { font-size: 6.4px !important; padding: 1.5px 0 !important; line-height: 1.3 !important; }
+  .cert-dot  { font-size: 4.5px !important; }
+  .job { padding: 2.5px 0 2.5px 7px !important; border-left: none !important; page-break-inside: avoid; break-inside: avoid; }
   .job-hd   { margin-bottom: 1.5px !important; }
   .job-co   { font-size: 9px !important; }
   .job-role { font-size: 7.4px !important; }
   .job-loc  { font-size: 6.4px !important; }
   .job-when { font-size: 6.4px !important; }
   .job-dot  { font-size: 6.4px !important; }
-
-  /* ── Projects ───────────────────────────────────────────────── */
-  .proj {
-    padding: 1.5px 0 2px 5px !important;
-    border-left: none !important;
-    margin-top: 0 !important;
-    page-break-inside: avoid; break-inside: avoid;
-  }
+  .proj { padding: 1.5px 0 2px 5px !important; border-left: none !important; margin-top: 0 !important; page-break-inside: avoid; break-inside: avoid; }
   .proj-title { font-size: 7px !important; }
   .proj-sub   { font-size: 6px !important; }
   .proj-title .arrow { font-size: 6.5px !important; }
-
-  /* ── Bullets ────────────────────────────────────────────────── */
-  .blist li {
-    font-size: 7.2px !important;
-    line-height: 1.26 !important;
-    margin-bottom: 1.5px !important;
-    padding-left: 10px !important;
-  }
+  .blist li { font-size: 7.2px !important; line-height: 1.26 !important; margin-bottom: 1.5px !important; padding-left: 10px !important; }
   .blist li::before { top: 3.5px !important; width: 2.5px !important; height: 2.5px !important; }
   .num { font-size: 7.2px !important; }
-
-  /* ── Tech chips — flatten to plain comma-separated text ─────── */
-  .chips {
-    display: block !important;
-    padding-left: 10px !important;
-    margin-top: 1.5px !important;
-    font-size: 6.4px !important;
-    line-height: 1.24 !important;
-  }
+  .chips { display: block !important; padding-left: 10px !important; margin-top: 1.5px !important; font-size: 6.4px !important; line-height: 1.24 !important; }
   .chips::before { top: 3.5px !important; width: 2.5px !important; height: 2.5px !important; }
-  .chips-lbl     { font-size: 6.4px !important; }
-  .chip {
-    display: inline !important;
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    font-size: 6.4px !important;
-    border-radius: 0 !important;
-    white-space: normal !important;
-  }
-  .chip::after       { content: ', ' !important; }
+  .chips-lbl { font-size: 6.4px !important; }
+  .chip { display: inline !important; background: none !important; border: none !important; padding: 0 !important; font-size: 6.4px !important; border-radius: 0 !important; white-space: normal !important; }
+  .chip::after { content: ', ' !important; }
   .chip:last-child::after { content: '' !important; }
-
-  /* ── Skills table ───────────────────────────────────────────── */
-  .sk-cat {
-    flex: 0 0 105px !important;
-    min-width: 105px !important; max-width: 105px !important;
-    padding: 2px 5px !important;
-    font-size: 5.8px !important;
-    letter-spacing: .25px !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  .sk-vals { font-size: 6.7px !important; line-height: 1.3 !important; padding: 2px 6px !important; }
-
-  /* ── Education ──────────────────────────────────────────────── */
+  .sk-table { border: .5px solid var(--c-border) !important; border-radius: 0 !important; }
+  .sk-cat { flex: 0 0 120px !important; min-width: 120px !important; max-width: 120px !important; padding: 3px 6px 3px 8px !important; font-size: 5.9px !important; letter-spacing: .25px !important; background: var(--c-wash) !important; color: var(--c-navy) !important; border-right: 1px solid var(--c-border-m) !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .sk-vals { font-size: 6.7px !important; line-height: 1.35 !important; padding: 3px 8px !important; }
   .edu-row  { padding: 2.5px 7px !important; }
   .edu-inst { font-size: 8.5px !important; }
   .edu-deg  { font-size: 6.8px !important; }
+  .edu-meta { font-size: 6.8px !important; }
   .edu-yr   { font-size: 6.8px !important; }
 }
 </style>
 </head>
 <body>
-
-<!-- ══════════════════════════════════════════════════════════════════════
-     TOOLBAR
-     ════════════════════════════════════════════════════════════════════ -->
-<div class="toolbar" role="toolbar" aria-label="Resume actions">
+<div class="toolbar" role="presentation" aria-hidden="true">
   <span class="toolbar-brand">
-    <i class="fas fa-microchip" aria-hidden="true"></i>
-    <span class="brand-text">Chandan Kumar — Lead Data Scientist · IBM Lab</span>
+    <i class="fas fa-microchip"></i>
+    <span class="brand-label" data-label="Chandan Kumar | Lead Data Scientist | IBM Lab"></span>
   </span>
   <div class="toolbar-actions">
-    <button class="btn-tool btn-print" onclick="window.print()" aria-label="Print or save as PDF (best quality)">
+    <button class="btn-tool btn-print" data-label="Print / Save PDF" data-hint="(Best Quality)" onclick="window.print()" aria-label="Print or save as PDF">
       <i class="fas fa-print" aria-hidden="true"></i>
-      Print / Save PDF
-      <span class="btn-hint">(Best Quality)</span>
+      <span class="btn-hint-css" data-hint=" (Best Quality)"></span>
     </button>
-    <button class="btn-tool btn-pdf" id="pdfBtn" onclick="downloadPDF()" aria-label="Download PDF via quick export">
+    <button class="btn-tool btn-pdf" data-label="Quick PDF" id="pdfBtn" onclick="downloadPDF()" aria-label="Download Quick PDF">
       <i class="fas fa-file-pdf" aria-hidden="true"></i>
-      Quick PDF
     </button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════
-     RESUME CARD
-     ════════════════════════════════════════════════════════════════════ -->
 <div class="page-wrapper">
 <article class="resume" id="resumeContent" role="main" aria-label="Chandan Kumar Resume">
 
-<!-- ── HEADER ── -->
 <header class="resume-header">
   <div class="hdr-left">
-    <div class="hdr-name">CHANDAN <em>KUMAR</em></div>
+    <div class="hdr-name">Chandan <em>Kumar</em></div>
     <div class="hdr-tagline">
-      <span class="tag-role">Lead Data Scientist · IBM Lab</span>
-      <span class="tag-sep">·</span>
+      <span class="tag-role">Lead Data Scientist | IBM Lab</span>
+      <span class="tag-sep">|</span>
       <span class="tag-badge">IIT Graduate</span>
       <span class="tag-badge">Super 30 Alumni</span>
-      <span class="tag-badge">8+ Yrs</span>
+      <span class="tag-badge">8+ Yrs Exp</span>
       <span class="tag-badge">Bengaluru</span>
     </div>
   </div>
   <div class="hdr-right">
-    <div class="contact-row">
-      <i class="fas fa-phone" aria-hidden="true"></i>
-      <span>+91-9199000200</span>
-    </div>
-    <div class="contact-row">
-      <i class="fas fa-envelope" aria-hidden="true"></i>
-      <a href="mailto:chandaniitismg@gmail.com" aria-label="Email Chandan Kumar">chandaniitismg@gmail.com</a>
-    </div>
-    <div class="contact-row">
-      <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-      <a href="https://www.linkedin.com/in/chandaniit" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">linkedin.com/in/chandaniit</a>
-    </div>
+    <div class="contact-row"><i class="fas fa-phone" aria-hidden="true"></i><span>+91-9199000200</span></div>
+    <div class="contact-row"><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:chandaniitismg@gmail.com">chandaniitismg@gmail.com</a></div>
+    <div class="contact-row"><i class="fab fa-linkedin-in" aria-hidden="true"></i><a href="https://www.linkedin.com/in/chandaniit" target="_blank" rel="noopener noreferrer">linkedin.com/in/chandaniit</a></div>
   </div>
 </header>
 
 <div class="resume-body">
 
-<!-- ══ PROFESSIONAL SUMMARY ══ -->
 <section class="section" aria-labelledby="sec-summary">
-  <div class="section-hd">
-    <i class="fas fa-id-card" aria-hidden="true"></i>
-    <span id="sec-summary">Professional Summary</span>
-  </div>
+  <div class="section-hd"><i class="fas fa-id-card" aria-hidden="true"></i><span id="sec-summary">Professional Summary</span></div>
   <div class="summary-block">
-    <div class="summary-lines">
-      <p class="sum-line">An <span class="kw">IIT graduate</span> and <span class="kw">Super 30 Alumni</span> with <span class="num">8+ years</span> of deep AI/ML &amp; Data Science experience, currently serving as Lead Data Scientist at <span class="kw">IBM Lab</span> — architecting agentic AI systems powering <span class="kw">IBM Watsonx</span> at global scale across <span class="kw">Watsonx Orchestrate, watsonx.ai, watsonx.governance</span> and <span class="kw">IBM Cloud</span>. Before IBM: led AI transformation at Accenture on <span class="kw">AWS Bedrock &amp; SageMaker</span>; built mission-critical ML at Fortune 500 Clean Harbors on <span class="kw">Azure ML &amp; Azure Data Factory</span>. Three platforms. Three arenas. One through-line: <span class="kw">AI from whiteboard to measurable business outcome.</span></p>
-      <p class="sum-line">Expert in <span class="kw">Python · GenAI · LLMs · Agentic AI · RAG · MLOps · Computer Vision · Deep Learning</span> — with <span class="num">$4M+</span> in verified impact across <span class="num">8+</span> production deployments and <span class="num">15+</span> enterprise AI &amp; GenAI POCs spanning <span class="kw">IBM, AWS, GCP &amp; Azure</span>. POC stack includes <span class="kw">Azure ML Studio · Azure OpenAI · AWS Bedrock · AWS SageMaker · GCP Vertex AI · IBM Watsonx.ai · LangChain · LangGraph · AutoGen · OpenAI GPT-4o · Hugging Face · Anthropic Claude</span> — prototyping agentic workflows, RAG pipelines, LLM fine-tuning, real-time inference, and multimodal AI across regulated industries.</p>
-    </div>
+    <ul class="summary-list">
+      <li>An <span class="kw">IIT graduate</span> and <span class="kw">Super 30 Alumni</span> with <span class="num">8+ years</span> of AI/ML, NLP, and Data Science experience, currently serving as Lead Data Scientist at <span class="kw">IBM Lab</span> - architecting agentic AI systems powering <span class="kw">IBM Watsonx</span> at global scale across <span class="kw">Watsonx Orchestrate, watsonx.ai, watsonx.governance</span> and <span class="kw">IBM Cloud</span>. Before IBM: led and mentored cross-functional AI teams at Accenture on <span class="kw">AWS Bedrock and SageMaker</span>; built mission-critical ML at Fortune 500 Clean Harbors on <span class="kw">Azure ML and Azure Data Factory</span>. Three platforms. Three arenas. One through-line: <span class="kw">AI from whiteboard to measurable business outcome.</span></li>
+      <li>Expert in <span class="kw">Python, GenAI, LLMs, NLP, Agentic AI, RAG, MLOps, Computer Vision, Deep Learning</span> - with <span class="num">$4M+</span> in verified impact across <span class="num">8+</span> production deployments and <span class="num">15+</span> enterprise AI and GenAI POCs spanning <span class="kw">IBM, AWS, GCP, and Azure</span>. Experienced with Agile and Scrum delivery across regulated industries. POC stack includes <span class="kw">Azure ML Studio, Azure OpenAI, AWS Bedrock, AWS SageMaker, GCP Vertex AI, IBM Watsonx.ai, LangChain, LangGraph, AutoGen, OpenAI GPT-4o, Hugging Face, Anthropic Claude</span> - prototyping agentic workflows, RAG pipelines, LLM fine-tuning, real-time NLP inference, and multimodal AI.</li>
+    </ul>
   </div>
 </section>
 
-<!-- ══ CERTIFICATIONS ══ -->
 <section class="section" aria-labelledby="sec-certs">
-  <div class="section-hd">
-    <i class="fas fa-certificate" aria-hidden="true"></i>
-    <span id="sec-certs">Certifications &amp; Badges</span>
-  </div>
+  <div class="section-hd"><i class="fas fa-certificate" aria-hidden="true"></i><span id="sec-certs">Certifications &amp; Badges</span></div>
   <div class="cert-grid">
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">Northwestern University</span><span class="cert-sep">·</span><span class="cert-name">Analytics &amp; AI</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-name">AI Associate Data Scientist</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">Databricks Academy</span><span class="cert-sep">·</span><span class="cert-name">Generative AI Fundamentals</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-name">Solution Architect — Kubernetes &amp; IBM Cloud Paks</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">Stanford University</span><span class="cert-sep">·</span><span class="cert-name">Machine Learning</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">·</span><span class="cert-name">LangGraph &amp; LangSmith</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">Anthropic</span><span class="cert-sep">·</span><span class="cert-name">Model Context Protocol: Advanced Topics</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">Hugging Face</span><span class="cert-sep">·</span><span class="cert-name">AI Agents Fundamentals</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-name">Trustworthy AI &amp; AI Ethics</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">IBM</span><span class="cert-sep">·</span><span class="cert-name">Generative &amp; Agentic AI Foundation</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">Duke University</span><span class="cert-sep">·</span><span class="cert-name">DevOps, DataOps, MLOps</span></div>
-    <div class="cert-item"><span class="cert-dot" aria-hidden="true">●</span><span class="cert-inst">Microsoft</span><span class="cert-sep">·</span><span class="cert-name">Azure Machine Learning</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">Northwestern University</span><span class="cert-sep">-</span><span class="cert-name">Analytics &amp; AI</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">IBM</span><span class="cert-sep">-</span><span class="cert-name">AI Associate Data Scientist</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">Databricks Academy</span><span class="cert-sep">-</span><span class="cert-name">Generative AI Fundamentals</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">IBM</span><span class="cert-sep">-</span><span class="cert-name">Solution Architect - Kubernetes &amp; IBM Cloud Paks</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">Stanford University</span><span class="cert-sep">-</span><span class="cert-name">Machine Learning</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">LangChain Academy</span><span class="cert-sep">-</span><span class="cert-name">LangGraph &amp; LangSmith</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">Anthropic</span><span class="cert-sep">-</span><span class="cert-name">Model Context Protocol: Advanced Topics</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">Hugging Face</span><span class="cert-sep">-</span><span class="cert-name">AI Agents Fundamentals</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">IBM</span><span class="cert-sep">-</span><span class="cert-name">Trustworthy AI &amp; AI Ethics</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">IBM</span><span class="cert-sep">-</span><span class="cert-name">Generative &amp; Agentic AI Foundation</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">Duke University</span><span class="cert-sep">-</span><span class="cert-name">DevOps, DataOps, MLOps</span></div>
+    <div class="cert-item"><span class="cert-dot" aria-hidden="true">&#9679;</span><span class="cert-inst">Microsoft</span><span class="cert-sep">-</span><span class="cert-name">Azure Machine Learning</span></div>
   </div>
 </section>
 
-<!-- ══ PROFESSIONAL EXPERIENCE ══ -->
 <section class="section" aria-labelledby="sec-exp">
-  <div class="section-hd">
-    <i class="fas fa-briefcase" aria-hidden="true"></i>
-    <span id="sec-exp">Professional Experience</span>
-  </div>
+  <div class="section-hd"><i class="fas fa-briefcase" aria-hidden="true"></i><span id="sec-exp">Professional Experience</span></div>
 
-  <!-- IBM -->
   <div class="job">
     <div class="job-hd">
-      <div class="job-left">
-        <span class="job-co">IBM Lab</span>
-        <span class="job-dot" aria-hidden="true">◆</span>
-        <span class="job-role">Lead Data Scientist</span>
-        <span class="job-loc">· Bengaluru</span>
-      </div>
-      <span class="job-when"><time datetime="2024-03">Mar 2024</time> – Present</span>
+      <div class="job-left"><span class="job-co">IBM Lab</span><span class="job-dot">|</span><span class="job-role">Lead Data Scientist</span><span class="job-loc">, Bengaluru</span></div>
+      <span class="job-when"><time datetime="2024-03">Mar 2024</time> - Present</span>
     </div>
-
-    <!-- Weave -->
     <div class="proj">
-      <div class="proj-hd">
-        <span class="proj-title"><span class="arrow" aria-hidden="true">↳</span> watsonx Orchestrate — Weave &nbsp;<span class="proj-sub">Agentic AI Lifecycle Platform · IBM Product</span></span>
-      </div>
+      <div class="proj-hd"><span class="proj-title">watsonx Orchestrate - Weave <span class="proj-sub">| Agentic AI Lifecycle Platform | IBM Product</span></span></div>
       <ul class="blist">
-        <li><span class="lbl-c">Challenge:</span> No agentic AI framework existed at IBM — build it from scratch, own it end-to-end, ship it before the market moved on.</li>
-        <li><span class="lbl-co">Contribution:</span> Led core engineering of the <span class="bk">Weave framework</span> — designed the full Build → Validate → Deploy lifecycle: NL requirements parsed into workflow DAGs, automated agent &amp; tool generation with conditional routing, and <span class="bk">60+ enterprise MCP connectors</span> (SAP, Salesforce, ServiceNow, Workday) via OpenAPI transpilation with OAuth2/SAML. Owned testing, validation, and one-click deployment automation end-to-end.</li>
-        <li><span class="lbl-i">Impact:</span> Concept → production in <span class="num">14 months</span> · <span class="num">10M+</span> daily API calls · <span class="num">p99 &lt;200ms</span> · <span class="num">99.9%</span> uptime · <span class="num">$1.5M+</span> enterprise productivity gains · <span class="num">40%</span> inference cost reduction · <span class="bk">adopted as IBM's reference multi-agent platform.</span></li>
+        <li><span class="lbl-c">Challenge:</span> No agentic AI framework existed at IBM - had to build it from scratch, own it end-to-end, and ship before the market moved on.</li>
+        <li><span class="lbl-co">Contribution:</span> Led and architected the <span class="bk">Weave framework</span> - designed the full Build, Validate, Deploy lifecycle: NL requirements parsed into workflow DAGs, automated agent and tool generation with conditional routing, and <span class="bk">60+ enterprise MCP connectors</span> (SAP, Salesforce, ServiceNow, Workday) via OpenAPI transpilation with OAuth2/SAML. Collaborated with cross-functional product, engineering, and QA stakeholders; owned testing, validation, and one-click deployment automation end-to-end.</li>
+        <li><span class="lbl-i">Impact:</span> Concept to production in <span class="num">14 months</span> - <span class="num">10M+</span> daily API calls - <span class="num">p99 &lt;200ms</span> - <span class="num">99.9%</span> uptime - <span class="num">$1.5M+</span> enterprise productivity gains - <span class="num">40%</span> inference cost reduction - <span class="bk">adopted as IBM's reference multi-agent platform.</span></li>
       </ul>
       <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">IBM Watsonx Orchestrate</span><span class="chip">IBM Granite</span><span class="chip">LangGraph</span><span class="chip">AutoGen</span><span class="chip">MCP</span><span class="chip">OpenAPI</span><span class="chip">OAuth2 / SAML</span><span class="chip">IBM Cloud OpenShift</span><span class="chip">Kubernetes</span><span class="chip">Redis</span><span class="chip">OpenTelemetry</span><span class="chip">Python</span></div>
     </div>
-
-    <!-- Governance -->
     <div class="proj">
-      <div class="proj-hd">
-        <span class="proj-title"><span class="arrow" aria-hidden="true">↳</span> watsonx.governance — Enterprise AI Risk &amp; Compliance Platform &nbsp;<span class="proj-sub">· IBM Product</span></span>
-      </div>
+      <div class="proj-hd"><span class="proj-title">watsonx.governance - Enterprise AI Risk &amp; Compliance Platform <span class="proj-sub">| IBM Product</span></span></div>
       <ul class="blist">
-        <li><span class="lbl-c">Challenge:</span> Hundreds of AI models in production with no governance — bias, drift, and regulatory breaches accumulating silently, undetected, unreported.</li>
-        <li><span class="lbl-co">Contribution:</span> Engineered an integrated GRC stack from the ground up — <span class="bk">IBM OpenPages</span> for policy-to-metric mapping and immutable audit trails; <span class="bk">IBM OpenScale</span> for real-time fairness, drift, and hallucination monitoring with automated retraining triggers; <span class="bk">AI FactSheets</span> for machine-readable model provenance. Designed a <span class="bk">Governance Graph</span> linking models, risk controls, and regulatory policies in a queryable knowledge layer; extended multi-cloud coverage to AWS SageMaker and Azure ML.</li>
-        <li><span class="lbl-i">Impact:</span> <span class="num">1,000+</span> models under governed reuse · audit prep time weeks → hours · data review cycles <span class="num">−58%</span> · <span class="num">200+</span> regulatory frameworks mapped · <span class="bk">designated IBM's flagship compliance platform for EU AI Act readiness</span> across FS, healthcare, and public-sector clients.</li>
+        <li><span class="lbl-c">Challenge:</span> Hundreds of AI models in production with no governance - bias, drift, and regulatory breaches accumulating silently, undetected, unreported.</li>
+        <li><span class="lbl-co">Contribution:</span> Engineered an integrated GRC stack - <span class="bk">IBM OpenPages</span> for policy-to-metric mapping and immutable audit trails; <span class="bk">IBM OpenScale</span> for real-time fairness, drift, and hallucination monitoring with automated retraining triggers; <span class="bk">AI FactSheets</span> for machine-readable model provenance. Designed a <span class="bk">Governance Graph</span> linking models, risk controls, and regulatory policies; extended multi-cloud coverage to AWS SageMaker and Azure ML. Collaborated with legal, compliance, and product stakeholders across FS, healthcare, and public-sector clients.</li>
+        <li><span class="lbl-i">Impact:</span> <span class="num">1,000+</span> models under governed reuse - audit prep time from weeks to hours - data review cycles <span class="num">-58%</span> - <span class="num">200+</span> regulatory frameworks mapped - <span class="bk">designated IBM's flagship compliance platform for EU AI Act readiness.</span></li>
       </ul>
-      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">IBM watsonx.governance</span><span class="chip">IBM OpenPages</span><span class="chip">IBM OpenScale</span><span class="chip">AI FactSheets</span><span class="chip">AIF360</span><span class="chip">SHAP / LIME</span><span class="chip">EU AI Act · NIST AI RMF · ISO 42001</span><span class="chip">AWS SageMaker</span><span class="chip">Azure ML</span><span class="chip">OpenTelemetry</span><span class="chip">Python</span></div>
+      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">IBM watsonx.governance</span><span class="chip">IBM OpenPages</span><span class="chip">IBM OpenScale</span><span class="chip">AI FactSheets</span><span class="chip">AIF360</span><span class="chip">SHAP / LIME</span><span class="chip">EU AI Act / NIST AI RMF / ISO 42001</span><span class="chip">AWS SageMaker</span><span class="chip">Azure ML</span><span class="chip">OpenTelemetry</span><span class="chip">Python</span></div>
     </div>
   </div>
 
-  <!-- ACCENTURE -->
   <div class="job">
     <div class="job-hd">
-      <div class="job-left">
-        <span class="job-co">Accenture</span>
-        <span class="job-dot" aria-hidden="true">◆</span>
-        <span class="job-role">Data Science Analyst — Strategy &amp; Consulting</span>
-        <span class="job-loc">· Gurugram</span>
-      </div>
-      <span class="job-when"><time datetime="2021-04">Apr 2021</time> – <time datetime="2024-02">Feb 2024</time></span>
+      <div class="job-left"><span class="job-co">Accenture</span><span class="job-dot">|</span><span class="job-role">Data Science Analyst - Strategy &amp; Consulting</span><span class="job-loc">, Gurugram</span></div>
+      <span class="job-when"><time datetime="2021-04">Apr 2021</time> - <time datetime="2024-02">Feb 2024</time></span>
     </div>
-
-    <!-- ASK UB -->
     <div class="proj">
-      <div class="proj-hd">
-        <span class="proj-title"><span class="arrow" aria-hidden="true">↳</span> ASK UB — Intelligent Advisor Platform with HyDE-RAG &nbsp;<span class="proj-sub">Client: Ulster Bank (NatWest Group)</span></span>
-      </div>
+      <div class="proj-hd"><span class="proj-title">ASK UB - Intelligent Advisor Platform with HyDE-RAG <span class="proj-sub">| Client: Ulster Bank (NatWest Group)</span></span></div>
       <ul class="blist">
-        <li><span class="lbl-c">Challenge:</span> Advisors hallucinating on bank-specific policy — in a regulated bank, that's a liability. Compliance teams manually trawling <span class="num">50K+</span> FCA/PRA documents for <span class="num">4+ hrs/day</span>, one missed circular away from a reportable breach.</li>
-        <li><span class="lbl-co">Contribution:</span> Domain-adapted a base LLM on Ulster Bank's proprietary corpus via <span class="bk">LoRA fine-tuning on AWS SageMaker Training Jobs</span>; served through <span class="bk">AWS Bedrock</span> with a downstream <span class="bk">HyDE-RAG layer</span> — model generates a hypothetical ideal answer to sharpen retrieval intent, then executes <span class="bk">hybrid BM25 + dense vector search</span> across <span class="num">50K+</span> regulatory documents in <span class="bk">Amazon OpenSearch</span>; every response grounded with citation-level attribution and hallucination guardrails. Deployed serverlessly via <span class="bk">AWS Lambda + API Gateway</span> with auto-scaling through peak audit cycles.</li>
-        <li><span class="lbl-i">Impact:</span> Advisor resolution time <span class="num">−45%</span> · compliance query time <span class="num">−70%</span> · <span class="num">&lt;500ms</span> latency · <span class="num">zero</span> hallucination incidents · <span class="num">zero</span> FCA/PRA violations · <span class="bk">architecture licensed across 3 additional Accenture engagements.</span></li>
+        <li><span class="lbl-c">Challenge:</span> Advisors hallucinating on bank-specific policy - a regulatory liability. Compliance teams manually trawling <span class="num">50K+</span> FCA/PRA documents for <span class="num">4+ hrs/day</span>, one missed circular away from a reportable breach.</li>
+        <li><span class="lbl-co">Contribution:</span> Domain-adapted a base LLM on Ulster Bank's proprietary corpus via <span class="bk">LoRA fine-tuning on AWS SageMaker Training Jobs</span>; served through <span class="bk">AWS Bedrock</span> with a <span class="bk">HyDE-RAG NLP layer</span> - the model generates a hypothetical ideal answer to sharpen retrieval intent, then executes <span class="bk">hybrid BM25 and dense vector search</span> across <span class="num">50K+</span> regulatory documents in <span class="bk">Amazon OpenSearch</span>; every response grounded with citation-level attribution and NLP hallucination guardrails. Deployed serverlessly via <span class="bk">AWS Lambda and API Gateway</span> with auto-scaling through peak audit cycles.</li>
+        <li><span class="lbl-i">Impact:</span> Advisor resolution time <span class="num">-45%</span> - compliance query time <span class="num">-70%</span> - responses under <span class="num">500ms</span> - zero hallucination incidents - zero FCA/PRA violations - <span class="bk">architecture licensed across 3 additional Accenture engagements.</span></li>
       </ul>
-      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">AWS Bedrock</span><span class="chip">AWS SageMaker</span><span class="chip">LoRA / PEFT</span><span class="chip">HyDE-RAG</span><span class="chip">BM25 + Dense Retrieval</span><span class="chip">Amazon OpenSearch</span><span class="chip">AWS Lambda</span><span class="chip">Hugging Face Transformers</span><span class="chip">LangChain</span><span class="chip">Amazon S3</span><span class="chip">Python</span></div>
+      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">AWS Bedrock</span><span class="chip">AWS SageMaker</span><span class="chip">LoRA / PEFT</span><span class="chip">HyDE-RAG</span><span class="chip">NLP</span><span class="chip">BM25 + Dense Retrieval</span><span class="chip">Amazon OpenSearch</span><span class="chip">AWS Lambda</span><span class="chip">Hugging Face Transformers</span><span class="chip">LangChain</span><span class="chip">Amazon S3</span><span class="chip">Python</span></div>
     </div>
-
-    <!-- Facebook BI -->
     <div class="proj">
-      <div class="proj-hd">
-        <span class="proj-title"><span class="arrow" aria-hidden="true">↳</span> Facebook BI — Real-Time Content Moderation &amp; Ad Relevance Platform &nbsp;<span class="proj-sub">Client: Facebook · Accenture</span></span>
-      </div>
+      <div class="proj-hd"><span class="proj-title">Facebook BI - Real-Time Content Moderation &amp; Ad Relevance Platform <span class="proj-sub">| Client: Facebook | Accenture</span></span></div>
       <ul class="blist">
-        <li><span class="lbl-c">Challenge:</span> At Facebook's scale, a fractional drop in moderation recall means millions of policy-violating impressions per day; ad relevance degrading even slightly risks nine-figure revenue. Existing pipelines couldn't triage petabyte-scale image streams in real time without sacrificing accuracy or incurring catastrophic cost overruns.</li>
-        <li><span class="lbl-co">Contribution:</span> Architected petabyte-scale real-time computer vision and ML inference platform using <span class="bk">CNNs on PyTorch with AWS SageMaker, Glue, Redshift, and Ray</span> in a <span class="bk">multi-region active-active topology</span>; processed <span class="num">1B+</span> images daily at <span class="num">&lt;50ms</span> latency. Built end-to-end real-time <span class="bk">feature store and ML data pipelines on AWS Glue / Kinesis / Ray</span>, implementing automated A/B testing and shadow deployments via <span class="bk">AWS Step Functions</span> — enabling weekly release cadence without service disruption.</li>
-        <li><span class="lbl-i">Impact:</span> Moderation recall <span class="num">+15%</span> · ad relevance <span class="num">+12%</span> · latency <span class="num">−60%</span> · rollback incidents <span class="num">−75%</span> · <span class="bk">adopted as Facebook engineering's production reference architecture for real-time vision inference at petabyte scale.</span></li>
+        <li><span class="lbl-c">Challenge:</span> At Facebook's scale, a fractional drop in moderation recall means millions of policy-violating impressions per day; existing pipelines could not triage petabyte-scale image streams in real time without sacrificing accuracy.</li>
+        <li><span class="lbl-co">Contribution:</span> Architected petabyte-scale real-time computer vision and ML inference platform using <span class="bk">CNNs on PyTorch with AWS SageMaker, Glue, Redshift, and Ray</span> in a <span class="bk">multi-region active-active topology</span>; processed <span class="num">1B+</span> images daily at under <span class="num">50ms</span> latency. Built end-to-end real-time feature store and ML data pipelines, implementing automated A/B testing and shadow deployments via <span class="bk">AWS Step Functions</span>. Managed Agile sprint delivery in collaboration with cross-functional Facebook engineering teams.</li>
+        <li><span class="lbl-i">Impact:</span> Moderation recall <span class="num">+15%</span> - ad relevance <span class="num">+12%</span> - latency <span class="num">-60%</span> - rollback incidents <span class="num">-75%</span> - <span class="bk">adopted as Facebook engineering's production reference architecture for real-time vision inference at petabyte scale.</span></li>
       </ul>
-      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">PyTorch</span><span class="chip">CNN</span><span class="chip">AWS SageMaker</span><span class="chip">AWS Glue</span><span class="chip">Amazon Kinesis</span><span class="chip">Amazon Redshift</span><span class="chip">Ray</span><span class="chip">AWS Step Functions</span><span class="chip">A/B Testing</span><span class="chip">Shadow Deployment</span><span class="chip">Multi-Region Active-Active</span><span class="chip">Python</span></div>
+      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">PyTorch</span><span class="chip">CNN</span><span class="chip">Computer Vision</span><span class="chip">AWS SageMaker</span><span class="chip">AWS Glue</span><span class="chip">Amazon Kinesis</span><span class="chip">Amazon Redshift</span><span class="chip">Ray</span><span class="chip">AWS Step Functions</span><span class="chip">A/B Testing</span><span class="chip">Shadow Deployment</span><span class="chip">Python</span></div>
     </div>
   </div>
 
-  <!-- CAPGEMINI -->
   <div class="job">
     <div class="job-hd">
-      <div class="job-left">
-        <span class="job-co">Capgemini</span>
-        <span class="job-dot" aria-hidden="true">◆</span>
-        <span class="job-role">Analytics Process Lead</span>
-        <span class="job-loc">· Bengaluru</span>
-      </div>
-      <span class="job-when"><time datetime="2021-02">Feb 2021</time> – <time datetime="2021-03">Mar 2021</time></span>
+      <div class="job-left"><span class="job-co">Capgemini</span><span class="job-dot">|</span><span class="job-role">Process Lead</span><span class="job-loc">, Bengaluru</span></div>
+      <span class="job-when"><time datetime="2021-02">Feb 2021</time> - <time datetime="2021-03">Mar 2021</time></span>
     </div>
     <ul class="blist">
-      <li>Designed end-to-end <span class="bk">Azure analytics architecture</span> — data ingestion, transformation, orchestration, and reporting workflows — delivering technical blueprints and implementation roadmaps for enterprise-scale analytics migration.</li>
+      <li>Designed end-to-end <span class="bk">Azure analytics architecture</span> - data ingestion, transformation, orchestration, and reporting - delivering technical blueprints and Agile implementation roadmaps for an enterprise analytics migration serving <span class="num">3</span> business units; blueprints adopted without revision by the client architecture board.</li>
     </ul>
   </div>
 
-  <!-- CLEAN HARBORS -->
   <div class="job">
     <div class="job-hd">
-      <div class="job-left">
-        <span class="job-co">Clean Harbors</span>
-        <span class="job-dot" aria-hidden="true">◆</span>
-        <span class="job-role">Data Scientist — AI/ML Engineering</span>
-        <span class="job-loc">· Hyderabad (Fortune 500 USA)</span>
-      </div>
-      <span class="job-when"><time datetime="2018-06">Jun 2018</time> – <time datetime="2021-01">Jan 2021</time></span>
+      <div class="job-left"><span class="job-co">Clean Harbors</span><span class="job-dot">|</span><span class="job-role">Data Scientist - AI/ML Engineering</span><span class="job-loc">, Hyderabad (Fortune 500 USA)</span></div>
+      <span class="job-when"><time datetime="2018-06">Jun 2018</time> - <time datetime="2021-01">Jan 2021</time></span>
     </div>
-
-    <!-- WCC -->
     <div class="proj">
-      <div class="proj-hd">
-        <span class="proj-title"><span class="arrow" aria-hidden="true">↳</span> Waste Classification Code System (WCC) &nbsp;<span class="proj-sub">EPA-Compliant Hazardous Waste ML System</span></span>
-      </div>
+      <div class="proj-hd"><span class="proj-title">Waste Classification Code System (WCC) <span class="proj-sub">| EPA-Compliant Hazardous Waste ML Platform</span></span></div>
       <ul class="blist">
-        <li><span class="lbl-c">Challenge:</span> A single misclassified waste stream triggers a federal EPA violation — and every classification was made manually, every time, with no ML safeguard in place.</li>
-        <li><span class="lbl-co">Contribution:</span> Architected a complete end-to-end intelligent waste classification platform using a <span class="bk">hybrid CNN + rule-based engine on Azure ML Studio</span>, ingesting physical and chemical properties for full lifecycle regulatory code assignment. Designed <span class="bk">synthetic data augmentation</span> and <span class="bk">SMOTE</span> to address extreme class imbalance; built an <span class="bk">MLOps monitoring stack with automated drift detection and retraining triggers via Azure Data Factory</span>; integrated <span class="bk">SHAP explainability</span> for auditability; deployed as a <span class="bk">REST API via Azure App Service</span> with live <span class="bk">Power BI</span> compliance dashboards.</li>
-        <li><span class="lbl-i">Impact:</span> <span class="num">100%</span> manual classification eliminated · rare-category F1 <span class="num">+28%</span> · misclassifications <span class="num">−40%</span> · throughput <span class="num">+22%</span> · <span class="num">$500K</span> annual regulatory savings · <span class="bk">zero EPA violations post-deployment.</span></li>
+        <li><span class="lbl-c">Challenge:</span> A single misclassified waste stream triggers a federal EPA violation - every classification made manually with no ML safeguard.</li>
+        <li><span class="lbl-co">Contribution:</span> Architected a complete end-to-end intelligent waste classification platform using a <span class="bk">hybrid CNN and rule-based engine on Azure ML Studio</span>, ingesting physical and chemical properties for full lifecycle regulatory code assignment. Designed <span class="bk">synthetic data augmentation</span> and <span class="bk">SMOTE</span> to address extreme class imbalance; built an <span class="bk">MLOps monitoring stack with automated drift detection and retraining via Azure Data Factory</span>; integrated <span class="bk">SHAP explainability</span>; deployed as a <span class="bk">REST API via Azure App Service</span> with live <span class="bk">Power BI</span> compliance dashboards. Mentored 2 junior data scientists on the ML pipeline.</li>
+        <li><span class="lbl-i">Impact:</span> <span class="num">100%</span> manual classification eliminated - rare-category F1 <span class="num">+28%</span> - misclassifications <span class="num">-40%</span> - throughput <span class="num">+22%</span> - <span class="num">$500K</span> annual regulatory savings - zero EPA violations post-deployment.</li>
       </ul>
-      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">Azure ML Studio</span><span class="chip">Hybrid CNN + Rule-Based Engine</span><span class="chip">Azure Data Factory</span><span class="chip">Azure App Service</span><span class="chip">SMOTE</span><span class="chip">SHAP Explainability</span><span class="chip">Drift Detection</span><span class="chip">Automated Retraining</span><span class="chip">REST API</span><span class="chip">Power BI</span><span class="chip">Python</span></div>
+      <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">Azure ML Studio</span><span class="chip">Hybrid CNN + Rule Engine</span><span class="chip">Azure Data Factory</span><span class="chip">Azure App Service</span><span class="chip">SMOTE</span><span class="chip">SHAP Explainability</span><span class="chip">Drift Detection</span><span class="chip">REST API</span><span class="chip">Power BI</span><span class="chip">Python</span></div>
     </div>
-
-    <!-- Invoice -->
     <div class="proj">
-      <div class="proj-hd">
-        <span class="proj-title"><span class="arrow" aria-hidden="true">↳</span> Invoice Audit Automation &amp; Revenue Protection Platform &nbsp;<span class="proj-sub">Billing Prediction &amp; Revenue Leakage Protection</span></span>
-      </div>
+      <div class="proj-hd"><span class="proj-title">Invoice Audit Automation &amp; Revenue Protection Platform <span class="proj-sub">| Billing Prediction and Revenue Leakage Protection</span></span></div>
       <ul class="blist">
-        <li><span class="lbl-c">Challenge:</span> Finance losing <span class="num">$750K+</span> annually to billing errors hidden in thousands of service engagements — every invoice hand-computed, every discrepancy invisible without ML.</li>
-        <li><span class="lbl-co">Contribution:</span> Developed an ML-powered invoice audit and anomaly detection system with <span class="bk">multi-model ensembles and automated retraining on Azure ML Studio, SQL Database, and Data Factory</span> — trained on <span class="num">47</span> domain-engineered billing features to predict expected invoice totals and flag anomalous gaps. Integrated with the upstream WCC platform via <span class="bk">Azure Data Factory</span> for closed-loop automation; surfaced executive dashboards in <span class="bk">Power BI</span>.</li>
-        <li><span class="lbl-i">Impact:</span> <span class="num">80%</span> of audit workflows automated · accuracy <span class="num">&gt;94%</span> · <span class="num">$750K</span> annual revenue protected · dispute resolution time <span class="num">−50%</span> · false-positive flags <span class="num">−35%</span>.</li>
+        <li><span class="lbl-c">Challenge:</span> Finance losing <span class="num">$750K+</span> annually to billing errors hidden across thousands of service engagements - every invoice hand-computed.</li>
+        <li><span class="lbl-co">Contribution:</span> Developed an ML-powered invoice audit and anomaly detection system with <span class="bk">multi-model ensembles and automated retraining on Azure ML Studio, SQL Database, and Data Factory</span> - trained on <span class="num">47</span> domain-engineered billing features to predict expected invoice totals and flag anomalous gaps. Integrated with the upstream WCC platform via <span class="bk">Azure Data Factory</span> for closed-loop automation; surfaced executive dashboards in <span class="bk">Power BI</span>.</li>
+        <li><span class="lbl-i">Impact:</span> <span class="num">80%</span> of audit workflows automated - accuracy <span class="num">&gt;94%</span> - <span class="num">$750K</span> annual revenue protected - dispute resolution time <span class="num">-50%</span> - false-positive flags <span class="num">-35%</span>.</li>
       </ul>
       <div class="chips"><span class="chips-lbl">Tech:</span><span class="chip">Azure ML Studio</span><span class="chip">Azure Data Factory</span><span class="chip">Azure SQL Database</span><span class="chip">Multi-Model Ensemble</span><span class="chip">Gradient Boosting</span><span class="chip">Feature Engineering</span><span class="chip">Drift Detection</span><span class="chip">Power BI</span><span class="chip">Python</span><span class="chip">SQL</span></div>
     </div>
   </div>
 </section>
 
-<!-- ══ EDUCATION ══ -->
 <section class="section" aria-labelledby="sec-edu">
-  <div class="section-hd">
-    <i class="fas fa-graduation-cap" aria-hidden="true"></i>
-    <span id="sec-edu">Education</span>
-  </div>
+  <div class="section-hd"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span id="sec-edu">Education</span></div>
   <div class="edu-row">
-    <div class="edu-left">
-      <span class="edu-inst">IIT (ISM) Dhanbad</span>
-      <span class="edu-sep" aria-hidden="true">·</span>
-      <span class="edu-deg">B.Tech — Bachelor of Technology</span>
-    </div>
-    <span class="edu-yr"><time datetime="2013">2013</time> – <time datetime="2017">2017</time></span>
+    <div class="edu-left"><span class="edu-inst">IIT (ISM) Dhanbad</span><span class="edu-sep" aria-hidden="true">|</span><span class="edu-deg">B.Tech - Bachelor of Technology</span></div>
+    <span class="edu-yr"><time datetime="2013">2013</time> - <time datetime="2017">2017</time></span>
   </div>
 </section>
 
-<!-- ══ TECHNICAL SKILLS ══ -->
 <section class="section" aria-labelledby="sec-skills">
-  <div class="section-hd">
-    <i class="fas fa-laptop-code" aria-hidden="true"></i>
-    <span id="sec-skills">Technical Skills</span>
-  </div>
+  <div class="section-hd"><i class="fas fa-laptop-code" aria-hidden="true"></i><span id="sec-skills">Technical Skills</span></div>
   <div class="sk-table">
 
     <div class="sk-row">
-      <span class="sk-cat">Agentic AI &amp; LLMs</span>
+      <span class="sk-cat">GenAI &amp; Agentic AI</span>
       <span class="sk-vals">
-        <span class="sk-v">IBM Watsonx Orchestrate</span><span class="sk-v">LangGraph</span><span class="sk-v">AutoGen</span><span class="sk-v">CrewAI</span><span class="sk-v">MCP (Model Context Protocol)</span><span class="sk-v">LangChain</span><span class="sk-v">LlamaIndex</span><span class="sk-v">Semantic Kernel</span><span class="sk-v">GPT-4o</span><span class="sk-v">Anthropic Claude (Sonnet / Opus)</span><span class="sk-v">Llama 3.x</span><span class="sk-v">IBM Granite</span><span class="sk-v">Multi-Agent Orchestration</span><span class="sk-v">Hierarchical Planner-Executor Architecture</span><span class="sk-v">DAG-Based Task Decomposition</span><span class="sk-v">Tool Use &amp; Function Calling</span><span class="sk-v">ReAct &amp; Chain-of-Thought</span><span class="sk-v">Token Cost Optimization</span>
-      </span>
-    </div>
-
-    <div class="sk-row">
-      <span class="sk-cat">RAG &amp; Knowledge Systems</span>
-      <span class="sk-vals">
-        <span class="sk-v">Enterprise RAG Pipelines</span><span class="sk-v">GraphRAG</span><span class="sk-v">HyDE-RAG</span><span class="sk-v">Hybrid Retrieval (BM25 + Dense)</span><span class="sk-v">Cross-Encoder Re-ranking</span><span class="sk-v">Hallucination Guardrails</span><span class="sk-v">Citation Grounding</span><span class="sk-v">Pinecone</span><span class="sk-v">Weaviate</span><span class="sk-v">FAISS</span><span class="sk-v">Neo4j</span><span class="sk-v">Amazon OpenSearch</span>
-      </span>
-    </div>
-
-    <div class="sk-row">
-      <span class="sk-cat">LLM Fine-Tuning &amp; Alignment</span>
-      <span class="sk-vals">
-        <span class="sk-v">LoRA / QLoRA</span><span class="sk-v">RLHF</span><span class="sk-v">DPO</span><span class="sk-v">PEFT</span><span class="sk-v">GPTQ/AWQ Quantization</span><span class="sk-v">SFT &amp; Instruction Tuning</span><span class="sk-v">Hugging Face Transformers</span><span class="sk-v">FSDP / DeepSpeed</span><span class="sk-v">vLLM</span><span class="sk-v">Triton Inference Server</span>
+        <span class="sk-v">GPT-4o</span><span class="sk-v">Claude 3.5/3.7 Sonnet</span><span class="sk-v">Llama 3.x</span><span class="sk-v">Mistral</span><span class="sk-v">Gemini 1.5</span><span class="sk-v">Phi-3/3.5</span><span class="sk-v">IBM Granite</span><span class="sk-v">LangGraph</span><span class="sk-v">CrewAI</span><span class="sk-v">AutoGen</span><span class="sk-v">MCP (Model Context Protocol)</span><span class="sk-v">LangChain</span><span class="sk-v">LlamaIndex</span><span class="sk-v">Semantic Kernel</span><span class="sk-v">Multi-Agent Orchestration</span><span class="sk-v">RAG Pipelines</span><span class="sk-v">GraphRAG</span><span class="sk-v">HyDE</span><span class="sk-v">Hybrid Retrieval (BM25+Dense)</span><span class="sk-v">Re-ranking</span><span class="sk-v">Prompt Engineering</span><span class="sk-v">RLHF</span><span class="sk-v">DPO</span><span class="sk-v">LoRA</span><span class="sk-v">QLoRA</span><span class="sk-v">PEFT</span><span class="sk-v">GPTQ/AWQ</span><span class="sk-v">RAGAS</span><span class="sk-v">LangSmith</span><span class="sk-v">ReAct &amp; Chain-of-Thought</span><span class="sk-v">Tool Use &amp; Function Calling</span><span class="sk-v">Agent Planning &amp; Decomposition</span><span class="sk-v">Memory Management (Short/Long-term)</span><span class="sk-v">Context Window Management</span><span class="sk-v">Token Cost Optimization</span><span class="sk-v">Red-Teaming &amp; Adversarial Prompting</span>
       </span>
     </div>
 
     <div class="sk-row">
       <span class="sk-cat">ML &amp; Deep Learning</span>
       <span class="sk-vals">
-        <span class="sk-v">PyTorch</span><span class="sk-v">TensorFlow</span><span class="sk-v">Scikit-learn</span><span class="sk-v">XGBoost</span><span class="sk-v">LightGBM</span><span class="sk-v">BERT/RoBERTa</span><span class="sk-v">CNN / Vision Transformers (ViT)</span><span class="sk-v">Diffusion Models</span><span class="sk-v">Graph Neural Networks</span><span class="sk-v">Time-Series Forecasting</span><span class="sk-v">SMOTE &amp; Synthetic Augmentation</span>
+        <span class="sk-v">PyTorch</span><span class="sk-v">TensorFlow</span><span class="sk-v">Hugging Face Transformers</span><span class="sk-v">Scikit-learn</span><span class="sk-v">XGBoost</span><span class="sk-v">LightGBM</span><span class="sk-v">CNNs</span><span class="sk-v">ViT</span><span class="sk-v">BERT/RoBERTa</span><span class="sk-v">Diffusion Models</span><span class="sk-v">Time-Series Forecasting</span><span class="sk-v">Graph Neural Networks</span><span class="sk-v">vLLM</span><span class="sk-v">Triton Inference Server</span><span class="sk-v">FSDP/DeepSpeed</span><span class="sk-v">Multi-Region HA Architecture</span><span class="sk-v">Feature Stores (Feast, Tecton)</span>
       </span>
     </div>
 
     <div class="sk-row">
-      <span class="sk-cat">MLOps &amp; Infra</span>
+      <span class="sk-cat">MLOps &amp; LLMOps</span>
       <span class="sk-vals">
-        <span class="sk-v">MLflow</span><span class="sk-v">Kubeflow</span><span class="sk-v">Weights &amp; Biases</span><span class="sk-v">Azure Pipelines CI/CD</span><span class="sk-v">Shadow Deployment</span><span class="sk-v">A/B Testing</span><span class="sk-v">Drift Detection &amp; Auto-Retraining</span><span class="sk-v">Docker</span><span class="sk-v">Kubernetes / HPA</span><span class="sk-v">Helm</span><span class="sk-v">Terraform</span><span class="sk-v">Ray</span>
+        <span class="sk-v">MLflow</span><span class="sk-v">Kubeflow</span><span class="sk-v">ZenML</span><span class="sk-v">Weights &amp; Biases</span><span class="sk-v">DVC</span><span class="sk-v">CI/CD for ML</span><span class="sk-v">Shadow Deployment</span><span class="sk-v">A/B Testing</span><span class="sk-v">Drift Detection &amp; Automated Retraining</span><span class="sk-v">Arize AI</span><span class="sk-v">Langfuse</span><span class="sk-v">Evidently AI</span><span class="sk-v">WhyLabs</span><span class="sk-v">Prometheus</span><span class="sk-v">Grafana</span><span class="sk-v">OpenTelemetry</span><span class="sk-v">Datadog</span>
       </span>
     </div>
 
     <div class="sk-row">
-      <span class="sk-cat">Cloud Platforms</span>
+      <span class="sk-cat">Cloud Platforms &amp; CI/CD</span>
       <span class="sk-vals">
-        <span class="sk-v">IBM Watsonx.ai</span><span class="sk-v">IBM Cloud Pak for Data</span><span class="sk-v">IBM Cloud OpenShift</span><span class="sk-v">AWS SageMaker</span><span class="sk-v">AWS Bedrock</span><span class="sk-v">AWS Glue</span><span class="sk-v">Amazon Kinesis</span><span class="sk-v">Amazon Redshift</span><span class="sk-v">Azure ML Studio</span><span class="sk-v">Azure OpenAI</span><span class="sk-v">Azure Databricks</span><span class="sk-v">GCP Vertex AI</span><span class="sk-v">GCP BigQuery</span><span class="sk-v">GCP Cloud Run</span><span class="sk-v">GCP Dataflow</span>
+        <span class="sk-v">IBM Cloud</span><span class="sk-v">IBM Watsonx.ai</span><span class="sk-v">IBM Watsonx Orchestrate</span><span class="sk-v">IBM OpenShift</span><span class="sk-v">IBM Kubernetes Service</span><span class="sk-v">IBM OpenScale</span><span class="sk-v">IBM Cloud Pak for Data</span><span class="sk-v">AWS SageMaker</span><span class="sk-v">AWS Bedrock</span><span class="sk-v">AWS Glue</span><span class="sk-v">Amazon Redshift</span><span class="sk-v">Amazon S3</span><span class="sk-v">AWS ECS / Lambda</span><span class="sk-v">Amazon Kinesis</span><span class="sk-v">AWS Step Functions</span><span class="sk-v">Amazon OpenSearch</span><span class="sk-v">Azure ML Studio</span><span class="sk-v">Azure OpenAI Service</span><span class="sk-v">Azure SQL Database</span><span class="sk-v">Azure Data Factory</span><span class="sk-v">Azure Databricks</span><span class="sk-v">Google Cloud Platform (GCP)</span>
       </span>
     </div>
 
     <div class="sk-row">
-      <span class="sk-cat">Data &amp; Engineering</span>
+      <span class="sk-cat">Data Engineering &amp; Big Data</span>
       <span class="sk-vals">
-        <span class="sk-v">Python (Expert)</span><span class="sk-v">SQL</span><span class="sk-v">PySpark</span><span class="sk-v">FastAPI</span><span class="sk-v">Snowflake</span><span class="sk-v">Databricks</span><span class="sk-v">Delta Lake</span><span class="sk-v">dbt</span><span class="sk-v">Apache Airflow</span><span class="sk-v">Kafka</span><span class="sk-v">Redis</span>
+        <span class="sk-v">Python (Expert)</span><span class="sk-v">SQL</span><span class="sk-v">PySpark</span><span class="sk-v">Apache Spark</span><span class="sk-v">Ray</span><span class="sk-v">FastAPI</span><span class="sk-v">Flask</span><span class="sk-v">REST APIs</span><span class="sk-v">GraphQL</span><span class="sk-v">gRPC</span><span class="sk-v">Bash/Shell</span><span class="sk-v">C++ (Proficient)</span><span class="sk-v">Git</span><span class="sk-v">Snowflake</span><span class="sk-v">Databricks</span><span class="sk-v">Delta Lake</span><span class="sk-v">Apache Iceberg</span><span class="sk-v">dbt</span><span class="sk-v">Apache Airflow</span><span class="sk-v">Prefect</span><span class="sk-v">Kafka</span><span class="sk-v">Apache Flink</span>
       </span>
     </div>
 
     <div class="sk-row">
-      <span class="sk-cat">Responsible AI &amp; Governance</span>
+      <span class="sk-cat">Vector &amp; Graph Databases</span>
       <span class="sk-vals">
-        <span class="sk-v">Explainable AI (SHAP/LIME)</span><span class="sk-v">Bias Detection (AIF360, Fairlearn)</span><span class="sk-v">LLM &amp; NeMo Guardrails</span><span class="sk-v">GDPR / CCPA / EU AI Act</span><span class="sk-v">NIST AI RMF</span><span class="sk-v">ISO 42001</span><span class="sk-v">Model Risk Management</span><span class="sk-v">AI Strategy &amp; Roadmapping</span>
+        <span class="sk-v">Pinecone</span><span class="sk-v">Weaviate</span><span class="sk-v">FAISS</span><span class="sk-v">Qdrant</span><span class="sk-v">Milvus</span><span class="sk-v">Neo4j</span><span class="sk-v">Elasticsearch</span><span class="sk-v">OpenSearch</span><span class="sk-v">Redis</span>
       </span>
     </div>
 
     <div class="sk-row">
-      <span class="sk-cat">Observability &amp; Analytics</span>
+      <span class="sk-cat">AI Governance &amp; Ethics</span>
       <span class="sk-vals">
-        <span class="sk-v">Prometheus</span><span class="sk-v">Grafana</span><span class="sk-v">OpenTelemetry</span><span class="sk-v">Langfuse</span><span class="sk-v">Arize AI</span><span class="sk-v">LangSmith</span><span class="sk-v">RAGAS</span><span class="sk-v">Power BI</span><span class="sk-v">Tableau</span>
+        <span class="sk-v">Responsible AI</span><span class="sk-v">AI Ethics &amp; Fairness</span><span class="sk-v">Bias Detection (AIF360, Fairlearn)</span><span class="sk-v">Explainability (SHAP, LIME)</span><span class="sk-v">LLM Guardrails</span><span class="sk-v">Data Privacy (GDPR, PII, CCPA)</span><span class="sk-v">EU AI Act Compliance</span><span class="sk-v">Model Governance &amp; Model Cards</span><span class="sk-v">AI Risk Assessment</span><span class="sk-v">Guardrails AI</span><span class="sk-v">NeMo Guardrails</span>
       </span>
     </div>
 
   </div>
 </section>
 
-</div><!-- /resume-body -->
+</div>
 </article>
-</div><!-- /page-wrapper -->
+</div>
 
 <script>
-/*
-  PDF GENERATION — PRODUCTION-GRADE IMPLEMENTATION
-  ─────────────────────────────────────────────────────────────────────
-  PRIMARY (always prefer): window.print() → browser "Save as PDF"
-    • Produces a vector PDF — text is selectable & ATS-parseable
-    • Correctly applies @page, @media print, margin:0
-    • File size: ~60–150 KB
-
-  SECONDARY (Quick PDF button): html2canvas → jsPDF
-    • Raster PDF — text is NOT selectable
-    • File size: ~600KB–1.5MB (JPEG compressed canvas)
-    • Use only when Print dialog is unavailable
-*/
 async function downloadPDF() {
   const btn  = document.getElementById('pdfBtn');
   const orig = btn.innerHTML;
-
-  // Guard: ensure libs are loaded (deferred scripts)
   if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
-    showToast('PDF libraries still loading, please try again in a moment.', 'warn');
-    return;
+    showToast('PDF libraries still loading — please try again.', 'warn'); return;
   }
-
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Generating…';
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Generating...';
   btn.disabled  = true;
-
   const el      = document.getElementById('resumeContent');
   const wrapper = document.querySelector('.page-wrapper');
   const toolbar = document.querySelector('.toolbar');
-
-  // Snapshot current inline styles so we can restore them precisely
-  const snap = {
-    elW:    el.style.width,
-    elMW:   el.style.maxWidth,
-    elO:    el.style.overflow,
-    wPT:    wrapper.style.paddingTop,
-    wBG:    wrapper.style.background,
-    tbD:    toolbar.style.display,
-  };
-
+  const snap = { elW: el.style.width, elMW: el.style.maxWidth, elO: el.style.overflow, wPT: wrapper.style.paddingTop, wBG: wrapper.style.background, tbD: toolbar.style.display };
+  const restore = () => { el.style.width = snap.elW; el.style.maxWidth = snap.elMW; el.style.overflow = snap.elO; wrapper.style.paddingTop = snap.wPT; wrapper.style.background = snap.wBG; toolbar.style.display = snap.tbD; };
   try {
-    // ── 1. Freeze layout to exactly 794px ──────────────────────────
-    el.style.width     = '794px';
-    el.style.maxWidth  = '794px';
-    el.style.overflow  = 'visible';
-
-    wrapper.style.paddingTop = '0';
-    wrapper.style.background = '#fff';
-    toolbar.style.display    = 'none';
-
-    // ── 2. Wait for layout paint + font render ─────────────────────
-    await new Promise(resolve => requestAnimationFrame(() =>
-      requestAnimationFrame(() =>
-        setTimeout(resolve, 250)   // 2× rAF + settle
-      )
-    ));
-
-    // ── 3. Capture at 3× resolution for print-quality output ───────
+    el.style.width = '794px'; el.style.maxWidth = '794px'; el.style.overflow = 'visible';
+    wrapper.style.paddingTop = '0'; wrapper.style.background = '#fff';
+    toolbar.style.display = 'none';
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 250))));
     const canvas = await html2canvas(el, {
-      scale:           3,
-      useCORS:         true,
-      allowTaint:      true,
-      backgroundColor: '#ffffff',
-      logging:         false,
+      scale: 3, useCORS: true, allowTaint: true, backgroundColor: '#ffffff', logging: false,
       onclone: (doc) => {
-        // Synchronously apply our constraints in the capture iframe
-        const c = doc.getElementById('resumeContent');
-        const w = doc.querySelector('.page-wrapper');
-        const t = doc.querySelector('.toolbar');
+        const c = doc.getElementById('resumeContent'), w = doc.querySelector('.page-wrapper'), t = doc.querySelector('.toolbar');
         if (c) { c.style.width = '794px'; c.style.maxWidth = '794px'; c.style.overflow = 'visible'; }
         if (w) { w.style.paddingTop = '0'; w.style.background = '#fff'; w.style.display = 'block'; }
         if (t) { t.style.display = 'none'; }
       }
     });
-
-    // ── 4. Restore DOM immediately after capture ───────────────────
-    el.style.width     = snap.elW;
-    el.style.maxWidth  = snap.elMW;
-    el.style.overflow  = snap.elO;
-    wrapper.style.paddingTop = snap.wPT;
-    wrapper.style.background = snap.wBG;
-    toolbar.style.display    = snap.tbD;
-
-    // ── 5. Build PDF with correct aspect ratio ─────────────────────
+    restore();
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
-
-    const A4_W = 210;  // mm
-    const A4_H = 297;  // mm
-
-    // Preserve aspect ratio; never distort the image
-    const canvasRatio = canvas.width / canvas.height;
-    const imgH = Math.min(A4_W / canvasRatio, A4_H);
-
-    // JPEG at 0.90 balances quality vs <2MB target
-    const imgData = canvas.toDataURL('image/jpeg', 0.90);
-    pdf.addImage(imgData, 'JPEG', 0, 0, A4_W, imgH, '', 'FAST');
-
+    const ratio = canvas.width / canvas.height;
+    const pdfH  = Math.min(210 / ratio, 297);
+    pdf.addImage(canvas.toDataURL('image/jpeg', 0.90), 'JPEG', 0, 0, 210, pdfH, '', 'FAST');
     pdf.save('Chandan_Kumar_LeadDataScientist_IBM.pdf');
-    showToast('PDF downloaded! For a searchable version, use Print → Save as PDF.', 'ok');
-
+    showToast('Downloaded! For a searchable PDF use Print > Save as PDF.', 'ok');
   } catch (err) {
-    // Restore DOM even on failure
-    el.style.width     = snap.elW;
-    el.style.maxWidth  = snap.elMW;
-    el.style.overflow  = snap.elO;
-    wrapper.style.paddingTop = snap.wPT;
-    wrapper.style.background = snap.wBG;
-    toolbar.style.display    = snap.tbD;
-
-    console.error('[PDF] Generation failed:', err);
-    showToast('Quick PDF failed. Use Print → Save as PDF for best results.', 'err');
-
+    restore();
+    console.error('[PDF]', err);
+    showToast('Quick PDF failed. Use Print > Save as PDF instead.', 'err');
   } finally {
-    btn.innerHTML = orig;
-    btn.disabled  = false;
+    btn.innerHTML = orig; btn.disabled = false;
   }
 }
 
-/*
-  Toast notification — replaces jarring alert()
-*/
-function showToast(msg, type = 'ok') {
-  const existing = document.getElementById('resume-toast');
-  if (existing) existing.remove();
-
-  const colors = {
-    ok:   { bg: '#0EA5C2', icon: 'fa-circle-check' },
-    warn: { bg: '#F59E0B', icon: 'fa-triangle-exclamation' },
-    err:  { bg: '#DC2626', icon: 'fa-circle-xmark' },
-  };
-  const { bg, icon } = colors[type] || colors.ok;
-
+function showToast(msg, type) {
+  const ex = document.getElementById('resume-toast'); if (ex) ex.remove();
+  const c = { ok: ['#0B7A93','fa-circle-check'], warn: ['#F59E0B','fa-triangle-exclamation'], err: ['#DC2626','fa-circle-xmark'] };
+  const [bg, icon] = c[type] || c.ok;
   const t = document.createElement('div');
-  t.id = 'resume-toast';
-  t.setAttribute('role', 'alert');
-  t.setAttribute('aria-live', 'polite');
-  t.style.cssText = `
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: ${bg}; color: #fff;
-    padding: 8px 18px 8px 12px;
-    border-radius: 4px;
-    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
-    box-shadow: 0 4px 16px rgba(0,0,0,.25);
-    display: flex; align-items: center; gap: 8px;
-    z-index: 9999; max-width: 420px; text-align: center;
-    animation: toastIn .2s ease;
-  `;
+  t.id = 'resume-toast'; t.setAttribute('role','alert'); t.setAttribute('aria-live','polite');
+  t.style.cssText = `position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:${bg};color:#fff;padding:8px 18px 8px 12px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;z-index:9999;max-width:420px;`;
   t.innerHTML = `<i class="fas ${icon}" aria-hidden="true"></i> ${msg}`;
-
-  const style = document.createElement('style');
-  style.textContent = `@keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }`;
-  document.head.appendChild(style);
-
   document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 350); }, 4500);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(() => t.remove(), 350); }, 4500);
 }
 </script>
 </body>
