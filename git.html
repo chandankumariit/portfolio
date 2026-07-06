@@ -39,6 +39,18 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
 @keyframes driftA{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,20px);}}
 @keyframes driftB{0%,100%{transform:translate(0,0);}50%{transform:translate(-25px,-18px);}}
 #vignette{position:absolute;inset:0;z-index:30;pointer-events:none;background:radial-gradient(ellipse at 50% 48%, transparent 55%, rgba(0,0,0,0.5) 100%);}
+#grain{position:absolute;inset:0;z-index:32;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+.light-leak{position:absolute;inset:-20% -50%;z-index:3;pointer-events:none;opacity:0;
+  background:linear-gradient(115deg, transparent 42%, rgba(255,255,255,.14) 50%, transparent 58%);}
+#scene-open .light-leak, #scene-recap .light-leak{animation:leakSweep 2.4s ease .5s forwards;}
+@keyframes leakSweep{0%{opacity:0;transform:translateX(-35%);}35%{opacity:1;}100%{opacity:0;transform:translateX(35%);}}
+.glitch-hit{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  background:linear-gradient(90deg, rgba(251,113,133,.22), transparent 45%, rgba(34,211,238,.14));}
+.scene.active .glitch-hit{animation:glitchPulse .55s steps(3) 7s 1;}
+@keyframes glitchPulse{0%{opacity:0;transform:translateX(0);}20%{opacity:.9;transform:translateX(-5px);}45%{opacity:.55;transform:translateX(5px);}70%{opacity:.8;transform:translateX(-2px);}100%{opacity:0;transform:translateX(0);}}
+.wordmark{position:absolute;bottom:14px;right:16px;z-index:40;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.32);opacity:0;transition:opacity .9s ease;pointer-events:none;}
+.wordmark.show{opacity:1;}
 
 /* ---------- reel progress ---------- */
 #reel-progress{position:absolute;top:12px;left:14px;right:14px;z-index:40;display:flex;gap:3px;}
@@ -107,6 +119,8 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
 .repo-ring{fill:none;stroke:rgba(34,211,238,.45);stroke-width:1.5;opacity:0;}
 .scene.active .repo-ring{animation:ringPulse2 2s ease-in-out 2.6s infinite;}
 @keyframes ringPulse2{0%,100%{opacity:.12;}50%{opacity:.55;}}
+.repo-label{opacity:0;}
+.scene.active .repo-label{animation:fileIn .6s ease 2.4s forwards;}
 
 /* ---------- scene: staging ---------- */
 .stage-area{position:relative;width:270px;height:150px;margin:18px auto 0;}
@@ -177,7 +191,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
 
 /* ---------- scene: terminal (live) ---------- */
 .term-stage{display:flex;flex-direction:column;align-items:center;gap:22px;margin-top:8px;}
-.term-panel{width:250px;background:rgba(255,255,255,.045);border:1px solid var(--glass-line);border-radius:14px;padding:16px 16px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+.term-panel{width:270px;background:rgba(255,255,255,.045);border:1px solid var(--glass-line);border-radius:14px;padding:16px 16px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 20px 50px rgba(0,0,0,.4);}
 .term-row{display:flex;align-items:center;justify-content:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:13.5px;}
 .term-prompt{color:var(--cyan);}
 .term-cmd{color:#fff;transition:opacity .18s ease, transform .18s ease;}
@@ -235,6 +249,24 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
 @keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.35);}50%{box-shadow:0 0 0 8px rgba(139,92,246,0);}}
 .cta-label{font-size:9.5px;color:var(--muted);}
 .tag-pill{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);border:1px solid var(--glass-line);padding:5px 12px;border-radius:100px;}
+
+/* ---------- analogy chip (the "oh, THAT'S like..." moment) ---------- */
+.analogy-chip{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:8px 14px;border-radius:100px;
+  background:rgba(139,92,246,.10);border:1px solid rgba(139,92,246,.35);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:#E9E4FF;max-width:260px;text-align:left;
+  box-shadow:0 0 22px rgba(139,92,246,.12);}
+.analogy-chip .ic{font-size:15px;flex-shrink:0;}
+
+/* ---------- live terminal caption (plain-language sync) ---------- */
+.term-explain{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--muted);margin-top:6px;min-height:18px;
+  transition:opacity .25s ease, transform .25s ease;text-align:center;}
+.term-explain.swap{opacity:0;transform:translateY(4px);}
+.term-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--cyan);opacity:.75;margin-bottom:2px;}
+.term-console{margin-top:10px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.1);text-align:left;}
+.term-output{font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.6;color:#8FE3B0;white-space:pre-line;
+  transition:opacity .25s ease, transform .25s ease;min-height:44px;}
+.term-output.swap{opacity:0;transform:translateY(4px);}
+.term-output .dim{color:var(--muted);}
 </style>
 </head>
 <body>
@@ -254,12 +286,15 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
     <div class="orb orb-a"></div>
     <div class="orb orb-b"></div>
     <div id="vignette"></div>
+    <div id="grain"></div>
+    <div class="wordmark" id="wordmark">git.</div>
     <div id="reel-progress"></div>
 
     <div id="world">
 
       <!-- 1. COLD OPEN -->
       <section class="scene" id="scene-open">
+        <div class="light-leak"></div>
         <div class="pulse-wrap">
           <div class="pulse-glow"></div>
           <div class="pulse-core"></div>
@@ -280,9 +315,13 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
             <rect class="repo-file" x="55" y="80" width="26" height="32" rx="3" fill="rgba(34,211,238,.18)" stroke="var(--cyan)" stroke-width="1.5"/>
             <rect class="repo-file" x="97" y="90" width="26" height="32" rx="3" fill="rgba(167,139,250,.18)" stroke="var(--violet2)" stroke-width="1.5"/>
             <rect class="repo-file" x="139" y="80" width="26" height="32" rx="3" fill="rgba(34,211,238,.18)" stroke="var(--cyan)" stroke-width="1.5"/>
+            <text class="repo-label" x="68" y="122" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="var(--muted)">index.html</text>
+            <text class="repo-label" x="110" y="132" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="var(--muted)">style.css</text>
+            <text class="repo-label" x="152" y="122" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="var(--muted)">script.js</text>
           </svg>
         </div>
         <p class="sub reveal-el" data-t="3000">Every file inside it is tracked for change.</p>
+        <div class="analogy-chip reveal-el" data-t="4400"><span class="ic">🧑‍💻</span>Meet Maya — she's building a portfolio site. We'll follow her project the whole way through.</div>
       </section>
 
       <!-- 3. COMMITS (with detail card) -->
@@ -302,6 +341,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
           </div>
         </div>
         <p class="sub reveal-el" data-t="7800">Jump back to any point, anytime.</p>
+        <div class="analogy-chip reveal-el" data-t="8700"><span class="ic">🎮</span>Think save points in a video game — you can always reload an earlier one.</div>
       </section>
 
       <!-- 4. STAGING -->
@@ -315,6 +355,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
           <div class="stage-tray">STAGING AREA</div>
         </div>
         <p class="sub reveal-el" data-t="3200">git add stages only the changes you pick.</p>
+        <div class="analogy-chip reveal-el" data-t="4800"><span class="ic">🧳</span>It's like packing a suitcase — you decide what goes in, not everything in your closet.</div>
       </section>
 
       <!-- 5. WHY — PROBLEM -->
@@ -351,6 +392,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
 
       <!-- 7. BRANCH + MERGE + CONFLICT -->
       <section class="scene" id="scene-branch">
+        <div class="glitch-hit"></div>
         <div class="eyebrow reveal-el" data-t="0">How it works</div>
         <h2 class="headline reveal-el" data-t="120">Branch, <span class="grad">then merge</span></h2>
         <div class="branch-stage">
@@ -371,6 +413,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
         <p class="sub reveal-el" data-t="6100" style="margin-top:-6px;">Two edits, same lines? That's a conflict.</p>
         <p class="sub reveal-el" data-t="7400" style="margin-top:-6px;">Git flags it — you resolve it, then merge.</p>
         <p class="sub reveal-el" data-t="10700" style="margin-top:-6px;">Merged back — nothing breaks.</p>
+        <div class="analogy-chip reveal-el" data-t="12000"><span class="ic">🌌</span>Like opening a parallel timeline — you experiment safely, then bring only the good parts home.</div>
       </section>
 
       <!-- 8. REMOTE (push/pull) -->
@@ -386,6 +429,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
           <div class="remote-node cloud"><div class="dot"></div>GitHub</div>
         </div>
         <p class="sub reveal-el" data-t="7300">Your code, backed up and shared.</p>
+        <div class="analogy-chip reveal-el" data-t="8400"><span class="ic">☁️</span>Like uploading photos to a shared album — everyone sees the same latest version.</div>
       </section>
 
       <!-- 9. COLLABORATION -->
@@ -405,15 +449,20 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
           </svg>
         </div>
         <p class="sub reveal-el" data-t="3400">Review the changes, then bring them together.</p>
+        <div class="analogy-chip reveal-el" data-t="4700"><span class="ic">👥</span>Like a group project — everyone edits their own copy, then it all folds into one final draft.</div>
       </section>
 
       <!-- 10. TERMINAL, LIVE (6 commands) -->
       <section class="scene" id="scene-terminal">
-        <div class="eyebrow reveal-el" data-t="0">Six commands</div>
+        <div class="eyebrow reveal-el" data-t="0">Seven commands</div>
         <h2 class="headline reveal-el" data-t="120">Live. <span class="grad">Not just typed.</span></h2>
         <div class="term-stage">
           <div class="term-panel">
+            <div class="term-label">📁 maya-portfolio-site/</div>
             <div class="term-row"><span class="term-prompt">$</span><span class="term-cmd" id="termCmd">git init</span><span class="term-cursor"></span></div>
+            <div class="term-explain" id="termExplain">A brand-new, empty project.</div>
+            <div class="term-console"><div class="term-output" id="termOutput">Initialized empty Git repository in
+~/maya-portfolio-site/.git/</div></div>
           </div>
           <div class="mini-graph">
             <svg viewBox="0 0 220 80">
@@ -436,12 +485,13 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
         <div class="eyebrow reveal-el" data-t="0">Your project's memory</div>
         <h2 class="headline reveal-el" data-t="120">See the <span class="grad">whole story</span></h2>
         <div class="log-list">
-          <div class="log-row reveal-el" data-t="700"><span class="hash">9f3d2e5</span>ready for launch</div>
+          <div class="log-row reveal-el" data-t="700"><span class="hash">9f3d2e5</span>update styles</div>
           <div class="log-row reveal-el" data-t="1500"><span class="hash">c48b119</span>fix navbar bug</div>
           <div class="log-row reveal-el" data-t="2300"><span class="hash">7e21f0a</span>add login form</div>
           <div class="log-row reveal-el" data-t="3100"><span class="hash">a3f9c2d</span>initial commit</div>
         </div>
         <p class="sub reveal-el" data-t="4800">git log — every snapshot, in order.</p>
+        <div class="analogy-chip reveal-el" data-t="5900"><span class="ic">📔</span>It's Maya's whole build, in order — like a diary she can flip back through anytime.</div>
       </section>
 
       <!-- 12. REWIND -->
@@ -462,6 +512,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
           </div>
         </div>
         <p class="sub reveal-el" data-t="5600">No fear of mistakes. Ever.</p>
+        <div class="analogy-chip reveal-el" data-t="6700"><span class="ic">↩️</span>Like Ctrl+Z — but for your entire project, not just the last keystroke.</div>
       </section>
 
       <!-- 13. GITIGNORE -->
@@ -475,6 +526,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
           <div class="ignore-file safe" id="igf4">index.html</div>
         </div>
         <p class="sub reveal-el" data-t="3600">.gitignore keeps secrets and junk out.</p>
+        <div class="analogy-chip reveal-el" data-t="4700"><span class="ic">🛄</span>Like leaving your passport locked at home — you don't carry everything, everywhere.</div>
       </section>
 
       <!-- 14. HABITS -->
@@ -495,6 +547,7 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
 
       <!-- 15. RECAP + CTA -->
       <section class="scene" id="scene-recap">
+        <div class="light-leak"></div>
         <div class="recap-cam">
           <svg class="recap-glyph" viewBox="0 0 150 110">
             <path d="M20 90 L20 20" stroke="var(--cyan)" stroke-width="3" fill="none" filter="url(#softGlow)"/>
@@ -524,18 +577,18 @@ html,body{height:100%;background:#000;font-family:'Inter',sans-serif;color:var(-
 const scenes = [
   { id:'scene-open',     duration:4500 },
   { id:'scene-repo',     duration:8000 },
-  { id:'scene-what',     duration:10000 },
+  { id:'scene-what',     duration:10800 },
   { id:'scene-staging',  duration:8000 },
   { id:'scene-why',      duration:8000 },
   { id:'scene-why-real', duration:7500 },
-  { id:'scene-branch',   duration:13000 },
-  { id:'scene-remote',   duration:10000 },
+  { id:'scene-branch',   duration:14200 },
+  { id:'scene-remote',   duration:11000 },
   { id:'scene-collab',   duration:8000 },
-  { id:'scene-terminal', duration:17000 },
+  { id:'scene-terminal', duration:21000 },
   { id:'scene-log',      duration:7500 },
   { id:'scene-rewind',   duration:8000 },
-  { id:'scene-ignore',   duration:7000 },
-  { id:'scene-habits',   duration:10000 },
+  { id:'scene-ignore',   duration:8200 },
+  { id:'scene-habits',   duration:9000 },
   { id:'scene-recap',    duration:9500 },
 ];
 
@@ -630,16 +683,29 @@ function resetRemote(){
 
 /* ---- scene-terminal: each command triggers a live diagram change ---- */
 const terminalBeats = [
-  { cmd:'git init', run:()=>{} },
-  { cmd:'git add .', run:()=>{ document.getElementById('mgRepoFill').style.opacity='1'; } },
-  { cmd:'git commit -m "save"', run:()=>{ document.getElementById('mgCommit').style.opacity='1'; } },
-  { cmd:'git checkout -b feature', run:()=>{ const b=document.getElementById('mgBranch'); b.style.opacity='1'; b.style.strokeDashoffset='0'; } },
-  { cmd:'git merge feature', run:()=>{
+  { cmd:'git init', explain:'A brand-new, empty project.',
+    output:'Initialized empty Git repository in\n~/maya-portfolio-site/.git/', run:()=>{} },
+  { cmd:'git status', explain:'Check what Git sees before doing anything.',
+    output:'On branch main\nNo commits yet\nUntracked files:\n  index.html\n  style.css\n  script.js', run:()=>{} },
+  { cmd:'git add .', explain:'Stage index.html and style.css — ready to save.',
+    output:'Changes to be committed:\n  new file:   index.html\n  new file:   style.css\n  new file:   script.js',
+    run:()=>{ document.getElementById('mgRepoFill').style.opacity='1'; } },
+  { cmd:'git commit -m "save"', explain:'Snapshot taken — a save point, right now.',
+    output:'[main a3f9c2d] save\n 3 files changed, 42 insertions(+)',
+    run:()=>{ document.getElementById('mgCommit').style.opacity='1'; } },
+  { cmd:'git checkout -b feature', explain:'A safe copy branches off to try a new layout.',
+    output:"Switched to a new branch 'feature'",
+    run:()=>{ const b=document.getElementById('mgBranch'); b.style.opacity='1'; b.style.strokeDashoffset='0'; } },
+  { cmd:'git merge feature', explain:'The new layout is folded back into the main version.',
+    output:'Updating a3f9c2d..7e21f0a\nFast-forward\n style.css | 12 +++++++++--\n 1 file changed, 10 insertions(+)',
+    run:()=>{
       const m=document.getElementById('mgMerge'); m.style.opacity='1'; m.style.strokeDashoffset='0';
       const burst=document.getElementById('mgBurst'); burst.classList.remove('burst-anim'); void burst.offsetWidth;
       burst.style.opacity='1'; burst.classList.add('burst-anim');
   } },
-  { cmd:'git push', run:()=>{
+  { cmd:'git push', explain:'Uploaded to GitHub — safe, backed up, shareable.',
+    output:'Enumerating objects: 6, done.\nTo github.com:maya/portfolio-site.git\n * [new branch]      main -> main',
+    run:()=>{
       const l=document.getElementById('mgPushLine'); l.style.opacity='1'; l.style.strokeDashoffset='0';
       const r=document.getElementById('mgRemote'); r.style.opacity='1'; r.setAttribute('stroke','var(--cyan)'); r.style.filter='url(#softGlow)';
   } },
@@ -647,10 +713,19 @@ const terminalBeats = [
 function runTerminal(duration){
   const step = Math.floor(duration/terminalBeats.length);
   const cmdEl = document.getElementById('termCmd');
+  const explainEl = document.getElementById('termExplain');
+  const outputEl = document.getElementById('termOutput');
   terminalBeats.forEach((beat,i)=>{
     timers.push(setTimeout(()=>{
       cmdEl.classList.add('swap');
-      const t2 = setTimeout(()=>{ cmdEl.textContent = beat.cmd; cmdEl.classList.remove('swap'); beat.run(); }, 180);
+      explainEl.classList.add('swap');
+      outputEl.classList.add('swap');
+      const t2 = setTimeout(()=>{
+        cmdEl.textContent = beat.cmd; cmdEl.classList.remove('swap');
+        explainEl.textContent = beat.explain; explainEl.classList.remove('swap');
+        outputEl.textContent = beat.output; outputEl.classList.remove('swap');
+        beat.run();
+      }, 180);
       timers.push(t2);
     }, i*step + 150));
   });
@@ -658,6 +733,10 @@ function runTerminal(duration){
 function resetTerminal(){
   const cmdEl = document.getElementById('termCmd');
   if(cmdEl) cmdEl.textContent = 'git init';
+  const explainEl = document.getElementById('termExplain');
+  if(explainEl) explainEl.textContent = 'A brand-new, empty project.';
+  const outputEl = document.getElementById('termOutput');
+  if(outputEl) outputEl.textContent = 'Initialized empty Git repository in\n~/maya-portfolio-site/.git/';
   ['mgRepoFill','mgCommit'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.opacity='0'; });
   ['mgBranch','mgMerge'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.opacity='0'; el.style.strokeDashoffset = el.getAttribute('stroke-dasharray'); } });
   const burst = document.getElementById('mgBurst');
@@ -753,6 +832,9 @@ function playScene(index){
   const el = document.getElementById(scene.id);
   el.classList.add('active');
   scheduleReveals(el);
+  const wordmark = document.getElementById('wordmark');
+  if(scene.id === 'scene-open' || scene.id === 'scene-recap'){ wordmark.classList.remove('show'); }
+  else { wordmark.classList.add('show'); }
   resetAllExtras();
   if(scene.id === 'scene-what') runWhat(scene.duration);
   if(scene.id === 'scene-staging') runStaging(scene.duration);
