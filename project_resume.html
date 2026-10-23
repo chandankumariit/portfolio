@@ -84,6 +84,28 @@
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 16px}
 
   .divider{border:none;border-top:1px solid #CBD5E0;margin:24px 0}
+
+  /* ── Q&A SECTION ── */
+  .qa-section{margin:18px 0 10px}
+  .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+  .qa-grid.single{grid-template-columns:1fr}
+  .qa-card{border-radius:8px;overflow:hidden;border:1px solid #CBD5E0}
+  .qa-card.project{border-color:#1B3A5C}
+  .qa-card.tech{border-color:#00B4D8}
+  .qa-card.tricky{border-color:#F6AE2D}
+  .qa-card.crosscut{border-color:#2EC4B6}
+  .qa-q{padding:9px 12px;font-size:11.5px;font-weight:700;color:#fff;line-height:1.4}
+  .qa-card.project .qa-q{background:#1B3A5C}
+  .qa-card.tech .qa-q{background:#0A6E8A}
+  .qa-card.tricky .qa-q{background:#B97D10}
+  .qa-card.crosscut .qa-q{background:#1A8A7A}
+  .qa-a{padding:9px 12px;font-size:11px;color:#2D3748;line-height:1.55;background:#F7FAFC}
+  .qa-card.project .qa-a{background:#EBF4FF}
+  .qa-card.tech .qa-a{background:#E6F7FF}
+  .qa-card.tricky .qa-a{background:#FFFDE7}
+  .qa-card.crosscut .qa-a{background:#E6FAF8}
+  .qa-legend{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 12px;font-size:10.5px}
+  .qa-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
   .footer-note{text-align:center;font-size:10px;color:#718096;padding:20px;font-style:italic}
 </style>
 </head>
@@ -293,6 +315,39 @@
 
   <div class="section-label">🛠 Technology Stack</div>
   <div class="tech-box">IBM Watsonx Orchestrate &nbsp;·&nbsp; LangGraph &nbsp;·&nbsp; AutoGen &nbsp;·&nbsp; MCP &nbsp;·&nbsp; OpenAPI &nbsp;·&nbsp; OAuth2/SAML &nbsp;·&nbsp; IBM Cloud OpenShift &nbsp;·&nbsp; Kubernetes &nbsp;·&nbsp; Redis &nbsp;·&nbsp; OpenTelemetry &nbsp;·&nbsp; Python &nbsp;·&nbsp; llama-3-2-90b</div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ What exactly is Weave and how would you explain it to a non-technical stakeholder?</div>
+  <div class="qa-a">Weave is IBM's agentic AI lifecycle platform — a factory that converts plain English business requirements into fully deployed, production-ready AI agents automatically. Instead of engineers spending months building agents from scratch, Weave auto-generates the Task Plan, agents, tools, and deployment in minutes.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ What was the hardest engineering challenge in building Weave?</div>
+  <div class="qa-a">The hardest challenge was designing the conditional routing engine — making the system decide at runtime which agent handles which task based on context. Getting the DAG generation to produce correct decision logic from ambiguous natural language requirements required extensive prompt engineering and validation loops.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ How does the MCP (Model Context Protocol) connector work? What did you build there?</div>
+  <div class="qa-a">MCP provides a standardised interface for agents to call external tools. I built 60+ connectors (Salesforce, SAP, ServiceNow, Workday) by transpiling their OpenAPI specs into MCP-compatible tool definitions. Each connector handles auth (OAuth2/SAML), rate limiting, error handling, and response normalisation automatically.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ Walk me through how Weave goes from a plain English requirement to a deployed agent.</div>
+  <div class="qa-a">Step 1: LLM parses the requirement into a structured task plan with decision nodes. Step 2: For each node, Weave generates a specialised agent (with role, goal, tools). Step 3: Tools are auto-created from OpenAPI specs. Step 4: A DAG wires the agents with conditional routing. Step 5: One-click deploys to IBM Watsonx Orchestrate with validation.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ How did you achieve 99.9% uptime at 10M+ daily API calls?</div>
+  <div class="qa-a">Through multi-region deployment on IBM Cloud OpenShift + Kubernetes with auto-scaling. Redis handles session state and caching. OpenTelemetry provides distributed tracing so we catch issues before they cascade. Circuit breakers on every MCP connector prevent downstream failures from taking down the whole system.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ What's the difference between Weave and LangChain / LangGraph? Why not just use those?</div>
+  <div class="qa-a">LangChain/LangGraph are great frameworks for building agents in code. Weave is a no-code/low-code platform on top — it uses LangGraph internally for orchestration but adds an enterprise layer: auto-generation from natural language, 60+ pre-built connectors, OAuth2/SAML security, one-click deployment, and governance integration with watsonx.governance.</div>
+</div></div><div class="qa-grid"><div class="qa-card tricky">
+  <div class="qa-q">❓ What happens when an agent fails mid-workflow? How do you handle error recovery?</div>
+  <div class="qa-a">Weave implements checkpoint-based recovery. Every agent action is logged to a durable state store (Redis). If an agent fails, the workflow can resume from the last checkpoint rather than restarting. For critical failures, we have fallback routing — the DAG has alternate paths. Human-in-the-loop escalation is triggered when confidence drops below threshold.</div>
+</div><div class="qa-card tricky">
+  <div class="qa-q">❓ How do you prevent agents from going rogue or producing hallucinated tool calls?</div>
+  <div class="qa-a">Three layers: (1) Tool schemas are strictly validated — agents can only call tools with the exact signature defined in the MCP spec. (2) Output guardrails check every agent response before it's routed to the next step. (3) The DAG structure itself limits what an agent can do — it can't call tools outside its defined scope. We also log everything for audit via watsonx.governance.</div>
+</div></div><div class="qa-grid single"><div class="qa-card tricky">
+  <div class="qa-q">❓ The project went from concept to production in 14 months. What corners were cut and what would you do differently?</div>
+  <div class="qa-a">Honest answer: we under-invested in the developer portal and documentation early on. The first 6 months were pure platform building, and we added SDK docs and tutorials late. I'd front-load developer experience investment — a platform is only as good as how quickly others can build on it. We also added monitoring (OpenTelemetry) later than ideal; I'd instrument from day one next time.</div>
+</div></div></div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -330,6 +385,33 @@
      PROJECT 3: ASKFIN
 ═══════════════════════════════════════════════════════════════ -->
 <div class="page-break"></div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ Why does AI governance matter? Can't you just trust your models?</div>
+  <div class="qa-a">Models drift over time — the data distribution changes, and a model trained 6 months ago may be making biased or incorrect decisions today with no visible warning signs. In regulated industries (banking, healthcare), a wrong model decision can mean regulatory fines or patient harm. Governance gives you real-time visibility, audit trails, and the ability to prove your AI is fair and compliant.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ What is an AI FactSheet and why did you introduce it?</div>
+  <div class="qa-a">An AI FactSheet is a machine-readable "birth certificate" for every deployed model — it records who trained it, on what data, with what hyperparameters, what bias tests were run, and what performance it had at deployment. Regulators under EU AI Act and ISO 42001 are starting to require this. It also means when a model makes a bad decision, you can trace back exactly what happened.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ How does IBM OpenScale detect drift in production?</div>
+  <div class="qa-a">OpenScale monitors two types of drift: data drift (input distribution shifts from training data, measured by Population Stability Index and KL divergence) and concept drift (model accuracy degrades, detected by comparing prediction distributions over time). When drift exceeds a threshold, it triggers automated retraining via the pipeline and alerts the governance dashboard.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ How did you map 200+ regulatory frameworks in watsonx.governance?</div>
+  <div class="qa-a">We built a policy-to-metric mapping layer in IBM OpenPages. Each regulatory framework (EU AI Act, NIST AI RMF, ISO 42001, GDPR, etc.) was decomposed into measurable controls. Each control was mapped to a model metric (fairness score, drift rate, data lineage completeness). The Governance Graph links model → metric → control → regulation — so you can query "which models are at risk for EU AI Act Article 10?"</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ What is the difference between fairness, drift, and hallucination monitoring?</div>
+  <div class="qa-a">Fairness: Does the model produce different outcomes for different demographic groups (gender, race)? Measured by demographic parity, equal opportunity. Drift: Has the model's performance degraded over time due to changing data? Measured by PSI, KL divergence. Hallucination: Is the model generating false or fabricated information? Measured by factuality scores, citation verification, and groundedness checks.</div>
+</div><div class="qa-card tricky">
+  <div class="qa-q">❓ A model passes all governance checks but is still producing bad business outcomes. How?</div>
+  <div class="qa-a">Governance checks what you measure, not what you don't. A model can be statistically fair and non-drifting but still optimising for the wrong business objective. This is why we added business KPI tracking alongside model metrics — pairing model performance with downstream business outcomes (conversion rate, revenue impact). The model might be technically healthy but solving the wrong problem.</div>
+</div></div><div class="qa-grid single"><div class="qa-card tricky">
+  <div class="qa-q">❓ How do you govern models across multi-cloud — IBM, AWS SageMaker, Azure ML simultaneously?</div>
+  <div class="qa-a">We use watsonx.governance as the central control plane. Each cloud has an agent that pushes model metadata (metrics, lineage, predictions) back to the governance layer via standardised connectors. IBM models are native; SageMaker and Azure ML use SDK integrations that pull model cards and push monitoring data. The Governance Graph normalises everything into a unified view regardless of cloud origin.</div>
+</div></div></div>
 <div class="project">
   <div class="proj-header">
     <h2>AskFin<br/><span style="font-weight:400;font-size:14px;color:#90CDF4">SLM-Powered Intelligent Banking Assistant</span></h2>
@@ -453,6 +535,30 @@
 
   <div class="section-label">🛠 Technology Stack</div>
   <div class="tech-box">SLM Fine-Tuning &nbsp;·&nbsp; LoRA &nbsp;·&nbsp; Hugging Face Transformers &nbsp;·&nbsp; Banking NLP Corpus &nbsp;·&nbsp; Query Classification &nbsp;·&nbsp; Response Generation &nbsp;·&nbsp; LLM Benchmarking &nbsp;·&nbsp; Python &nbsp;·&nbsp; Azure</div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ Why use an SLM instead of a large LLM for banking? What's the trade-off?</div>
+  <div class="qa-a">An SLM (Small Language Model) fine-tuned on banking data beats a general LLM on domain-specific tasks for three reasons: (1) It's much cheaper to run — 10-100x lower inference cost. (2) It's faster — lower latency per query. (3) It's more precise — it only knows banking, so it doesn't hallucinate outside-domain answers. The trade-off: it can't handle novel, out-of-scope queries. That's fine for routine banking ops.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ How did you validate that AskFin was actually better than the large LLM baseline?</div>
+  <div class="qa-a">We ran a structured benchmark across 3 dimensions: quality (human eval on 500 test queries — accuracy, policy compliance, conciseness), latency (P50/P95 response times), and cost (tokens/query × price/token). AskFin matched or exceeded LLM quality on banking-specific queries at ~15% of the cost and 3x lower latency. We presented this as a quality-cost Pareto frontier to the bank's leadership.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ What is LoRA and why did you use it for fine-tuning instead of full fine-tuning?</div>
+  <div class="qa-a">LoRA (Low-Rank Adaptation) freezes the base model weights and adds small trainable matrices to the attention layers. This means we're only training ~1% of the parameters vs full fine-tuning. Benefits: 10x cheaper to train, no catastrophic forgetting of base knowledge, can be swapped in/out without reloading the base model. For a bank's budget, LoRA makes domain adaptation economically viable.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ What does the classification head do vs the generation head?</div>
+  <div class="qa-a">The classification head is a lightweight linear layer on top of the encoder that routes the query to a category (loan, KYC, account, compliance, ops). This is fast — it's just a softmax over 5-10 classes. The generation head is the autoregressive decoder that produces the actual response text, conditioned on the category. Splitting them lets us apply different quality gates per category.</div>
+</div></div><div class="qa-grid"><div class="qa-card tricky">
+  <div class="qa-q">❓ What if the SLM encounters a question it wasn't trained on? How do you handle OOD queries?</div>
+  <div class="qa-a">We added an out-of-distribution (OOD) detector — a separate classifier that measures query similarity to the training distribution. If confidence is below threshold, AskFin escalates to a human agent rather than generating a potentially wrong answer. In a bank, a confident wrong answer is far worse than admitting uncertainty. We also log OOD queries to continuously expand the training corpus.</div>
+</div><div class="qa-card tricky">
+  <div class="qa-q">❓ How do you ensure the model stays compliant as bank policies change?</div>
+  <div class="qa-a">We built a drift detection loop — every month, we run the model against a holdout of recent customer queries. If accuracy drops or new query patterns emerge, it triggers a LoRA re-fine-tuning job on the updated policy corpus. The whole pipeline (data update → fine-tune → eval → deploy) is automated via CI/CD, so policy changes propagate to the model within days, not months.</div>
+</div></div></div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -581,6 +687,33 @@
 
   <div class="section-label">🛠 Technology Stack</div>
   <div class="tech-box">Python &nbsp;·&nbsp; Azure Cognitive Services &nbsp;·&nbsp; LLMs &nbsp;·&nbsp; Hybrid RAG &nbsp;·&nbsp; Semantic Search &nbsp;·&nbsp; BM25 &nbsp;·&nbsp; Vector Retrieval &nbsp;·&nbsp; Azure OpenAI &nbsp;·&nbsp; Fusion + Re-ranking &nbsp;·&nbsp; PDF Processing</div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ What is RAG and why did you need it for banking documents?</div>
+  <div class="qa-a">RAG (Retrieval-Augmented Generation) means the LLM doesn't answer from memory — it first retrieves relevant chunks from your document library, then generates an answer grounded in those chunks. In banking, you can't let the LLM guess from training data. Every answer must come from the bank's actual policies and agreements. RAG provides that grounding + source citation.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ What's the business case for a 35% improvement in document processing efficiency?</div>
+  <div class="qa-a">NatWest processes thousands of documents per month — loan reviews, compliance checks, policy Q&A for staff. Each manual lookup took 15-45 minutes. AskBank cuts that to under 2 minutes. Across hundreds of staff doing dozens of lookups per day, that's thousands of hours saved per month, faster customer response times, and fewer errors from fatigued human reading.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ Why Hybrid RAG? Why not just use semantic search alone?</div>
+  <div class="qa-a">Semantic search (dense vectors) is great at capturing meaning and intent — "penalty for early repayment" finds clauses about early repayment fees even if the exact words differ. But it misses exact matches — clause numbers, product codes, regulatory IDs. BM25 keyword search catches those exactly. Hybrid combines both: semantic for meaning, keyword for precision. Neither alone covers all banking query types.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ Walk me through the Fusion + Re-ranking step.</div>
+  <div class="qa-a">After both retrievers return their top-k chunks, we use Reciprocal Rank Fusion (RRF) to merge the two ranked lists into one. Then a cross-encoder re-ranker (a BERT-style model) scores each candidate chunk against the query for relevance. Cross-encoders are more accurate than bi-encoders because they see the query and document together. The top N chunks after re-ranking go to the LLM.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ How do you handle very long banking documents that exceed the LLM context window?</div>
+  <div class="qa-a">Three strategies: (1) Hierarchical chunking — split at semantic boundaries (sections, clauses) not arbitrary token counts. (2) Metadata tagging — each chunk carries document name, section, page number so the retriever can do section-level filtering. (3) Map-reduce for summaries — for full document summarisation, we summarise each chunk then summarise the summaries. This gives complete coverage without truncation.</div>
+</div><div class="qa-card tricky">
+  <div class="qa-q">❓ What if the retriever returns the wrong chunk and the LLM answers confidently from it?</div>
+  <div class="qa-a">This is the "retrieval failure" problem. We mitigate with: (1) Confidence scoring — if the top retrieved chunk has low similarity to the query, we flag the response as low-confidence. (2) Faithfulness checks — we verify that the generated answer is actually supported by the retrieved chunks, not hallucinated. (3) Source display — showing users the cited chunk lets them verify. In banking, users are trained to always check the citation.</div>
+</div></div><div class="qa-grid single"><div class="qa-card tricky">
+  <div class="qa-q">❓ How do you keep the vector index up to date as documents are updated?</div>
+  <div class="qa-a">We implemented incremental indexing — document change events trigger a re-embedding pipeline that: detects changed/added chunks, re-embeds only those chunks, updates the vector store with upserts. Deleted documents trigger chunk deletion. We also version documents so we can answer "based on the policy as of date X" — important for legal disputes where the document version matters.</div>
+</div></div></div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -665,6 +798,27 @@
 
   <div class="section-label">🛠 Technology Stack</div>
   <div class="tech-box">Python &nbsp;·&nbsp; AWS Glue &nbsp;·&nbsp; AWS Athena &nbsp;·&nbsp; AWS SageMaker &nbsp;·&nbsp; ML Forecasting &nbsp;·&nbsp; Feature Engineering &nbsp;·&nbsp; Time Series &nbsp;·&nbsp; Business Intelligence</div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ What kind of forecasting were you doing? Demand forecasting? Revenue?</div>
+  <div class="qa-a">The primary use case was demand and competitive intelligence forecasting — predicting future demand patterns across product lines and surfacing competitive signals from multi-source data. The models included time-series forecasting (sales volume by SKU and region) and regression-based models for identifying competitive factors driving demand shifts.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ How did you get 20% improvement in forecast accuracy? What was the baseline?</div>
+  <div class="qa-a">The baseline was a simple moving average / Excel-based model the client was using. The improvement came from: (1) Unifying multiple data sources that the old model didn't have access to. (2) Feature engineering — adding lag features, rolling statistics, calendar effects, promotional flags. (3) Using XGBoost instead of linear regression. The 20% is measured as reduction in MAPE (Mean Absolute Percentage Error).</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ Why AWS Glue + Athena + SageMaker? Walk me through the architecture choice.</div>
+  <div class="qa-a">AWS Glue for ETL — it's serverless, handles schema discovery automatically, and can connect to disparate sources (S3, JDBC, APIs) without managing infrastructure. Athena for querying — it's serverless SQL on S3, perfect for exploratory analysis on large datasets without a persistent warehouse. SageMaker for model training and deployment — managed infrastructure, built-in experiment tracking, and easy endpoint creation.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ What feature engineering did you do for the forecasting models?</div>
+  <div class="qa-a">Key features: (1) Lag features — sales at t-1, t-7, t-28 days. (2) Rolling statistics — 7-day, 30-day moving averages and standard deviations. (3) Calendar features — day of week, month, holidays, seasonality indicators. (4) Competitive signals — extracted from the multi-source data. (5) Promotional flags — whether a promotion was active. (6) Interaction terms between seasonality and product category.</div>
+</div></div><div class="qa-grid single"><div class="qa-card tricky">
+  <div class="qa-q">❓ Multiple disparate sources — what data quality issues did you encounter?</div>
+  <div class="qa-a">Classic ones: inconsistent date formats across sources, different granularities (daily vs weekly), missing values for certain periods, duplicate records from overlapping source systems. We built a data quality framework in Glue with validation rules — null checks, range checks, referential integrity. Failed records were quarantined and flagged rather than silently dropped, which is critical for audit trails.</div>
+</div></div></div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -742,6 +896,24 @@
 
   <div class="section-label">🛠 Technology Stack</div>
   <div class="tech-box">Azure Data Factory &nbsp;·&nbsp; Azure Databricks &nbsp;·&nbsp; Azure Synapse &nbsp;·&nbsp; Power BI &nbsp;·&nbsp; Azure Cloud &nbsp;·&nbsp; ETL Pipelines &nbsp;·&nbsp; Data Architecture &nbsp;·&nbsp; MLOps</div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ What does it mean to "design an architecture"? What did you actually deliver?</div>
+  <div class="qa-a">Concrete deliverables: (1) Architecture decision records — why Azure over AWS/GCP for this client, which services, why. (2) Data flow diagrams — every source, transformation, and sink mapped. (3) Infrastructure-as-code templates (ARM/Terraform). (4) Migration runbook — ordered workstream plan with dependencies, owners, timelines. (5) PoC validating the architecture on a representative data sample.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ How did you cut the timeline by 25%?</div>
+  <div class="qa-a">Three factors: (1) Parallel workstreams — instead of sequential ingestion → transformation → reporting, we ran them in parallel with clear interfaces between teams. (2) Reusable templates — we built ADF pipeline templates that could be parameterised and reused rather than built from scratch per source. (3) Early stakeholder alignment — we ran architecture review sessions in week 1 rather than presenting a finished design for approval, eliminating rework cycles.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ Why Azure Databricks for transformation? Why not Azure Data Factory alone?</div>
+  <div class="qa-a">ADF is great for orchestration and simple copy/move operations. But complex transformations — joins across large datasets, ML feature engineering, data quality logic — need distributed compute that ADF can't provide. Databricks with PySpark runs those transformations at scale. The pattern is: ADF triggers and orchestrates, Databricks executes the heavy computation. They complement each other.</div>
+</div><div class="qa-card tricky">
+  <div class="qa-q">❓ How do you ensure the architecture you design can handle future AI/ML workloads?</div>
+  <div class="qa-a">We designed with "AI readiness" as a first-class concern: (1) Delta Lake format for the data lakehouse — supports time travel, schema evolution, and direct integration with Azure ML. (2) Metadata catalog (Azure Purview) — every dataset is catalogued so ML teams can discover and understand data lineage. (3) Feature store pattern — computed features are stored and reusable across ML models. (4) Separate raw/curated/gold zones — raw data is never overwritten.</div>
+</div></div></div>
 </div>
 
 ring &nbsp;·&nbsp; Amazon QuickSight &nbsp;·&nbsp; AWS Step Functions &nbsp;·&nbsp; Scikit-learn &nbsp;·&nbsp; Python</div>
@@ -874,6 +1046,33 @@ ring &nbsp;·&nbsp; Amazon QuickSight &nbsp;·&nbsp; AWS Step Functions &nbsp;·
   </tr></table>
   <div class="section-label">🛠 Technology Stack</div>
   <div class="tech-box">Azure ML Studio &nbsp;·&nbsp; Azure Data Factory &nbsp;·&nbsp; Azure App Service &nbsp;·&nbsp; XGBoost &nbsp;·&nbsp; SMOTE &nbsp;·&nbsp; Drift Detection &nbsp;·&nbsp; REST API &nbsp;·&nbsp; Power BI &nbsp;·&nbsp; Python &nbsp;·&nbsp; SQL</div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ What is a waste classification code and why is it a regulatory requirement?</div>
+  <div class="qa-a">The US EPA requires every hazardous waste stream to be assigned a specific code (D001-D043 for characteristic wastes, F/K/P/U codes for listed wastes). The code determines: how the waste must be stored, transported, treated, and disposed of. Wrong code = wrong disposal = federal EPA violation. Fines can reach $70,000 per day per violation. Getting it right every time is not optional.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ How did you collect the training data? What features did you use?</div>
+  <div class="qa-a">Training data came from historical waste manifests at Clean Harbors — physical property measurements recorded at the time of collection. Features: pH, flash point (ignitability), corrosivity (pH extremes), reactivity indicators, ignitability test results, colour, viscosity, specific gravity, halogen content, and chemical composition flags. Labels were the EPA waste codes assigned by the compliance team. ~30+ features total.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ Why XGBoost? Why not a neural network for this?</div>
+  <div class="qa-a">XGBoost was the right choice here for three reasons: (1) Tabular data with 30 features — neural networks don't outperform gradient boosting on tabular data at this scale. (2) Interpretability — compliance officers needed to understand why the model chose a code, and SHAP values on XGBoost are reliable and auditable. (3) Training data volume — we had thousands of records, not millions. XGBoost generalises better with limited data.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ What is SMOTE and why was class imbalance a problem here?</div>
+  <div class="qa-a">SMOTE (Synthetic Minority Over-sampling Technique) creates synthetic training examples for underrepresented classes by interpolating between existing minority samples. The class imbalance problem: most waste at Clean Harbors is non-hazardous or falls into common categories. Rare but critical hazardous codes (e.g., reactive wastes, acutely hazardous P-codes) had very few training examples. Without SMOTE, the model would predict common classes always and miss the dangerous rare ones.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ How did you implement drift detection and automated retraining?</div>
+  <div class="qa-a">Azure Data Factory monitored two drift signals: (1) Data drift — PSI (Population Stability Index) comparing incoming waste property distributions against training baseline. (2) Performance drift — monthly holdout evaluation against recently-labelled examples. If PSI > 0.2 or accuracy drops > 3%, ADF triggers an Azure ML pipeline that retrains on the updated dataset, runs validation, and promotes the new model if it passes quality gates.</div>
+</div><div class="qa-card tricky">
+  <div class="qa-q">❓ The model achieves 92% accuracy. What happens in the 8% of cases it gets wrong?</div>
+  <div class="qa-a">Great question — the answer defines how we designed the system. Mis-classification in this domain is not symmetric: misclassifying hazardous as non-hazardous is far worse than the reverse. So we built an asymmetric confidence threshold — the model only auto-classifies when confidence > 95%. Below that threshold, it flags for human review. This gives us near-100% precision on auto-classified cases while sending uncertain cases to experts. The 8% reflects total accuracy including the uncertain cases.</div>
+</div></div><div class="qa-grid single"><div class="qa-card tricky">
+  <div class="qa-q">❓ How do you explain the model's decision to a compliance officer who isn't technical?</div>
+  <div class="qa-a">We used SHAP (SHapley Additive exPlanations) to generate natural-language explanations. For each classification, the officer sees: "This waste was classified as D001 (Ignitable) primarily because flash point = 42°C (below 60°C threshold) and it is a liquid." The SHAP values are translated into plain English feature contributions, ranked by importance. Compliance officers can verify the model's reasoning against the EPA regulatory criteria directly.</div>
+</div></div></div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -991,6 +1190,117 @@ ring &nbsp;·&nbsp; Amazon QuickSight &nbsp;·&nbsp; AWS Step Functions &nbsp;·
   </tr></table>
   <div class="section-label">🛠 Technology Stack</div>
   <div class="tech-box">Azure ML Studio &nbsp;·&nbsp; Azure Data Factory &nbsp;·&nbsp; Gradient Boosting &nbsp;·&nbsp; Drift Detection &nbsp;·&nbsp; Feature Engineering &nbsp;·&nbsp; Automated Retraining &nbsp;·&nbsp; Power BI &nbsp;·&nbsp; Python &nbsp;·&nbsp; SQL</div>
+<div class="section-label">🎤 Interview Questions — What They Will Ask You</div>
+<div class="qa-section"><div class="qa-legend">
+  <span><span class="qa-dot" style="background:#1B3A5C"></span>Business / Project</span>
+  <span><span class="qa-dot" style="background:#0A6E8A"></span>Technical Deep-Dive</span>
+  <span><span class="qa-dot" style="background:#B97D10"></span>Tricky / Gotcha</span>
+</div><div class="qa-grid"><div class="qa-card project">
+  <div class="qa-q">❓ How does a company lose $750K to invoice errors? Walk me through a real example.</div>
+  <div class="qa-a">Example: A cleanup job takes 8 hours, 3 trucks, 5 workers. The actual invoice is generated from a billing system that pulls hours from one system, truck count from another, and applies rates from a contract table. If the contract rate expired and the system defaulted to a higher rate, or if overtime hours were double-counted, or if a truck that left early was billed for the full day — each error is small but across thousands of jobs per year, it compounds. $750K is a conservative estimate.</div>
+</div><div class="qa-card project">
+  <div class="qa-q">❓ Why couldn't a rule-based system catch these errors instead of ML?</div>
+  <div class="qa-a">Rule-based systems catch known error patterns. ML catches unknown ones. A rule like "flag if hours > 12" works, but the errors were subtle combinations — correct hours but wrong contract tier, or normal hours/trucks but anomalous for that specific customer's historical pattern. ML learns the expected invoice amount from the joint distribution of all 47 features and flags deviations from that learned expectation. Rules can't capture that multi-dimensional interaction.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ What does the regression model actually predict? What is the target variable?</div>
+  <div class="qa-a">The target variable is the expected invoice total in dollars. The model is trained on historical invoices where the "correct" amount was verified (post-audit, post-dispute-resolution records). Given the 47 input features (hours, truck count, worker count, service codes, contract tier, customer type, job type, seasonal flag, etc.), the model predicts: "This job should have been invoiced at $X." Then we compute: flagged_gap = |actual_invoice - predicted_invoice|. If flagged_gap > threshold, it's sent for review.</div>
+</div><div class="qa-card tech">
+  <div class="qa-q">❓ How did you choose the anomaly flagging threshold?</div>
+  <div class="qa-a">We used a precision-recall curve analysis. We plotted precision and recall at different threshold values on the validation set (invoices with known errors). We selected the threshold that maximised F-beta score with beta=0.5 — weighting precision higher than recall, because in this domain, false positives (flagging correct invoices) waste auditor time, while false negatives (missing errors) cost money. The optimal threshold balanced a ~95% precision at a recall that still caught the material errors.</div>
+</div></div><div class="qa-grid"><div class="qa-card tech">
+  <div class="qa-q">❓ How does automated retraining work when billing patterns change?</div>
+  <div class="qa-a">Billing patterns shift with contract renewals, seasonal rate changes, and new service categories. Azure Data Factory monitors the prediction residual distribution monthly. If the mean residual or its variance shifts significantly (measured by t-test and F-test against a baseline window), it triggers a retraining job. The pipeline: pull last 18 months of verified invoices → feature engineering → retrain → evaluate on holdout → A/B test new vs old model → promote if improved.</div>
+</div><div class="qa-card tricky">
+  <div class="qa-q">❓ How do you handle the case where the model is wrong and flags a correct invoice?</div>
+  <div class="qa-a">The Power BI dashboard shows the model's confidence score alongside each flag and the top contributing features (SHAP). Auditors see: "Flagged because truck count (3) is higher than expected (1.8) for this job type." If the auditor confirms it's correct (e.g., the job genuinely needed 3 trucks), they mark it as reviewed. This becomes a training signal — the model gets periodic feedback corrections, improving its calibration on legitimate edge cases over time.</div>
+</div></div><div class="qa-grid single"><div class="qa-card tricky">
+  <div class="qa-q">❓ Could this system be gamed by a dishonest billing team who knows how it works?</div>
+  <div class="qa-a">Yes — this is a real adversarial ML concern. Our mitigations: (1) The model's exact thresholds are not exposed to billing staff — they only see that flags exist, not the model logic. (2) The model is retrained on evolving data, so a pattern that evades it today gets caught after the next training cycle. (3) We added a second, independent statistical layer (Z-score on peer-group invoices) that doesn't depend on the ML model. Gaming one layer doesn't defeat both.</div>
+</div></div></div>
+
+  <hr class="divider"/>
+  <div class="footer-note">Chandan Kumar &nbsp;·&nbsp; Lead Data Scientist · IBM Lab &nbsp;·&nbsp; chandanitismg@gmail.com &nbsp;·&nbsp; linkedin.com/in/chandanit</div>
+</div>
+
+
+<div class="page-break"></div>
+<div class="project">
+  <div class="proj-header">
+    <h2>Cross-Project Interview Questions<br/><span style="font-weight:400;font-size:14px;color:#90CDF4">Leadership · Architecture · Career · Behavioural · Technical Depth</span></h2>
+    <div class="proj-meta"><div class="company">All Projects</div><div class="period">8+ Years</div></div>
+  </div>
+
+  <div class="section-label">🧠 Architecture & Technical Leadership</div>
+<div class="qa-section"><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ Walk me through your most complex technical architecture. What made it hard?</div>
+  <div class="qa-a">Weave is the most complex — it's a platform that builds platforms. The hardest part was the meta-level problem: designing a system that generates arbitrary agent topologies at runtime, validates them, and deploys them reliably. You can't enumerate all possible agent graphs in advance. The solution was a grammar-based DAG validator that checks structural properties (no cycles, all tools reachable, all agents connected) without needing to understand the business logic.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ How do you decide when to use a large LLM vs an SLM vs classical ML?</div>
+  <div class="qa-a">Framework I use: (1) Is the task open-ended and requires world knowledge? → Large LLM. (2) Is the task domain-specific and bounded? → Fine-tuned SLM. (3) Is the task well-defined with structured inputs/outputs and enough labelled data? → Classical ML (XGBoost, regression). (4) Is the task just retrieval + summarisation? → RAG. Cost, latency, and regulatory constraints also influence the decision. AskFin vs AskBank is a perfect example of applying this framework.</div>
+</div></div><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ How do you ensure your ML models are production-ready, not just accurate on the test set?</div>
+  <div class="qa-a">Five checks before I sign off on production: (1) Data drift baseline — establish the training distribution so we can detect when it shifts. (2) Adversarial testing — probe for edge cases the test set doesn't cover. (3) Performance under load — latency at P95, not just P50. (4) Fallback behaviour — what does the system do when confidence is low? Fail open or closed? (5) Monitoring + alerting from day one — not bolted on later.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ Describe a time an ML model failed in production. What did you do?</div>
+  <div class="qa-a">The WCC classifier initially had low recall on rare P-code hazardous wastes (acutely hazardous chemicals). In production, a few P-code wastes were being classified as non-hazardous — caught by the compliance team during a spot audit. Immediate fix: raised the confidence threshold for rare classes to 99%, flagging all uncertain cases for human review. Root cause: SMOTE wasn't generating enough diversity for the rarest classes. Fix: added class-conditional augmentation and increased rare-class weights in the loss function.</div>
+</div></div><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ How do you handle the build vs buy decision for AI components?</div>
+  <div class="qa-a">Build when: the problem is core to competitive differentiation (Weave's agent generation is IBM's IP), or existing tools don't handle the specific constraint (domain-specific SLM). Buy/use when: the component is commoditised (vector databases, embedding APIs), when time-to-market matters more than customisation, or when the maintenance cost of a custom solution exceeds the benefit. I've done both — I built Weave's MCP layer from scratch but used LangGraph for orchestration.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ What's the biggest mistake you've made in a data science project?</div>
+  <div class="qa-a">On PulseSegment (earlier work), I delivered a technically excellent K-Means segmentation model but didn't involve the Relationship Managers (end users) until demo day. Their feedback was that two of the four segments were too similar to act on differently. I had to merge them. Lesson: co-design with end users from sprint 1. Technical quality is necessary but not sufficient — the model must produce segments that humans can actually act on. I now run user feedback sessions every 2 weeks.</div>
+</div></div></div>
+
+  <div class="section-label">🏗️ System Design Questions</div>
+<div class="qa-section"><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ Design a production RAG system from scratch for a 100,000 document corpus.</div>
+  <div class="qa-a">Components: (1) Ingestion — async pipeline, chunking with overlap, metadata extraction. (2) Embedding — batch embedding with a fine-tuned bi-encoder, stored in a vector DB (Pinecone/Weaviate). (3) Retrieval — hybrid: dense (vector similarity) + sparse (BM25), fused with RRF. (4) Re-ranking — cross-encoder for precision. (5) Generation — LLM with citation prompt template. (6) Guardrails — faithfulness check, confidence scoring. (7) Monitoring — query distribution, retrieval hit rate, user feedback loop.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ How would you design a multi-agent system that can handle 10,000 concurrent users?</div>
+  <div class="qa-a">Key design choices: (1) Agent pools not single instances — each agent type runs as a horizontally scalable pod in Kubernetes. (2) Message queue (Kafka) between agents — decouples producers from consumers, handles backpressure. (3) Stateless agents — all state in Redis, not in agent memory, so any pod can handle any request. (4) Circuit breakers on every external tool call. (5) Request prioritisation — enterprise SLA users get dedicated pools. (6) Observability — distributed tracing (OpenTelemetry) to identify bottlenecks.</div>
+</div></div><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ How do you design an ML pipeline that's both reproducible and auditable?</div>
+  <div class="qa-a">Three pillars: (1) Immutable data versioning — every dataset version is hash-addressed and never overwritten (Delta Lake). (2) Experiment tracking — every training run logs: code version (git hash), data version, hyperparameters, metrics (MLflow/Weights & Biases). (3) Model registry with lineage — every deployed model has a traceable path from raw data → features → model → deployment. AI FactSheets in watsonx.governance automate this for all IBM models.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ Design a real-time fraud detection system. What would you use?</div>
+  <div class="qa-a">Architecture: (1) Stream ingestion — Kafka for real-time transaction events. (2) Feature computation — Flink/Spark Streaming for online feature computation (velocity, pattern features). (3) Feature store — dual storage: online (Redis, <10ms) for serving + offline (Delta Lake) for training. (4) Model — gradient boosting (XGBoost) for speed + accuracy, retrained weekly. (5) Decision layer — confidence threshold → approve/flag/reject. (6) Feedback loop — flagged transactions reviewed by analysts, labels fed back for retraining.</div>
+</div></div></div>
+
+  <div class="section-label">💡 Behavioural & Leadership</div>
+<div class="qa-section"><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ Tell me about a time you had to convince stakeholders to adopt an AI solution they were skeptical of.</div>
+  <div class="qa-a">The WCC compliance team at Clean Harbors was deeply skeptical — they'd been doing manual classification for years and didn't trust a model. Approach: (1) Never said "the model replaces you." Said "the model handles routine cases, freeing you for complex ones." (2) Ran a 2-week parallel deployment — model predicted, humans verified, we measured agreement. 92% agreement built trust. (3) Added SHAP explanations so they could see the model's reasoning. (4) Let them set the confidence threshold for human review. They went from skeptics to champions.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ How do you prioritise when you have multiple projects competing for your time?</div>
+  <div class="qa-a">I use a two-axis framework: business impact × technical readiness. High-impact + high-readiness projects get done first (quick wins, stakeholder trust). High-impact + low-readiness get a spike to reduce uncertainty. Low-impact projects get deprioritised or killed. At IBM, I balance this with platform work (Weave) that has long-term leverage vs feature work that has immediate impact. I communicate trade-offs explicitly to leadership rather than silently deprioritising.</div>
+</div></div><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ Describe your approach to mentoring junior data scientists.</div>
+  <div class="qa-a">Three practices: (1) Teach debugging frameworks, not just answers. When someone is stuck, I ask "what have you tried? what does the error tell us?" rather than giving the fix. (2) Code review as teaching — I write detailed PR comments explaining not just what to change but why. (3) Give ownership early — juniors own a feature end-to-end (data → model → deployment), not just isolated tasks. Ownership accelerates growth faster than any training course.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ What's the difference between a good data scientist and a great one?</div>
+  <div class="qa-a">A good data scientist builds accurate models. A great one: (1) Understands the business problem deeply enough to question whether a model is even the right solution. (2) Makes models that work in production, not just notebooks. (3) Communicates uncertainty honestly — "this model is 92% accurate in test, here's what the 8% looks like." (4) Designs for maintainability — someone else can understand, update, and debug the system 12 months later. (5) Measures business impact, not just technical metrics.</div>
+</div></div></div>
+
+  <div class="section-label">⚡ Quick-Fire Technical Questions</div>
+<div class="qa-section"><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ What is the difference between precision and recall? When does each matter more?</div>
+  <div class="qa-a">Precision = of all the times I said positive, how often was I right? Recall = of all actual positives, how many did I catch? Precision matters more when false positives are costly (spam filter — you don't want legitimate emails flagged). Recall matters more when false negatives are costly (cancer screening — you don't want to miss a case). In WCC, I weighted precision higher for auto-classification (don't want confident wrong EPA codes). In Invoice Audit, recall matters more (don't miss revenue leakage).</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ What is gradient boosting and why does it outperform random forests on tabular data?</div>
+  <div class="qa-a">Both are ensembles of decision trees. Random Forest builds trees independently in parallel (bagging — reduces variance). Gradient Boosting builds trees sequentially — each tree corrects the errors of the previous one (boosting — reduces bias). GBM typically outperforms RF on tabular data because it can model complex interactions with fewer trees. XGBoost adds L1/L2 regularisation and better handling of missing values. RF is better when you want less tuning and more robustness to outliers.</div>
+</div></div><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ Explain attention mechanism in transformers in simple terms.</div>
+  <div class="qa-a">Attention lets every word in a sentence look at every other word and decide how much to focus on it when building its representation. For "The bank on the river bank" — the model learns that "bank" (first) should attend heavily to "river" to understand it means a riverbank, not a financial bank. Multi-head attention runs this process in parallel multiple times with different "perspectives," capturing different types of relationships simultaneously.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ What is the difference between fine-tuning and RAG? When would you use each?</div>
+  <div class="qa-a">Fine-tuning bakes knowledge into the model weights — the model "memorises" the domain. Good for: changing the model's style/tone/behaviour, teaching it domain-specific language patterns. Bad for: keeping knowledge current (retraining is expensive), source citation. RAG keeps knowledge external, retrieved at inference time. Good for: up-to-date information, source traceability, large document corpora. Bad for: latency-sensitive applications, when you need the model's own reasoning to change. In practice: fine-tune for behaviour, RAG for knowledge.</div>
+</div></div><div class="qa-grid"><div class="qa-card crosscut">
+  <div class="qa-q">❓ What is data drift vs concept drift? Give a banking example.</div>
+  <div class="qa-a">Data drift: the distribution of input features changes. Example: post-COVID, customers' transaction patterns shifted dramatically — average balance, spending categories all changed. The model's inputs look different from training. Concept drift: the relationship between inputs and the correct output changes. Example: a customer behavior that used to indicate low fraud risk (regular small transactions) is now being exploited as a fraud pattern. Same inputs, different correct label. Data drift you detect with statistical tests on features. Concept drift requires monitoring model performance on labelled recent data.</div>
+</div><div class="qa-card crosscut">
+  <div class="qa-q">❓ What is the vanishing gradient problem and how is it solved?</div>
+  <div class="qa-a">In deep networks trained with backpropagation, gradients are multiplied through many layers. If they're small (<1), they shrink exponentially toward earlier layers — those layers learn very slowly or not at all. Solutions: (1) Residual connections (ResNets) — add a skip connection so gradients can flow directly. (2) Batch normalisation — normalises layer inputs, keeping gradients in a stable range. (3) Better activations — ReLU instead of sigmoid, which saturates at extremes. (4) Gradient clipping — caps gradients at a max value for RNNs.</div>
+</div></div></div>
 
   <hr class="divider"/>
   <div class="footer-note">Chandan Kumar &nbsp;·&nbsp; Lead Data Scientist · IBM Lab &nbsp;·&nbsp; chandanitismg@gmail.com &nbsp;·&nbsp; linkedin.com/in/chandanit</div>
